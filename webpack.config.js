@@ -1,13 +1,15 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+
+const outputPath = path.resolve(__dirname, 'build');
 
 module.exports = {
     mode: 'development',
     entry: path.join(__dirname, 'src/index.js'),
     output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'public'),
+        filename: '[name].js',
+        path: outputPath,
     },
     module: {
         rules: [
@@ -31,24 +33,35 @@ module.exports = {
                 use: ['style-loader', 'css-loader']
             },
             {
-                test: /\.(jpe?g|png|gif|woff2?|eot|ttf|otf|svg)$/,
+                test: /\.(jpe?g|png|gif|svg)$/i,
                 use: [
                     {
                         loader: 'url-loader',
-                        options: { limit: 15000 },
+                        options: {
+                            limit: 10 * 1024,
+                            name: '[name].[hash:8].[ext]',
+                            outputPath: 'assets',
+                        },
                     },
                 ],
             },
         ]
     },
+    resolve: {
+        alias: {
+            'react-dom': '@hot-loader/react-dom',
+        },
+    },
     devServer: {
-        contentBase: path.join(__dirname, 'public'),
+        contentBase: outputPath,
         port: 3000,
+        hot: true,
         compress: true,
     },
     plugins: [
+        new webpack.HotModuleReplacementPlugin(),
         new HtmlWebPackPlugin({
-            template: './index.html'
+            template: './public/index.html'
         })
     ]
 };
