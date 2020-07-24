@@ -1,0 +1,23 @@
+{
+  "name": "project-management-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/takkuyu/project-management-app.git"
+  },
+  "author": "Takaya Hirose <takayahirose0601@gmail.com> (https://takayahirose.com/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/takkuyu/project-management-app/issues"
+  },
+  "homepage": "https://github.com/takkuyu/project-management-app#readme",
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
