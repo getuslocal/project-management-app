@@ -1,14 +1,14 @@
 import React from 'react';
 import { hot } from 'react-hot-loader/root';
-
+import { BrowserRouter, Route } from 'react-router-dom';
+import Routes from './components/routing/Routes';
 import './App.css';
 
 const App = () => (
-  <div className='app'>
-    <div className='card'>
-      <h1 className='title'>Our React is working !</h1>
-    </div>
-  </div>
+  <BrowserRouter>
+  <Sidebar />
+      <Route component={Routes} />
+  </BrowserRouter>
 );
 
 export default hot(App);

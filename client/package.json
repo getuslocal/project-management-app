@@ -19,10 +19,16 @@
   },
   "homepage": "https://github.com/takkuyu/project-management-app#readme",
   "dependencies": {
+    "axios": "^0.19.2",
     "core-js": "^3.6.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0",
     "styled-components": "^5.1.1"
   },
   "devDependencies": {
