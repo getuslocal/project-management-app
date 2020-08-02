@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components'
 
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
@@ -149,4 +149,4 @@ export default createGlobalStyle`
   [hidden] {
     display: none;
   }
-`;
+`

@@ -1,20 +1,19 @@
 import React from 'react';
 import {
-  GroupContainer,
   FormInputContainer,
+  Input,
   FormInputLabel
 } from './FormInput.style';
-import { PermIdentityIcon } from '@material-ui/icons';
 
 const FormInput = ({ handleChange, label, iconType,  ...props }) => (
-  <GroupContainer>
-    <FormInputContainer className={`icon-${iconType}`} {...props} />
+  <FormInputContainer>
+    <Input {...props} onChange={handleChange}/>
     {label ? (
-      <FormInputLabel className={`icon-${iconType}`}>
+      <FormInputLabel className={props.value.length ?`shrink icon-${iconType}` : `icon-${iconType}`}>
         {label}
       </FormInputLabel>
     ) : null}
-  </GroupContainer>
+  </FormInputContainer>
 );
 
 export default FormInput;

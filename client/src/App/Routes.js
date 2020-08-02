@@ -1,6 +1,6 @@
-import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Landing from '../views/LandingPage/LandingPage';
+import React from 'react'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import Landing from '../views/LandingPage/LandingPage'
 
 const Routes = () => {
   return (
@@ -9,7 +9,7 @@ const Routes = () => {
         <Route exact path="/" component={Landing} />
       </Switch>
     </BrowserRouter>
-  );
-};
+  )
+}
 
-export default Routes;
+export default Routes
