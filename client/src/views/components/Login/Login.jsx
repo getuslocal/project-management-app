@@ -66,7 +66,7 @@ const LoginForm = () => {
             value='Login now'
           />
         </Margin>
-        <FormSmallText>Try right now ? <LinkText to="/">Use guest login</LinkText></FormSmallText>
+        <FormSmallText>Try a demo version ? <LinkText to="/">Use guest login</LinkText></FormSmallText>
       </form>
     </LoginContainer>
   );

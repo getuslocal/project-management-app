@@ -36,7 +36,7 @@ module.exports = {
                 use: ['style-loader', 'css-loader']
             },
             {
-                test: /\.(jpe?g|png|gif)$/i,
+                test: /\.(jpe?g|png|gif|svg)$/i,
                 use: [
                     {
                         loader: 'url-loader',
@@ -48,10 +48,10 @@ module.exports = {
                     },
                 ],
             },
-            {
-                test: /\.svg$/,
-                use: ['@svgr/webpack'],
-            },
+            // {
+            //     test: /\.svg$/,
+            //     use: ['@svgr/webpack'],
+            // },
         ]
     },
     resolve: {

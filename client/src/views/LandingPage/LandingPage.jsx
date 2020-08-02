@@ -25,7 +25,7 @@ const Landing = () => {
 
       <LandingLeftContent>
         <LogoContainer>
-          <Logo />
+          <img src={Logo} width='60px' height='60px'/>
         </LogoContainer>
         {
           isActive !== 'signup' ?

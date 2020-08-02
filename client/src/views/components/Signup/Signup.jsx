@@ -29,7 +29,7 @@ const SignupForm = () => {
     return (
         <LoginContainer>
             <FormTitle>
-                Log in <GrayText>to your account</GrayText>
+                Sign up <GrayText>for your account</GrayText>
             </FormTitle>
             <form>
                 <Margin bottom={3} >

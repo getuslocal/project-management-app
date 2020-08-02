@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { color, fontSize } from '../../shared/utils/styles';
 import StyledButton from '../../shared/components/Button/CustomLinkButton/CustomLinkButton';
+import LogoIcon from '../../assets/logo.svg';
 
 export const LandingContainer = styled.div`
   width: 100%;
@@ -34,11 +35,9 @@ export const LandingRightContent = styled.div`
     color: ${color.white};
   `;
 
-
 export const LogoContainer = styled.p`
     margin-bottom:6em;
   `;
-
 
 export const OptionLink = styled(Link)`
   padding: 10px 15px;
