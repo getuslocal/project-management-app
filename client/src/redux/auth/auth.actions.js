@@ -28,7 +28,8 @@ export const loadUser = () => async dispatch => {
 // Register User
 export const register = formData => async dispatch => {
   try {
-    const res = await api.post('/users/register', formData); //RECEIVE THE TOKEN HERE FROM SERVER.
+    //Receive a token from server here.
+    const res = await api.post('/users/register', formData);
     dispatch({
       type: REGISTER_SUCCESS,
       payload: res.data

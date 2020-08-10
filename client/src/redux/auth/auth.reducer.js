@@ -44,11 +44,7 @@ const authReducer = (state = INITIAL_STATE, action) => {
       };
     // @todo : may remove this one if not needed.
     case AUTH_ERROR:
-      return {
-        ...state,
-        isAuthenticated: false,
-        user: null,
-      }
+      return state;
     case REGISTER_FAIL:
       return {
         ...state,

@@ -6,18 +6,15 @@ import Spinner from '../../shared/components/Spinner/Spinner';
 import Sidebar from '../../views/components/Sidebar/Sidebar';
 import { selectRoleComponents } from '../../redux/roles/roles.selectors';
 
-// @todo : add spinner while loading so that the landingpage is not exposed.
-
 const PrivateRoutes = ({ auth: { isAuthenticated, loading }, roleComponents, ...props }) => {
   console.log(roleComponents)
   return (
-    loading ?
+    loading ? (
       <Spinner />
-      :
-      (isAuthenticated ?
-        <Fragment>
-          <Sidebar {...props} />
-          {/* <Switch>
+    ) : isAuthenticated ? (
+      <Fragment>
+        <Sidebar {...props} />
+        {/* <Switch>
           {roleComponents.map((component) => (
             <Route
               exact
@@ -28,23 +25,12 @@ const PrivateRoutes = ({ auth: { isAuthenticated, loading }, roleComponents, ...
           ))}
           <Route component={NotFound} />
         </Switch> */}
-        </Fragment>
-        :
-        <Redirect to="/" />)
+      </Fragment>
+    ) : (
+          <Redirect to="/" />
+        )
   );
 }
-// <Route
-//   {...rest}
-//   render={props =>
-//     loading ? (
-//       <Spinner />
-//     ) : isAuthenticated ? (
-//       <Component {...props} />
-//     ) : (
-//       <Redirect to="/" /> 
-//     )
-//   }
-// />
 
 PrivateRoutes.propTypes = {
   auth: PropTypes.object.isRequired

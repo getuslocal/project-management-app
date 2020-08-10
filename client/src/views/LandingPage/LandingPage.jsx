@@ -21,7 +21,6 @@ import CustomLinkButton from '../../shared/components/Button/CustomLinkButton/Cu
 
 const Landing = ({ errorMessage }) => {
   const [isActive, setisActive] = useState('login')
-  console.log(errorMessage)
   return (
     <LandingContainer>
 
