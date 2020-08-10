@@ -32,7 +32,7 @@ const INITIAL_STATE = {
       icon: 'menu',
       hasSubMenu: false
     },
-    Inbox: {
+    inbox: {
       id:5,
       component: 'Inbox',
       linkUrl: '/inbox',

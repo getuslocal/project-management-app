@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { color, fontSize } from '../../../shared/utils/styles';
 
 export const SidebarContainer = styled.div`
+  float: left;
   background-color: #0f35a9;
   width: 230px;
   color: #fff;

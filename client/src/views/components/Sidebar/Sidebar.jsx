@@ -16,13 +16,9 @@ import {
 import Logo from '../../../assets/logo.svg';
 import store from '../../../redux/store';
 import { logout } from '../../../redux/auth/auth.actions';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { selectRoleComponents } from '../../../redux/roles/roles.selectors';
 
 const Sidebar = ({ user, roleComponents, match }) => {
   const { name, role } = user;
-  // console.log(roleComponents)
   return (
     <SidebarContainer>
       <LogoContainer>
@@ -68,9 +64,5 @@ const Sidebar = ({ user, roleComponents, match }) => {
   );
 }
 
-const mapStateToProps = state => ({
-  user: state.auth.user,
-  roleComponents: selectRoleComponents(state.auth.user.role)(state),
-});
 
-export default connect(mapStateToProps)(Sidebar);
+export default Sidebar;

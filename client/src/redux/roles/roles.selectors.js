@@ -7,12 +7,12 @@ export const selectRoleComponents = role => createSelector(
   roles => {
     const components = roles.components;
     switch (role) {
-      case 'admin':
+      case 'Admin':
         return [
           components.dashboard,
           components.projects,
           components.peopleManage,
-          components.Inbox,
+          components.inbox,
           components.adminSetting,
         ];
       case 'Project Manager':
@@ -20,13 +20,13 @@ export const selectRoleComponents = role => createSelector(
           components.dashboard,
           components.projects,
           components.projectMembers,
-          components.Inbox,
+          components.inbox,
         ];
       case 'Developer':
         return [
           components.dashboard,
           components.projects,
-          components.Inbox,
+          components.inbox,
         ];
       default:
         break;

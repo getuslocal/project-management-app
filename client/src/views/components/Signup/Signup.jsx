@@ -22,7 +22,7 @@ const SignupForm = ({ register, errorMessage }) => {
     email: '',
     password: '',
     confirmPassword: '',
-    role: 'admin'
+    role: 'Admin'
   });
 
   const { name, email, password, confirmPassword, role } = userCredentials;
@@ -42,6 +42,10 @@ const SignupForm = ({ register, errorMessage }) => {
 
     setUserCredentials({ ...userCredentials, [name]: value });
   };
+
+  if (isAuthenticated) {
+    return <Redirect to="/app" />;
+  }
 
   return (
     <LoginContainer>

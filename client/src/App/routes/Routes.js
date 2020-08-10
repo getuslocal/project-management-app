@@ -1,14 +1,16 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Landing from '../../views/LandingPage/LandingPage'
-import PrivateRoutes from './PrivateRoutes';
+import NotFound from '../../views/NotFound/NotFound';
+import PrivateRoutesContainer from './PrivateRoutesContainer';
 
 const Routes = () => {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/" component={Landing} />
-        <Route path="/app" component={PrivateRoutes} />
+        <Route path="/app" component={PrivateRoutesContainer} />
+        <Route component={NotFound} />
       </Switch>
     </BrowserRouter>
   )
