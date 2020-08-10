@@ -2,9 +2,8 @@ const jwt = require('jsonwebtoken');
 
 // Check if the client request has token in header without falcification 
 module.exports = function (req, res, next) {
-    // const token = req.header('auth-token');
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; // returns token when authHeader exists
+    // Get token from header
+    const token = req.header('x-auth-token');
 
     if (token == null) return res.status(401).send('Access Denied');
 
