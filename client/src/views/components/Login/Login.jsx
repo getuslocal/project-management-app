@@ -3,18 +3,23 @@ import FormInput from '../../../shared/components/Form/FormInput/FormInput';
 import FormCheckBox from '../../../shared/components/Form/FormCheckBox/FormCheckBox';
 import FormButton from '../../../shared/components/Form/FormButton/FormButton';
 import { Margin } from '../../../shared/utils/global';
+import { login } from '../../../redux/auth/auth.actions';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import ErrorMessage  from '../../../shared/components/ErrorMessage/ErrorMessage';
 import {
   FormTitle,
   GrayText,
   LoginContainer,
   FormSmallText,
-  LinkText
+  LinkText,
 } from './Login.style';
 
-const LoginForm = () => {
+const LoginForm = ({ login, isAuthenticated, errorMessage }) => {
   const [userCredentials, setCredentials] = useState({
     email: '',
-    password: ''
+    password: '',
   });
 
   const { email, password } = userCredentials;
@@ -25,12 +30,25 @@ const LoginForm = () => {
     setCredentials({ ...userCredentials, [name]: value });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    login({ email, password });
+  }
+
+  if (isAuthenticated) {
+    return <Redirect to="/app" />;
+  }
+
   return (
     <LoginContainer>
       <FormTitle>
         Log in <GrayText>to your account</GrayText>
       </FormTitle>
-      <form>
+      {errorMessage ?
+        <Margin bottom={2} >
+          <ErrorMessage errorMessage={errorMessage}/>
+        </Margin> : ''}
+      <form onSubmit={handleSubmit}>
         <Margin bottom={3} >
           <FormInput
             name='email'
@@ -62,7 +80,7 @@ const LoginForm = () => {
         <Margin bottom={2} >
           <FormButton
             name='button'
-            type='button'
+            type='submit'
             value='Login now'
           />
         </Margin>
@@ -72,4 +90,15 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+LoginForm.propTypes = {
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+  errorMessage: PropTypes.string
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  errorMessage: state.auth.errorMessage
+});
+
+export default connect(mapStateToProps, { login })(LoginForm);

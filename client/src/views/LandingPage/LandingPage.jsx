@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Logo from '../../assets/logo.svg';
 import LoginForm from '../components/Login/Login';
 import SignupForm from '../components/Signup/Signup';
+import store from '../../redux/store';
+import { refreshErrorMessage } from '../../redux/auth/auth.actions'
 
 import {
   LandingContainer,
@@ -17,15 +19,15 @@ import {
 import { Margin } from '../../shared/utils/global';
 import CustomLinkButton from '../../shared/components/Button/CustomLinkButton/CustomLinkButton';
 
-const Landing = () => {
+const Landing = ({ errorMessage }) => {
   const [isActive, setisActive] = useState('login')
-
+  console.log(errorMessage)
   return (
     <LandingContainer>
 
       <LandingLeftContent>
         <LogoContainer>
-          <img src={Logo} width='60px' height='60px'/>
+          <img src={Logo} width='60px' height='60px' />
         </LogoContainer>
         {
           isActive !== 'signup' ?
@@ -34,17 +36,25 @@ const Landing = () => {
             <SignupForm />
         }
         <OptionsContainer>
-          <CustomLinkButton 
-            iconType="user" 
-            text="Log in" 
+          <CustomLinkButton
+            iconType="user"
+            to="/"
+            text="Log in"
             className={`w-50 ${isActive === 'login' ? 'active' : ''}`}
-            onClick={()=> setisActive('login')} 
+            onClick={() => {
+              setisActive('login');
+              if (errorMessage) store.dispatch(refreshErrorMessage());
+            }}
           />
-          <CustomLinkButton 
-            iconType="unlock" 
-            text="Sign up" 
-            className={`w-50 ${isActive === 'signup' ? 'active' : ''}`} 
-            onClick={()=> setisActive('signup')} 
+          <CustomLinkButton
+            iconType="unlock"
+            to="/"
+            text="Sign up"
+            className={`w-50 ${isActive === 'signup' ? 'active' : ''}`}
+            onClick={() => {
+              setisActive('signup');
+              if (errorMessage) store.dispatch(refreshErrorMessage());
+            }}
           />
         </OptionsContainer>
       </LandingLeftContent>
@@ -64,12 +74,8 @@ const Landing = () => {
   );
 };
 
-// Landingpage.propTypes = {
-//   isAuthenticated: PropTypes.bool
-// };
+const mapStateToProps = state => ({
+  errorMessage: state.auth.errorMessage,
+});
 
-// const mapStateToProps = state => ({
-//   isAuthenticated: state.auth.isAuthenticated
-// });
-
-export default Landing;
+export default connect(mapStateToProps)(Landing);

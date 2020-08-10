@@ -16,7 +16,7 @@ const FormCheckBox = ({ name, ...props }) => {
         className={checked ? 'checked' : ''}
         id='formCheckBox'
       />
-      <FormCheckBoxLabel for='formCheckBox'>Remember me</FormCheckBoxLabel>
+      <FormCheckBoxLabel htmlFor='formCheckBox'>Remember me</FormCheckBoxLabel>
     </FormCheckBoxContainer>
   )
 };

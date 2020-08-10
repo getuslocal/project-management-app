@@ -7,7 +7,7 @@ import {
 
 const FormInput = ({ handleChange, label, iconType,  ...props }) => (
   <FormInputContainer>
-    <Input {...props} onChange={handleChange}/>
+    <Input className={props.value.length ?`highlight` : ''} {...props} onChange={handleChange}/>
     {label ? (
       <FormInputLabel className={props.value.length ?`shrink icon-${iconType}` : `icon-${iconType}`}>
         {label}

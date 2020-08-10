@@ -8,6 +8,7 @@ export const color = {
   secondary: '#F4F5F7', // light grey
 
   smokewhite: '#F5F5F5',
+  purple: '#390099',
 
   textDarkest: '#172b4d',
   textDark: '#42526E',

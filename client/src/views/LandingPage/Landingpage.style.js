@@ -2,10 +2,12 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { color, fontSize } from '../../shared/utils/styles';
 import StyledButton from '../../shared/components/Button/CustomLinkButton/CustomLinkButton';
-import LogoIcon from '../../assets/logo.svg';
+import LandingBg from './assets/landing-bg.png'
 
 export const LandingContainer = styled.div`
   width: 100%;
+  height: 100%;
+  min-height: 950px;
   display: flex;
 `;
 
@@ -18,13 +20,13 @@ export const LandingLeftContent = styled.div`
 
 export const LandingRightContent = styled.div`
   width: 55%;
-  height: 100vh;
+  height: 100%;
   background-image: 
-  /* linear-gradient(
-    rgba(0,0,0, .05),
-    rgba(0,0,0, .05)
-  ), */
-  url('https://images.unsplash.com/photo-1521571086300-579bd981bbb6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80');
+  linear-gradient(
+    rgba(0,0,0, .2),
+    rgba(0,0,0, .2)
+  ),
+  url(${LandingBg});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

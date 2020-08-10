@@ -4,9 +4,9 @@ import {
   CustomLink,
 } from '../StyledButton.style';
 
-const CustomLinkButton = ({ iconType, text, dest, ...props }) => (
+const CustomLinkButton = ({ iconType, text, to, ...props }) => (
   <LinkButtonContainer {...props}>
-      <CustomLink className={`icon-${iconType}`} to={dest}>{text}</CustomLink>
+      <CustomLink className={`icon-${iconType}`} to={to}>{text}</CustomLink>
   </LinkButtonContainer>
 );
 

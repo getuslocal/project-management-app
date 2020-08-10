@@ -34,6 +34,13 @@ export const Input = styled.input`
     ${shrinkLabelStyles}
     color:  ${color.primary};
   }
+
+  &.highlight {
+    border-bottom-color:${color.primary};
+      ~ label {
+      color:  ${color.primary};
+      }
+  }
 `;
 
 export const FormInputLabel = styled.label`
