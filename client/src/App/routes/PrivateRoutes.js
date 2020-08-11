@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from 'react';
-import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
+import { Route, Redirect, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../../shared/components/WithSpinner/WithSpinner';
@@ -8,20 +8,20 @@ import { selectRoleComponents } from '../../redux/roles/roles.selectors';
 import * as Routes from './index';
 import NotFound from '../../views/NotFound/NotFound';
 
-const PrivateRoutes = ({ auth: { isAuthenticated, loading, user }, roleComponents, ...props }) => {
+const PrivateRoutes = ({ auth: { isAuthenticated, loading, user }, roleComponents }) => {
   return (
     loading ? (
       <Spinner />
     ) : isAuthenticated ? (
       <Fragment>
-        <Sidebar user={user} roleComponents={roleComponents} {...props} />
+        <Sidebar user={user} roleComponents={roleComponents} />
         <Switch>
-          {roleComponents.map((component) => (
+          {roleComponents.map(({ id, linkUrl, component }) => (
             <Route
               exact
-              key={component.id}
-              component={Routes[component.component]}
-              path={`${props.match.path}${component.linkUrl}`}
+              key={id}
+              component={Routes[component]}
+              path={`/app${linkUrl}`}
             />
           ))}
           <Route component={NotFound} />
@@ -43,4 +43,4 @@ const mapStateToProps = state => ({
   roleComponents: selectRoleComponents(state.auth.user.role)(state),
 });
 
-export default withRouter(connect(mapStateToProps)(PrivateRoutes));
+export default connect(mapStateToProps)(PrivateRoutes);

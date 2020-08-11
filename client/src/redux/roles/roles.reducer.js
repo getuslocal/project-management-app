@@ -29,7 +29,7 @@ const INITIAL_STATE = {
       component: 'People',
       linkUrl: '/project-members',
       title: 'Project Members',
-      icon: 'menu',
+      icon: 'icon-user',
       hasSubMenu: false
     },
     inbox: {

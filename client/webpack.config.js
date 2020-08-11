@@ -10,6 +10,7 @@ module.exports = {
     output: {
         filename: '[name].js',
         path: outputPath,
+        publicPath: '/',
     },
     module: {
         rules: [
@@ -63,7 +64,6 @@ module.exports = {
         contentBase: outputPath,
         port: 8080,
         hot: true,
-        compress: true,
         historyApiFallback: true,
     },
     plugins: [

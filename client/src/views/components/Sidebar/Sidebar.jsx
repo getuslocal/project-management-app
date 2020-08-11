@@ -17,7 +17,7 @@ import Logo from '../../../assets/logo.svg';
 import store from '../../../redux/store';
 import { logout } from '../../../redux/auth/auth.actions';
 
-const Sidebar = ({ user, roleComponents, match }) => {
+const Sidebar = ({ user, roleComponents }) => {
   const { name, role } = user;
   return (
     <SidebarContainer>
@@ -41,7 +41,7 @@ const Sidebar = ({ user, roleComponents, match }) => {
             roleComponents.map(({ id, linkUrl, icon, title, hasSubMenu }) => (
               <SidebarList key={id}>
                 <Link
-                  to={`${match.path}${linkUrl}`}
+                  to={`/app${linkUrl}`}
                   className={icon}>{title}</Link>
                 {hasSubMenu ? <SortDownIcon className="fas fa-sort-down" /> : ''}
               </SidebarList>
