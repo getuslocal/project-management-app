@@ -8,11 +8,9 @@ import { selectRoleComponents } from '../../redux/roles/roles.selectors';
 import * as Routes from './index';
 import NotFound from '../../views/NotFound/NotFound';
 
-const PrivateRoutes = ({ auth: { isAuthenticated, loading, user }, roleComponents }) => {
+const PrivateRoutes = ({ auth: { isAuthenticated, user }, roleComponents }) => {
   return (
-    loading ? (
-      <Spinner />
-    ) : isAuthenticated ? (
+    isAuthenticated ? (
       <Fragment>
         <Sidebar user={user} roleComponents={roleComponents} />
         <Switch>
@@ -28,8 +26,8 @@ const PrivateRoutes = ({ auth: { isAuthenticated, loading, user }, roleComponent
         </Switch>
       </Fragment>
     ) : (
-          <Redirect to="/" />
-        )
+        <Redirect to="/" />
+      )
   );
 }
 
@@ -40,7 +38,7 @@ PrivateRoutes.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  roleComponents: selectRoleComponents(state.auth.user.role)(state),
+  roleComponents: state.auth.user ? selectRoleComponents(state.auth.user.role)(state) : [],
 });
 
 export default connect(mapStateToProps)(PrivateRoutes);

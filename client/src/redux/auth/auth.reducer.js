@@ -12,7 +12,7 @@ import {
 const INITIAL_STATE = {
   token: localStorage.getItem('token'),
   isAuthenticated: false,
-  loading: true,
+  checkUserCredentials: false,
   user: null,
   errorMessage: undefined,
 };
@@ -25,7 +25,7 @@ const authReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isAuthenticated: true,
-        loading: false,
+        checkUserCredentials: true,
         user: payload
       };
     case REGISTER_SUCCESS:
@@ -33,18 +33,20 @@ const authReducer = (state = INITIAL_STATE, action) => {
         ...state,
         ...payload,
         isAuthenticated: true,
-        // loading: false
+        checkUserCredentials: false
       };
     case LOGIN_SUCCESS:
       return {
         ...state,
         ...payload,
         isAuthenticated: true,
-        // loading: false
+        checkUserCredentials: false
       };
-    // @todo : may remove this one if not needed.
     case AUTH_ERROR:
-      return state;
+      return {
+        ...state,
+        checkUserCredentials: true,
+      };
     case REGISTER_FAIL:
       return {
         ...state,
@@ -60,7 +62,6 @@ const authReducer = (state = INITIAL_STATE, action) => {
         ...state,
         token: null,
         isAuthenticated: false,
-        loading: false,
         user: null
       };
     case REFRESH_ERROR_MESSAGE:

@@ -4,7 +4,7 @@ import WithSpinner from '../../shared/components/WithSpinner/WithSpinner';
 import PrivateRoutes from './PrivateRoutes';
 
 const mapStateToProps = state => ({
-  isLoading: state.auth.loading
+  isLoading: !state.auth.checkUserCredentials
 });
 
 const PrivateRoutesContainer = compose(
