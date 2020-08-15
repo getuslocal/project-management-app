@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { color, fontSize } from '../../../shared/utils/styles';
 
 export const SidebarContainer = styled.div`
   float: left;
@@ -21,21 +19,12 @@ export const LogoContainer = styled.p`
 `;
 
 export const CircleLeftIcon = styled.i`
-  color: rgba(255, 255, 255, 0.8);
   font-size: 1.5em;
 
   &:hover {
     color: #8CD7F8;
     cursor: pointer;
   }
-  `;
-
-export const SortDownIcon = styled.i`
-  position: absolute;
-    right: 1em;
-    /* top: 30%; */
-    top: 50%;
-    margin-top: -8px;
   `;
 
 export const UserProfile = styled.div`
@@ -81,39 +70,6 @@ export const UserProfileParagraph = styled.p`
     font-weight: 600;
   }
 `
-
-export const SidebarList = styled.li`
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      font-size: 13px;
-      font-weight: 600;
-      position: relative;
-      &:last-of-type {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      }
-      &:hover,
-      &.active {
-        color: #8CD7F8;
-        border-left: solid 4px #8CD7F8;
-        cursor: pointer;
-        a {
-          &:before {
-            color: #8CD7F8;
-          }
-        }
-      }
-      
-      a {
-        display: inline-block;
-        border-left: solid 4px transparent;
-        padding: 1.25rem 1rem;
-        padding-left: calc(1rem - 4px);
-        width: 100%;
-        &:before {
-          margin-right: 1em;
-          color: rgba(255, 255, 255, 0.4);
-        }
-      }
-  `;
 
 export const SignoutButton = styled.p`
     position: absolute;

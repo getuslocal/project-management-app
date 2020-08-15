@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import {
   LogoContainer,
   CircleLeftIcon,
@@ -11,11 +10,11 @@ import {
   Usericon,
   UserProfileSummary,
   UserProfileParagraph,
-  SortDownIcon,
 } from './Sidebar.style';
 import Logo from '../../../assets/logo.svg';
 import store from '../../../redux/store';
 import { logout } from '../../../redux/auth/auth.actions';
+import LinkList from './LinkList/LinkList';
 
 const Sidebar = ({ user, roleComponents }) => {
   const { name, role } = user;
@@ -30,7 +29,6 @@ const Sidebar = ({ user, roleComponents }) => {
           <Usericon src="https://cdn.pixabay.com/photo/2015/11/16/14/43/cat-1045782_960_720.jpg" />
         </UserIconWrapper>
         <UserProfileSummary>
-          {/* <i className="far fa-edit"></i> */}
           <UserProfileParagraph className="bold">{name}</UserProfileParagraph>
           <UserProfileParagraph>{role}</UserProfileParagraph>
         </UserProfileSummary>
@@ -38,28 +36,15 @@ const Sidebar = ({ user, roleComponents }) => {
       <nav>
         <ul>
           {
-            roleComponents.map(({ id, linkUrl, icon, title, hasSubMenu }) => (
-              <SidebarList key={id}>
-                <Link
-                  to={`/app${linkUrl}`}
-                  className={icon}>{title}</Link>
-                {hasSubMenu ? <SortDownIcon className="fas fa-sort-down" /> : ''}
-              </SidebarList>
+            roleComponents.map(component => (
+              <LinkList key={component.id} {...component} />
             ))
           }
-          {/* <li className="sublist">
-                    <ul>
-                        <li>Project Management App</li>
-                        <li>Shopping App</li>
-                        <li>COMP 3521</li>
-                    </ul>
-                </li> */}
         </ul>
       </nav>
       <SignoutButton onClick={() => store.dispatch(logout())}>
         <i className="fas fa-sign-out-alt" style={{ marginRight: '.5em' }}></i>
-                Sign out
-            </SignoutButton>
+        Sign out</SignoutButton>
     </SidebarContainer>
   );
 }

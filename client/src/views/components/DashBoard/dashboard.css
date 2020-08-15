@@ -1,0 +1,192 @@
+.board {
+  padding: 1em 3em 3em;
+  height: 100%;
+  width: calc(100% - 230px);
+  margin-left: auto;
+}
+
+.board .board-small-content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  margin-bottom: .5em;
+}
+
+.board .board-small-content .organization {
+  color: #8993a4;
+  margin-right: 3em;
+}
+
+.board .board-small-content .organization p {
+  font-size: .9em;
+}
+
+.board .board-small-content .organization p span {
+  margin-left: .25em;
+  font-size: 1rem;
+  color: #172b4d;
+  font-weight: 500;
+}
+
+.board .board-small-content .question-button {
+  font-size: 1.2em;
+  color: #8CD7F8;
+}
+
+.board .board-small-content .question-button:hover {
+  cursor: pointer;
+}
+
+.board .board-top {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 2em;
+}
+
+.board .board-top .board-top-content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.board .board-top .board-top-content .board-title {
+  margin-right: 2rem;
+}
+
+.board .board-top .board-top-content .small-nav {
+  padding-right: 2em;
+  margin-right: 2em;
+  border-right: 1px solid #dfe1e6;
+}
+
+.board .board-top .board-top-content .small-nav i {
+  font-size: 1.25em;
+}
+
+.board .board-top .board-top-content .small-nav i:not(:last-child) {
+  margin-right: 1.5em;
+}
+
+.board .board-top .board-top-content .small-nav i:hover {
+  cursor: pointer;
+}
+
+.board .board-top .search-box i {
+  font-size: 1.1em;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.board .board-top .search-box input {
+  border: none;
+  min-width: 400px;
+  background-color: transparent;
+}
+
+.board .board-top .search-box input::-webkit-input-placeholder {
+  /* Edge */
+  color: #8993a4;
+}
+
+.board .board-top .search-box input:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #8993a4;
+}
+
+.board .board-top .search-box input::-ms-input-placeholder {
+  color: #8993a4;
+}
+
+.board .board-top .search-box input::placeholder {
+  color: #8993a4;
+}
+
+.board .board-navigation:after {
+  z-index: -1;
+  content: '';
+  display: block;
+  border-bottom: 2px solid #f0f0f0;
+  position: relative;
+  top: -1px;
+}
+
+.board .board-navigation li {
+  padding-bottom: 1em;
+  border-bottom: 3px solid transparent;
+  display: inline-block;
+}
+
+.board .board-navigation li:not(:last-child) {
+  margin-right: 3em;
+}
+
+.board .board-navigation li:hover, .board .board-navigation li.active {
+  border-bottom-color: #0f35a9;
+  cursor: pointer;
+}
+
+.board .board-content-top {
+  padding: 2em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.board .board-content-top .ticket-status {
+  -webkit-box-shadow: 0 2px 6px 0 rgba(15, 53, 169, 0.1);
+          box-shadow: 0 2px 6px 0 rgba(15, 53, 169, 0.1);
+  border-radius: 8px;
+  display: inline-block;
+  width: 17%;
+  background-color: #fff;
+  padding: 1em 1.5em;
+}
+
+.board .board-content-top .ticket-status .ticket-icon {
+  border-radius: 50%;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 0;
+  background-color: #0f36a90c;
+  float: left;
+  margin-right: 3em;
+  text-align: center;
+}
+
+.board .board-content-top .ticket-status .ticket-icon i {
+  color: #0f35a9;
+  line-height: 3.5rem;
+  font-size: 1.5em;
+}
+
+.board .board-content-top .ticket-status p {
+  font-size: .85em;
+  color: #8993a4;
+}
+
+.board .board-content-top .ticket-status p.ticket-number {
+  color: black;
+  font-size: 1.4em;
+  font-weight: 600;
+}
+
+.board .board-content-top .ticket-status .ticket-content {
+  display: inline-block;
+}
+/*# sourceMappingURL=dashboard.css.map */

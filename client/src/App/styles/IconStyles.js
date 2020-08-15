@@ -60,7 +60,7 @@ export default createGlobalStyle`
   font-weight: 900;
   content: '\f013';
 }
-.icon-sort-down:before {
+.icon-sort-down:after {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
   content: '\f0dd';
