@@ -1,0 +1,13 @@
+routes
+
+Dashboard
+  dashboard/:project - in dashboard component @note; no "?"
+           /all        @ NO component/view changes
+           /demo1
+           /demo2
+
+Projects
+  projects/:project - in ProjectBoard component
+          /demo1/:board          @ DO component/view changes
+          /demo1/:roadmap
+          /demo1/:setting

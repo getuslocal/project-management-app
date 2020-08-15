@@ -36,7 +36,7 @@ const LoginForm = ({ login, isAuthenticated, errorMessage }) => {
   }
 
   if (isAuthenticated) {
-    return <Redirect to="/app" />;
+    return <Redirect to="/app/dashboard" />;
   }
 
   return (

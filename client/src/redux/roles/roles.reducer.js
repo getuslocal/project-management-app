@@ -3,7 +3,8 @@ const INITIAL_STATE = {
     dashboard: {
       id: 1,
       component: 'Dashboard',
-      linkUrl: '',
+      linkUrl: 'dashboard',
+      linkVariable: ':dashboard?',
       title: 'Dashboard',
       icon: 'icon-dashboard',
       hasSubMenu: null
@@ -11,7 +12,8 @@ const INITIAL_STATE = {
     projects: {
       id: 2,
       component: 'Projects',
-      linkUrl: '/projects',
+      linkUrl: 'projects',
+      linkVariable: ':project',
       title: 'Projects',
       icon: 'icon-project',
       hasSubMenu: [
@@ -28,7 +30,8 @@ const INITIAL_STATE = {
     peopleManage: {
       id: 3,
       component: 'People',
-      linkUrl: '/people-management',
+      linkUrl: 'people-management',
+      linkVariable: '',
       title: 'People Management',
       icon: 'icon-user',
       hasSubMenu: null
@@ -36,7 +39,8 @@ const INITIAL_STATE = {
     projectMembers: {
       id: 4,
       component: 'People',
-      linkUrl: '/project-members',
+      linkUrl: 'project-members',
+      linkVariable: '',
       title: 'Project Members',
       icon: 'icon-user',
       hasSubMenu: null
@@ -44,7 +48,8 @@ const INITIAL_STATE = {
     inbox: {
       id: 5,
       component: 'Inbox',
-      linkUrl: '/inbox',
+      linkUrl: 'inbox',
+      linkVariable: '',
       title: 'Inbox',
       icon: 'icon-inbox',
       hasSubMenu: null
@@ -52,7 +57,8 @@ const INITIAL_STATE = {
     adminSetting: {
       id: 6,
       component: 'Setting',
-      linkUrl: '/admin-settings',
+      linkUrl: 'admin-settings',
+      linkVariable: '',
       title: 'Admin Settings',
       icon: 'icon-setting',
       hasSubMenu: null

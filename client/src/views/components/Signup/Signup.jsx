@@ -44,7 +44,7 @@ const SignupForm = ({ register, errorMessage }) => {
   };
 
   if (isAuthenticated) {
-    return <Redirect to="/app" />;
+    return <Redirect to="/app/dashboard" />;
   }
 
   return (

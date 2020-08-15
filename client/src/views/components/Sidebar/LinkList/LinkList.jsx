@@ -18,7 +18,7 @@ const LinkList = ({ id, linkUrl, icon, title, hasSubMenu, match }) => {
             <span className={`${icon} ${hasSubMenu ? 'icon-sort-down' : ''}`}>{title}</span>
             :
             (
-              <Link to={`/app${linkUrl}`} className={`${icon} ${hasSubMenu ? 'icon-sort-down' : ''}`}>
+              <Link to={`/app/${linkUrl}`} className={`${icon} ${hasSubMenu ? 'icon-sort-down' : ''}`}>
                 {title}
               </Link>
             )
@@ -27,7 +27,7 @@ const LinkList = ({ id, linkUrl, icon, title, hasSubMenu, match }) => {
           hasSubMenu ? (
             <SidebarSubList className={isVisible ? 'visible' : ''}>
               {hasSubMenu.map((menu, index) => (
-                <li key={index}><Link to={`/app${linkUrl}/${menu.linkUrl}`}> {menu.label}</Link></li>
+                <li key={index}><Link to={`/app/${linkUrl}/${menu.linkUrl}`}> {menu.label}</Link></li>
               ))}
             </SidebarSubList>
           ) : ''}

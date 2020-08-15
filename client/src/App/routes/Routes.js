@@ -9,7 +9,7 @@ const Routes = () => {
     <BrowserRouter>
       <Switch>
         <Route exact path="/" component={Landing} />
-        <Route path="/app/:board?" component={PrivateRoutesContainer} />
+        <Route path="/app/:board" component={PrivateRoutesContainer} />
         <Route component={NotFound} />
       </Switch>
     </BrowserRouter>

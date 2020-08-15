@@ -2,7 +2,6 @@ import React, { useState, Fragment } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Spinner from '../../shared/components/WithSpinner/WithSpinner';
 import Sidebar from '../../views/components/Sidebar/Sidebar';
 import { selectRoleComponents } from '../../redux/roles/roles.selectors';
 import * as Routes from './index';
@@ -14,12 +13,12 @@ const PrivateRoutes = ({ auth: { isAuthenticated, user }, roleComponents }) => {
       <Fragment>
         <Sidebar user={user} roleComponents={roleComponents} />
         <Switch>
-          {roleComponents.map(({ id, linkUrl, component }) => (
+          {roleComponents.map(({ id, linkUrl, linkVariable, component }) => (
             <Route
               exact
               key={id}
               component={Routes[component]}
-              path={`/app${linkUrl}`}
+              path={`/app/${linkUrl}/${linkVariable}`}
             />
           ))}
           <Route component={NotFound} />
