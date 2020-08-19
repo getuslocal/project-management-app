@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const userRouter = require('./routes/users');
+const projectRouter = require('./routes/projects');
 const connectDB = require('./config/db');
 
 const app = express();
@@ -15,6 +16,7 @@ connectDB();
 
 //Route Middleware
 app.use('/users', userRouter);
+app.use('/projects', projectRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
