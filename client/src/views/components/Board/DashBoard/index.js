@@ -6,7 +6,6 @@ dashboards = [
   }
 ]
 
-
 projects = [
   {
     id : '123345',

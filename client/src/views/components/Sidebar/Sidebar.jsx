@@ -18,6 +18,7 @@ import LinkList from './LinkList/LinkList';
 
 const Sidebar = ({ user, roleComponents }) => {
   const { name, role } = user;
+  // console.log('Sidebar render')
   return (
     <SidebarContainer>
       <LogoContainer>
