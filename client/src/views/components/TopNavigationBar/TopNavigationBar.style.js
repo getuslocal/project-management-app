@@ -100,7 +100,6 @@ export const TopNavigationTabs = styled.ul`
 `
 
 export const Tab = styled.li`
-      padding-bottom: 1em;
       border-bottom: 3px solid transparent;
       display: inline-block;
 
@@ -112,6 +111,11 @@ export const Tab = styled.li`
       &.active {
         border-bottom-color: #0f35a9;
         cursor: pointer;
+      }
+
+      a{
+        padding-bottom: 1em;
+        display: inline-block;
       }
 `
 

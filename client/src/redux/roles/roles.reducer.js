@@ -22,14 +22,14 @@ const INITIAL_STATE = {
     id: 2,
     component: 'Projects',
     linkUrl: 'projects',
-    linkVariable: ':project',
+    linkVariable: ':project/:tab?',
     title: 'Projects',
     icon: 'icon-project',
     hasSubMenu: null,
     tabs: [
       {
         label: 'Board',
-        linkUrl: '/board'
+        linkUrl: ''
       },
       {
         label: 'Roadmap',

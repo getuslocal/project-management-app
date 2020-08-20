@@ -5,29 +5,40 @@ import { connect } from 'react-redux';
 import Sidebar from '../../views/components/Sidebar/Sidebar';
 import { selectRoleComponents } from '../../redux/roles/roles.selectors';
 import NotFound from '../../views/NotFound/NotFound';
-import Board from '../../views/components/Board/Board';
+// import Board from '../../views/components/Board/Board';
 import { getProjectsOfOwner } from '../../redux/projects/projects.actions';
 import store from '../../redux/store';
+import {
+  BoardContainer
+} from '../../views/components/Board/Board.style';
+import * as Roles from './roles';
 
 const PrivateRoutes = ({ auth: { isAuthenticated, user }, roleComponents, ...props }) => {
   useEffect(() => {
     store.dispatch(getProjectsOfOwner(user._id));
   }, []);
+  console.log(props.match) // "/app/projects" . params: {board: 'projects'}.
 
   return (
     isAuthenticated ? (
       <Fragment>
-        <Sidebar user={user} roleComponents={roleComponents}/>
-        <Switch>
-          {roleComponents.map(component => (
-            <Route
-              key={component.id}
-              path={`/app/${component.linkUrl}`}
-              render={() => <Board component={component} {...props} />}
-            />
-          ))}
-          <Route component={NotFound} />
-        </Switch>
+        <Sidebar user={user} roleComponents={roleComponents} />
+        <BoardContainer>
+          <Switch>
+            {roleComponents.map(component => {
+              const Component = Roles[component.component];
+              return (
+                <Route
+                  key={component.id}
+                  path={`/app/${component.linkUrl}/${component.linkVariable}`}
+                  render={() => <Component component={component} baseUrl={props.match.url}/>}
+                />
+              )
+            })}
+            <Route component={NotFound} />
+          </Switch>
+        </BoardContainer>
+
       </Fragment>
     ) : (
         <Redirect to="/" />

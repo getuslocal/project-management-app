@@ -1,0 +1,52 @@
+.board-content-top {
+  padding: 2em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.board-content-top .ticket-status {
+  -webkit-box-shadow: 0 2px 6px 0 rgba(15, 53, 169, 0.1);
+          box-shadow: 0 2px 6px 0 rgba(15, 53, 169, 0.1);
+  border-radius: 8px;
+  display: inline-block;
+  width: 17%;
+  background-color: #fff;
+  padding: 1em 1.5em;
+}
+
+.board-content-top .ticket-status .ticket-icon {
+  border-radius: 50%;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 0;
+  background-color: #0f36a90c;
+  float: left;
+  margin-right: 3em;
+  text-align: center;
+}
+
+.board-content-top .ticket-status .ticket-icon i {
+  color: #0f35a9;
+  line-height: 3.5rem;
+  font-size: 1.5em;
+}
+
+.board-content-top .ticket-status p {
+  font-size: .85em;
+  color: #8993a4;
+}
+
+.board-content-top .ticket-status p.ticket-number {
+  color: black;
+  font-size: 1.4em;
+  font-weight: 600;
+}
+
+.board-content-top .ticket-status .ticket-content {
+  display: inline-block;
+}
+/*# sourceMappingURL=dashboard.css.map */
