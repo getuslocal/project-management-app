@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withRouter, Route, Switch } from 'react-router-dom'
+import PropTypes from 'prop-types';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import TopNavigationBar from '../../TopNavigationBar/TopNavigationBar';
+import KanbanBoard from './KanbanBoard/KanbanBoard';
+import { selectProjectById } from '../../../../redux/projects/projects.selectors';
+import { selectTicketsOfUser } from '../../../../redux/tickets/tickets.selectors';
+import { createStructuredSelector } from 'reselect';
+import { getTicketsByProjectId } from '../../../../redux/tickets/tickets.actions';
+import store from '../../../../redux/store';
 
-const Board = () => (
-  <h1>Board</h1>
-)
 const RoadMap = () => (
   <h1>RoadMap</h1>
 )
@@ -15,25 +21,48 @@ const Settings = () => (
   <h1>Settings</h1>
 )
 
-const ProjectsBoard = ({ component: { title, tabs }, baseUrl, ...props }) => {
+const ProjectsBoard = ({ component: { title, tabs }, baseUrl, projectInfo, tickets, ...props }) => {
+
+  useEffect(() => {
+    store.dispatch(getTicketsByProjectId(props.match.params.project));
+  }, []);
+
   const { project, tab } = props.match.params //  params: {board: 'projects', tab : 'roadmap'}.
   const projectUri = baseUrl + '/' + project;
   const currentRoute = tab ? tab : '';
   // console.log(props.match) // match.url =  "/app/projects/5f3b5f40e919715784ea0ac0/roadmap".
+  // console.log(tickets);
   return (
     <>
       <TopNavigationBar title={title} tabs={tabs} baseUrl={projectUri} currentRoute={currentRoute} />
-      <div style={{ height: '100%', background: 'whitesmoke' }}>
-        <h1>ProjectsBoard</h1>
-        <Switch>
-          <Route exact path={projectUri} component={Board} />
-          <Route exact path={`${projectUri}/roadmap`} component={RoadMap} />
-          <Route exact path={`${projectUri}/members`} component={Members} />
-          <Route exact path={`${projectUri}/settings`} component={Settings} />
-        </Switch>
-      </div>
+      {
+        projectInfo && tickets ? (
+          <div style={{ height: '100%', background: 'whitesmoke' }}>
+            <Switch>
+              <Route exact path={projectUri} render={() => <KanbanBoard projectInfo={projectInfo} tickets={tickets} />} />
+              <Route exact path={`${projectUri}/roadmap`} component={RoadMap} />
+              <Route exact path={`${projectUri}/members`} component={Members} />
+              <Route exact path={`${projectUri}/settings`} component={Settings} />
+            </Switch>
+          </div>
+        ) : (
+            <p>loading...</p>
+          )
+      }
     </>
   )
 }
 
-export default withRouter(ProjectsBoard);
+ProjectsBoard.propTypes = {
+  projectInfo: PropTypes.object.isRequired
+};
+
+const mapStateToProps = (state, ownProps) => createStructuredSelector({
+  projectInfo: selectProjectById(ownProps.match.params.project),
+  tickets: selectTicketsOfUser,
+});
+
+export default compose(
+  withRouter,
+  connect(mapStateToProps, null)
+)(ProjectsBoard);

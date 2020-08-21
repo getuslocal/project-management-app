@@ -17,7 +17,7 @@ const PrivateRoutes = ({ auth: { isAuthenticated, user }, roleComponents, ...pro
   useEffect(() => {
     store.dispatch(getProjectsOfOwner(user._id));
   }, []);
-  console.log(props.match) // "/app/projects" . params: {board: 'projects'}.
+  // console.log(props.match) // "/app/projects" . params: {board: 'projects'}.
 
   return (
     isAuthenticated ? (
@@ -29,7 +29,7 @@ const PrivateRoutes = ({ auth: { isAuthenticated, user }, roleComponents, ...pro
               const Component = Roles[component.component];
               return (
                 <Route
-                  key={component.id}
+                  key={props.location.key + component.id} //@todo: change the key with uuid.
                   path={`/app/${component.linkUrl}/${component.linkVariable}`}
                   render={() => <Component component={component} baseUrl={props.match.url}/>}
                 />

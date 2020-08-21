@@ -23,7 +23,7 @@ const INITIAL_STATE = {
     component: 'Projects',
     linkUrl: 'projects',
     linkVariable: ':project/:tab?',
-    title: 'Projects',
+    title: 'Project',
     icon: 'icon-project',
     hasSubMenu: null,
     tabs: [

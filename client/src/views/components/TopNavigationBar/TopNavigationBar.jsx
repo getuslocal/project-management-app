@@ -14,7 +14,7 @@ import {
 } from './TopNavigationBar.style'
 
 const TopNavigationBar = ({ title, tabs, baseUrl, currentRoute }) => {
-  console.log(currentRoute)
+  // console.log(currentRoute)
   return (
     <>
       <TopNavigationSmallContent>
