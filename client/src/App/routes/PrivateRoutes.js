@@ -31,7 +31,7 @@ const PrivateRoutes = ({ auth: { isAuthenticated, user }, roleComponents, ...pro
                 <Route
                   key={props.location.key + component.id} //@todo: change the key with uuid.
                   path={`/app/${component.linkUrl}/${component.linkVariable}`}
-                  render={() => <Component component={component} baseUrl={props.match.url}/>}
+                  render={() => <Component component={component} baseUrl={props.match.url} />}
                 />
               )
             })}

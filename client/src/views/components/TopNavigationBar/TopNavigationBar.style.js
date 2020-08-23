@@ -1,5 +1,8 @@
 import styled from 'styled-components'
 
+export const Container = styled.div`
+  
+`
 export const TopNavigationSmallContent = styled.div`
     display: flex;
     align-items: center;

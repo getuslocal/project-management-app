@@ -12,6 +12,7 @@ const ticketSchema = new Schema({
         required: true,
         trim: true,
     },
+    // @todo : remove this if not needed.
     status: {
         type: String,
         required: true,

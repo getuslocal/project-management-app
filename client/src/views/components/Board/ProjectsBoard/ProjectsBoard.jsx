@@ -10,6 +10,9 @@ import { selectTicketsOfUser } from '../../../../redux/tickets/tickets.selectors
 import { createStructuredSelector } from 'reselect';
 import { getTicketsByProjectId } from '../../../../redux/tickets/tickets.actions';
 import store from '../../../../redux/store';
+import {
+  Container
+} from './ProjectsBoard.style';
 
 const RoadMap = () => (
   <h1>RoadMap</h1>
@@ -31,20 +34,24 @@ const ProjectsBoard = ({ component: { title, tabs }, baseUrl, projectInfo, ticke
   const projectUri = baseUrl + '/' + project;
   const currentRoute = tab ? tab : '';
   // console.log(props.match) // match.url =  "/app/projects/5f3b5f40e919715784ea0ac0/roadmap".
-  // console.log(tickets);
+  // console.log(projectInfo);
   return (
     <>
       <TopNavigationBar title={title} tabs={tabs} baseUrl={projectUri} currentRoute={currentRoute} />
       {
-        projectInfo && tickets ? (
-          <div style={{ height: '100%', background: 'whitesmoke' }}>
+        Object.keys(projectInfo).length && tickets ? (
+          <Container>
+            {/* <SubContenter>
+              <h3>{projectInfo.key}</h3>
+              <h4>{tab ? tab : 'Board'}</h4>
+            </SubContenter> */}
             <Switch>
               <Route exact path={projectUri} render={() => <KanbanBoard projectInfo={projectInfo} tickets={tickets} />} />
               <Route exact path={`${projectUri}/roadmap`} component={RoadMap} />
               <Route exact path={`${projectUri}/members`} component={Members} />
               <Route exact path={`${projectUri}/settings`} component={Settings} />
             </Switch>
-          </div>
+          </Container>
         ) : (
             <p>loading...</p>
           )

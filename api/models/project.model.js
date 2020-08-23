@@ -17,16 +17,18 @@ const projectSchema = new Schema({
         required: true,
         trim: true,
     },
-    // linkUrl: { //@todo : enable this and assign the url when new project is created. Use the tourl function.
-    //     type: String,
-    //     required: true,
-    //     unique: true,
-    //     trim: true,
-    // },
     members: {
         type: Array,
         required: true,
         minlength: 1
+    },
+    columns: {
+        type: Object,
+        required: true,
+    },
+    columnOrder: {
+        type: Array,
+        required: true,
     },
 }, {
     timestamps: true

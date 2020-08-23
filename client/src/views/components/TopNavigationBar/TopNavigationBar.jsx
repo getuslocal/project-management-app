@@ -1,6 +1,7 @@
-import React, { useState, Fragment } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import {
+  Container,
   TopNavigationSmallContent,
   Organization,
   QuestionButton,
@@ -16,7 +17,7 @@ import {
 const TopNavigationBar = ({ title, tabs, baseUrl, currentRoute }) => {
   // console.log(currentRoute)
   return (
-    <>
+    <Container>
       <TopNavigationSmallContent>
         <Organization>
           <p>Your organization is : <span><i className="far fa-building"></i> TakayaHoldings.Inc</span></p>
@@ -47,7 +48,7 @@ const TopNavigationBar = ({ title, tabs, baseUrl, currentRoute }) => {
           ))
         }
       </TopNavigationTabs>
-    </>
+    </Container>
   );
 }
 
