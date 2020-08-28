@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter, Route, Switch } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
@@ -11,8 +11,16 @@ import { createStructuredSelector } from 'reselect';
 import { getTicketsByProjectId } from '../../../../redux/tickets/tickets.actions';
 import store from '../../../../redux/store';
 import {
-  Container
+  Container,
+  ProjectBoardTopContent,
+  ProjectName,
+  SearchInputContainer,
+  SearchInput,
+  CreateIssueButton,
+  TopContentLeft,
+  TopContentRight
 } from './ProjectsBoard.style';
+import NewIssueModal from './NewIssueModal/NewIssueModal';
 
 const RoadMap = () => (
   <h1>RoadMap</h1>
@@ -25,6 +33,7 @@ const Settings = () => (
 )
 
 const ProjectsBoard = ({ component: { title, tabs }, baseUrl, projectInfo, tickets, ...props }) => {
+  const [isNewIssueModalOpen, setIsNewIssueModalOpen] = useState(false);
 
   useEffect(() => {
     store.dispatch(getTicketsByProjectId(props.match.params.project));
@@ -34,17 +43,27 @@ const ProjectsBoard = ({ component: { title, tabs }, baseUrl, projectInfo, ticke
   const projectUri = baseUrl + '/' + project;
   const currentRoute = tab ? tab : '';
   // console.log(props.match) // match.url =  "/app/projects/5f3b5f40e919715784ea0ac0/roadmap".
-  // console.log(projectInfo);
+
   return (
     <>
-      <TopNavigationBar title={title} tabs={tabs} baseUrl={projectUri} currentRoute={currentRoute} />
+      {
+        isNewIssueModalOpen ? <NewIssueModal setIsNewIssueModalOpen={setIsNewIssueModalOpen}  currentProjectId={project} /> : <></>
+      }
+      <TopNavigationBar title={projectInfo.key} tabs={tabs} baseUrl={projectUri} currentRoute={currentRoute} />
       {
         Object.keys(projectInfo).length && tickets ? (
           <Container>
-            {/* <SubContenter>
-              <h3>{projectInfo.key}</h3>
-              <h4>{tab ? tab : 'Board'}</h4>
-            </SubContenter> */}
+            <ProjectBoardTopContent>
+              <TopContentLeft>
+                <ProjectName>Projects / {projectInfo.name}</ProjectName>
+                <CreateIssueButton onClick={() => setIsNewIssueModalOpen(true)}>Create issue</CreateIssueButton>
+              </TopContentLeft>
+              <TopContentRight>
+                <SearchInputContainer className="icon-search">
+                  <SearchInput />
+                </SearchInputContainer>
+              </TopContentRight>
+            </ProjectBoardTopContent>
             <Switch>
               <Route exact path={projectUri} render={() => <KanbanBoard projectInfo={projectInfo} tickets={tickets} />} />
               <Route exact path={`${projectUri}/roadmap`} component={RoadMap} />
@@ -61,7 +80,7 @@ const ProjectsBoard = ({ component: { title, tabs }, baseUrl, projectInfo, ticke
 }
 
 ProjectsBoard.propTypes = {
-  projectInfo: PropTypes.object.isRequired
+  projectInfo: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({

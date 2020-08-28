@@ -34,11 +34,11 @@ const Column = ({ column, tickets, index }) => {
               {provided => (
                 <TicketsList ref={provided.innerRef} {...provided.droppableProps}>
                   <InnerList tickets={tickets} />
+                  <CreateTicketButton>+ Create ticket</CreateTicketButton>
                   {provided.placeholder}
                 </TicketsList>
               )}
             </Droppable>
-            <CreateTicketButton>+ Create ticket</CreateTicketButton>
           </Content>
         </Container>
       )}

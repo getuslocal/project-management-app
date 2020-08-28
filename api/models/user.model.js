@@ -5,7 +5,6 @@ const userSchema = new Schema({
     role: {
         type: String,
         required: true,
-        unique: true,
         trim: true,
         minlength: 5
     },

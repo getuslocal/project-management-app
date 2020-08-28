@@ -9,3 +9,18 @@ export const Container = styled.div`
   box-shadow: rgba(23, 43, 77, 0.2) 0px 1px 1px, rgba(23, 43, 77, 0.2) 0px 0px 1px;
   background-color: ${props => (props.isDragging ? 'rgb(222 ,235, 255)' : 'white')} ;
 `
+
+export const TicketSummary = styled.p`
+  margin-bottom: 8px;
+  font-size: 15px;
+`
+export const TicketStatus = styled.p`
+  font-size: 12px;
+  font-weight: 600;
+  color: rgb(122, 134, 154);  
+  display: flex;
+  align-items: center;
+  &:before{
+    margin-right: .75em;
+  }
+`

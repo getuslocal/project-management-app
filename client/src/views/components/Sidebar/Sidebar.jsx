@@ -27,7 +27,7 @@ const Sidebar = ({ user, roleComponents }) => {
       </LogoContainer>
       <UserProfile>
         <UserIconWrapper>
-          <Usericon src="https://cdn.pixabay.com/photo/2015/11/16/14/43/cat-1045782_960_720.jpg" />
+          <Usericon src="https://cdn.pixabay.com/photo/2016/11/21/12/42/beard-1845166_960_720.jpg" />
         </UserIconWrapper>
         <UserProfileSummary>
           <UserProfileParagraph className="bold">{name}</UserProfileParagraph>

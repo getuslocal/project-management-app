@@ -14,9 +14,10 @@ import { register } from '../../../redux/auth/auth.actions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ErrorMessage  from '../../../shared/components/ErrorMessage/ErrorMessage';
+import { Redirect } from 'react-router-dom';
 
 
-const SignupForm = ({ register, errorMessage }) => {
+const SignupForm = ({ register, isAuthenticated, errorMessage }) => {
   const [userCredentials, setUserCredentials] = useState({
     name: '',
     email: '',
@@ -122,10 +123,12 @@ const SignupForm = ({ register, errorMessage }) => {
 
 SignupForm.propTypes = {
   register: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
   errorMessage: PropTypes.string
 };
 
 const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
   errorMessage: state.auth.errorMessage
 });
 

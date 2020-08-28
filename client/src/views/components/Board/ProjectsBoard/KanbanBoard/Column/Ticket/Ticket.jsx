@@ -2,10 +2,13 @@ import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import {
   Container,
+  TicketStatus,
+  TicketSummary
 } from './Ticket.style'
 
 const Ticket = ({ ticket, index }) => {
-  console.log('Child render')
+  const { issueType } = ticket;
+  // console.log(ticket.issueType)
 
   return (
     <Draggable draggableId={ticket._id} index={index}>
@@ -16,7 +19,12 @@ const Ticket = ({ ticket, index }) => {
           ref={provided.innerRef}
           isDragging={snapshot.isDragging}
         >
-          {ticket.summary}
+          <TicketSummary>
+            {ticket.summary}
+          </TicketSummary>
+          <TicketStatus className={`icon-issue-${issueType.toLowerCase()}`}>
+            PMA-123
+          </TicketStatus>
         </Container>
       )}
     </Draggable>
