@@ -3,7 +3,8 @@ import {
   UPDATE_ONE_COLUMN_TICKETS_ORDER,
   UPDATE_TWO_COLUMNS_TICKETS_ORDER,
   UPDATE_COLUMN_ORDER,
-  CREATE_NEW_TICKET
+  CREATE_NEW_TICKET,
+  DELETE_TICKET
 } from './projects.types';
 import { convertArrayToObject } from './projects.utils';
 
@@ -48,7 +49,7 @@ const projectsReducer = (state = {}, action) => {
           columnOrder: payload.newColumnOrder
         }
       }
-    case CREATE_NEW_TICKET:
+    case CREATE_NEW_TICKET: {
       const { projectId, id } = payload
       const project = state[projectId];
       const firstColumn = state[projectId].columnOrder[0];
@@ -65,6 +66,24 @@ const projectsReducer = (state = {}, action) => {
           }
         }
       }
+    }
+    case DELETE_TICKET: {
+      const { projectId, columnId, ticketId } = payload;
+      const project = state[projectId];
+      return {
+        ...state,
+        [projectId]: {
+          ...project,
+          columns: {
+            ...project.columns,
+            [columnId]: {
+              ...project.columns[columnId],
+              taskIds: project.columns[columnId].taskIds.filter(taskId => taskId !== ticketId)
+            }
+          }
+        }
+      }
+    }
     default:
       return state;
   }

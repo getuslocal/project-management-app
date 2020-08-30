@@ -18,11 +18,11 @@ import {
 const InnerList = React.memo(props => {
   // console.log('Parent render')
   return (
-    props.tickets.map((ticket, index) => <Ticket key={ticket._id} ticket={ticket} index={index} />)
+    props.tickets.map((ticket, index) => <Ticket key={ticket._id} ticket={ticket} index={index} columnId={props.columnId} projectId={props.projectId} />)
   )
 })
 
-const Column = ({ column, tickets, index }) => {
+const Column = ({ column, tickets, index, projectId }) => {
   // console.log('Column rendered!')
   return (
     <Draggable draggableId={column.id} index={index}>
@@ -33,7 +33,7 @@ const Column = ({ column, tickets, index }) => {
             <Droppable droppableId={column.id} type="task">
               {provided => (
                 <TicketsList ref={provided.innerRef} {...provided.droppableProps}>
-                  <InnerList tickets={tickets} />
+                  <InnerList tickets={tickets} columnId={column.id} projectId={projectId} />
                   <CreateTicketButton>+ Create ticket</CreateTicketButton>
                   {provided.placeholder}
                 </TicketsList>

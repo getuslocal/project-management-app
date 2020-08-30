@@ -8,6 +8,11 @@ export const Container = styled.div`
   border-radius: 3px;
   box-shadow: rgba(23, 43, 77, 0.2) 0px 1px 1px, rgba(23, 43, 77, 0.2) 0px 0px 1px;
   background-color: ${props => (props.isDragging ? 'rgb(222 ,235, 255)' : 'white')} ;
+
+  cursor: pointer;
+  &:hover{
+    background-color: rgb(244, 245, 247);
+  }
 `
 
 export const TicketSummary = styled.p`

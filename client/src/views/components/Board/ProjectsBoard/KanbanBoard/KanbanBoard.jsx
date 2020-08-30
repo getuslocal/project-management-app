@@ -27,8 +27,8 @@ function getTickets(ticketMap, taskIds) {
 // }
 const InnerList = React.memo(props => {
   // console.log('InnerList render')
-  const { column, ticketMap, index } = props;
-  return <Column column={column} tickets={getTickets(ticketMap, column.taskIds)} index={index} />
+  const { column, ticketMap, index, projectId } = props;
+  return <Column column={column} tickets={getTickets(ticketMap, column.taskIds)} index={index} projectId={projectId} />
 })
 
 const KanbanBoard = ({ projectInfo, tickets }) => {
@@ -105,7 +105,7 @@ const KanbanBoard = ({ projectInfo, tickets }) => {
             {
               columnOrder.map((columnId, index) => {
                 const thisColumn = columns[columnId];
-                return <InnerList key={thisColumn.id} column={thisColumn} ticketMap={tickets} index={index} />
+                return <InnerList key={thisColumn.id} column={thisColumn} ticketMap={tickets} index={index} projectId={_id} />
               })
             }
             {provided.placeholder}

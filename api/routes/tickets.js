@@ -40,4 +40,14 @@ router.post('/create', async (req, res) => {
 
 });
 
+// @route  DELETE tickets/:ticketId/
+// @desc   Delete a ticket of the id
+// @access Public
+router.delete('/:ticketId', (req, res) => {
+  Ticket.findByIdAndDelete(req.params.ticketId)
+    .then(() => res.json('Ticket deleted !'))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+
 module.exports = router;

@@ -104,23 +104,43 @@ router.post('/update/column-order', (req, res) => {
     })
 });
 
-// @route  POST projects/create/newticket
+// @route  POST projects/create/ticket
 // @desc   Create a new ticket and assign it to a proper location. 
 // @access Public 
-router.post('/create/newticket', (req, res) => {
+router.post('/create/ticket', (req, res) => {
   const { projectId, newTicketId } = req.body;
   Project.findById(projectId)
     .then(project => {
       const firstColumn = project.columnOrder[0];
       project.columns = {
         ...project.columns,
-        [firstColumn] : {
+        [firstColumn]: {
           ...project.columns[firstColumn],
-          taskIds : [...project.columns[firstColumn].taskIds, newTicketId]
+          taskIds: [...project.columns[firstColumn].taskIds, newTicketId]
         }
       }
       project.save()
-        .then((project) => res.json(project))
+        .then(() => res.json('Create Ticket !'))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
+});
+
+// @route  POST projects/delete/ticket
+// @desc   Update the column taskIds array. 
+// @access Public 
+router.post('/delete/ticket', (req, res) => {
+  const { projectId, columnId, ticketId } = req.body;
+  Project.findById(projectId)
+    .then(project => {
+      project.columns = {
+        ...project.columns,
+        [columnId]: {
+          ...project.columns[columnId],
+          taskIds: project.columns[columnId].taskIds.filter(taskId => taskId !== ticketId)
+        }
+      }
+      project.save()
+        .then(() => res.json('Delete Ticket !'))
         .catch(err => res.status(400).json('Error: ' + err));
     })
 });

@@ -1,6 +1,7 @@
 import {
   GET_TICKETS_BY_PROJECT_ID,
   CREATE_NEW_TICKET,
+  DELETE_TICKET,
 } from './tickets.types';
 
 const ticketsReducer = (state = [], action) => {
@@ -15,6 +16,11 @@ const ticketsReducer = (state = [], action) => {
         ...state,
         payload.data
       ]
+    // case DELETE_TICKET:
+    //   return [
+    //     ...state,
+    //     payload.data
+    //   ]
     default:
       return state;
   }
