@@ -7,6 +7,8 @@ import { createStructuredSelector } from 'reselect';
 import FormSelectMenu from '../../../../../shared/components/CustomForm/FormSelectMenu/FormSelectMenu';
 import FormInput from '../../../../../shared/components/CustomForm/FormInput/FormInput';
 import FormTextArea from '../../../../../shared/components/CustomForm/FormTextArea/FormTextArea';
+import store from '../../../../../redux/store';
+import { createNewTicket } from '../../../../../redux/tickets/tickets.actions';
 import {
   ModalContainer,
   MainContent,
@@ -19,25 +21,25 @@ import {
   TextButton
 } from './NewIssueModal.style';
 
-const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId }) => {
+const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, membersList, userProfile }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
-    project: {
-      id: currentProjectId,
-      name: projects[currentProjectId].name
-    },
-    IssueType: IssueTypes.TASK,
+    projectId: currentProjectId,
+    issueType: IssueTypes.TASK,
     summary: '',
     description: '',
-    reporterId: '5f30dc2beca63d3ceae1599b',
-    assigneeId: 'Unassigned',
-    IssuePriority: IssuePriorities.MEDIUM
+    reporterId: userProfile._id,
+    assigneeId: '',
+    issuePriority: IssuePriorities.MEDIUM
   });
-  const { project, IssueType, summary, description, reporterId, assigneeId, IssuePriority } = issueFormValues;
+  const { projectId, issueType, summary, description, reporterId, assigneeId, issuePriority } = issueFormValues;
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // console.log(issueFormValues)
+    store.dispatch(createNewTicket(currentProjectId, issueFormValues));
     // submitIssue({ name, email, password, role });
+    setIsNewIssueModalOpen(false);
   }
 
   const handleChange = event => {
@@ -54,25 +56,27 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId }) =
       <MainContent>
         <Title>Create issue</Title>
         <FormContainer>
-          <form>
+          <form onSubmit={handleSubmit}>
             <Fieldset>
               <FormSelectMenu
-                label="Project"
-                name="project"
-                value={project.name}
+                label="Project*"
+                name="projectId"
+                value={projects[projectId].name}
                 width="40%"
-                selectList={{ ...projects, [project.id]: undefined }}
+                selectList={{ ...projects, [projectId]: undefined }}
                 handleModalOpen={setIsModalOpen}
                 isModalOpen={isModalOpen}
                 handleSelectMenu={handleSelectMenu}
+                renderValue='name'
+                returnValue="_id"
                 required
               />
               <FormSelectMenu
-                label="Issue Type"
-                name="IssueType"
+                label="Issue Type*"
+                name="issueType"
+                value={issueType}
                 width="40%"
-                value={IssueType}
-                selectList={{ ...IssueTypes, [IssueType.toUpperCase()]: undefined }}
+                selectList={{ ...IssueTypes, [issueType.toUpperCase()]: undefined }}
                 handleModalOpen={setIsModalOpen}
                 isModalOpen={isModalOpen}
                 handleSelectMenu={handleSelectMenu}
@@ -81,19 +85,18 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId }) =
               />
               <FormSelectMenu
                 label="Priority"
-                name="IssuePriority"
-                value={IssuePriority}
+                name="issuePriority"
+                value={issuePriority}
                 width="40%"
-                selectList={{ ...IssuePriorities, [IssuePriority.toUpperCase()]: undefined }}
+                selectList={{ ...IssuePriorities, [issuePriority.toUpperCase()]: undefined }}
                 handleModalOpen={setIsModalOpen}
                 isModalOpen={isModalOpen}
                 handleSelectMenu={handleSelectMenu}
                 description="Priority in relation to other issues."
-                required
               />
               <Diviser />
               <FormInput
-                label="Summary"
+                label="Summary*"
                 type="text"
                 name="summary"
                 value={summary}
@@ -101,7 +104,7 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId }) =
                 required
               />
               <FormTextArea
-                label="Description"
+                label="Description*"
                 rows="12"
                 name="description"
                 value={description}
@@ -110,22 +113,27 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId }) =
               />
               <FormSelectMenu
                 label="Assignee"
-                name="assignee"
-                value={assigneeId}
+                name="assigneeId"
+                value={assigneeId ? membersList[assigneeId].name : 'Unassigned'}
                 width="60%"
-                selectList={{}}
+                selectList={{ ...membersList, [assigneeId]: undefined }}
                 handleModalOpen={setIsModalOpen}
                 isModalOpen={isModalOpen}
                 handleSelectMenu={handleSelectMenu}
-                required
+                renderValue="name"
+                returnValue="_id"
               />
-              <FormInput
-                label="Reporter"
-                type="text"
+              <FormSelectMenu
+                label="Reporter*"
                 name="reporterId"
+                value={membersList[reporterId].name}
                 width="60%"
-                value={reporterId}
-                handleChange={handleChange}
+                selectList={{ ...membersList, [reporterId]: undefined }}
+                handleModalOpen={setIsModalOpen}
+                isModalOpen={isModalOpen}
+                handleSelectMenu={handleSelectMenu}
+                renderValue='name'
+                returnValue="_id"
                 description="Start typing to get a list of possible matches."
                 required
               />

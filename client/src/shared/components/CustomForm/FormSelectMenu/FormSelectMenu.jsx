@@ -8,7 +8,7 @@ import {
   Description,
 } from '../CustomForm.style';
 
-const FormSelectMenu = ({ label, handleModalOpen, selectList, handleSelectMenu, isModalOpen, description, width, ...props }) => {
+const FormSelectMenu = ({ label, handleModalOpen, selectList, handleSelectMenu, isModalOpen, description, width, renderValue, returnValue, ...props }) => {
   const { name, value } = props;
   return (
     <FormContainer>
@@ -23,7 +23,7 @@ const FormSelectMenu = ({ label, handleModalOpen, selectList, handleSelectMenu, 
         />
         {
           isModalOpen === name ?
-            <SelectMenu handleSelectMenu={handleSelectMenu} selectList={selectList} name={name} />
+            <SelectMenu handleSelectMenu={handleSelectMenu} selectList={selectList} name={name} renderValue={renderValue} returnValue={returnValue} />
             :
             <></>
         }

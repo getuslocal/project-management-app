@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -13,12 +13,12 @@ import {
 } from '../../views/components/Board/Board.style';
 import * as Roles from './roles';
 
-const PrivateRoutes = ({ auth: { isAuthenticated, user }, roleComponents, ...props }) => {
+const PrivateRoutes = ({ auth: { isAuthenticated, user }, roleComponents, projects, ...props }) => {
   useEffect(() => {
     store.dispatch(getProjectsOfOwner(user._id));
   }, []);
   // console.log(props.match) // "/app/projects" . params: {board: 'projects'}.
-
+  // console.log(projects)
   return (
     isAuthenticated ? (
       <Fragment>
@@ -29,7 +29,7 @@ const PrivateRoutes = ({ auth: { isAuthenticated, user }, roleComponents, ...pro
               const Component = Roles[component.component];
               return (
                 <Route
-                  key={props.location.key + component.id} //@todo: change the key with uuid.
+                  key={component.id} //@todo: change the key with uuid.
                   path={`/app/${component.linkUrl}/${component.linkVariable}`}
                   render={() => <Component component={component} baseUrl={props.match.url} />}
                 />
@@ -50,10 +50,11 @@ PrivateRoutes.propTypes = {
   auth: PropTypes.object.isRequired,
   roleComponents: PropTypes.array.isRequired
 };
-
+// @todo: turn these to selectors.
 const mapStateToProps = state => ({
   auth: state.auth,
   roleComponents: state.auth.user ? selectRoleComponents(state.auth.user.role)(state) : [],
+  projects: state.projects
 });
 
 export default connect(mapStateToProps)(PrivateRoutes);

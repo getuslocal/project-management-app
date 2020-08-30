@@ -27,7 +27,7 @@ export const updateOneColumnTicketsOrder = (projectId, newColumn) => async dispa
       type: UPDATE_ONE_COLUMN_TICKETS_ORDER,
       payload: { projectId, newColumn }
     });
-    await api.post("/projects/update/tickets", { projectId, newColumn });
+    await api.post("/projects/update/tickets-order", { projectId, newColumn });
     dispatch({
       type: SUCCESS_UPDATE_ORDER,
     });
@@ -44,7 +44,7 @@ export const updateTwoColumnsTicketsOrder = (projectId, newColumn) => async disp
       type: UPDATE_TWO_COLUMNS_TICKETS_ORDER,
       payload: { projectId, newColumn }
     });
-    await api.post("/projects/update/tickets", { projectId, newColumn });
+    await api.post("/projects/update/tickets-order", { projectId, newColumn });
     dispatch({
       type: SUCCESS_UPDATE_ORDER,
     });

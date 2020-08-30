@@ -5,26 +5,26 @@ import {
   ListItem
 } from './SelectMenu.style';
 
-const SelectMenu = ({ handleSelectMenu, selectList, name }) => {
+const SelectMenu = ({ handleSelectMenu, selectList, name, renderValue, returnValue }) => {
+  // console.log(selectList['5f40b26cf44b491638e3709c']['name'])
   return (
     <Container>
       <MainContent>
         <ul>
           {
             Object.keys(selectList).map((key) => selectList[key] ? (
-              name === 'project' ? (
-                <ListItem
-                  key={key}
-                  className={`icon-issue-${key.toLowerCase()}`}
-                  onClick={() => handleSelectMenu(name, { id: selectList[key]._id, name: selectList[key].name })}
-                >{selectList[key].name}</ListItem>
-              ) : (
-                  <ListItem
-                    key={key}
-                    className={`icon-issue-${key.toLowerCase()}`}
-                    onClick={() => handleSelectMenu(name, selectList[key])}
-                  >{selectList[key]}</ListItem>
-                )
+              <ListItem
+                key={key}
+                className={`icon-issue-${key.toLowerCase()}`}
+                onClick={() => handleSelectMenu(name, returnValue ? selectList[key][returnValue] : selectList[key])}
+              >
+                {
+                  renderValue ?
+                    selectList[key][renderValue]
+                    :
+                    selectList[key]
+                }
+              </ListItem>
             )
               :
               '')

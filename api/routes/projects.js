@@ -64,10 +64,10 @@ router.post('/create', async (req, res) => {
 
 });
 
-// @route  POST projects/login
-// @desc   Create a new project. 
+// @route  POST projects/update/tickets-order
+// @desc   Update ticket order within the column 
 // @access Public 
-router.post('/update/tickets', (req, res) => {
+router.post('/update/tickets-order', (req, res) => {
   const { projectId, newColumn } = req.body;
   Project.findById(projectId)
     .then(project => {
@@ -100,6 +100,27 @@ router.post('/update/column-order', (req, res) => {
       project.columnOrder = newColumnOrder
       project.save()
         .then(() => res.json('success'))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
+});
+
+// @route  POST projects/create/newticket
+// @desc   Create a new ticket and assign it to a proper location. 
+// @access Public 
+router.post('/create/newticket', (req, res) => {
+  const { projectId, newTicketId } = req.body;
+  Project.findById(projectId)
+    .then(project => {
+      const firstColumn = project.columnOrder[0];
+      project.columns = {
+        ...project.columns,
+        [firstColumn] : {
+          ...project.columns[firstColumn],
+          taskIds : [...project.columns[firstColumn].taskIds, newTicketId]
+        }
+      }
+      project.save()
+        .then((project) => res.json(project))
         .catch(err => res.status(400).json('Error: ' + err));
     })
 });

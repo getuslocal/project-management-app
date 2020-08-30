@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ticketSchema = new Schema({
-    project: {
+    projectId: {
         type: String,
         required: true,
         trim: true,
@@ -12,10 +12,8 @@ const ticketSchema = new Schema({
         required: true,
         trim: true,
     },
-    // @todo : remove this if not needed.
-    status: {
+    issuePriority: {
         type: String,
-        required: true,
         trim: true,
     },
     summary: {
@@ -26,19 +24,17 @@ const ticketSchema = new Schema({
     description: {
         type: String,
     },
-    assignee: {
+    assigneeId: {
         type: String,
-        required: true,
         trim: true,
     },
-    reporter: {
+    reporterId: {
         type: String,
         required: true,
         trim: true,
     },
     comments: {
         type: Array,
-        required: true,
     },
 }, {
     timestamps: true

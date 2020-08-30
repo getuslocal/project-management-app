@@ -8,7 +8,7 @@ const verify = require('../middleware/auth');
 // @desc   Get tickets of the project.
 // @access Public 
 router.get('/:projectId', (req, res) => {
-  Ticket.find({ project: req.params.projectId })
+  Ticket.find({ projectId: req.params.projectId })
     .then(project => res.json(project))
     .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -17,23 +17,23 @@ router.get('/:projectId', (req, res) => {
 // @desc   Create a new ticket of the project.
 // @access Private @todo: add valification of jwt. 
 router.post('/create', async (req, res) => {
-  const { project, issueType, status, summary, description, assignee, reporter, comments } = req.body;
+  const { projectId, issueType, issuePriority, summary, description, assigneeId, reporterId } = req.body;
 
   //Create a new ticket
   const newTicket = new Ticket({
-    project: project,
+    projectId: projectId,
     issueType: issueType,
-    status: status,
+    issuePriority: issuePriority,
     summary: summary,
     description: description,
-    assignee: assignee,
-    reporter: reporter,
-    comments: comments,
+    assigneeId: assigneeId,
+    reporterId: reporterId,
+    comments: [],
   });
 
   try {
-    await newTicket.save();
-    res.json('Created a new ticket !')
+    const savedNewTicket = await newTicket.save();
+    res.json(savedNewTicket)
   } catch (err) {
     res.status(400).send(err);
   }
