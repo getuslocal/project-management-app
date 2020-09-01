@@ -7,10 +7,10 @@ import {
   Description,
 } from '../CustomForm.style';
 
-const FormInput = ({ label, description, handleChange, ...props }) => {
+const FormInput = ({ label, description, handleChange, theme,  ...props }) => {
   return (
     <FormContainer>
-      <FormContent>
+      <FormContent className={theme ? `theme-input-${theme}` : ''}>
         <Label>{label}</Label>
         <Input {...props} onChange={handleChange}/>
         <Description>{description}</Description>

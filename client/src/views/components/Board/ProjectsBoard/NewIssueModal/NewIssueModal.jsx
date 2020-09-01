@@ -21,7 +21,7 @@ import {
   TextButton
 } from './NewIssueModal.style';
 
-const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, membersList, userProfile }) => {
+const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, membersList, userProfile, ticketsLength}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     projectId: currentProjectId,
@@ -36,9 +36,10 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, mem
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(issueFormValues)
-    store.dispatch(createNewTicket(currentProjectId, issueFormValues));
-    // submitIssue({ name, email, password, role });
+    const projectKey = projects[currentProjectId].key;
+    const key = projectKey + '-' + ticketsLength;
+    issueFormValues.key = key
+    store.dispatch(createNewTicket(issueFormValues));
     setIsNewIssueModalOpen(false);
   }
 
@@ -69,6 +70,7 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, mem
                 handleSelectMenu={handleSelectMenu}
                 renderValue='name'
                 returnValue="_id"
+                hasIcon={true}
                 required
               />
               <FormSelectMenu
@@ -80,6 +82,7 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, mem
                 handleModalOpen={setIsModalOpen}
                 isModalOpen={isModalOpen}
                 handleSelectMenu={handleSelectMenu}
+                hasIcon={true}
                 description="Some issue types are unavailable due to incompatible field configuration and/or workflow associations."
                 required
               />
@@ -88,6 +91,7 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, mem
                 name="issuePriority"
                 value={issuePriority}
                 width="40%"
+                hasIcon={true}
                 selectList={{ ...IssuePriorities, [issuePriority.toUpperCase()]: undefined }}
                 handleModalOpen={setIsModalOpen}
                 isModalOpen={isModalOpen}
@@ -122,6 +126,7 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, mem
                 handleSelectMenu={handleSelectMenu}
                 renderValue="name"
                 returnValue="_id"
+                hasIcon={true}
               />
               <FormSelectMenu
                 label="Reporter*"
@@ -135,6 +140,7 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, mem
                 renderValue='name'
                 returnValue="_id"
                 description="Start typing to get a list of possible matches."
+                hasIcon={true}
                 required
               />
               <ButtonsContainer>

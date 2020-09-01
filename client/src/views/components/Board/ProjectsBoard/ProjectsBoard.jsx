@@ -8,12 +8,13 @@ import RoadMapBoard from './RoadMapBoard/RoadMapBoard';
 import MembersBoard from './MembersBoard/MembersBoard';
 import SettingsBoard from './SettingsBoard/SettingsBoard';
 import NewIssueModal from './NewIssueModal/NewIssueModal';
-import api from '../../../../shared/utils/api';
 import { selectProjectById } from '../../../../redux/projects/projects.selectors';
 import { selectTicketsOfUser } from '../../../../redux/tickets/tickets.selectors';
 import { selectUser } from '../../../../redux/auth/auth.selectors';
+import { selectMembersByProjectId } from '../../../../redux/members/members.selectors';
 import { createStructuredSelector } from 'reselect';
 import { getTicketsByProjectId } from '../../../../redux/tickets/tickets.actions';
+import { getMemebersByProjectId } from '../../../../redux/members/members.actions';
 import store from '../../../../redux/store';
 import {
   Container,
@@ -26,41 +27,34 @@ import {
   TopContentRight
 } from './ProjectsBoard.style';
 
-const ProjectsBoard = ({ component: { title, tabs }, baseUrl, projectInfo, tickets, userProfile, ...props }) => {
+const ProjectsBoard = ({ component: { tabs }, baseUrl, projectInfo, tickets, userProfile, membersList, ...props }) => {
   const [isNewIssueModalOpen, setIsNewIssueModalOpen] = useState(false);
-  const [membersList, setMembersList] = useState({});
   const members = projectInfo.members;
-  const { project, tab } = props.match.params //  params: {board: 'projects', tab : 'roadmap'}.
+  const { project, tab } = props.match.params;
   const projectUri = baseUrl + '/' + project;
   const currentRoute = tab ? tab : '';
   useEffect(() => {
-    // console.log('useEffect')
     store.dispatch(getTicketsByProjectId(props.match.params.project));
-    const getMembersdata = async (members) => {
-      try {
-        if (!members) return;
-        let tmp = {};
-        for (const memberId of members) {
-          const memberInfo = await api.get(`/users/${memberId}`);
-          const memberData = memberInfo.data;
-          tmp = {...tmp, [memberData._id]: memberData}
-        };
-        setMembersList(tmp);
-      } catch (err) {
-        console.error(err)
-      }
-    }
-    getMembersdata(members)
+    store.dispatch(getMemebersByProjectId(members, project));
   }, []);
 
   return (
     <>
       {
-        isNewIssueModalOpen ? <NewIssueModal setIsNewIssueModalOpen={setIsNewIssueModalOpen} currentProjectId={project} membersList={membersList} userProfile={userProfile}/> : <></>
+        isNewIssueModalOpen ?
+          <NewIssueModal
+            setIsNewIssueModalOpen={setIsNewIssueModalOpen}
+            currentProjectId={project}
+            membersList={membersList}
+            userProfile={userProfile}
+            ticketsLength={tickets.length} />
+          :
+          <></>
       }
       <TopNavigationBar title={projectInfo.key} tabs={tabs} baseUrl={projectUri} currentRoute={currentRoute} />
       {
-        !!membersList? (
+        // @todo: figure out if tickets should be loadded before the following.
+        Object.keys(membersList).length > 0 ? (
           <Container>
             <ProjectBoardTopContent>
               <TopContentLeft>
@@ -92,12 +86,14 @@ ProjectsBoard.propTypes = {
   projectInfo: PropTypes.object.isRequired,
   tickets: PropTypes.array.isRequired,
   userProfile: PropTypes.object.isRequired,
+  membersList: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
   projectInfo: selectProjectById(ownProps.match.params.project),
   tickets: selectTicketsOfUser,
   userProfile: selectUser,
+  membersList: selectMembersByProjectId(ownProps.match.params.project)
 });
 
 export default connect(mapStateToProps, null)(ProjectsBoard);

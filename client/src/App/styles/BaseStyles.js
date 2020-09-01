@@ -77,6 +77,7 @@ export default createGlobalStyle`
 
   textarea {
     line-height: 1.4285;
+    resize: none;
   }
 
   body, select {

@@ -5,10 +5,10 @@ import {
   ListItem
 } from './SelectMenu.style';
 
-const SelectMenu = ({ handleSelectMenu, selectList, name, renderValue, returnValue }) => {
+const SelectMenu = ({ handleSelectMenu, selectList, name, renderValue, returnValue, theme }) => {
   // console.log(selectList['5f40b26cf44b491638e3709c']['name'])
   return (
-    <Container>
+    <Container className={theme ? `theme-${theme}` : ''}>
       <MainContent>
         <ul>
           {
@@ -18,12 +18,14 @@ const SelectMenu = ({ handleSelectMenu, selectList, name, renderValue, returnVal
                 className={`icon-issue-${key.toLowerCase()}`}
                 onClick={() => handleSelectMenu(name, returnValue ? selectList[key][returnValue] : selectList[key])}
               >
-                {
-                  renderValue ?
-                    selectList[key][renderValue]
-                    :
-                    selectList[key]
-                }
+                <span>
+                  {
+                    renderValue ?
+                      selectList[key][renderValue]
+                      :
+                      selectList[key]
+                  }
+                </span>
               </ListItem>
             )
               :

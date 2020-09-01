@@ -38,7 +38,7 @@ const Ticket = ({ ticket, index, columnId, projectId }) => {
         )}
       </Draggable>
       {
-        isModalOpen ? <TicketModal setIsModalOpen={setIsModalOpen} DeleteTicket={DeleteTicket} /> : <></>
+        isModalOpen ? <TicketModal ticket={ticket} columnId={columnId} projectId={projectId} setIsModalOpen={setIsModalOpen} DeleteTicket={DeleteTicket} /> : <></>
       }
     </>
   )

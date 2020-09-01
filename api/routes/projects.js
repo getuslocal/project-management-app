@@ -104,45 +104,81 @@ router.post('/update/column-order', (req, res) => {
     })
 });
 
-// @route  POST projects/create/ticket
+// @route  POST projects/create-taskids/:projectId
 // @desc   Create a new ticket and assign it to a proper location. 
 // @access Public 
-router.post('/create/ticket', (req, res) => {
-  const { projectId, newTicketId } = req.body;
-  Project.findById(projectId)
-    .then(project => {
-      const firstColumn = project.columnOrder[0];
-      project.columns = {
-        ...project.columns,
-        [firstColumn]: {
-          ...project.columns[firstColumn],
-          taskIds: [...project.columns[firstColumn].taskIds, newTicketId]
-        }
+router.post('/create-taskids/:projectId', verify, async (req, res) => {
+  const projectId = req.params.projectId;
+  const { ticketId } = req.body;
+  try {
+    const project = await Project.findById(projectId);
+    const firstColumn = project.columnOrder[0];
+    project.columns = {
+      ...project.columns,
+      [firstColumn]: {
+        ...project.columns[firstColumn],
+        taskIds: [...project.columns[firstColumn].taskIds, ticketId]
       }
-      project.save()
-        .then(() => res.json('Create Ticket !'))
-        .catch(err => res.status(400).json('Error: ' + err));
-    })
+    }
+    await project.save();
+    res.json('Create Ticket !')
+  } catch (err) {
+    res.status(400).send(err);
+
+  }
 });
 
-// @route  POST projects/delete/ticket
+// @route  POST projects/delete-taskids/:projectId
 // @desc   Update the column taskIds array. 
 // @access Public 
-router.post('/delete/ticket', (req, res) => {
-  const { projectId, columnId, ticketId } = req.body;
-  Project.findById(projectId)
-    .then(project => {
-      project.columns = {
-        ...project.columns,
-        [columnId]: {
-          ...project.columns[columnId],
-          taskIds: project.columns[columnId].taskIds.filter(taskId => taskId !== ticketId)
-        }
+router.post('/delete-taskids/:projectId', verify, async (req, res) => {
+  const projectId = req.params.projectId;
+  const { columnId, ticketId } = req.body;
+  try {
+    const project = await Project.findById(projectId);
+    project.columns = {
+      ...project.columns,
+      [columnId]: {
+        ...project.columns[columnId],
+        taskIds: project.columns[columnId].taskIds.filter(taskId => taskId !== ticketId)
       }
-      project.save()
-        .then(() => res.json('Delete Ticket !'))
-        .catch(err => res.status(400).json('Error: ' + err));
-    })
+    }
+    await project.save()
+    res.json('Delete Ticket !')
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+// @route  POST projects/update-taskids/:projectId
+// @desc   Update the column taskIds array. 
+// @access Public 
+router.post('/update-taskids/:projectId', verify, async (req, res) => {
+  const projectId = req.params.projectId;
+  const { ticketId, columnMove } = req.body;
+  const { beforeColumn, afterColumn } = columnMove;
+  try {
+    const project = await Project.findById(projectId);
+    if (beforeColumn === afterColumn) {
+      res.json('Update Ticket !')
+      return;
+    }
+    project.columns = {
+      ...project.columns,
+      [beforeColumn]: {
+        ...project.columns[beforeColumn],
+        taskIds: project.columns[beforeColumn].taskIds.filter(taskId => taskId !== ticketId)
+      },
+      [afterColumn]: {
+        ...project.columns[afterColumn],
+        taskIds: [...project.columns[afterColumn].taskIds, ticketId]
+      },
+    }
+    await project.save()
+    res.json('Update taskids')
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
 module.exports = router;

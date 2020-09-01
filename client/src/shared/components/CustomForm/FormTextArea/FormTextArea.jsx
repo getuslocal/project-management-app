@@ -7,11 +7,11 @@ import {
   Description,
 } from '../CustomForm.style';
 
-const FormTextArea = ({ label, description, handleChange, ...props }) => {
+const FormTextArea = ({ label, description, handleChange, theme, ...props }) => {
   return (
     <FormContainer>
-      <FormContent>
-        <Label>{label}</Label>
+      <FormContent className={theme ? `theme-textarea-${theme}` : ''}>
+        <Label >{label}</Label>
         <TextArea {...props} onChange={handleChange} />
         <Description>{description}</Description>
       </FormContent>

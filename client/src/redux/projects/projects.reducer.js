@@ -4,7 +4,8 @@ import {
   UPDATE_TWO_COLUMNS_TICKETS_ORDER,
   UPDATE_COLUMN_ORDER,
   CREATE_NEW_TICKET,
-  DELETE_TICKET
+  DELETE_TICKET,
+  UPDATE_TICKET
 } from './projects.types';
 import { convertArrayToObject } from './projects.utils';
 
@@ -50,7 +51,7 @@ const projectsReducer = (state = {}, action) => {
         }
       }
     case CREATE_NEW_TICKET: {
-      const { projectId, id } = payload
+      const { projectId, ticketId } = payload
       const project = state[projectId];
       const firstColumn = state[projectId].columnOrder[0];
       return {
@@ -61,7 +62,7 @@ const projectsReducer = (state = {}, action) => {
             ...project.columns,
             [firstColumn]: {
               ...project.columns[firstColumn],
-              taskIds: [...project.columns[firstColumn].taskIds, id]
+              taskIds: [...project.columns[firstColumn].taskIds, ticketId]
             }
           }
         }
@@ -80,6 +81,32 @@ const projectsReducer = (state = {}, action) => {
               ...project.columns[columnId],
               taskIds: project.columns[columnId].taskIds.filter(taskId => taskId !== ticketId)
             }
+          }
+        }
+      }
+    }
+    case UPDATE_TICKET: {
+      const { projectId, columnMove, ticketId } = payload;
+      const project = state[projectId];
+      const { beforeColumn, afterColumn } = columnMove;
+      // If there's no change in the ticket status, just return the current state.
+      if (beforeColumn === afterColumn) {
+        return state
+      }
+      return {
+        ...state,
+        [projectId]: {
+          ...project,
+          columns: {
+            ...project.columns,
+            [beforeColumn]: {
+              ...project.columns[beforeColumn],
+              taskIds: project.columns[beforeColumn].taskIds.filter(taskId => taskId !== ticketId)
+            },
+            [afterColumn]: {
+              ...project.columns[afterColumn],
+              taskIds: [...project.columns[afterColumn].taskIds, ticketId]
+            },
           }
         }
       }

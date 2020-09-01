@@ -1,4 +1,22 @@
-import styled from 'styled-components'
+import styled, { css }  from 'styled-components'
+
+const issueStatusTheme = css`
+  min-width: 220px;
+  li{
+    font-size: 12px;
+    span {
+      color: rgb(7, 71, 166);
+      padding: 1px 5px;
+      border-radius: 5px;
+      font-weight: 700;
+      background-color: rgb(222, 235, 255);
+    }
+    padding: .85rem .75rem;
+    &:hover{
+      background-color: rgb(222, 235, 255);
+    }
+  }
+`;
 
 export const Container = styled.div`
   margin-top: 5px;
@@ -9,7 +27,12 @@ export const Container = styled.div`
   position: absolute;
   z-index: 999;
   width: 100%;
+  
+  &.theme-issueStatus {
+    ${issueStatusTheme}
+  }
 `
+
 export const MainContent = styled.div`
     &:not(:last-child) {
       margin-bottom: 1.25em;
@@ -23,20 +46,16 @@ export const MainContent = styled.div`
     }
 `
 export const ListItem = styled.li`
-        font-size: 14px;
-        padding: .5em .5em;
+  font-size: 14px;
+  padding: .85rem .75rem;
 
-        &:not(:last-child) {
-          margin-bottom: .5rem;
-        }
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(9, 30, 66, 0.05);
+  }
 
-        &:hover {
-          cursor: pointer;
-          background-color: rgba(9, 30, 66, 0.05);
-        }
-
-        &:before {
-          margin-right: .4rem;
-          vertical-align: middle;
-        }
+  &:before {
+    margin-right: .4rem;
+    vertical-align: middle;
+  }
 `

@@ -8,22 +8,48 @@ import {
   Description,
 } from '../CustomForm.style';
 
-const FormSelectMenu = ({ label, handleModalOpen, selectList, handleSelectMenu, isModalOpen, description, width, renderValue, returnValue, ...props }) => {
+const FormSelectMenu = ({
+  label,
+  handleModalOpen,
+  selectList,
+  handleSelectMenu,
+  isModalOpen,
+  description,
+  width,
+  hasIcon,
+  renderValue,
+  returnValue,
+  backgroundStyle,
+  theme,
+  ...props
+}) => {
   const { name, value } = props;
   return (
     <FormContainer>
       <Label>{label}</Label>
-      <FormContentWithIcon width={width} className={`icon-angle-down icon-issue-${value.toLowerCase()}`}>
+      <FormContentWithIcon
+        width={width}
+        backgroundStyle={backgroundStyle}
+        className={`${backgroundStyle !== "transparent" ? 'icon-angle-down' : ''} icon-issue-${value.toLowerCase()} ${theme ? `theme-${theme}` : ''}`}>
         <Input
           type="text"
           autoComplete="off"
           readOnly
+          backgroundStyle={backgroundStyle}
           onClick={() => handleModalOpen(name)}
+          hasIcon={hasIcon}
           {...props}
         />
         {
           isModalOpen === name ?
-            <SelectMenu handleSelectMenu={handleSelectMenu} selectList={selectList} name={name} renderValue={renderValue} returnValue={returnValue} />
+            <SelectMenu
+              handleSelectMenu={handleSelectMenu}
+              selectList={selectList}
+              theme={theme}
+              name={name}
+              renderValue={renderValue}
+              returnValue={returnValue}
+            />
             :
             <></>
         }

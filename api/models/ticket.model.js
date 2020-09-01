@@ -7,6 +7,11 @@ const ticketSchema = new Schema({
         required: true,
         trim: true,
     },
+    key: {
+        type: String,
+        required: true,
+        trim: true,
+    },
     issueType: {
         type: String,
         required: true,
