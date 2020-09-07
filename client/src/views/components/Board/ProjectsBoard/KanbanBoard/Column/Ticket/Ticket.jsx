@@ -9,8 +9,6 @@ import TicketModal from './TicketModal/TicketModal';
 import { deleteTicket } from '../../../../../../../redux/tickets/tickets.actions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import WithSpinner from '../../../../../../../shared/components/WithSpinner/WithSpinner';
-const TicketModalContaier = WithSpinner(TicketModal);
 
 const Ticket = ({ ticket, index, columnId, projectId, deleteTicket }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,8 +39,7 @@ const Ticket = ({ ticket, index, columnId, projectId, deleteTicket }) => {
       </Draggable>
       {
         isModalOpen ? (
-          <TicketModalContaier
-            isLoading={!ticket}
+          <TicketModal
             ticket={ticket}
             columnId={columnId}
             projectId={projectId}

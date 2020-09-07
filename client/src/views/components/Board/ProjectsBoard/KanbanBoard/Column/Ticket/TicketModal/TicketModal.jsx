@@ -28,7 +28,7 @@ import {
   TicketHistoryContent,
 } from './TicketModal.style';
 
-const TicketModal = ({ ticket, setIsModalOpen, DeleteTicket, membersList, projectInfo, columnId, ...props }) => {
+const TicketModal = ({ ticket, setIsModalOpen, DeleteTicket, membersList, projectInfo, columnId, }) => {
   const [isSmallModalOpen, setIsSmallModalOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     issueType: ticket.issueType,
@@ -42,7 +42,6 @@ const TicketModal = ({ ticket, setIsModalOpen, DeleteTicket, membersList, projec
   });
   const { issueType, issueStatus, summary, description, reporterId, assigneeId, issuePriority, comments } = issueFormValues;
   const columnsList = projectInfo.columns;
-  console.log(ticket)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -80,7 +79,7 @@ const TicketModal = ({ ticket, setIsModalOpen, DeleteTicket, membersList, projec
               <Fieldset>
                 <Title name="summary" currentValue={summary} handleChange={handleChange} />
                 <Description currentValue={description} handleChange={handleChange} />
-                <Comment comments={comments} ticketId={ticket._id}/>
+                <Comment comments={ticket.comments} ticketId={ticket._id}/>
               </Fieldset>
             </FormLeftContent>
 

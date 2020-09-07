@@ -20,7 +20,6 @@ function getTickets(ticketMap, taskIds) {
 }
 
 const InnerList = React.memo(props => {
-  // console.log('InnerList render')
   const { column, ticketMap, index, projectId } = props;
   return <Column column={column} tickets={getTickets(ticketMap, column.taskIds)} index={index} projectId={projectId} />
 })
@@ -89,6 +88,8 @@ const KanbanBoard = ({ projectInfo, tickets }) => {
 
     store.dispatch(updateTwoColumnsTicketsOrder(_id, { newStart, newFinish }));
   }
+
+  console.log(tickets)
 
   // @todo: change taskIds to ticketIds.
   return (

@@ -23,7 +23,7 @@ const InnerList = React.memo(props => {
 })
 
 const Column = ({ column, tickets, index, projectId }) => {
-  // console.log('Column rendered!')
+  console.log(tickets)
   return (
     <Draggable draggableId={column.id} index={index}>
       {(provided, snapshot) => (

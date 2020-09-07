@@ -25,15 +25,7 @@ import {
 
 const Comment = ({ currentUser, comments, ticketId, addComment, deleteComment }) => {
   const [text, setText] = useState('');
-  const { _id: userId, pictureUrl } = currentUser;
-
-  const SendNewComment = () => {
-    addComment(ticketId, { text })
-  }
-
-  // const RemoveComment = (commentId) => {
-  //   store.dispatch(removeComment(ticketId, commentId))
-  // }
+  const { pictureUrl } = currentUser;
 
   return (
     <Container>
@@ -52,7 +44,7 @@ const Comment = ({ currentUser, comments, ticketId, addComment, deleteComment })
             placeholder="Add a comment..."
             onChange={(e) => setText(e.target.value)}
           />
-          <Button type="button" onClick={SendNewComment}>Save</Button>
+          <Button type="button" onClick={() => addComment(ticketId, { text })}>Save</Button>
         </TextAreaWrapper>
       </Top>
       <Bottom>
