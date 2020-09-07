@@ -1,12 +1,16 @@
 import React from 'react';
 import SelectMenu from './SelectMenu/SelectMenu';
+import Icon from '../../../../shared/components/Icon/Icon';
 import {
   FormContainer,
   Label,
-  FormContentWithIcon,
-  Input,
   Description,
 } from '../CustomForm.style';
+import {
+  FormWrapper,
+  OuterWrapper,
+  Input,
+} from './FormSelectMenu.style';
 
 const FormSelectMenu = ({
   label,
@@ -16,44 +20,45 @@ const FormSelectMenu = ({
   isModalOpen,
   description,
   width,
-  hasIcon,
   renderValue,
   returnValue,
-  backgroundStyle,
-  theme,
+  isTransparentBackground,
+  iconStyle,
+  height,
   ...props
 }) => {
   const { name, value } = props;
   return (
     <FormContainer>
       <Label>{label}</Label>
-      <FormContentWithIcon
-        width={width}
-        backgroundStyle={backgroundStyle}
-        className={`${backgroundStyle !== "transparent" ? 'icon-angle-down' : ''} icon-issue-${value.toLowerCase()} ${theme ? `theme-${theme}` : ''}`}>
-        <Input
-          type="text"
-          autoComplete="off"
-          readOnly
-          backgroundStyle={backgroundStyle}
+      <OuterWrapper width={width}>
+        <FormWrapper
+          height={height}
+          isTransparentBackground={isTransparentBackground}
           onClick={() => handleModalOpen(name)}
-          hasIcon={hasIcon}
-          {...props}
-        />
+        >
+          <Icon iconStyle={iconStyle} />
+          <Input
+            type="text"
+            autoComplete="off"
+            readOnly
+            {...props}
+          />
+        </FormWrapper>
         {
           isModalOpen === name ?
             <SelectMenu
               handleSelectMenu={handleSelectMenu}
               selectList={selectList}
-              theme={theme}
               name={name}
               renderValue={renderValue}
               returnValue={returnValue}
+              iconStyle={iconStyle}
             />
             :
             <></>
         }
-      </FormContentWithIcon>
+      </OuterWrapper>
       <Description>{description}</Description>
     </FormContainer>
   )

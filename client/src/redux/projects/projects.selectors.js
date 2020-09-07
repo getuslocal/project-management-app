@@ -9,9 +9,5 @@ export const selectAllProjects = createSelector(
 
 export const selectProjectById = id => createSelector(
   [selectProjects],
-  projects => {
-    return (
-      Object.keys(projects).length ? projects[id] : {}
-    )
-  }
+  projects => projects[id]
 );

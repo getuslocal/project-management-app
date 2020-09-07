@@ -7,12 +7,12 @@ import {
   Description,
 } from '../CustomForm.style';
 
-const FormInput = ({ label, description, handleChange, theme,  ...props }) => {
+const FormInput = ({ label, description, handleChange, ...props }) => {
   return (
     <FormContainer>
-      <FormContent className={theme ? `theme-input-${theme}` : ''}>
+      <FormContent>
         <Label>{label}</Label>
-        <Input {...props} onChange={handleChange}/>
+        <Input {...props} onChange={handleChange} />
         <Description>{description}</Description>
       </FormContent>
     </FormContainer>

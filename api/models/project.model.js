@@ -30,6 +30,10 @@ const projectSchema = new Schema({
         type: Array,
         required: true,
     },
+    projectIconUrl: {
+        type: String,
+        required: true,
+    },
 }, {
     timestamps: true
 });

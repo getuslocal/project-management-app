@@ -3,7 +3,7 @@ import {
   GET_MEMBERS_BY_PROJECTID,
 } from './members.types';
 
-export const getMemebersByProjectId = (members, projectId) => async dispatch => {
+export const getMembersByProjectId = (members, projectId) => async dispatch => {
   try {
     let membersList = {};
     for (const memberId of members) {

@@ -2,20 +2,21 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Ticket = require('../models/ticket.model');
+const User = require('../models/user.model');
 const verify = require('../middleware/auth');
 
 // @route  GET tickets/:projectId
-// @desc   Get tickets of the project.
-// @access Public 
-router.get('/:projectId', (req, res) => {
+// @desc   Get tickets overview collection of the project.
+// @access Private 
+router.get('/:projectId', verify, (req, res) => {
   Ticket.find({ projectId: req.params.projectId })
-    .then(ticket => res.json(ticket))
+    .then(tickets => res.json(tickets))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
 // @route  POST tickets/create
 // @desc   Create a new ticket of the project.
-// @access Private @todo: add valification of jwt. 
+// @access Private
 router.post('/create', verify, async (req, res) => {
   const { projectId, issueType, issuePriority, summary, description, assigneeId, reporterId, key } = req.body;
 
@@ -29,7 +30,6 @@ router.post('/create', verify, async (req, res) => {
     description: description,
     assigneeId: assigneeId,
     reporterId: reporterId,
-    comments: [],
   });
 
   try {
@@ -38,8 +38,8 @@ router.post('/create', verify, async (req, res) => {
   } catch (err) {
     res.status(400).send(err);
   }
-
 });
+
 
 // @route  DELETE tickets/:ticketId/
 // @desc   Delete a ticket of the id
@@ -78,6 +78,66 @@ router.post('/update/:ticketId', verify, async (req, res) => {
     res.status(400).send(err);
   }
 });
+
+// @route  POST tickets/comment/:id
+// @desc   Comment on a ticket.
+// @access Private
+router.post('/comment/:id', verify, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const ticket = await Ticket.findById(req.params.id);
+
+    const newComment = {
+      user: user._id,
+      text: req.body.text,
+      name: user.name,
+      pictureUrl: user.pictureUrl,
+    };
+
+    ticket.comments.unshift(newComment);
+
+    await ticket.save();
+
+    res.json(ticket.comments);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+// @route  DELETE tickets/comment/:id/:comment_id
+// @desc   Delete comment
+// @access Private
+router.delete('/comment/:id/:comment_id', verify, async (req, res) => {
+  try {
+    const ticket = await Ticket.findById(req.params.id);
+
+    // Pull out comment
+    const comment = ticket.comments.find(
+      comment => comment.id === req.params.comment_id
+    );
+
+    // Make sure comment exists
+    if (!comment) {
+      return res.status(404).json({ msg: 'Comment does not exist' });
+    }
+
+    // Check user
+    if (comment.user.toString() !== req.user._id) {
+      return res.status(401).json({ msg: 'User not authorized' });
+    }
+
+    ticket.comments = ticket.comments.filter(
+      ({ id }) => id !== req.params.comment_id
+    );
+
+    await ticket.save();
+
+    res.json(ticket.comments)
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
 
 
 module.exports = router;

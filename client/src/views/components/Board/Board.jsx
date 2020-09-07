@@ -1,27 +1,77 @@
-// import React from 'react';
-// import { Route } from 'react-router-dom';
-// // import TopNavigationBar from '../TopNavigationBar/TopNavigationBar';
-// import * as Roles from './roles';
-// import {
-//   BoardContainer
-// } from './Board.style';
+import React, { Fragment, useEffect, useState } from 'react';
+import { Route, Redirect, Switch } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Sidebar from '../Sidebar/Sidebar';
+import { selectRolesList } from '../../../redux/roles/roles.selectors';
+import { selectAuthInfo } from '../../../redux/auth/auth.selectors';
+import { createStructuredSelector } from 'reselect';
+import NotFound from '../../NotFound/NotFound';
+import { getProjectsOfOwner } from '../../../redux/projects/projects.actions';
+import { getRoles } from '../../../redux/roles/roles.actions';
+import store from '../../../redux/store';
+import Spinner from '../../../shared/components/WithSpinner/Spinner';
+import {
+  Container
+} from './Board.style';
+import * as Components from './components';
 
-// const Board = ({ component: { component, linkVariable, tabs, title }, ...props }) => {
-//   // Can get /app/:board variable on this component.
-//   // console.log(props.match)
-//   const Component = Roles[component];
-//   return (
-//     <BoardContainer>
-//       <Route
-//         exact
-//         path={`${props.match.url}/${linkVariable}`} // ex: /app/dashboard/:dashboard?
-//         render={() => <Component component={component}/>}
-//       />
-//     </BoardContainer>
-//   )
-// }
+const Board = ({
+  auth: { isAuthenticated, user },
+  roles,
+  projects,
+  ...props
+}) => {
 
-// // @todo : When it is "dashboard" then get tabs from db which are names of projects.
-// // Use mapStatetoProps and reselect.
+  useEffect(() => {
+    store.dispatch(getRoles(user.role));
+    store.dispatch(getProjectsOfOwner(user._id));
+  }, []);
 
-// export default Board;
+  // If the user is not authenticated, redirect to top page.
+  if (!isAuthenticated) {
+    return (
+      <Redirect to="/" />
+    )
+  }
+
+  // If roles state is still loading, return spinner.
+  if (roles.length === 0) {
+    return (
+      <Spinner />
+    )
+  }
+
+  return (
+    <Fragment>
+      <Sidebar user={user} roles={roles} />
+      <Container>
+        <Switch>
+          {roles.map(role => {
+            const Component = Components[role.component];
+            return (
+              <Route
+                key={role.id}
+                path={`/app/${role.linkUrl}/${role.linkVariable}`}
+                render={() => <Component component={role} baseUrl={props.match.url} />}
+              />
+            )
+          })}
+          <Route component={NotFound} />
+        </Switch>
+      </Container>
+    </Fragment>
+  );
+}
+
+Board.propTypes = {
+  auth: PropTypes.object.isRequired,
+  roles: PropTypes.array.isRequired
+};
+
+const mapStateToProps = createStructuredSelector({
+  auth: selectAuthInfo,
+  roles: selectRolesList,
+});
+
+export default connect(mapStateToProps)(Board);

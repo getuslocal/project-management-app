@@ -6,20 +6,22 @@ import {
   TicketSummary
 } from './Ticket.style'
 import TicketModal from './TicketModal/TicketModal';
-import './temp.css'
-import store from '../../../../../../../redux/store';
 import { deleteTicket } from '../../../../../../../redux/tickets/tickets.actions';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import WithSpinner from '../../../../../../../shared/components/WithSpinner/WithSpinner';
+const TicketModalContaier = WithSpinner(TicketModal);
 
-const Ticket = ({ ticket, index, columnId, projectId }) => {
+const Ticket = ({ ticket, index, columnId, projectId, deleteTicket }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { issueType } = ticket;
+  const { issueType, _id: ticketId } = ticket;
   const DeleteTicket = () => {
-    store.dispatch(deleteTicket(ticket._id, columnId, projectId))
+    deleteTicket(ticket._id, columnId, projectId);
   }
 
   return (
     <>
-      <Draggable draggableId={ticket._id} index={index}>
+      <Draggable draggableId={ticketId} index={index}>
         {(provided, snapshot) => (
           <Container
             {...provided.draggableProps}
@@ -38,10 +40,25 @@ const Ticket = ({ ticket, index, columnId, projectId }) => {
         )}
       </Draggable>
       {
-        isModalOpen ? <TicketModal ticket={ticket} columnId={columnId} projectId={projectId} setIsModalOpen={setIsModalOpen} DeleteTicket={DeleteTicket} /> : <></>
+        isModalOpen ? (
+          <TicketModalContaier
+            isLoading={!ticket}
+            ticket={ticket}
+            columnId={columnId}
+            projectId={projectId}
+            setIsModalOpen={setIsModalOpen}
+            DeleteTicket={DeleteTicket}
+          />
+        ) : (
+            <></>
+          )
       }
     </>
   )
 }
 
-export default Ticket;
+Ticket.propTypes = {
+  deleteTicket: PropTypes.func.isRequired,
+};
+
+export default connect(null, { deleteTicket })(Ticket);

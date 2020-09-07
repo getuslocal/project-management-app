@@ -9,7 +9,7 @@ const verify = require('../middleware/auth');
 // @desc   Authenticate request from client and return user data when the token is varified.
 // @access Private 
 router.get('/authenticate', verify, (req, res) => {
-  User.findById(req.user._id) // use userid stored on jwt as payload
+  User.findById(req.user._id).select('-password') // use userid stored on jwt as payload
     .then(user => res.json(user))// return all its user data on db
     .catch(err => res.status(400).json('Error: ' + err));
 })
@@ -50,7 +50,8 @@ router.post('/register', async (req, res) => {
     role: role,
     name: name,
     email: email,
-    password: hashedPassword
+    password: hashedPassword,
+    pictureUrl:''
   });
 
   try {

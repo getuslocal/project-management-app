@@ -28,7 +28,6 @@ export const Title = styled.p`
       font-size: 19px;
       line-height: 1.5;
       font-weight: 500;
-      margin-bottom: 1.5em;
 `
 
 

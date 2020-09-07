@@ -4,32 +4,32 @@ import {
   MainContent,
   ListItem
 } from './SelectMenu.style';
+import Icon from '../../../../../shared/components/Icon/Icon';
 
-const SelectMenu = ({ handleSelectMenu, selectList, name, renderValue, returnValue, theme }) => {
-  // console.log(selectList['5f40b26cf44b491638e3709c']['name'])
+const SelectMenu = ({ handleSelectMenu, selectList, name, renderValue, returnValue, iconStyle }) => {
   return (
-    <Container className={theme ? `theme-${theme}` : ''}>
+    <Container>
       <MainContent>
         <ul>
           {
-            Object.keys(selectList).map((key) => selectList[key] ? (
-              <ListItem
-                key={key}
-                className={`icon-issue-${key.toLowerCase()}`}
-                onClick={() => handleSelectMenu(name, returnValue ? selectList[key][returnValue] : selectList[key])}
-              >
-                <span>
+            Object.keys(selectList).map((key) => {
+              if (!selectList[key]) return '';
+              const iconValue = (iconStyle && iconStyle.renderValue) ? (selectList[key][iconStyle.renderValue]) : (selectList[key]);
+              return (
+                <ListItem
+                  key={key}
+                  onClick={() => handleSelectMenu(name, returnValue ? selectList[key][returnValue] : selectList[key])}
+                >
+                  <Icon iconStyle={{ ...iconStyle, type: iconValue }} />
                   {
                     renderValue ?
                       selectList[key][renderValue]
                       :
                       selectList[key]
                   }
-                </span>
-              </ListItem>
-            )
-              :
-              '')
+                </ListItem>
+              )
+            })
           }
         </ul>
       </MainContent>

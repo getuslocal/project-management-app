@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react'
 import { hot } from 'react-hot-loader/root'
-import Routes from './routes/Routes'
+import Routes from './Routes'
 import NormalizeStyles from './styles/NormalizeStyles'
 import GlobalClasses from './styles/GlobalClasses'
 import BaseStyles from './styles/BaseStyles'

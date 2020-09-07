@@ -1,2 +1,3 @@
-export const GET_PROJECTS = 'GET_PROJECTS';
+export const UPDATE_WITH_PROJECT_INFO = 'UPDATE_WITH_PROJECT_INFO';
+export const GET_ROLES = 'GET_ROLES';
 

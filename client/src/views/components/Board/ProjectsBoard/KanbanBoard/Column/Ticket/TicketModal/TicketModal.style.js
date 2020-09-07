@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 
 export const ModalContainer = styled.div`
   position: absolute;
@@ -70,6 +70,7 @@ export const ButtonsContainer = styled.div`
       text-align: right;
       padding: 16px 24px;
 `
+
 export const SubmitButton = styled.input`
         font-weight: 600;
         background-color: rgb(0, 82, 204);
@@ -92,6 +93,7 @@ export const FormContainer = styled.div`
 `
 export const FormLeftContent = styled.div`
   width: 65%;
+  padding-right: 10%;
 `
 
 export const FormRightContent = styled.div`
@@ -109,11 +111,11 @@ export const TicketHistoryContent = styled.div`
     }
   }
 `
-
 export const Fieldset = styled.fieldset`
           border: none;
           padding: 0;
 `
+
 export const Diviser = styled.div`
 border-bottom: 1px solid #ddd;
 `

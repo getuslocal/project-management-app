@@ -1,8 +1,13 @@
 import { createSelector } from 'reselect';
 
-const selectTickets = state => state.tickets;
+export const tickets = state => state.tickets;
 
-export const selectTicketsOfUser = createSelector(
-  [selectTickets],
-  tickets => tickets
+export const selectTickets = createSelector(
+  [tickets],
+  tickets => tickets.tickets
+);
+
+export const selectIsTicketsLoaded = createSelector(
+  [tickets],
+  tickets => tickets.loading
 );

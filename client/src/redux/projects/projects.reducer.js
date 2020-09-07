@@ -7,7 +7,7 @@ import {
   DELETE_TICKET,
   UPDATE_TICKET
 } from './projects.types';
-import { convertArrayToObject } from './projects.utils';
+import { convertArrayToObject } from '../../shared/utils/functions';
 
 
 const projectsReducer = (state = {}, action) => {

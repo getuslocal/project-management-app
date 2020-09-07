@@ -2,6 +2,16 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import FormSelectMenu from '../../../../../../../../shared/components/CustomForm/FormSelectMenu/FormSelectMenu';
+import { IssueTypes, IssuePriorities } from '../../../../../../../../shared/constants/issues';
+import { selectMembersByProjectId } from '../../../../../../../../redux/members/members.selectors';
+import { selectProjectById } from '../../../../../../../../redux/projects/projects.selectors';
+import { updateTicket } from '../../../../.././../../../redux/tickets/tickets.actions';
+import store from '../../../../.././../../../redux/store';
+import IssueStatusMenu from './IssueStatusMenu/IssueStatusMenu';
+import Title from './Title/Title';
+import Description from './Description/Description';
+import Comment from './Comment/Comment';
 import {
   ModalContainer,
   MainContent,
@@ -15,16 +25,8 @@ import {
   Diviser,
   TopFixedContent,
   TicketKey,
-  TicketHistoryContent
+  TicketHistoryContent,
 } from './TicketModal.style';
-import FormSelectMenu from '../../../../../../../../shared/components/CustomForm/FormSelectMenu/FormSelectMenu';
-import { IssueTypes, IssuePriorities } from '../../../../../../../../shared/constants/issues';
-import { selectMembersByProjectId } from '../../../../../../../../redux/members/members.selectors';
-import { selectProjectById } from '../../../../../../../../redux/projects/projects.selectors';
-import FormInput from '../../../../../../../../shared/components/CustomForm/FormInput/FormInput';
-import FormTextArea from '../../../../../../../../shared/components/CustomForm/FormTextArea/FormTextArea';
-import { updateTicket } from '../../../../.././../../../redux/tickets/tickets.actions';
-import store from '../../../../.././../../../redux/store';
 
 const TicketModal = ({ ticket, setIsModalOpen, DeleteTicket, membersList, projectInfo, columnId, ...props }) => {
   const [isSmallModalOpen, setIsSmallModalOpen] = useState(false);
@@ -35,10 +37,12 @@ const TicketModal = ({ ticket, setIsModalOpen, DeleteTicket, membersList, projec
     description: ticket.description,
     reporterId: ticket.reporterId,
     assigneeId: ticket.assigneeId,
-    issuePriority: ticket.issuePriority
+    issuePriority: ticket.issuePriority,
+    comments: ticket.comments
   });
-  const { issueType, issueStatus, summary, description, reporterId, assigneeId, issuePriority } = issueFormValues;
+  const { issueType, issueStatus, summary, description, reporterId, assigneeId, issuePriority, comments } = issueFormValues;
   const columnsList = projectInfo.columns;
+  console.log(ticket)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -59,8 +63,6 @@ const TicketModal = ({ ticket, setIsModalOpen, DeleteTicket, membersList, projec
     setIssueFormValues({ ...issueFormValues, [name]: value });
   };
 
-  // console.log(ticket)
-
   return (
     <ModalContainer onClick={() => { if (isSmallModalOpen) setIsSmallModalOpen(false); }}>
       <Blanket onClick={() => setIsModalOpen(false)} />
@@ -70,47 +72,29 @@ const TicketModal = ({ ticket, setIsModalOpen, DeleteTicket, membersList, projec
           <i className="far fa-trash-alt" onClick={DeleteTicket}></i>
           <i className="fas fa-times" onClick={() => setIsModalOpen(false)}></i>
         </TopFixedContent>
+
         <form onSubmit={handleSubmit}>
           <FormContainer>
+
             <FormLeftContent>
               <Fieldset>
-                <FormInput
-                  type="text"
-                  name="summary"
-                  value={summary}
-                  width="90%"
-                  backgroundStyle="transparent"
-                  theme="issueSummary"
-                  handleChange={handleChange}
-                />
-                <FormTextArea
-                  label="Description"
-                  type="text"
-                  name="description"
-                  value={description}
-                  rows="12"
-                  width="90%"
-                  backgroundStyle="transparent"
-                  theme="issueDescription"
-                  handleChange={handleChange}
-                />
-                <p>Comments</p>
+                <Title name="summary" currentValue={summary} handleChange={handleChange} />
+                <Description currentValue={description} handleChange={handleChange} />
+                <Comment comments={comments} ticketId={ticket._id}/>
               </Fieldset>
             </FormLeftContent>
+
             <FormRightContent>
               <Fieldset>
-                <FormSelectMenu
+                <IssueStatusMenu
                   name="issueStatus"
                   value={columnsList[issueStatus].title}
-                  width="180px"
-                  selectList={{ ...columnsList, [issueStatus]: undefined }}
+                  currentOrder={issueStatus}
+                  columnOrder={projectInfo.columnOrder}
+                  columnsList={{ ...columnsList, [issueStatus]: undefined }}
                   handleModalOpen={setIsSmallModalOpen}
                   isModalOpen={isSmallModalOpen}
                   handleSelectMenu={handleSelectMenu}
-                  renderValue="title"
-                  returnValue="id"
-                  hasIcon={false}
-                  theme="issueStatus"
                   required
                 />
                 <FormSelectMenu
@@ -123,8 +107,14 @@ const TicketModal = ({ ticket, setIsModalOpen, DeleteTicket, membersList, projec
                   handleSelectMenu={handleSelectMenu}
                   renderValue="name"
                   returnValue="_id"
-                  hasIcon={true}
-                  backgroundStyle="transparent"
+                  iconStyle={{
+                    base: 'userIcon',
+                    type: membersList[assigneeId] ? membersList[assigneeId].pictureUrl : 'https://cdn.pixabay.com/photo/2018/11/13/21/43/instagram-3814049_960_720.png', // @todo: figure out a better way.
+                    size: '30px',
+                    renderValue: 'pictureUrl'
+                  }}
+                  isTransparentBackground={true}
+                  height="40px"
                 />
                 <FormSelectMenu
                   label="Priority"
@@ -135,8 +125,9 @@ const TicketModal = ({ ticket, setIsModalOpen, DeleteTicket, membersList, projec
                   isModalOpen={isSmallModalOpen}
                   handleSelectMenu={handleSelectMenu}
                   required
-                  backgroundStyle="transparent"
-                  hasIcon={true}
+                  isTransparentBackground={true}
+                  iconStyle={{ base: 'priority', type: issuePriority, size: '12px' }}
+                  height="40px"
                 />
                 <FormSelectMenu
                   label="Reporter"
@@ -148,9 +139,15 @@ const TicketModal = ({ ticket, setIsModalOpen, DeleteTicket, membersList, projec
                   handleSelectMenu={handleSelectMenu}
                   renderValue='name'
                   returnValue="_id"
-                  backgroundStyle="transparent"
-                  hasIcon={true}
+                  isTransparentBackground={true}
+                  iconStyle={{
+                    base: 'userIcon',
+                    type: membersList[reporterId].pictureUrl,
+                    size: '30px',
+                    renderValue: 'pictureUrl'
+                  }}
                   required
+                  height="40px"
                 />
                 <Diviser />
                 <TicketHistoryContent>

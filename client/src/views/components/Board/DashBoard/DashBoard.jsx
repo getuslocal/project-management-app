@@ -3,10 +3,11 @@ import { withRouter } from 'react-router-dom';
 import './dashboard.css'
 import TopNavigationBar from '../../TopNavigationBar/TopNavigationBar';
 
-const DashBoard = ({ component, baseUrl, ...props }) => {
+
+const DashBoard = ({ component, baseUrl, projectMap, ...props }) => {
   // Can get /app/dashboard/:dashboard? variable 
   // @todo: get tickets data based on the dashboard variable. 
-  // console.log(props)
+
   const { dashboard } = props.match.params //  params: {board: 'projects', tab : 'roadmap'}.
   const currentRoute = dashboard ? dashboard : '';
 
@@ -54,6 +55,4 @@ const DashBoard = ({ component, baseUrl, ...props }) => {
   )
 }
 
-// @todo : Get data based on :dashboard variable. Use redux here.
-
-export default withRouter(DashBoard);
+export default withRouter(DashBoard)

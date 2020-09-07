@@ -7,6 +7,7 @@ import {
   FAIL_UPDATE_ORDER,
   SUCCESS_UPDATE_ORDER
 } from './projects.types';
+import { updateWithProjectInfo } from '../roles/roles.actions';
 
 
 export const getProjectsOfOwner = (ownerId) => async dispatch => {
@@ -16,6 +17,8 @@ export const getProjectsOfOwner = (ownerId) => async dispatch => {
       type: GET_PROJECTS,
       payload: res.data
     });
+    // Update roles state with project info.
+    dispatch(updateWithProjectInfo(res.data));
   } catch (err) {
     console.log(err)
   }

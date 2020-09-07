@@ -21,7 +21,7 @@ import {
   TextButton
 } from './NewIssueModal.style';
 
-const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, membersList, userProfile, ticketsLength}) => {
+const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, membersList, userProfile, ticketsLength }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     projectId: currentProjectId,
@@ -70,7 +70,12 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, mem
                 handleSelectMenu={handleSelectMenu}
                 renderValue='name'
                 returnValue="_id"
-                hasIcon={true}
+                iconStyle={{
+                  base: 'projectIcon',
+                  type: projects[projectId].projectIconUrl,
+                  size: '25px',
+                  renderValue: 'projectIconUrl'
+                }}
                 required
               />
               <FormSelectMenu
@@ -82,7 +87,7 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, mem
                 handleModalOpen={setIsModalOpen}
                 isModalOpen={isModalOpen}
                 handleSelectMenu={handleSelectMenu}
-                hasIcon={true}
+                iconStyle={{ base: 'issue', type: issueType, size: '9px' }}
                 description="Some issue types are unavailable due to incompatible field configuration and/or workflow associations."
                 required
               />
@@ -91,11 +96,11 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, mem
                 name="issuePriority"
                 value={issuePriority}
                 width="40%"
-                hasIcon={true}
                 selectList={{ ...IssuePriorities, [issuePriority.toUpperCase()]: undefined }}
                 handleModalOpen={setIsModalOpen}
                 isModalOpen={isModalOpen}
                 handleSelectMenu={handleSelectMenu}
+                iconStyle={{ base: 'priority', type: issuePriority, size: '12px' }}
                 description="Priority in relation to other issues."
               />
               <Diviser />
@@ -126,7 +131,12 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, mem
                 handleSelectMenu={handleSelectMenu}
                 renderValue="name"
                 returnValue="_id"
-                hasIcon={true}
+                iconStyle={{
+                  base: 'userIcon',
+                  type: assigneeId ? membersList[assigneeId].pictureUrl : 'https://cdn.pixabay.com/photo/2018/11/13/21/43/instagram-3814049_960_720.png',
+                  size: '25px',
+                  renderValue: 'pictureUrl'
+                }}
               />
               <FormSelectMenu
                 label="Reporter*"
@@ -140,7 +150,12 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, mem
                 renderValue='name'
                 returnValue="_id"
                 description="Start typing to get a list of possible matches."
-                hasIcon={true}
+                iconStyle={{
+                  base: 'userIcon',
+                  type: membersList[reporterId].pictureUrl,
+                  size: '25px',
+                  renderValue: 'pictureUrl'
+                }}
                 required
               />
               <ButtonsContainer>

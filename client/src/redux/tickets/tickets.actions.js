@@ -1,16 +1,20 @@
 import api from '../../shared/utils/api';
 import {
-  GET_TICKETS_BY_PROJECT_ID,
+  GET_TICKETS,
   CREATE_NEW_TICKET,
   DELETE_TICKET,
-  UPDATE_TICKET
+  UPDATE_TICKET,
+  ADD_COMMENT,
+  DELETE_COMMENT,
+  EDIT_COMMENT
 } from './tickets.types';
 
+// Get tickets of the project.
 export const getTicketsByProjectId = (projectId) => async dispatch => {
   try {
     const res = await api.get(`/tickets/${projectId}`);
     dispatch({
-      type: GET_TICKETS_BY_PROJECT_ID,
+      type: GET_TICKETS,
       payload: res.data
     });
   } catch (err) {
@@ -18,9 +22,9 @@ export const getTicketsByProjectId = (projectId) => async dispatch => {
   }
 };
 
+// Create a new ticket.
 export const createNewTicket = (formData) => async dispatch => {
   try {
-    // Create a new ticket.
     const res = await api.post("/tickets/create", formData);
     const projectId = res.data.projectId;
     const ticketId = res.data._id;
@@ -39,9 +43,9 @@ export const createNewTicket = (formData) => async dispatch => {
   }
 };
 
+// Delete a ticket by its id.
 export const deleteTicket = (ticketId, columnId) => async dispatch => {
   try {
-    // Delete a ticket by its id.
     const res = await api.delete(`/tickets/${ticketId}`);
     const projectId = res.data.projectId;
     // Delete the ticket inside the column of the project board.
@@ -59,9 +63,9 @@ export const deleteTicket = (ticketId, columnId) => async dispatch => {
   }
 };
 
+// Update a ticket by its id.
 export const updateTicket = (columnMove, ticketId, formData) => async dispatch => {
   try {
-    // Update a ticket by its id.
     const res = await api.post(`/tickets/update/${ticketId}`, formData);
     const projectId = res.data.projectId;
     // Update the ticket column id on db.
@@ -79,3 +83,37 @@ export const updateTicket = (columnMove, ticketId, formData) => async dispatch =
     console.log(err)
   }
 };
+
+// Comment on a ticket.
+export const addComment = (ticketId, formData) => async dispatch => {
+  try {
+    const res = await api.post(`/tickets/comment/${ticketId}`, formData);
+    dispatch({
+      type: ADD_COMMENT,
+      payload: {
+        comment: res.data,
+        ticketId: ticketId
+      }
+    });
+  } catch (err) {
+    console.log(err)
+  }
+};
+
+// Delete comment
+export const deleteComment = (ticketId, commentId) => async dispatch => {
+  try {
+    const res = await api.delete(`/tickets/comment/${ticketId}/${commentId}`);
+    console.log(res)
+    dispatch({
+      type: DELETE_COMMENT,
+      payload: {
+        comment: res.data,
+        ticketId: ticketId
+      }
+    });
+  } catch (err) {
+    console.log(err)
+  }
+};
+

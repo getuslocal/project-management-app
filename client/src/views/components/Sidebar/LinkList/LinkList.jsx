@@ -5,7 +5,7 @@ import {
   SidebarSubList
 } from './LinkList.style'
 
-const LinkList = ({ id, linkUrl, icon, title, hasSubMenu, match }) => {
+const LinkList = ({ id, linkUrl, icon, title, dropDownMenu, match }) => {
   // console.log(match.params.board)
   const [isVisible, setIsVisible] = useState(false);
   const { board } = match.params;
@@ -15,19 +15,19 @@ const LinkList = ({ id, linkUrl, icon, title, hasSubMenu, match }) => {
     <>
       <SidebarList key={id} onClick={() => setIsVisible(!isVisible)} className={`${isActive ? 'active' : ''} ${isVisible ? 'open-sub-list' : ''}`}>
         {
-          hasSubMenu ?
-            <span className={`${icon} ${hasSubMenu ? 'icon-sort-down' : ''}`}>{title}</span>
+          dropDownMenu ?
+            <span className={`${icon} ${dropDownMenu ? 'icon-sort-down' : ''}`}>{title}</span>
             :
             (
-              <Link to={`/app/${linkUrl}`} className={`${icon} ${hasSubMenu ? 'icon-sort-down' : ''}`}>
+              <Link to={`/app/${linkUrl}`} className={`${icon} ${dropDownMenu ? 'icon-sort-down' : ''}`}>
                 {title}
               </Link>
             )
         }
         {
-          hasSubMenu ? (
+          dropDownMenu ? (
             <SidebarSubList className={isVisible ? 'visible' : ''}>
-              {hasSubMenu.map((menu, index) => (
+              {dropDownMenu.map((menu, index) => (
                 <li key={index}><Link to={`/app/${linkUrl}${menu.linkUrl}`}> {menu.label}</Link></li>
               ))}
             </SidebarSubList>

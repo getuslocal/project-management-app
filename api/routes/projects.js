@@ -53,6 +53,7 @@ router.post('/create', async (req, res) => {
     members: members,
     columns: defaultColumns,
     columnOrder: columnOrder,
+    projectIconUrl: ''
   });
 
   try {

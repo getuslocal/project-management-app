@@ -7,7 +7,6 @@ import {
   Container,
 } from './KanbanBoard.style';
 
-// @todo: refactor this function later.
 function getTickets(ticketMap, taskIds) {
   let arr = [];
   taskIds.forEach(taskId => {
@@ -20,11 +19,6 @@ function getTickets(ticketMap, taskIds) {
   return arr
 }
 
-// const InnerList = props => {
-//   console.log('InnerList render')
-//   const { column, ticketMap, index } = props;
-//   return <Column column={column} tickets={getTickets(ticketMap, column.taskIds)} index={index} />
-// }
 const InnerList = React.memo(props => {
   // console.log('InnerList render')
   const { column, ticketMap, index, projectId } = props;
@@ -98,21 +92,21 @@ const KanbanBoard = ({ projectInfo, tickets }) => {
 
   // @todo: change taskIds to ticketIds.
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="all-columns" direction="horizontal" type="column">
-        {provided => (
-          <Container ref={provided.innerRef} {...provided.droppableProps} >
-            {
-              columnOrder.map((columnId, index) => {
-                const thisColumn = columns[columnId];
-                return <InnerList key={thisColumn.id} column={thisColumn} ticketMap={tickets} index={index} projectId={_id} />
-              })
-            }
-            {provided.placeholder}
-          </Container>
-        )}
-      </Droppable>
-    </DragDropContext>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="all-columns" direction="horizontal" type="column">
+          {provided => (
+            <Container ref={provided.innerRef} {...provided.droppableProps} >
+              {
+                columnOrder.map((columnId, index) => {
+                  const thisColumn = columns[columnId];
+                  return <InnerList key={thisColumn.id} column={thisColumn} ticketMap={tickets} index={index} projectId={_id} />
+                })
+              }
+              {provided.placeholder}
+            </Container>
+          )}
+        </Droppable>
+      </DragDropContext>
   )
 }
 

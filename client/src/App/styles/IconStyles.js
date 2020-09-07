@@ -95,6 +95,7 @@ export default createGlobalStyle`
   border-radius: 2px;
   color: #fff;
 }
+
 .icon-issue-bug:before {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
@@ -109,6 +110,7 @@ export default createGlobalStyle`
   border-radius: 2px;
   color: #fff;
 }
+
 .icon-issue-story:before {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
@@ -126,7 +128,7 @@ export default createGlobalStyle`
 .icon-issue-epic:before {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
-  content: '\f518';
+  content: '\f0e7';
   display:inline-block;
   line-height: 13px;
   font-size: 9px;
@@ -138,30 +140,24 @@ export default createGlobalStyle`
   color: #fff;
 }
 
-.icon-issue-medium:before {
+.icon-priority-medium:before {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
   content: '\f062';
-  display:inline-block;
-  font-size: 11px;
   color: rgb(233, 127, 51);
 }
-.icon-issue-low:before, 
-.icon-issue-lowest:before {
+.icon-priority-low:before, 
+.icon-priority-lowest:before {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
   content: '\f063';
-  display:inline-block;
-  font-size: 11px;
   color: rgb(45, 135, 56);
 }
-.icon-issue-high:before, 
-.icon-issue-highest:before {
+.icon-priority-high:before, 
+.icon-priority-highest:before {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
   content: '\f062';
-  display:inline-block;
-  font-size: 11px;
   color: rgb(205, 19, 23);
 }
 
