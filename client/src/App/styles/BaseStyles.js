@@ -84,4 +84,10 @@ export default createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+  
+  button{
+    &:hover{
+      cursor: pointer;
+    }
+  }
 `

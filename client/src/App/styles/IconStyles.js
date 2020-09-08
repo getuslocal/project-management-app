@@ -15,7 +15,8 @@ export default createGlobalStyle`
 .icon-issue-story:before,
 .icon-issue-epic:before,
 .icon-search:after,
-.icon-angle-down:after
+.icon-angle-down:after,
+.icon-times:before
 {
 	speak: none;
 	font-style: normal;
@@ -30,6 +31,11 @@ export default createGlobalStyle`
   font-family: "Font Awesome 5 Free";
   font-weight: 400;
   content: '\f007';
+}
+.icon-times:before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: '\f00d';
 }
 .icon-search:after {
   font-family: "Font Awesome 5 Free";

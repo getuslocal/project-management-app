@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, {css}  from 'styled-components'
 
 export const Container = styled.div`
   min-width: 300px;
@@ -8,6 +8,24 @@ export const Container = styled.div`
   align-self: auto;
   flex: 1 1 auto;
   `
+
+export const CreateTicketButton = styled.div`
+  padding: .75em;
+  border-radius: 3px;
+  font-size: 14px;
+  color: transparent;
+  &:hover{
+    background-color: rgba(9, 30, 66, 0.08);
+    cursor: pointer;
+  }
+
+  /* If it is a first column, display the button by default. */
+  ${({ isFirstColumn }) => isFirstColumn && css`
+    display: block;
+    color: inherit;
+  `}
+`
+
 export const Content = styled.div`
   background-color: rgb(244, 245, 247);
   border-radius: 6px;
@@ -20,7 +38,14 @@ export const Content = styled.div`
   min-width: 288px;
   max-width: 288px;
   padding: .5em;
-  box-shadow: ${props => (props.isDragging ? 'rgba(0, 0, 0, 0.2) 0 3px 3px 0': 'none')};
+  box-shadow: ${props => (props.isDragging ? 'rgba(0, 0, 0, 0.2) 0 3px 3px 0' : 'none')};
+
+  &:hover{
+    ${CreateTicketButton} {
+      display: block;
+      color: inherit;
+    }
+  }
   `
 export const Title = styled.p`
     font-weight: 500;
@@ -35,13 +60,6 @@ export const TicketsList = styled.div`
   min-height: 100px;
 `
 
-export const CreateTicketButton = styled.div`
-  padding: .75em;
-  border-radius: 6px;
-  font-size: 14px;
-  /* display: none; */
-  &:hover{
-    background-color: rgba(9, 30, 66, 0.08);
-    cursor: pointer;
-  }
+export const ButtonContainer = styled.div`
+
 `

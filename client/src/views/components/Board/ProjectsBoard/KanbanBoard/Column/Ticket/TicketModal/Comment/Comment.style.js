@@ -14,6 +14,7 @@ export const Title = styled.p`
 export const Top = styled.div`
   display: flex;
 `
+
 export const Bottom = styled.div`
 `
 
@@ -45,21 +46,36 @@ export const Textarea = styled(TextareaAutosize)`
   }
 `
 
+export const ButtonsContainer = styled.div`
+  margin-top: .35em;
+`
+
 // @todo: get this from share dir.
 export const Button = styled.button`
-        font-weight: 600;
         background-color: rgb(0, 82, 204);
         border-radius: 3px;
         color: #fff;
         padding: .6em;
         font-size: 14px;
         font-weight: 500;
-        margin-right: 1.5em;
+        margin-right: 1em;
         border: none;
-        margin-top: .35em;
         /* display: none; */
         &:hover {
           opacity: .9;
+          cursor: pointer;
+        }
+`
+// @todo: get this from share dir.
+export const CancelButton = styled.button`
+    display: inline-block;
+    padding: .6em;
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 3px;
+    &:hover {
+          opacity: .9;
+          background-color: rgba(9, 30, 66, 0.08);
           cursor: pointer;
         }
 `

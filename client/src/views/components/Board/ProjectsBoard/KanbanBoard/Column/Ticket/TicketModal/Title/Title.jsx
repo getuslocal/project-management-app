@@ -11,8 +11,10 @@ const Title = ({ currentValue, handleChange, ...props }) => (
       maxRows={6}
       name="summary"
       value={currentValue}
+      placeholder="Add a summary..."
       onChange={handleChange}
       {...props}
+      required
     />
   </Container>
 )

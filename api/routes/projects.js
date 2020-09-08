@@ -6,8 +6,8 @@ const verify = require('../middleware/auth');
 
 // @route  GET projects/:ownerId
 // @desc   Get projects of the user.
-// @access Public 
-router.get('/:ownerId', (req, res) => {
+// @access Private 
+router.get('/:ownerId', verify, (req, res) => {
   Project.find({ owner: req.params.ownerId })
     .then(project => res.json(project))
     .catch(err => res.status(400).json('Error: ' + err));
@@ -15,8 +15,8 @@ router.get('/:ownerId', (req, res) => {
 
 // @route  POST projects/login
 // @desc   Create a new project. 
-// @access Public 
-router.post('/create', async (req, res) => {
+// @access Private 
+router.post('/create', verify,  async (req, res) => {
   const { key, owner, name, members } = req.body;
 
   const defaultColumns = {
@@ -67,8 +67,8 @@ router.post('/create', async (req, res) => {
 
 // @route  POST projects/update/tickets-order
 // @desc   Update ticket order within the column 
-// @access Public 
-router.post('/update/tickets-order', (req, res) => {
+// @access Private 
+router.post('/update/tickets-order', verify, (req, res) => {
   const { projectId, newColumn } = req.body;
   Project.findById(projectId)
     .then(project => {
@@ -93,8 +93,8 @@ router.post('/update/tickets-order', (req, res) => {
 
 // @route  POST projects/update/column-order
 // @desc   Update column order of the project board.
-// @access Public 
-router.post('/update/column-order', (req, res) => {
+// @access Private 
+router.post('/update/column-order', verify, (req, res) => {
   const { projectId, newColumnOrder } = req.body;
   Project.findById(projectId)
     .then(project => {
@@ -107,18 +107,19 @@ router.post('/update/column-order', (req, res) => {
 
 // @route  POST projects/create-taskids/:projectId
 // @desc   Create a new ticket and assign it to a proper location. 
-// @access Public 
+// @access Private 
 router.post('/create-taskids/:projectId', verify, async (req, res) => {
   const projectId = req.params.projectId;
-  const { ticketId } = req.body;
+  const { ticketId, columnId } = req.body;
   try {
     const project = await Project.findById(projectId);
-    const firstColumn = project.columnOrder[0];
+    // If the column is not specified, then assign the ticket to the first column.
+    const targetColumn = columnId ? columnId : project.columnOrder[0];
     project.columns = {
       ...project.columns,
-      [firstColumn]: {
-        ...project.columns[firstColumn],
-        taskIds: [...project.columns[firstColumn].taskIds, ticketId]
+      [targetColumn]: {
+        ...project.columns[targetColumn],
+        taskIds: [...project.columns[targetColumn].taskIds, ticketId]
       }
     }
     await project.save();
@@ -131,7 +132,7 @@ router.post('/create-taskids/:projectId', verify, async (req, res) => {
 
 // @route  POST projects/delete-taskids/:projectId
 // @desc   Update the column taskIds array. 
-// @access Public 
+// @access Private 
 router.post('/delete-taskids/:projectId', verify, async (req, res) => {
   const projectId = req.params.projectId;
   const { columnId, ticketId } = req.body;

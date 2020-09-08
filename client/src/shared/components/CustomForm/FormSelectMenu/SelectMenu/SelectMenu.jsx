@@ -6,9 +6,9 @@ import {
 } from './SelectMenu.style';
 import Icon from '../../../../../shared/components/Icon/Icon';
 
-const SelectMenu = ({ handleSelectMenu, selectList, name, renderValue, returnValue, iconStyle }) => {
+const SelectMenu = ({ handleSelectMenu, selectList, name, renderValue, returnValue, iconStyle, width }) => {
   return (
-    <Container>
+    <Container width={width}>
       <MainContent>
         <ul>
           {

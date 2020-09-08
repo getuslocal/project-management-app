@@ -12,6 +12,7 @@ const Description = ({ currentValue, handleChange, ...props }) => (
       name="description"
       minRows={1}
       maxRows={15}
+      placeholder="Add a description..."
       value={currentValue}
       onChange={handleChange} 
       />

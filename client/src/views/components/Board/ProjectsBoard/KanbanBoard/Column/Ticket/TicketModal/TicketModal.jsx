@@ -74,7 +74,6 @@ const TicketModal = ({ ticket, setIsModalOpen, DeleteTicket, membersList, projec
 
         <form onSubmit={handleSubmit}>
           <FormContainer>
-
             <FormLeftContent>
               <Fieldset>
                 <Title name="summary" currentValue={summary} handleChange={handleChange} />
@@ -82,7 +81,6 @@ const TicketModal = ({ ticket, setIsModalOpen, DeleteTicket, membersList, projec
                 <Comment comments={ticket.comments} ticketId={ticket._id}/>
               </Fieldset>
             </FormLeftContent>
-
             <FormRightContent>
               <Fieldset>
                 <IssueStatusMenu

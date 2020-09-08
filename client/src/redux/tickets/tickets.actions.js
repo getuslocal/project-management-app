@@ -23,19 +23,20 @@ export const getTicketsByProjectId = (projectId) => async dispatch => {
 };
 
 // Create a new ticket.
-export const createNewTicket = (formData) => async dispatch => {
+export const createNewTicket = (formData, columnId = null) => async dispatch => {
   try {
     const res = await api.post("/tickets/create", formData);
     const projectId = res.data.projectId;
     const ticketId = res.data._id;
     // Add the new ticket id to a proper project state location.
-    await api.post(`/projects/create-taskids/${projectId}`, { ticketId });
+    await api.post(`/projects/create-taskids/${projectId}`, { ticketId, columnId });
     dispatch({
       type: CREATE_NEW_TICKET,
       payload: {
         projectId: projectId,
         data: res.data,
-        ticketId
+        ticketId,
+        columnId
       }
     });
   } catch (err) {

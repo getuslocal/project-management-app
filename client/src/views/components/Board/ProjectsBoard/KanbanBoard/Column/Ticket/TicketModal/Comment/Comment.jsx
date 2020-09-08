@@ -20,13 +20,14 @@ import {
   Options,
   Edit,
   Delete,
-  Time
+  Time,
+  ButtonsContainer,
+  CancelButton
 } from './Comment.style';
 
 const Comment = ({ currentUser, comments, ticketId, addComment, deleteComment }) => {
   const [text, setText] = useState('');
-  const { pictureUrl } = currentUser;
-
+  const { _id: userId, pictureUrl } = currentUser;
   return (
     <Container>
       <Title>Comments</Title>
@@ -42,9 +43,21 @@ const Comment = ({ currentUser, comments, ticketId, addComment, deleteComment })
             minRows={1}
             maxRows={5}
             placeholder="Add a comment..."
+            value={text}
             onChange={(e) => setText(e.target.value)}
           />
-          <Button type="button" onClick={() => addComment(ticketId, { text })}>Save</Button>
+          {
+            text.length > 0 ?
+              <ButtonsContainer>
+                <Button type="button" onClick={() => {
+                  addComment(ticketId, { text })
+                  setText('')
+                }}>Save</Button>
+                <CancelButton type="button" onClick={() => setText('')}>Cancel</CancelButton>
+              </ButtonsContainer>
+              :
+              <></>
+          }
         </TextAreaWrapper>
       </Top>
       <Bottom>
@@ -65,7 +78,12 @@ const Comment = ({ currentUser, comments, ticketId, addComment, deleteComment })
                   readOnly
                 />
                 <Options>
-                  <Delete onClick={() => deleteComment(ticketId, comment._id)}>Delete</Delete>
+                  {
+                    userId === comment.user ?
+                      <Delete onClick={() => deleteComment(ticketId, comment._id)}>Delete</Delete>
+                      :
+                      <></>
+                  }
                 </Options>
               </CommentContent>
             </CommentWrapper>

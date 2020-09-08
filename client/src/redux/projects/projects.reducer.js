@@ -51,18 +51,18 @@ const projectsReducer = (state = {}, action) => {
         }
       }
     case CREATE_NEW_TICKET: {
-      const { projectId, ticketId } = payload
+      const { projectId, ticketId, columnId } = payload
       const project = state[projectId];
-      const firstColumn = state[projectId].columnOrder[0];
+      const targetColumn = columnId ? columnId : state[projectId].columnOrder[0];
       return {
         ...state,
         [projectId]: {
           ...project,
           columns: {
             ...project.columns,
-            [firstColumn]: {
-              ...project.columns[firstColumn],
-              taskIds: [...project.columns[firstColumn].taskIds, ticketId]
+            [targetColumn]: {
+              ...project.columns[targetColumn],
+              taskIds: [...project.columns[targetColumn].taskIds, ticketId]
             }
           }
         }

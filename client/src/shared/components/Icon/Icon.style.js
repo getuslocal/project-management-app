@@ -13,8 +13,9 @@ export const IconContent = styled.span.attrs(({ iconStyle }) => {
   /* Common styles */
   margin-right: .5em;
   line-height: ${props => props.iconStyle.size};
-  &:before {
-    font-size: ${props => props.iconStyle.size};
+  &:before,
+  &:after {
+    font-size: ${props => props.iconStyle.size} !important;
     display :  inline-block;
     vertical-align: middle;
   }

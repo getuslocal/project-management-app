@@ -1,29 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Ticket from './Ticket/Ticket';
+import QuickTicket from './QuickTicket/QuickTicket';
 import {
   Container,
   Content,
   Title,
   TicketsList,
-  CreateTicketButton
+  CreateTicketButton,
+  ButtonContainer
 } from './Column.style'
 
-// const InnerList = ({...props}) => {
-//   console.log('Parent render')
-//   return (
-//    props.tickets.map((ticket, index) => <Ticket key={ticket._id} ticket={ticket} index={index} />)
-//   )
-// }
 const InnerList = React.memo(props => {
-  // console.log('Parent render')
   return (
-    props.tickets.map((ticket, index) => <Ticket key={ticket._id} ticket={ticket} index={index} columnId={props.columnId} projectId={props.projectId} />)
+    props.tickets.map((ticket, index) =>
+      <Ticket key={ticket._id} ticket={ticket} index={index} columnId={props.columnId} projectId={props.projectId} />)
   )
 })
 
 const Column = ({ column, tickets, index, projectId }) => {
-  console.log(tickets)
+  const [isQuickTicketActive, setIsQuickTicketActive] = useState(false);
+  
   return (
     <Draggable draggableId={column.id} index={index}>
       {(provided, snapshot) => (
@@ -34,7 +31,21 @@ const Column = ({ column, tickets, index, projectId }) => {
               {provided => (
                 <TicketsList ref={provided.innerRef} {...provided.droppableProps}>
                   <InnerList tickets={tickets} columnId={column.id} projectId={projectId} />
-                  <CreateTicketButton>+ Create ticket</CreateTicketButton>
+                  <ButtonContainer>
+                    {
+                      isQuickTicketActive ?
+                        <QuickTicket 
+                          setIsQuickTicketActive={setIsQuickTicketActive} 
+                          projectId={projectId}
+                          columnId={column.id}
+                          />
+                        :
+                        <CreateTicketButton
+                          isFirstColumn={(index === 0)}
+                          onClick={() => setIsQuickTicketActive(true)}
+                        >+ Create ticket</CreateTicketButton>
+                    }
+                  </ButtonContainer>
                   {provided.placeholder}
                 </TicketsList>
               )}
