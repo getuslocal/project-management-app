@@ -3,19 +3,20 @@ import { Draggable } from 'react-beautiful-dnd';
 import {
   Container,
   TicketStatus,
-  TicketSummary
+  TicketSummary,
+  Bottom,
+  CustomIcon
 } from './Ticket.style'
 import TicketModal from './TicketModal/TicketModal';
 import { deleteTicket } from '../../../../../../../redux/tickets/tickets.actions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { selectMembersByProjectId } from '../../../../../../../redux/members/members.selectors';
+import { createStructuredSelector } from 'reselect';
 
-const Ticket = ({ ticket, index, columnId, projectId, deleteTicket }) => {
+const Ticket = ({ ticket, index, columnId, projectId, deleteTicket, members }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { issueType, _id: ticketId } = ticket;
-  const DeleteTicket = () => {
-    deleteTicket(ticket._id, columnId, projectId);
-  }
+  const { issueType, _id: ticketId, key, assigneeId } = ticket;
 
   return (
     <>
@@ -31,9 +32,19 @@ const Ticket = ({ ticket, index, columnId, projectId, deleteTicket }) => {
             <TicketSummary>
               {ticket.summary}
             </TicketSummary>
-            <TicketStatus className={`icon-issue-${issueType.toLowerCase()}`}>
-              PMA-123
-          </TicketStatus>
+            <Bottom>
+              <TicketStatus className={`icon-issue-${issueType.toLowerCase()}`}>{key}</TicketStatus>
+              {
+                Object.keys(members).length > 0 && assigneeId ?
+                  <CustomIcon iconStyle={{
+                    base: 'userIcon',
+                    type: members[assigneeId].pictureUrl,
+                    size: '27px',
+                  }} />
+                  :
+                  <></>
+              }
+            </Bottom>
           </Container>
         )}
       </Draggable>
@@ -44,7 +55,7 @@ const Ticket = ({ ticket, index, columnId, projectId, deleteTicket }) => {
             columnId={columnId}
             projectId={projectId}
             setIsModalOpen={setIsModalOpen}
-            DeleteTicket={DeleteTicket}
+            deleteTicket={() => deleteTicket(ticket._id, columnId, projectId)}
           />
         ) : (
             <></>
@@ -58,4 +69,8 @@ Ticket.propTypes = {
   deleteTicket: PropTypes.func.isRequired,
 };
 
-export default connect(null, { deleteTicket })(Ticket);
+const mapStateToProps = (state, ownProps) => createStructuredSelector({
+  members: selectMembersByProjectId(ownProps.projectId)
+});
+
+export default connect(mapStateToProps, { deleteTicket })(Ticket);

@@ -8,7 +8,8 @@ import {
   Title,
   TicketsList,
   CreateTicketButton,
-  ButtonContainer
+  ButtonContainer,
+  Counter
 } from './Column.style'
 
 const InnerList = React.memo(props => {
@@ -20,13 +21,14 @@ const InnerList = React.memo(props => {
 
 const Column = ({ column, tickets, index, projectId }) => {
   const [isQuickTicketActive, setIsQuickTicketActive] = useState(false);
-  
+  const ticketsCounter = tickets.length;
+
   return (
     <Draggable draggableId={column.id} index={index}>
       {(provided, snapshot) => (
         <Container {...provided.draggableProps} ref={provided.innerRef}>
           <Content isDragging={snapshot.isDragging}>
-            <Title {...provided.dragHandleProps}>{column.title}</Title>
+            <Title {...provided.dragHandleProps}>{column.title}<Counter>{ticketsCounter}</Counter></Title>
             <Droppable droppableId={column.id} type="task">
               {provided => (
                 <TicketsList ref={provided.innerRef} {...provided.droppableProps}>
@@ -34,11 +36,11 @@ const Column = ({ column, tickets, index, projectId }) => {
                   <ButtonContainer>
                     {
                       isQuickTicketActive ?
-                        <QuickTicket 
-                          setIsQuickTicketActive={setIsQuickTicketActive} 
+                        <QuickTicket
+                          setIsQuickTicketActive={setIsQuickTicketActive}
                           projectId={projectId}
                           columnId={column.id}
-                          />
+                        />
                         :
                         <CreateTicketButton
                           isFirstColumn={(index === 0)}

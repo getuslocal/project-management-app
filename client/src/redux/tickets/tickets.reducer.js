@@ -4,12 +4,22 @@ import {
   DELETE_TICKET,
   UPDATE_TICKET,
   ADD_COMMENT,
-  DELETE_COMMENT
+  DELETE_COMMENT,
+  FILTER_TICKETS_BY_USERID,
+  FILTER_TICKETS_BY_SEARCH,
+  REMOVE_USER_FILTER,
+  CLEAR_ALL_FILTERS
 } from './tickets.types';
 
 const INITIAL_STATE = {
   tickets: [],
-  loading: true
+  loading: true,
+  filter: {
+    user: [],
+    epic: '',
+    type: '',
+    search: ''
+  },
 }
 
 const ticketsReducer = (state = INITIAL_STATE, action) => {
@@ -69,6 +79,35 @@ const ticketsReducer = (state = INITIAL_STATE, action) => {
           }
           return ticket
         })
+      }
+    case FILTER_TICKETS_BY_USERID:
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          user: [...state.filter.user, payload]
+        }
+      }
+    case FILTER_TICKETS_BY_SEARCH:
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          search: payload
+        }
+      }
+    case REMOVE_USER_FILTER:
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          user: state.filter.user.filter(userId => userId !== payload)
+        }
+      }
+    case CLEAR_ALL_FILTERS:
+      return {
+        ...state,
+        filter: INITIAL_STATE.filter
       }
     default:
       return state;

@@ -6,7 +6,11 @@ import {
   UPDATE_TICKET,
   ADD_COMMENT,
   DELETE_COMMENT,
-  EDIT_COMMENT
+  EDIT_COMMENT,
+  FILTER_TICKETS_BY_USERID,
+  REMOVE_USER_FILTER,
+  FILTER_TICKETS_BY_SEARCH,
+  CLEAR_ALL_FILTERS
 } from './tickets.types';
 
 // Get tickets of the project.
@@ -105,7 +109,6 @@ export const addComment = (ticketId, formData) => async dispatch => {
 export const deleteComment = (ticketId, commentId) => async dispatch => {
   try {
     const res = await api.delete(`/tickets/comment/${ticketId}/${commentId}`);
-    console.log(res)
     dispatch({
       type: DELETE_COMMENT,
       payload: {
@@ -116,5 +119,36 @@ export const deleteComment = (ticketId, commentId) => async dispatch => {
   } catch (err) {
     console.log(err)
   }
+};
+
+// Filter Tickets by user.
+export const filterTicketsByUser = (userId) => async dispatch => {
+  dispatch({
+    type: FILTER_TICKETS_BY_USERID,
+    payload: userId
+  })
+};
+
+// Filter Tickets by search input.
+export const filterTicketsBySearch = (value) => async dispatch => {
+  dispatch({
+    type: FILTER_TICKETS_BY_SEARCH,
+    payload: value
+  })
+};
+
+// Remove a user id from the user filter array.
+export const removeUserFilter = (userId) => async dispatch => {
+  dispatch({
+    type: REMOVE_USER_FILTER,
+    payload: userId
+  })
+};
+
+// Clear all filters.
+export const clearAllFilters = () => async dispatch => {
+  dispatch({
+    type: CLEAR_ALL_FILTERS,
+  })
 };
 

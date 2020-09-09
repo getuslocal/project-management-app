@@ -19,7 +19,7 @@ router.get('/authenticate', verify, (req, res) => {
 // @desc   Return user data based on the id.
 // @access Private 
 router.get('/:userId', verify, (req, res) => {
-  User.findById(req.params.userId)
+  User.findById(req.params.userId).select('-password')
     .then(user => res.json(user))
     .catch(err => res.status(400).json('Error: ' + err));
 })

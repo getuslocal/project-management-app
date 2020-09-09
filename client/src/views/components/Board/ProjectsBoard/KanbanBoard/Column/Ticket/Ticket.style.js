@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Icon from '../../../../../../../shared/components/Icon/Icon';
 
 export const Container = styled.div`
   background-color: rgb(255, 255, 255);
@@ -28,4 +29,15 @@ export const TicketStatus = styled.p`
   &:before{
     margin-right: .75em;
   }
+`
+
+export const Bottom = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+export const CustomIcon = styled(Icon)`
+  margin-right: 0;
+
 `

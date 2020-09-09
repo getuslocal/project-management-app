@@ -28,7 +28,7 @@ import {
   TicketHistoryContent,
 } from './TicketModal.style';
 
-const TicketModal = ({ ticket, setIsModalOpen, DeleteTicket, membersList, projectInfo, columnId, }) => {
+const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projectInfo, columnId, }) => {
   const [isSmallModalOpen, setIsSmallModalOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     issueType: ticket.issueType,
@@ -42,6 +42,8 @@ const TicketModal = ({ ticket, setIsModalOpen, DeleteTicket, membersList, projec
   });
   const { issueType, issueStatus, summary, description, reporterId, assigneeId, issuePriority, comments } = issueFormValues;
   const columnsList = projectInfo.columns;
+  // @todo: Add updated time.
+  const createAt = String(new Date(ticket.createdAt)).substring(0, 15)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -68,7 +70,7 @@ const TicketModal = ({ ticket, setIsModalOpen, DeleteTicket, membersList, projec
       <MainContent>
         <TopFixedContent>
           <TicketKey className={`icon-issue-${issueType.toLowerCase()}`}>{ticket.key}</TicketKey>
-          <i className="far fa-trash-alt" onClick={DeleteTicket}></i>
+          <i className="far fa-trash-alt" onClick={deleteTicket}></i>
           <i className="fas fa-times" onClick={() => setIsModalOpen(false)}></i>
         </TopFixedContent>
 
@@ -78,7 +80,7 @@ const TicketModal = ({ ticket, setIsModalOpen, DeleteTicket, membersList, projec
               <Fieldset>
                 <Title name="summary" currentValue={summary} handleChange={handleChange} />
                 <Description currentValue={description} handleChange={handleChange} />
-                <Comment comments={ticket.comments} ticketId={ticket._id}/>
+                <Comment comments={ticket.comments} ticketId={ticket._id} />
               </Fieldset>
             </FormLeftContent>
             <FormRightContent>
@@ -148,8 +150,9 @@ const TicketModal = ({ ticket, setIsModalOpen, DeleteTicket, membersList, projec
                 />
                 <Diviser />
                 <TicketHistoryContent>
-                  <p>Created July 25, 2020, 10:55 PM</p>
-                  <p>Updated 18 minutes ago</p>
+                  {/* <p>Created July 25, 2020, 10:55 PM</p> */}
+                  <p>Created : {createAt}</p>
+                  <p>Updated : 18 minutes ago</p>
                 </TicketHistoryContent>
               </Fieldset>
             </FormRightContent>

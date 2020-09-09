@@ -1,22 +1,26 @@
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { updateOneColumnTicketsOrder, updateTwoColumnsTicketsOrder, updateColumnOrder } from '../../../../../redux/projects/projects.actions';
+import { selectFilteredTickets } from '../../../../../redux/tickets/tickets.selectors';
 import store from '../../../../../redux/store';
 import Column from './Column/Column';
+import PropTypes from 'prop-types';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
 import {
   Container,
 } from './KanbanBoard.style';
 
-function getTickets(ticketMap, taskIds) {
-  let arr = [];
+const getTickets = (ticketMap, taskIds) => {
+  let selectedTickets = [];
   taskIds.forEach(taskId => {
     ticketMap.forEach(ticket => {
       if (ticket._id === taskId) {
-        arr.push(ticket)
+        selectedTickets.push(ticket)
       }
     })
   })
-  return arr
+  return selectedTickets
 }
 
 const InnerList = React.memo(props => {
@@ -89,26 +93,33 @@ const KanbanBoard = ({ projectInfo, tickets }) => {
     store.dispatch(updateTwoColumnsTicketsOrder(_id, { newStart, newFinish }));
   }
 
-  console.log(tickets)
-
   // @todo: change taskIds to ticketIds.
   return (
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="all-columns" direction="horizontal" type="column">
-          {provided => (
-            <Container ref={provided.innerRef} {...provided.droppableProps} >
-              {
-                columnOrder.map((columnId, index) => {
-                  const thisColumn = columns[columnId];
-                  return <InnerList key={thisColumn.id} column={thisColumn} ticketMap={tickets} index={index} projectId={_id} />
-                })
-              }
-              {provided.placeholder}
-            </Container>
-          )}
-        </Droppable>
-      </DragDropContext>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="all-columns" direction="horizontal" type="column">
+        {provided => (
+          <Container ref={provided.innerRef} {...provided.droppableProps} >
+            {
+              columnOrder.map((columnId, index) => {
+                const thisColumn = columns[columnId];
+                return <InnerList key={thisColumn.id} column={thisColumn} ticketMap={tickets} index={index} projectId={_id} />
+              })
+            }
+            {provided.placeholder}
+          </Container>
+        )}
+      </Droppable>
+    </DragDropContext>
   )
 }
 
-export default KanbanBoard;
+
+KanbanBoard.propTypes = {
+  tickets: PropTypes.array.isRequired,
+};
+
+const mapStateToProps = createStructuredSelector({
+  tickets: selectFilteredTickets,
+});
+
+export default connect(mapStateToProps, null)(KanbanBoard);

@@ -63,3 +63,7 @@ export const TicketsList = styled.div`
 export const ButtonContainer = styled.div`
 
 `
+export const Counter = styled.span`
+  margin-left: 1em;
+  font-size: 0.875em;
+`
