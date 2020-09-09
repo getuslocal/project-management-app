@@ -21,7 +21,7 @@ import {
   TextButton
 } from './NewIssueModal.style';
 
-const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, membersList, userProfile, ticketsLength }) => {
+const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, membersList, userProfile }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     projectId: currentProjectId,
@@ -37,8 +37,7 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, mem
   const handleSubmit = (e) => {
     e.preventDefault();
     const projectKey = projects[currentProjectId].key;
-    const key = projectKey + '-' + ticketsLength;
-    issueFormValues.key = key
+    issueFormValues.key = projectKey
     store.dispatch(createNewTicket(issueFormValues));
     setIsNewIssueModalOpen(false);
   }

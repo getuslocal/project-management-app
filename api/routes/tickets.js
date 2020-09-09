@@ -34,7 +34,13 @@ router.post('/create', verify, async (req, res) => {
 
   try {
     const savedNewTicket = await newTicket.save();
-    res.json(savedNewTicket)
+    // Create a key for the ticket based on project key name and global count number.
+    const savedNewTicketWithKey = await Ticket.findOneAndUpdate(
+      { _id: savedNewTicket._id },
+      { $set: { key: `${savedNewTicket.key}-${savedNewTicket.count}` } },
+      { new: true, runValidator: true }
+    )
+    res.json(savedNewTicketWithKey)
   } catch (err) {
     res.status(400).send(err);
   }

@@ -74,7 +74,7 @@ const ProjectsBoard = ({
             currentProjectId={project}
             membersList={membersList}
             userProfile={userProfile}
-            ticketsLength={tickets.length} />
+          />
           :
           <></>
       }

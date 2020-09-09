@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const Schema = mongoose.Schema;
 
 const ticketSchema = new Schema({
@@ -11,6 +12,9 @@ const ticketSchema = new Schema({
     type: String,
     required: true,
     trim: true,
+  },
+  count: {
+    type: Number,
   },
   issueType: {
     type: String,
@@ -64,6 +68,7 @@ const ticketSchema = new Schema({
   minimize: false
 });
 
+ticketSchema.plugin(AutoIncrement, {id:'count_seq',inc_field: 'count'});
 const Ticket = mongoose.model('Ticket', ticketSchema);
 
 module.exports = Ticket;
