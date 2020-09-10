@@ -36,8 +36,6 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, mem
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const projectKey = projects[currentProjectId].key;
-    issueFormValues.key = projectKey
     store.dispatch(createNewTicket(issueFormValues));
     setIsNewIssueModalOpen(false);
   }

@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Ticket = require('../models/ticket.model');
 const User = require('../models/user.model');
+const Project = require('../models/project.model');
 const verify = require('../middleware/auth');
 
 // @route  GET tickets/:projectId
@@ -18,12 +19,9 @@ router.get('/:projectId', verify, (req, res) => {
 // @desc   Create a new ticket of the project.
 // @access Private
 router.post('/create', verify, async (req, res) => {
-  const { projectId, issueType, issuePriority, summary, description, assigneeId, reporterId, key } = req.body;
-
-  //Create a new ticket
+  const { projectId, issueType, issuePriority, summary, description, assigneeId, reporterId } = req.body;
   const newTicket = new Ticket({
     projectId: projectId,
-    key: key,
     issueType: issueType,
     issuePriority: issuePriority,
     summary: summary,
@@ -31,13 +29,16 @@ router.post('/create', verify, async (req, res) => {
     assigneeId: assigneeId,
     reporterId: reporterId,
   });
-
   try {
+    //Create a new ticket
     const savedNewTicket = await newTicket.save();
+    // Get a project key name which is a base of ticket key. ex: DEMO-001.
+    const project = await Project.findById(projectId);
+    const keyBase = project.key;
     // Create a key for the ticket based on project key name and global count number.
     const savedNewTicketWithKey = await Ticket.findOneAndUpdate(
       { _id: savedNewTicket._id },
-      { $set: { key: `${savedNewTicket.key}-${savedNewTicket.count}` } },
+      { $set: { key: `${keyBase}-${savedNewTicket.count}` } },
       { new: true, runValidator: true }
     )
     res.json(savedNewTicketWithKey)

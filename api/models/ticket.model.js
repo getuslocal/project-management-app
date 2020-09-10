@@ -10,7 +10,6 @@ const ticketSchema = new Schema({
   },
   key: {
     type: String,
-    required: true,
     trim: true,
   },
   count: {

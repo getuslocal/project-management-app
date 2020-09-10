@@ -33,12 +33,9 @@ const QuickTicket = ({ setIsQuickTicketActive, projectId, user, createNewTicket,
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(issueFormValues)
-    issueFormValues.key = 'DEMO-123'
     createNewTicket(issueFormValues, columnId);
     setIsQuickTicketActive(false);
   }
-
 
   const handleChange = event => {
     const { name, value } = event.target;
