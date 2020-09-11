@@ -126,7 +126,9 @@ const ProjectsBoard = ({
           <Route exact path={projectUri} render={() =>
             <KanbanBoardWithSpinner isLoading={isLoading} projectInfo={projectInfo} />}
           />
-          <Route exact path={`${projectUri}/roadmap`} component={RoadMapBoard} />
+          <Route exact path={`${projectUri}/roadmap`} render={() =>
+            <RoadMapBoard/>}
+          />
           <Route exact path={`${projectUri}/members`} component={MembersBoard} />
           <Route exact path={`${projectUri}/settings`} component={SettingsBoard} />
         </Switch>

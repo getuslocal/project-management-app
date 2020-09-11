@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 
 export const SidebarContainer = styled.div`
-  float: left;
   background-color: #0f35a9;
   width: 230px;
   color: #fff;
   height: 100%;
   padding: 2em 0;
-  position: relative;
+  position: fixed;
+  left: 0;
+  top: 0;
   `;
 
 export const LogoContainer = styled.p`

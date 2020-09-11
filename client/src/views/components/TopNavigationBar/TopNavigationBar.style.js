@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  margin-bottom: 1rem;
+  padding: 1em 3em;
 `
 export const TopNavigationSmallContent = styled.div`
     display: flex;

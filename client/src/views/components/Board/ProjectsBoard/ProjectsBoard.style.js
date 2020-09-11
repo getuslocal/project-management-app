@@ -9,6 +9,8 @@ export const Container = styled.div`
 export const ProjectBoardTopContent = styled.div`
 display: flex;
 align-items: center;
+padding: 0 3em;
+margin-bottom: 1.5em;
 `
 export const ProjectName = styled.p`
 color: rgb(107, 119, 140);

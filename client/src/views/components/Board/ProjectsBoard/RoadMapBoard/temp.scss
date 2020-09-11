@@ -1,0 +1,103 @@
+.monthlyCalendar {
+  width: 100%;
+  min-width: 1000px;
+
+  .monthlyCalendarHeader {
+    padding: 0 3em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .5em;
+    // border-top: 2px solid #ddd;
+    // border-bottom: 2px solid #ddd;
+
+    .monthAndyear {
+      font-weight: 600;
+      font-size: 26px;
+      // display: inline-block;
+
+      .month {
+        margin-right: .5em;
+      }
+    }
+
+    .returnButton {
+      cursor: pointer;
+      background-color: rgb(0, 82, 204);
+      border-radius: 3px;
+      color: #fff;
+      padding: .75em 1.25em;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+
+  .content-container{
+    padding: 0 3em;
+  }
+
+  .day-grid-container {
+    display: flex;
+    padding: .5em 0;
+    border-bottom: 1px solid #ddd;
+    // @figure out 
+    padding-right: 10px;
+
+    .dayCell {
+      width: 14.28%;
+      max-width: 14.28%;
+      padding: 0 .5rem;
+      text-align: center;
+      color: #999;
+      font-weight: 600;
+      font-size: 14px;
+    }
+  }
+
+  .content {
+    // overflow-y: scroll;
+    // max-height: 600px;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(7, 14.28%);
+    // grid-template-columns: repeat(7, minmax(20px, 1fr));
+    // grid-template-rows: repeat(auto-fill, 120px);
+    // grid-template-rows: repeat(1, 20px);
+    // grid-template-rows: 50px;
+    grid-auto-rows: 180px;
+
+    .day {
+      padding: .5rem;
+      text-align: left;
+      border-left: 2px solid #ddd;
+      border-bottom: 2px solid #ddd;
+      color: rgba(0, 0, 0, 0.7);
+
+      &:last-child{
+        border-right: 2px solid #ddd;
+      }
+
+      &.gray {
+        color: rgb(190, 190, 190);
+      }
+
+      &.firstDay {
+        border-top: 3px solid #6f7782;
+      }
+
+      &.today {
+        color: #0052cc;
+        font-weight: 600;
+        border-top: 3px solid #0052cc;
+      }
+
+      &:hover{
+        background-color: rgba(9,30,66,0.04);
+        cursor: pointer;
+      }
+    }
+  }
+
+}

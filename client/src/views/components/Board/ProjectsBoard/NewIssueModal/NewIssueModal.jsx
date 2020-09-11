@@ -56,12 +56,13 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, mem
         <FormContainer>
           <form onSubmit={handleSubmit}>
             <Fieldset>
+              {/* @todo: figure out if project should be chosen from the list */}
               <FormSelectMenu
                 label="Project*"
                 name="projectId"
                 value={projects[projectId].name}
                 width="40%"
-                selectList={{ ...projects, [projectId]: undefined }}
+                selectList={{}}
                 handleModalOpen={setIsModalOpen}
                 isModalOpen={isModalOpen}
                 handleSelectMenu={handleSelectMenu}
