@@ -1,10 +1,4 @@
-.monthlyCalendar {
-  width: 100%;
-  min-width: 1000px;
-}
-
-.monthlyCalendar .monthlyCalendarHeader {
-  padding: 0 3em;
+.monthlyCalendarHeader {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -17,39 +11,40 @@
   margin-bottom: .5em;
 }
 
-.monthlyCalendar .monthlyCalendarHeader .monthAndyear {
+.monthlyCalendarHeader .monthAndyear {
   font-weight: 600;
-  font-size: 26px;
+  font-size: 24px;
 }
 
-.monthlyCalendar .monthlyCalendarHeader .monthAndyear .month {
+.monthlyCalendarHeader .monthAndyear .month {
   margin-right: .5em;
 }
 
-.monthlyCalendar .monthlyCalendarHeader .returnButton {
+.monthlyCalendarHeader .button-container span {
+  font-size: 22px;
+  margin-right: 1rem;
   cursor: pointer;
-  background-color: #0052cc;
+}
+
+.monthlyCalendarHeader .button-container .returnButton {
+  cursor: pointer;
+  border: 1px solid #172b4d;
   border-radius: 3px;
-  color: #fff;
   padding: .75em 1.25em;
   font-size: 14px;
   font-weight: 500;
+  margin-right: 1rem;
 }
 
-.monthlyCalendar .content-container {
-  padding: 0 3em;
-}
-
-.monthlyCalendar .day-grid-container {
+.day-grid-container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   padding: .5em 0;
-  border-bottom: 1px solid #ddd;
-  padding-right: 10px;
+  border-bottom: 2px solid #ddd;
 }
 
-.monthlyCalendar .day-grid-container .dayCell {
+.day-grid-container .dayCell {
   width: 14.28%;
   max-width: 14.28%;
   padding: 0 .5rem;
@@ -59,42 +54,12 @@
   font-size: 14px;
 }
 
-.monthlyCalendar .grid-container {
+.grid-container {
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: (14.28%)[7];
       grid-template-columns: repeat(7, 14.28%);
   grid-auto-rows: 180px;
-}
-
-.monthlyCalendar .grid-container .day {
-  padding: .5rem;
-  text-align: left;
-  border-left: 2px solid #ddd;
-  border-bottom: 2px solid #ddd;
-  color: rgba(0, 0, 0, 0.7);
-}
-
-.monthlyCalendar .grid-container .day:last-child {
   border-right: 2px solid #ddd;
-}
-
-.monthlyCalendar .grid-container .day.gray {
-  color: #bebebe;
-}
-
-.monthlyCalendar .grid-container .day.firstDay {
-  border-top: 3px solid #6f7782;
-}
-
-.monthlyCalendar .grid-container .day.today {
-  color: #0052cc;
-  font-weight: 600;
-  border-top: 3px solid #0052cc;
-}
-
-.monthlyCalendar .grid-container .day:hover {
-  background-color: rgba(9, 30, 66, 0.04);
-  cursor: pointer;
 }
 /*# sourceMappingURL=temp.css.map */

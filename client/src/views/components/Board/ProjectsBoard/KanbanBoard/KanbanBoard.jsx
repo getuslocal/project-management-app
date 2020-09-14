@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import {
   Container,
 } from './KanbanBoard.style';
+import TopBar from '../TopBar/TopBar';
 
 const getTickets = (ticketMap, taskIds) => {
   let selectedTickets = [];
@@ -28,8 +29,8 @@ const InnerList = React.memo(props => {
   return <Column column={column} tickets={getTickets(ticketMap, column.taskIds)} index={index} projectId={projectId} />
 })
 
-const KanbanBoard = ({ projectInfo, tickets }) => {
-  const { columnOrder, columns, _id, name } = projectInfo;
+const KanbanBoard = ({ project, tickets }) => {
+  const { columnOrder, columns, _id, name } = project;
 
   const onDragEnd = result => {
     // console.log(result)
@@ -48,7 +49,7 @@ const KanbanBoard = ({ projectInfo, tickets }) => {
 
     // If the type of dnd is column order change.
     if (type === 'column') {
-      const newColumnOrder = Array.from(projectInfo.columnOrder);
+      const newColumnOrder = Array.from(project.columnOrder);
       newColumnOrder.splice(source.index, 1);
       newColumnOrder.splice(destination.index, 0, draggableId);
       store.dispatch(updateColumnOrder(_id, newColumnOrder));
@@ -60,11 +61,8 @@ const KanbanBoard = ({ projectInfo, tickets }) => {
 
     if (start === finish) {
       const newTicketsIds = Array.from(start.taskIds);
-      // console.log(source)
-      // console.log(column.taskIds)
       newTicketsIds.splice(source.index, 1);
       newTicketsIds.splice(destination.index, 0, draggableId);
-      // console.log(newTicketsIds)
 
       const newColumn = {
         ...start,
@@ -95,21 +93,24 @@ const KanbanBoard = ({ projectInfo, tickets }) => {
 
   // @todo: change taskIds to ticketIds.
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="all-columns" direction="horizontal" type="column">
-        {provided => (
-          <Container ref={provided.innerRef} {...provided.droppableProps} >
-            {
-              columnOrder.map((columnId, index) => {
-                const thisColumn = columns[columnId];
-                return <InnerList key={thisColumn.id} column={thisColumn} ticketMap={tickets} index={index} projectId={_id} />
-              })
-            }
-            {provided.placeholder}
-          </Container>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <>
+      <TopBar project={project} />
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="all-columns" direction="horizontal" type="column">
+          {provided => (
+            <Container ref={provided.innerRef} {...provided.droppableProps} >
+              {
+                columnOrder.map((columnId, index) => {
+                  const thisColumn = columns[columnId];
+                  return <InnerList key={thisColumn.id} column={thisColumn} ticketMap={tickets} index={index} projectId={_id} />
+                })
+              }
+              {provided.placeholder}
+            </Container>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </>
   )
 }
 

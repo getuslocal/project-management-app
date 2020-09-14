@@ -21,7 +21,7 @@ import {
   TextButton
 } from './NewIssueModal.style';
 
-const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, membersList, userProfile }) => {
+const NewIssueModal = ({ setIsModalActive, projects, currentProjectId, membersList, userProfile }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     projectId: currentProjectId,
@@ -37,7 +37,7 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, mem
   const handleSubmit = (e) => {
     e.preventDefault();
     store.dispatch(createNewTicket(issueFormValues));
-    setIsNewIssueModalOpen(false);
+    setIsModalActive(false);
   }
 
   const handleChange = event => {
@@ -158,7 +158,7 @@ const NewIssueModal = ({ setIsNewIssueModalOpen, projects, currentProjectId, mem
               />
               <ButtonsContainer>
                 <SubmitButton value="Create" type="submit" />
-                <TextButton onClick={() => setIsNewIssueModalOpen(false)}>Cancel</TextButton>
+                <TextButton onClick={() => setIsModalActive(false)}>Cancel</TextButton>
               </ButtonsContainer>
             </Fieldset>
           </form>
