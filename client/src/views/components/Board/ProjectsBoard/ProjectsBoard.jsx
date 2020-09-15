@@ -13,7 +13,6 @@ import { createStructuredSelector } from 'reselect';
 import { getTicketsByProjectId } from '../../../../redux/tickets/tickets.actions';
 import { getMembersByProjectId } from '../../../../redux/members/members.actions';
 import WithSpinner from '../../../../shared/components/WithSpinner/WithSpinner';
-import VizSensor from 'react-visibility-sensor';
 
 const KanbanBoardWithSpinner = WithSpinner(KanbanBoard);
 
@@ -32,7 +31,6 @@ const ProjectsBoard = ({
   const { tab } = props.match.params;
   const projectUri = baseUrl + '/' + projectId;
   const currentRoute = tab ? tab : '';
-  const [isNavigationVisible, setIsNavigationVisible] = useState(true);
 
   useEffect(() => {
     getTicketsByProjectId(projectId)
@@ -41,27 +39,14 @@ const ProjectsBoard = ({
 
   return (
     <>
-      <VizSensor partialVisibility={true} onChange={(isVisible) => {
-        if (isVisible) {
-          setIsNavigationVisible(true)
-          // console.log(true)
-        } else {
-          // console.log(false)
-          // if (!isNavigationVisible) {
-          //   return
-          // }
-          setIsNavigationVisible(false)
-        }
-      }}>
-        <TopNavigationBar title={projectKeyName} tabs={tabs} baseUrl={projectUri} currentRoute={currentRoute} />
-      </VizSensor>
+      <TopNavigationBar title={projectKeyName} tabs={tabs} baseUrl={projectUri} currentRoute={currentRoute} />
       <Switch>
         <Route exact path={projectUri} render={() =>
           <KanbanBoardWithSpinner isLoading={isLoading} project={project} />
         }
         />
         <Route exact path={`${projectUri}/roadmap`} render={() =>
-          <RoadMapBoard project={project} isNavigationVisible={isNavigationVisible}/>
+          <RoadMapBoard project={project} />
         }
         />
         <Route exact path={`${projectUri}/members`} component={MembersBoard} />

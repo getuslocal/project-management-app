@@ -4,28 +4,17 @@ import TopBar from '../TopBar/TopBar';
 import CalendarHeader from './CalendarHeader/CalendarHeader';
 import CalendarContent from './CalendarContent/CalendarContent';
 import {
-  FixedContent,
   Container,
-  MainContent
 } from './RoadMapBoard.style';
 
-const RoadMapBoard = ({ project, isNavigationVisible }) => {
+const RoadMapBoard = ({ project }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date())
-  const [fixedContentHeight, setFixedContentHeight] = useState(null)
   const todayRef = useRef(null);
-  const fixedContentRef = useRef(null);
-  const currentDate = {
+  const today = {
     yyyy: new Date().getFullYear(),
     mm: new Date().getMonth(),
     dd: new Date().getDate(),
   }
-
-  useEffect(() => {
-    const fixedContentHeight = fixedContentRef.current.clientHeight;
-    setFixedContentHeight(fixedContentHeight);
-    // console.log('RoadMapBoard')
-    // todayRef.current.scrollIntoView(true);
-  }, []);
 
   const changeMonth = (yyyy, mm) => {
     setCurrentMonth(new Date(yyyy, mm))
@@ -33,23 +22,19 @@ const RoadMapBoard = ({ project, isNavigationVisible }) => {
 
   return (
     <Container>
-      <FixedContent ref={fixedContentRef} isNavigationVisible={isNavigationVisible}>
         <TopBar project={project} renderStyle="RoadMapBoard" />
-        <CalendarHeader
+        {/* <CalendarHeader
           currentMonth={currentMonth}
           changeMonth={changeMonth}
           todayRef={todayRef}
-          currentDate={currentDate}
-        />
-      </FixedContent>
-      <MainContent fixedContentHeight={fixedContentHeight} isNavigationVisible={isNavigationVisible}>
+          today={today}
+        /> */}
         <CalendarContent
-          currentDate={currentDate}
+          today={today}
           currentMonth={currentMonth}
           changeMonth={changeMonth}
           todayRef={todayRef}
         />
-      </MainContent>
     </Container>
   );
 }

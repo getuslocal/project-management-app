@@ -5,9 +5,7 @@ const CalandarHeader = ({ currentMonth, currentDate, todayRef, changeMonth }) =>
 
   const scrollToToday = (ref) => {
     changeMonth(currentDate.yyyy, currentDate.mm)
-    ref.current.scrollIntoView({
-      behavior: "smooth",
-    })
+    ref.current.scrollIntoView()
   }
 
   return (
