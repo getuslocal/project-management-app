@@ -65,18 +65,3 @@ export const logout = () => ({ type: LOGOUT });
 
 // Refresh error message
 export const refreshErrorMessage = () => ({ type: REFRESH_ERROR_MESSAGE });
-
-// Get user of the id.
-// export const getUserById = (userId) => async dispatch => {
-//   try {
-//     const res = await api.get(`/users/${userId}`);
-//     dispatch({
-//       type: USER_LOADED,
-//       payload: res.data
-//     });
-//   } catch (err) {
-//     dispatch({
-//       type: AUTH_ERROR,
-//     });
-//   }
-// };

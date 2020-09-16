@@ -43,7 +43,9 @@ const CalendarContent = ({ today, changeMonth, currentMonth }) => {
   const scrollToPrevMonth = () => {
     const isBeforeCurrent = moment(currentMonth).isBefore(today);
     const firstMonthOfCalendar = calendar[0][0];
-    if (isBeforeCurrent && currentYearOfCalendar === firstMonthOfCalendar.yyyy && currentMonthOfCalendar === firstMonthOfCalendar.mm) {
+    if (isBeforeCurrent &&
+      currentYearOfCalendar === firstMonthOfCalendar.yyyy &&
+      currentMonthOfCalendar === firstMonthOfCalendar.mm) {
       setIsPrevMonth(true);
       setStartMonth(new Date(currentYearOfCalendar, currentMonthOfCalendar - 1));
       containerRef.current.scrollTop = 0;

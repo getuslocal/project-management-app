@@ -2,6 +2,7 @@ import axios from 'axios';
 import store from '../../redux/store';
 import { LOGOUT } from '../../redux/auth/auth.actions';
 
+// Set config defaults when creating the instance.
 const api = axios.create({
   baseURL: 'http://localhost:3000',
   headers: {
