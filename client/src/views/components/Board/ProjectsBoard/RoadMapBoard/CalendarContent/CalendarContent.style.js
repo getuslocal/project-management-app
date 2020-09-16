@@ -1,30 +1,31 @@
-import styled, {css} from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
-    padding: 1px 0 0;
+    /* padding: 1px 0 0; */
     height: 650px;
     max-height: 650px;
     overflow-y: scroll;
 `
 
 export const InnerContainer = styled.div`
-height: 100%;
 `
 
 export const InnerRef = styled.div`
 `
 export const Content = styled.div`
+height: 100%;
 padding: 8px;
 `
 
 export const DayCell = styled.div`
       text-align: right;
-      border-left: 2px solid #ddd;
-      border-bottom: 2px solid #ddd;
-      color: rgba(0, 0, 0, 0.3);
+      border-left: 2px solid rgba(166, 168, 179, 0.12);
+      border-bottom: 2px solid rgba(166, 168, 179, 0.12);
+      color: rgba(0, 0, 0, 0.2);
+      font-size: 14px;
 
       &:last-child {
-        border-right: 2px solid #ddd;
+        border-right: 2px solid rgba(166, 168, 179, 0.12);
       }
 
       &.gray {
@@ -33,21 +34,26 @@ export const DayCell = styled.div`
 
 
       ${(props) =>
-      props.isFocused && css`
+    props.isFocused && css`
         color: rgba(0, 0, 0, 0.7);
         font-weight: 500;
     `};
 
-      ${(props) =>
-      props.isWeekEnd && css`
-        background: rgb(247, 246, 243);
-    `};
+
+    &:nth-child(7n+1),
+    &:nth-child(7n) {
+    background: rgba(247, 246, 243,.8);
+      }
 
       ${(props) =>
-      props.isToday && css`
+        props.isToday && css`
         color: #0052cc;
-        /* padding-top: 5px;
-        padding-right: 5px; */
+
+        &::before{
+          content: '';
+          display: block;
+          border-top: 2px solid #0052cc;
+        }
 
         span{
           /* padding: .5rem; */

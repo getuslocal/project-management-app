@@ -23,15 +23,18 @@
         cursor: pointer;
       }
 
+      .moveButton{
+        padding: .7em 1em;
+      }
+
       .returnButton {
         cursor: pointer;
-        border: 1px solid rgb(23, 43, 77);
+        border: 1px solid rgba(23, 43, 77, .3);
         border-radius: 3px;
-        padding: .75em 1.25em;
-        font-size: 14px;
+        padding: .7em 1em;
         font-weight: 500;
-        margin-right: 1rem;
-
+        margin-left: .75rem;
+        margin-right: .75rem;
       }
     }
 
@@ -40,7 +43,7 @@
   .day-grid-container {
     display: flex;
     padding: .5em 0;
-    border-bottom: 2px solid #ddd;
+    border-bottom: 2px solid rgba(166, 168, 179, 0.12);
     padding-right: 13px;
 
     .dayCell {
@@ -48,8 +51,8 @@
       max-width: 14.28%;
       padding: 0 .5rem;
       text-align: right;
-      color: #999;
-      font-weight: 600;
+      color: #99a1a7;
+      font-weight: 500;
       font-size: 14px;
     }
   }
@@ -63,5 +66,5 @@
     // grid-template-rows: repeat(1, 20px);
     // grid-template-rows: 50px;
     grid-auto-rows: 130px;
-    border-right: 2px solid #ddd;
+    // border-right: 2px solid rgba(166, 168, 179, 0.12);
   }

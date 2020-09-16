@@ -26,14 +26,18 @@
   cursor: pointer;
 }
 
+.monthlyCalendarHeader .button-container .moveButton {
+  padding: .7em 1em;
+}
+
 .monthlyCalendarHeader .button-container .returnButton {
   cursor: pointer;
-  border: 1px solid #172b4d;
+  border: 1px solid rgba(23, 43, 77, 0.3);
   border-radius: 3px;
-  padding: .75em 1.25em;
-  font-size: 14px;
+  padding: .7em 1em;
   font-weight: 500;
-  margin-right: 1rem;
+  margin-left: .75rem;
+  margin-right: .75rem;
 }
 
 .day-grid-container {
@@ -41,7 +45,7 @@
   display: -ms-flexbox;
   display: flex;
   padding: .5em 0;
-  border-bottom: 2px solid #ddd;
+  border-bottom: 2px solid rgba(166, 168, 179, 0.12);
   padding-right: 13px;
 }
 
@@ -50,8 +54,8 @@
   max-width: 14.28%;
   padding: 0 .5rem;
   text-align: right;
-  color: #999;
-  font-weight: 600;
+  color: #99a1a7;
+  font-weight: 500;
   font-size: 14px;
 }
 
@@ -61,6 +65,5 @@
   -ms-grid-columns: (14.28%)[7];
       grid-template-columns: repeat(7, 14.28%);
   grid-auto-rows: 130px;
-  border-right: 2px solid #ddd;
 }
 /*# sourceMappingURL=temp.css.map */

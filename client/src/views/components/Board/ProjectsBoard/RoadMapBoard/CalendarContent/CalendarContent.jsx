@@ -1,8 +1,8 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useEffect } from 'react';
 import VizSensor from 'react-visibility-sensor';
 import { useState } from 'react';
-import useCalendarMonth from './useCalendarMonth';
 import moment from 'moment';
+import getCalendarContent from './getCalendarContent';
 import {
   Container,
   DayCell,
@@ -11,51 +11,62 @@ import {
 } from './CalendarContent.style';
 
 const CalendarContent = ({ today, changeMonth, currentMonth }) => {
-  const [startMonth, setStartMonth] = useState(new Date());
-  const [isPrevMonth, setIsPrevMonth] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [calendar, setCalendar] = useState([]);
+
   const containerRef = useRef(null);
   const dayCellRef = useRef([]);
+
   const currentYearOfCalendar = currentMonth.getFullYear();
   const currentMonthOfCalendar = currentMonth.getMonth();
-  const calendarLength = 2;
-  const {
-    calendar,
-    loading,
-    lastDayOfCalendar,
-  } = useCalendarMonth(startMonth, calendarLength, isPrevMonth);
+  const calendarLength = 3;
+
+  useEffect(() => {
+    setCalendar(getCalendarContent(new Date(), calendarLength));
+    setLoading(false)
+  }, []);
 
   const observer = useRef();
   const lastCalendarDayRef = useCallback(node => {
     if (loading) return
-    if (lastDayOfCalendar.yyyy >= today.yyyy + 2) return
-
     if (observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting) {
-        setIsPrevMonth(false)
-        setStartMonth(new Date(lastDayOfCalendar.yyyy, lastDayOfCalendar.mm + 1))
+        const lastMonthOfCalendar = calendar[calendar.length - 1];
+        const lastDayOfCalendar = lastMonthOfCalendar[lastMonthOfCalendar.length - 1];
+        if (lastDayOfCalendar.yyyy >= today.yyyy + 2) return
+        setCalendar(prevState => {
+          return [
+            ...prevState,
+            ...getCalendarContent(new Date(lastDayOfCalendar.yyyy, lastDayOfCalendar.mm + 1), calendarLength)
+          ]
+        })
       }
     })
     if (node) observer.current.observe(node)
   })
 
-
   const scrollToPrevMonth = () => {
+    if (calendar.length === 0) return;
+
     const isBeforeCurrent = moment(currentMonth).isBefore(today);
     const firstMonthOfCalendar = calendar[0][0];
     if (isBeforeCurrent &&
       currentYearOfCalendar === firstMonthOfCalendar.yyyy &&
       currentMonthOfCalendar === firstMonthOfCalendar.mm) {
-      setIsPrevMonth(true);
-      setStartMonth(new Date(currentYearOfCalendar, currentMonthOfCalendar - 1));
+      setCalendar(prevState => {
+        return [
+          ...getCalendarContent(new Date(currentYearOfCalendar, currentMonthOfCalendar - 1), 1),
+          ...prevState
+        ]
+      })
+      // @todo: Fix firefox scrollTop bug.
       containerRef.current.scrollTop = 0;
       return;
     }
     const prevMonthYear = currentMonthOfCalendar === 0 ? currentYearOfCalendar - 1 : currentYearOfCalendar;
     const prevMonth = currentMonthOfCalendar === 0 ? 11 : currentMonthOfCalendar - 1;
-    dayCellRef.current[`${prevMonthYear}${prevMonth}${1}`].current.scrollIntoView({
-      behavior: "smooth",
-    })
+    dayCellRef.current[`${prevMonthYear}${prevMonth}${1}`].current.scrollIntoView()
   }
 
   const scrollToToday = () => {
@@ -65,12 +76,31 @@ const CalendarContent = ({ today, changeMonth, currentMonth }) => {
   const scrollToNextMonth = () => {
     const nextMonthYear = currentMonthOfCalendar === 11 ? currentYearOfCalendar + 1 : currentYearOfCalendar;
     const nextMonth = currentMonthOfCalendar === 11 ? 0 : currentMonthOfCalendar + 1;
-    dayCellRef.current[`${nextMonthYear}${nextMonth}${1}`].current.scrollIntoView({
-      behavior: "smooth",
-    })
+    dayCellRef.current[`${nextMonthYear}${nextMonth}${1}`].current.scrollIntoView()
   }
 
-  console.log(calendar)
+  const adjustFirstMonthLength = (calendar) => {
+    let content = [];
+    if (calendar.length > 1) {
+      const currentFirstMonth = calendar[0][0];
+      const firstDayStartAt = new Date(currentFirstMonth.yyyy, currentFirstMonth.mm, 1).getDay();
+      const lastDayOfMonth = new Date(currentFirstMonth.yyyy, currentFirstMonth.mm, 0).getDate();
+      for (let dd = lastDayOfMonth; dd > lastDayOfMonth - firstDayStartAt; dd--) {
+        content = [
+          {
+            yyyy: currentFirstMonth.yyyy,
+            mm: currentFirstMonth.mm - 1,
+            dd: dd,
+          },
+          ...content
+        ]
+      }
+    }
+    return [
+      content,
+      ...calendar
+    ]
+  }
 
   return (
     <>
@@ -81,9 +111,13 @@ const CalendarContent = ({ today, changeMonth, currentMonth }) => {
             <span >{currentYearOfCalendar}</span>
           </div>
           <div className="button-container">
-            <button className="returnButton" onClick={scrollToPrevMonth}>Prev</button>
-            <button className="returnButton" onClick={scrollToToday}>TODAY</button>
-            <button className="returnButton" onClick={scrollToNextMonth}>Next</button>
+            <button className="moveButton" onClick={scrollToPrevMonth}>
+              <i className="fas fa-chevron-left"></i>
+            </button>
+            <button className="returnButton" onClick={scrollToToday}>Today</button>
+            <button className="moveButton" onClick={scrollToNextMonth}>
+              <i className="fas fa-chevron-right"></i>
+            </button>
           </div>
         </div>
         <div className="day-grid-container">
@@ -98,37 +132,35 @@ const CalendarContent = ({ today, changeMonth, currentMonth }) => {
       </div>
       <div className="content-container">
         <Container test={"test"} className="grid-container" ref={containerRef}>
-          <DayCell>30</DayCell>
-          <DayCell>31</DayCell>
           {
-            calendar.map(month => {
+            adjustFirstMonthLength(calendar).map(month => {
               return (
-                month.map(date => {
-                  const { yyyy, mm, dd, isToday, isWeekEnd, isFirstDayOfMonth, isLastDayOfCalendar } = date;
-                  const isFocused = (currentMonthOfCalendar === mm)
+                month.map((date) => {
+                  const { yyyy, mm, dd, isToday, isFirstDayOfMonth, isLastDayOfCalendar } = date;
+                  const isFocused = (currentMonthOfCalendar === mm);
+                  // Create multiple refs based on a date.
                   dayCellRef.current[`${yyyy}${mm}${dd}`] = React.createRef();
+
                   return (
-                    <DayCell
-                      isWeekEnd={isWeekEnd}
-                      isFocused={isFocused}
-                      ref={dayCellRef.current[`${yyyy}${mm}${dd}`]}
-                      sFirstDayOfMonth={isFirstDayOfMonth}
-                      isToday={isToday}
-                      key={`date_${yyyy}_${mm}_${dd}`}
+                    <VizSensor
+                      key={`date_${yyyy}/${mm}/${dd}`}
+                      offset={{ top: -10, bottom: 130 }}
+                      containment={containerRef.current}
+                      onChange={(isVisible) => { if (isVisible) { changeMonth(yyyy, mm) } }}
+                      active={isFirstDayOfMonth ? true : false}
                     >
-                      <VizSensor
-                        offset={{ bottom: 130 }}
-                        containment={containerRef.current}
-                        onChange={(isVisible) => { if (isVisible) { changeMonth(yyyy, mm) } }}
-                        active={isFirstDayOfMonth ? true : false}
+                      <DayCell
+                        isFocused={isFocused}
+                        ref={dayCellRef.current[`${yyyy}${mm}${dd}`]}
+                        isToday={isToday}
                       >
                         <InnerContainer ref={isLastDayOfCalendar ? lastCalendarDayRef : null} >
-                          <Content>
-                            {isFirstDayOfMonth && moment(new Date(yyyy, mm)).format('MMM')} {dd}
-                          </Content>
                         </InnerContainer>
-                      </VizSensor>
-                    </DayCell>
+                        <Content>
+                          {isFirstDayOfMonth && moment(new Date(yyyy, mm)).format('MMM')} {dd}
+                        </Content>
+                      </DayCell>
+                    </VizSensor>
                   );
                 })
               )
