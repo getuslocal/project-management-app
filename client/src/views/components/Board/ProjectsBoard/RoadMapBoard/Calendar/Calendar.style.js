@@ -1,10 +1,12 @@
 import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
-    /* padding: 1px 0 0; */
     height: 650px;
     max-height: 650px;
     overflow-y: scroll;
+    display: grid;
+    grid-template-columns: repeat(7, 14.28%);
+    grid-auto-rows: 130px;
 `
 
 export const InnerContainer = styled.div`
@@ -15,6 +17,7 @@ export const InnerRef = styled.div`
 export const Content = styled.div`
 height: 100%;
 padding: 8px;
+padding-top: ${(props) => props.isToday && '6px'};
 `
 
 export const DayCell = styled.div`
@@ -26,6 +29,7 @@ export const DayCell = styled.div`
 
       &:last-child {
         border-right: 2px solid rgba(166, 168, 179, 0.12);
+        margin-right: -2px;
       }
 
       &.gray {
@@ -40,10 +44,11 @@ export const DayCell = styled.div`
     `};
 
 
-    &:nth-child(7n+1),
-    &:nth-child(7n) {
-    background: rgba(247, 246, 243,.8);
-      }
+  &:nth-child(7n+1),
+  &:nth-child(7n) {
+    /* background: rgba(247, 246, 243,.8); */
+    background: rgba(0, 0, 0,.02);
+  }
 
       ${(props) =>
         props.isToday && css`
@@ -54,19 +59,6 @@ export const DayCell = styled.div`
           display: block;
           border-top: 2px solid #0052cc;
         }
-
-        span{
-          /* padding: .5rem; */
-          width: 25px;
-          display: inline-block;
-          height: 25px;
-          line-height: 25px;
-          text-align: center;
-          background-color: #0052cc;
-          border-radius: 50%;
-          color: #fff;
-        }
-        /* border-top: 3px solid #0052cc; */
     `};
 
       &:hover {

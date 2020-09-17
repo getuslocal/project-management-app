@@ -21,11 +21,12 @@ import {
   TextButton
 } from './NewIssueModal.style';
 
-const NewIssueModal = ({ setIsModalActive, projects, currentProjectId, membersList, userProfile }) => {
+const NewIssueModal = ({ setIsModalActive, projects, currentProjectId, membersList, userProfile, renderStyle }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const isEpicModal = (renderStyle === "RoadMapBoard");
   const [issueFormValues, setIssueFormValues] = useState({
     projectId: currentProjectId,
-    issueType: IssueTypes.TASK,
+    issueType: isEpicModal ? IssueTypes.EPIC : IssueTypes.TASK,
     summary: '',
     description: '',
     reporterId: userProfile._id,
@@ -81,7 +82,7 @@ const NewIssueModal = ({ setIsModalActive, projects, currentProjectId, membersLi
                 name="issueType"
                 value={issueType}
                 width="40%"
-                selectList={{ ...IssueTypes, [issueType.toUpperCase()]: undefined }}
+                selectList={{}}
                 handleModalOpen={setIsModalOpen}
                 isModalOpen={isModalOpen}
                 handleSelectMenu={handleSelectMenu}
@@ -156,7 +157,7 @@ const NewIssueModal = ({ setIsModalActive, projects, currentProjectId, membersLi
                 }}
                 required
               />
-              <ButtonsContainer>
+              <ButtonsContainer isEpicModal={isEpicModal}>
                 <SubmitButton value="Create" type="submit" />
                 <TextButton onClick={() => setIsModalActive(false)}>Cancel</TextButton>
               </ButtonsContainer>

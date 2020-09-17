@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 
 export const ModalContainer = styled.div`
   height: 100%;
@@ -51,6 +51,16 @@ export const ButtonsContainer = styled.div`
       width: 100%;
       text-align: right;
       padding: 16px 24px;
+
+      ${({isEpicModal}) => isEpicModal && css`
+      input {
+        background-color: purple !important
+      }
+      p{
+        color: purple !important
+      }
+    `}
+
 `
 export const SubmitButton = styled.input`
         font-weight: 600;

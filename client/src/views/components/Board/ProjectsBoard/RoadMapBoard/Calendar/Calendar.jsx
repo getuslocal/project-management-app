@@ -3,23 +3,44 @@ import VizSensor from 'react-visibility-sensor';
 import { useState } from 'react';
 import moment from 'moment';
 import getCalendarContent from './getCalendarContent';
+import CalendarHeader from './CalendarHeader/CalendarHeader';
 import {
   Container,
   DayCell,
   InnerContainer,
   Content
-} from './CalendarContent.style';
+} from './Calendar.style';
 
-const CalendarContent = ({ today, changeMonth, currentMonth }) => {
+// @todo: Sensor improvement
+// @todo: Week div container
+const Calendar = () => {
   const [loading, setLoading] = useState(true);
   const [calendar, setCalendar] = useState([]);
+  const [currentMonth, setCurrentMonth] = useState(new Date())
+  const today = {
+    yyyy: new Date().getFullYear(),
+    mm: new Date().getMonth(),
+    dd: new Date().getDate(),
+  }
 
+  const changeMonth = (yyyy, mm) => {
+    setCurrentMonth(new Date(yyyy, mm))
+  }
+
+  // Create some refs to scroll to specific element.
   const containerRef = useRef(null);
   const dayCellRef = useRef([]);
 
   const currentYearOfCalendar = currentMonth.getFullYear();
   const currentMonthOfCalendar = currentMonth.getMonth();
   const calendarLength = 3;
+  const lastMonthOfCalendar = calendar[calendar.length - 1];
+  let lastDayOfCalendar = undefined;
+
+  // Get the very last day of current calendar.
+  if (lastMonthOfCalendar && lastMonthOfCalendar.length > 0) {
+    lastDayOfCalendar = lastMonthOfCalendar[lastMonthOfCalendar.length - 1];
+  }
 
   useEffect(() => {
     setCalendar(getCalendarContent(new Date(), calendarLength));
@@ -32,9 +53,7 @@ const CalendarContent = ({ today, changeMonth, currentMonth }) => {
     if (observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting) {
-        const lastMonthOfCalendar = calendar[calendar.length - 1];
-        const lastDayOfCalendar = lastMonthOfCalendar[lastMonthOfCalendar.length - 1];
-        if (lastDayOfCalendar.yyyy >= today.yyyy + 2) return
+        if (lastDayOfCalendar && lastDayOfCalendar.yyyy >= today.yyyy + 2) return
         setCalendar(prevState => {
           return [
             ...prevState,
@@ -45,6 +64,7 @@ const CalendarContent = ({ today, changeMonth, currentMonth }) => {
     })
     if (node) observer.current.observe(node)
   })
+  // console.log(calendar)
 
   const scrollToPrevMonth = () => {
     if (calendar.length === 0) return;
@@ -60,8 +80,6 @@ const CalendarContent = ({ today, changeMonth, currentMonth }) => {
           ...prevState
         ]
       })
-      // @todo: Fix firefox scrollTop bug.
-      containerRef.current.scrollTop = 0;
       return;
     }
     const prevMonthYear = currentMonthOfCalendar === 0 ? currentYearOfCalendar - 1 : currentYearOfCalendar;
@@ -74,6 +92,10 @@ const CalendarContent = ({ today, changeMonth, currentMonth }) => {
   }
 
   const scrollToNextMonth = () => {
+    if (lastDayOfCalendar && lastDayOfCalendar.yyyy >= today.yyyy + 2 &&
+      currentMonthOfCalendar === lastDayOfCalendar.mm &&
+      currentYearOfCalendar === lastDayOfCalendar.yyyy
+    ) return
     const nextMonthYear = currentMonthOfCalendar === 11 ? currentYearOfCalendar + 1 : currentYearOfCalendar;
     const nextMonth = currentMonthOfCalendar === 11 ? 0 : currentMonthOfCalendar + 1;
     dayCellRef.current[`${nextMonthYear}${nextMonth}${1}`].current.scrollIntoView()
@@ -104,73 +126,50 @@ const CalendarContent = ({ today, changeMonth, currentMonth }) => {
 
   return (
     <>
-      <div className="container">
-        <div className="monthlyCalendarHeader">
-          <div className="monthAndyear">
-            <span className="month">{moment(new Date(currentMonth)).format('MMMM')}</span>
-            <span >{currentYearOfCalendar}</span>
-          </div>
-          <div className="button-container">
-            <button className="moveButton" onClick={scrollToPrevMonth}>
-              <i className="fas fa-chevron-left"></i>
-            </button>
-            <button className="returnButton" onClick={scrollToToday}>Today</button>
-            <button className="moveButton" onClick={scrollToNextMonth}>
-              <i className="fas fa-chevron-right"></i>
-            </button>
-          </div>
-        </div>
-        <div className="day-grid-container">
-          <div className="dayCell">Sun</div>
-          <div className="dayCell">Mon</div>
-          <div className="dayCell">Tue</div>
-          <div className="dayCell">Wed</div>
-          <div className="dayCell">Thu</div>
-          <div className="dayCell">Fri</div>
-          <div className="dayCell">Sat</div>
-        </div>
-      </div>
-      <div className="content-container">
-        <Container test={"test"} className="grid-container" ref={containerRef}>
-          {
-            adjustFirstMonthLength(calendar).map(month => {
-              return (
-                month.map((date) => {
-                  const { yyyy, mm, dd, isToday, isFirstDayOfMonth, isLastDayOfCalendar } = date;
-                  const isFocused = (currentMonthOfCalendar === mm);
-                  // Create multiple refs based on a date.
-                  dayCellRef.current[`${yyyy}${mm}${dd}`] = React.createRef();
-
-                  return (
-                    <VizSensor
-                      key={`date_${yyyy}/${mm}/${dd}`}
-                      offset={{ top: -10, bottom: 130 }}
-                      containment={containerRef.current}
-                      onChange={(isVisible) => { if (isVisible) { changeMonth(yyyy, mm) } }}
-                      active={isFirstDayOfMonth ? true : false}
+      <CalendarHeader
+        currentMonth={currentMonth}
+        scrollToPrevMonth={scrollToPrevMonth}
+        scrollToToday={scrollToToday}
+        scrollToNextMonth={scrollToNextMonth}
+      />
+      <Container ref={containerRef}>
+        {
+          adjustFirstMonthLength(calendar).map(month => {
+            return (
+              month.map((date) => {
+                const { yyyy, mm, dd, isToday, isFirstDayOfMonth, isLastDayOfCalendar } = date;
+                const isFocused = (currentMonthOfCalendar === mm);
+                // Create multiple refs based on a date.
+                dayCellRef.current[`${yyyy}${mm}${dd}`] = React.createRef();
+                return (
+                  <VizSensor
+                    key={`date_${yyyy}/${mm}/${dd}`}
+                    offset={{ top: -5, bottom: 130 }}
+                    containment={containerRef.current}
+                    onChange={(isVisible) => { if (isVisible) { changeMonth(yyyy, mm) } }}
+                    active={isFirstDayOfMonth ? true : false}
+                  >
+                    <DayCell
+                      isFocused={isFocused}
+                      ref={dayCellRef.current[`${yyyy}${mm}${dd}`]}
+                      isToday={isToday}
                     >
-                      <DayCell
-                        isFocused={isFocused}
-                        ref={dayCellRef.current[`${yyyy}${mm}${dd}`]}
-                        isToday={isToday}
-                      >
-                        <InnerContainer ref={isLastDayOfCalendar ? lastCalendarDayRef : null} >
-                        </InnerContainer>
-                        <Content>
-                          {isFirstDayOfMonth && moment(new Date(yyyy, mm)).format('MMM')} {dd}
-                        </Content>
-                      </DayCell>
-                    </VizSensor>
-                  );
-                })
-              )
-            })
-          }
-        </Container>
-        <div>{loading && 'Loading...'}</div>
-      </div>
+                      <InnerContainer ref={isLastDayOfCalendar ? lastCalendarDayRef : null} >
+                      </InnerContainer>
+                      <Content isToday={isToday}>
+                        {isFirstDayOfMonth && moment(new Date(yyyy, mm)).format('MMM')} {dd}
+                      </Content>
+                    </DayCell>
+                  </VizSensor>
+                );
+              })
+            )
+          })
+        }
+      </Container>
+      <div>{loading && 'Loading...'}</div>
     </>
   )
 }
 
-export default CalendarContent;
+export default Calendar;

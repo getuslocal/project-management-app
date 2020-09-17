@@ -42,6 +42,13 @@ export default function getCalendarContent(startMonth, calendarLength = 1) {
           isLastDayOfCalendar: isLastDayOfCalendar
         }
       ]
+
+      // if (dd % 7 === 0) {
+      //   week = [
+      //     ...week,
+      //     content.splice(- 7)
+      //   ]
+      // }
     }
 
     calendar = [
@@ -49,6 +56,7 @@ export default function getCalendarContent(startMonth, calendarLength = 1) {
       content
     ]
   }
+
 
   return calendar;
 }

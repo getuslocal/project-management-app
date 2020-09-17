@@ -47,6 +47,7 @@ const TopBar = ({
           currentProjectId={projectId}
           membersList={membersList}
           userProfile={userProfile}
+          renderStyle={renderStyle}
         />
       }
       <Left>
