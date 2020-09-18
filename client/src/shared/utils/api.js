@@ -1,6 +1,6 @@
 import axios from 'axios';
 import store from '../../redux/store';
-import { LOGOUT } from '../../redux/auth/auth.actions';
+import { logout } from '../../redux/auth/auth.actions';
 
 // Set config defaults when creating the instance.
 const api = axios.create({
@@ -19,8 +19,9 @@ const api = axios.create({
 api.interceptors.response.use(
   res => res,
   err => {
-    if (err.response.data.msg === 'Token is not valid') {
-      store.dispatch({ type: LOGOUT });
+    console.log(err.response.data)
+    if (err.response.data === 'Invalid Token' && err.response.status === 403) {
+      store.dispatch(logout());
     }
     return Promise.reject(err);
   }

@@ -23,18 +23,18 @@ const Board = ({
   ...props
 }) => {
 
-  useEffect(() => {
-    store.dispatch(getRoles(user.role));
-    store.dispatch(getProjectsOfOwner(user._id));
-  }, []);
-
   // If the user is not authenticated, redirect to top page.
   if (!isAuthenticated) {
     return (
       <Redirect to="/" />
     )
   }
-
+  
+  useEffect(() => {
+    store.dispatch(getRoles(user.role));
+    store.dispatch(getProjectsOfOwner(user._id));
+  }, []);
+  
   // If roles state is still loading, return spinner.
   if (roles.length === 0) {
     return (

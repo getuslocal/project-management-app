@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import FormSelectMenu from '../../../../../../../../shared/components/CustomForm/FormSelectMenu/FormSelectMenu';
+import FormSelectMenu from '../../../../Form/FormSelectMenu/FormSelectMenu';
 import { IssueTypes, IssuePriorities } from '../../../../../../../../shared/constants/issues';
 import { selectMembersByProjectId } from '../../../../../../../../redux/members/members.selectors';
 import { selectProjectById } from '../../../../../../../../redux/projects/projects.selectors';

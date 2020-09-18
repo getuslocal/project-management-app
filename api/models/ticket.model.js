@@ -24,6 +24,13 @@ const ticketSchema = new Schema({
     type: String,
     trim: true,
   },
+  issueColor: {
+    type: Object,
+  },
+  childIssues: {
+    type: Array,
+    minlength: 1
+  },
   summary: {
     type: String,
     required: true,
@@ -62,12 +69,20 @@ const ticketSchema = new Schema({
       }
     }
   ],
+  dateRange: {
+    startDate: {
+      type: Object
+    },
+    endDate: {
+      type: Object,
+    },
+  },
 }, {
   timestamps: true,
   minimize: false
 });
 
-ticketSchema.plugin(AutoIncrement, {id:'count_seq',inc_field: 'count'});
+ticketSchema.plugin(AutoIncrement, { id: 'count_seq', inc_field: 'count' });
 const Ticket = mongoose.model('Ticket', ticketSchema);
 
 module.exports = Ticket;

@@ -1,11 +1,11 @@
 import React from 'react';
 import SelectMenu from './SelectMenu/SelectMenu';
-import Icon from '../../../../shared/components/Icon/Icon';
+import Icon from '../../../../../../shared/components/Icon/Icon';
 import {
   FormContainer,
   Label,
   Description,
-} from '../CustomForm.style';
+} from '../Form.style';
 import {
   FormWrapper,
   OuterWrapper,

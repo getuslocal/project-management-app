@@ -12,3 +12,30 @@ export const IssuePriorities = {
   LOW: 'Low',
   LOWEST: 'Lowest',
 };
+
+export const IssueColors = {
+  PURPLE: {
+    name: 'Purple',
+    font: '#8777D9',
+    bg: '#8777D9',
+    border: '#8777D9',
+  },
+  YELLOW: {
+    name: 'Yellow',
+    font: '#fc9b10',
+    bg: '#fef0db',
+    border: '#fdb44d',
+  },
+  BLUE: {
+    name: 'Blue',
+    font: '#0a5eff',
+    bg: 'rgba(218, 231, 255, 0.7)',
+    border: '#4786ff',
+  },
+  RED: {
+    name: 'Red',
+    font: '#f8254e',
+    bg: 'rgba(253, 197, 208, 0.7)',
+    border: '#fa607e',
+  },
+};

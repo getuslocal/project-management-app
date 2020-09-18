@@ -19,7 +19,18 @@ router.get('/:projectId', verify, (req, res) => {
 // @desc   Create a new ticket of the project.
 // @access Private
 router.post('/create', verify, async (req, res) => {
-  const { projectId, issueType, issuePriority, summary, description, assigneeId, reporterId } = req.body;
+  const {
+    projectId,
+    issueType,
+    issuePriority,
+    summary,
+    description,
+    assigneeId,
+    reporterId,
+    issueColor,
+    childIssues,
+    dateRange } = req.body;
+
   const newTicket = new Ticket({
     projectId: projectId,
     issueType: issueType,
@@ -28,7 +39,11 @@ router.post('/create', verify, async (req, res) => {
     description: description,
     assigneeId: assigneeId,
     reporterId: reporterId,
+    issueColor: issueColor,
+    childIssues: childIssues,
+    dateRange: dateRange,
   });
+  
   try {
     //Create a new ticket
     const savedNewTicket = await newTicket.save();

@@ -16,7 +16,7 @@ app.post('/token', (req, res) => {
   const refreshToken = req.body.token
   // If refresh token is not set return error.
   if (refreshToken == null) return res.sendStatus(401)
-  // 
+  // Check if an upcoming refresh token exists on DB.
   if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
   // Check if refresh token is valid.
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
@@ -53,7 +53,7 @@ app.post('/login', async (req, res) => {
     // Generate access token with user id.
     const accessToken = generateAccessToken(userId)
     // Generate refresh token.
-    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '3d' })
     refreshTokens.push(refreshToken)
     res.json({ accessToken: accessToken, refreshToken: refreshToken })
 

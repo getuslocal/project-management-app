@@ -4,7 +4,7 @@ import {
   MainContent,
   ListItem
 } from './SelectMenu.style';
-import Icon from '../../../../../shared/components/Icon/Icon';
+import Icon from '../../../../../../../shared/components/Icon/Icon';
 
 const SelectMenu = ({ handleSelectMenu, selectList, name, renderValue, returnValue, iconStyle, width }) => {
   return (

@@ -1,31 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 
 export default createGlobalStyle`
-.icon-user:before, 
-.icon-lock:before, 
-.icon-envelope-open:before, 
-.icon-unlock:before,
-.icon-dashboard:before,
-.icon-inbox:before,
-.icon-project:before,
-.icon-setting:before,
-.icon-sort-down:before,
-.icon-issue-task:before,
-.icon-issue-bug:before,
-.icon-issue-story:before,
-.icon-issue-epic:before,
-.icon-search:after,
-.icon-angle-down:after,
-.icon-times:before
-{
-	speak: none;
-	font-style: normal;
-	font-weight: normal;
-	font-variant: normal;
-	text-transform: none;
-	line-height: 1;
-	-webkit-font-smoothing: antialiased;
-}
 
 .icon-user:before {
   font-family: "Font Awesome 5 Free";
@@ -152,6 +127,7 @@ export default createGlobalStyle`
   content: '\f062';
   color: rgb(233, 127, 51);
 }
+
 .icon-priority-low:before, 
 .icon-priority-lowest:before {
   font-family: "Font Awesome 5 Free";
@@ -159,12 +135,46 @@ export default createGlobalStyle`
   content: '\f063';
   color: rgb(45, 135, 56);
 }
+
 .icon-priority-high:before, 
 .icon-priority-highest:before {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
   content: '\f062';
   color: rgb(205, 19, 23);
+}
+
+.icon-issuecolor-purple:before {
+  content: '';
+  background-color: #8777D9;
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  line-height: 1;
+}
+.icon-issuecolor-yellow:before {
+  content: '';
+  background-color: #fdb44d;
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  line-height: 1;
+}
+.icon-issuecolor-blue:before {
+  content: '';
+  background-color: #4786ff;
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  line-height: 1;
+}
+.icon-issuecolor-red:before {
+  content: '';
+  background-color: #fa607e;
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  line-height: 1;
 }
 
 `

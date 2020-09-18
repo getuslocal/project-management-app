@@ -3,20 +3,20 @@ import {
   FormContainer,
   Label,
   FormContent,
-  Input,
+  TextArea,
   Description,
-} from '../CustomForm.style';
+} from '../Form.style';
 
-const FormInput = ({ label, description, handleChange, ...props }) => {
+const FormTextArea = ({ label, description, handleChange, ...props }) => {
   return (
     <FormContainer>
       <FormContent>
-        <Label>{label}</Label>
-        <Input {...props} onChange={handleChange} />
+        <Label >{label}</Label>
+        <TextArea {...props} onChange={handleChange} />
         <Description>{description}</Description>
       </FormContent>
     </FormContainer>
   )
 }
 
-export default FormInput;
+export default FormTextArea;

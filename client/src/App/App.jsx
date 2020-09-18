@@ -5,16 +5,16 @@ import NormalizeStyles from './styles/NormalizeStyles'
 import GlobalClasses from './styles/GlobalClasses'
 import BaseStyles from './styles/BaseStyles'
 import IconStyles from './styles/IconStyles'
-import store from '../redux/store';
-import { loadUser } from '../redux/auth/auth.actions';
-import setAuthToken from '../shared/utils/setAuthToken';
+import store from '../redux/store'
+import { loadUser } from '../redux/auth/auth.actions'
+import setAuthToken from '../shared/utils/setAuthToken'
 
 const App = () => {
-
   useEffect(() => {
-    setAuthToken(localStorage.token);
-    store.dispatch(loadUser());
-  }, []);
+    setAuthToken(localStorage.token)
+    // Check if current token is valid.
+    store.dispatch(loadUser())
+  }, [])
 
   return (
     <Fragment>
@@ -24,7 +24,7 @@ const App = () => {
       <IconStyles />
       <Routes />
     </Fragment>
-  );
+  )
 }
 
 export default hot(App)
