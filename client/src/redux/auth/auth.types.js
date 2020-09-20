@@ -5,4 +5,5 @@ export const REGISTER_FAIL = 'REGISTER_FAIL';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT = 'LOGOUT';
+export const REMOVE_TOKEN = 'REMOVE_TOKEN';
 export const REFRESH_ERROR_MESSAGE = 'REFRESH_ERROR_MESSAGE';

@@ -70,12 +70,7 @@ const ticketSchema = new Schema({
     }
   ],
   dateRange: {
-    startDate: {
-      type: Object
-    },
-    endDate: {
-      type: Object,
-    },
+    type: Object
   },
 }, {
   timestamps: true,

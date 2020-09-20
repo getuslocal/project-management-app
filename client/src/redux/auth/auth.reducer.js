@@ -7,6 +7,7 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   REFRESH_ERROR_MESSAGE,
+  REMOVE_TOKEN
 } from './auth.types';
 
 const INITIAL_STATE = {
@@ -68,6 +69,12 @@ const authReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         errorMessage: undefined
+      }
+    // @todo: Remove this if not used.
+    case REMOVE_TOKEN:
+      return {
+        ...state,
+        token: null
       }
     default:
       return state;

@@ -8,6 +8,11 @@ export const selectTickets = createSelector(
   tickets => tickets.tickets
 );
 
+export const selectEpicTickets = createSelector(
+  [tickets],
+  tickets => tickets.tickets.filter(ticket => ticket.issueType === 'Epic')
+);
+
 export const selectFilters = createSelector(
   [tickets],
   tickets => tickets.filter

@@ -7,6 +7,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  REMOVE_TOKEN,
   REFRESH_ERROR_MESSAGE,
 } from './auth.types';
 
@@ -62,6 +63,9 @@ export const login = formData => async dispatch => {
 
 // Logout
 export const logout = () => ({ type: LOGOUT });
+
+// Remove token
+export const removeToken = () => ({ type: REMOVE_TOKEN });
 
 // Refresh error message
 export const refreshErrorMessage = () => ({ type: REFRESH_ERROR_MESSAGE });

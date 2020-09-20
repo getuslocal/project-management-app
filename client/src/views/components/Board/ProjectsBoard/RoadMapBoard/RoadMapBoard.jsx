@@ -15,5 +15,4 @@ const RoadMapBoard = ({ project }) => {
   );
 }
 
-
 export default RoadMapBoard;

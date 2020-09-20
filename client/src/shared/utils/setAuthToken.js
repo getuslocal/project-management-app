@@ -8,6 +8,7 @@ const setAuthToken = token => {
   } else {
     // If token does not exist (ie: user logout and token of auth state becomes null),
     // delete auth header and remove token from localstorage.
+    console.log('Remove auth header...')
     delete api.defaults.headers.common['Authorization'];
     localStorage.removeItem('token');
   }

@@ -82,13 +82,38 @@ router.post('/login', async (req, res) => {
     const validPass = await bcrypt.compare(password, user.password);
     if (!validPass) return res.status(400).send('Email or password is wrong');
 
-    const token = jwt.sign({ _id: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '3h' });
+    const userId = { _id: user._id }
+    const token = generateAccessToken(userId);
     res.json({ token: token });
   } catch (err) {
     res.status(500).send('Server error');
   }
 
 });
+
+function generateAccessToken(userId) {
+  return jwt.sign(userId, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '3d' })
+};
+
+// router.post('/token', (req, res) => {
+//   const refreshToken = req.body.token
+//   // If refresh token is not set return error.
+//   if (refreshToken == null) return res.sendStatus(401)
+//   // Check if an upcoming refresh token exists on DB.
+//   // if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
+
+//   // Check if refresh token is valid.
+//   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+//     if (err) return res.sendStatus(403)
+//     const accessToken = generateAccessToken({ _id: user._id })
+//     res.json({ accessToken: accessToken })
+//   })
+// })
+
+
+// function generateRefreshToken(userId) {
+//   return  jwt.sign(userId, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
+// };
 
 
 module.exports = router;

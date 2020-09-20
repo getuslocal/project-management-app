@@ -1,21 +1,26 @@
-import React, { useCallback, useRef, useEffect } from 'react';
-import VizSensor from 'react-visibility-sensor';
+import React, { useRef, useEffect } from 'react';
 import { useState } from 'react';
 import moment from 'moment';
-import getCalendarContent from './getCalendarContent';
+import { getCalendarContent, getCalendarOfMonth } from './getCalendarContent';
 import CalendarHeader from './CalendarHeader/CalendarHeader';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect'
+import { selectEpicTickets } from '../../../../../../redux/tickets/tickets.selectors';
 import {
   Container,
   DayCell,
-  InnerContainer,
-  Content
+  Content,
+  Week,
+  Task
 } from './Calendar.style';
 
-// @todo: Sensor improvement
-// @todo: Week div container
-const Calendar = () => {
+// @todo: Add limit to the prev month.
+const Calendar = ({ epics }) => {
   const [loading, setLoading] = useState(true);
   const [calendar, setCalendar] = useState([]);
+  const [lastWeekOfCalendar, setLastWeekOfCalendar] = useState(null);
+  const [firstMonthOfCalendar, setFirstMonthOfCalendar] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const today = {
     yyyy: new Date().getFullYear(),
@@ -29,99 +34,110 @@ const Calendar = () => {
 
   // Create some refs to scroll to specific element.
   const containerRef = useRef(null);
-  const dayCellRef = useRef([]);
+  const weekCellRef = useRef([]);
 
   const currentYearOfCalendar = currentMonth.getFullYear();
   const currentMonthOfCalendar = currentMonth.getMonth();
-  const calendarLength = 3;
-  const lastMonthOfCalendar = calendar[calendar.length - 1];
-  let lastDayOfCalendar = undefined;
-
-  // Get the very last day of current calendar.
-  if (lastMonthOfCalendar && lastMonthOfCalendar.length > 0) {
-    lastDayOfCalendar = lastMonthOfCalendar[lastMonthOfCalendar.length - 1];
-  }
 
   useEffect(() => {
-    setCalendar(getCalendarContent(new Date(), calendarLength));
+    const calendar = getCalendarContent(moment(new Date(today.yyyy, today.mm)));
+    setCalendar(calendar);
+    setLastWeekOfCalendar(calendar[calendar.length - 1][0])
+    setFirstMonthOfCalendar(calendar[0][6])
     setLoading(false)
   }, []);
 
-  const observer = useRef();
-  const lastCalendarDayRef = useCallback(node => {
-    if (loading) return
-    if (observer.current) observer.current.disconnect()
-    observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting) {
-        if (lastDayOfCalendar && lastDayOfCalendar.yyyy >= today.yyyy + 2) return
-        setCalendar(prevState => {
-          return [
-            ...prevState,
-            ...getCalendarContent(new Date(lastDayOfCalendar.yyyy, lastDayOfCalendar.mm + 1), calendarLength)
-          ]
-        })
-      }
-    })
-    if (node) observer.current.observe(node)
-  })
-  // console.log(calendar)
-
   const scrollToPrevMonth = () => {
-    if (calendar.length === 0) return;
-
-    const isBeforeCurrent = moment(currentMonth).isBefore(today);
-    const firstMonthOfCalendar = calendar[0][0];
-    if (isBeforeCurrent &&
-      currentYearOfCalendar === firstMonthOfCalendar.yyyy &&
-      currentMonthOfCalendar === firstMonthOfCalendar.mm) {
-      setCalendar(prevState => {
-        return [
-          ...getCalendarContent(new Date(currentYearOfCalendar, currentMonthOfCalendar - 1), 1),
-          ...prevState
-        ]
-      })
-      return;
+    const { yyyy, mm } = firstMonthOfCalendar;
+    // Check if current month is the first month of calendar
+    if (currentYearOfCalendar === yyyy && currentMonthOfCalendar === mm) {
+      // Get previous month content
+      const prevMonth = getCalendarOfMonth(moment(new Date(currentYearOfCalendar, currentMonthOfCalendar - 1)));
+      setCalendar([...prevMonth, ...calendar])
+      changeMonth(currentYearOfCalendar, currentMonthOfCalendar - 1)
+      setFirstMonthOfCalendar(prevMonth[0][6])
+      return
     }
-    const prevMonthYear = currentMonthOfCalendar === 0 ? currentYearOfCalendar - 1 : currentYearOfCalendar;
-    const prevMonth = currentMonthOfCalendar === 0 ? 11 : currentMonthOfCalendar - 1;
-    dayCellRef.current[`${prevMonthYear}${prevMonth}${1}`].current.scrollIntoView()
+
+    const prevMonth = new Date(currentYearOfCalendar, currentMonthOfCalendar - 1);
+    weekCellRef.current[`${prevMonth.getFullYear()}${prevMonth.getMonth()}`].current.scrollIntoView()
   }
 
   const scrollToToday = () => {
-    dayCellRef.current[`${today.yyyy}${today.mm}${1}`].current.scrollIntoView();
+    weekCellRef.current[`${today.yyyy}${today.mm}`].current.scrollIntoView();
+    changeMonth(today.yyyy, today.mm)
   }
 
   const scrollToNextMonth = () => {
-    if (lastDayOfCalendar && lastDayOfCalendar.yyyy >= today.yyyy + 2 &&
-      currentMonthOfCalendar === lastDayOfCalendar.mm &&
-      currentYearOfCalendar === lastDayOfCalendar.yyyy
-    ) return
-    const nextMonthYear = currentMonthOfCalendar === 11 ? currentYearOfCalendar + 1 : currentYearOfCalendar;
-    const nextMonth = currentMonthOfCalendar === 11 ? 0 : currentMonthOfCalendar + 1;
-    dayCellRef.current[`${nextMonthYear}${nextMonth}${1}`].current.scrollIntoView()
+    const nextMonth = new Date(currentYearOfCalendar, currentMonthOfCalendar + 1);
+    weekCellRef.current[`${nextMonth.getFullYear()}${nextMonth.getMonth()}`].current.scrollIntoView()
   }
 
-  const adjustFirstMonthLength = (calendar) => {
-    let content = [];
-    if (calendar.length > 1) {
-      const currentFirstMonth = calendar[0][0];
-      const firstDayStartAt = new Date(currentFirstMonth.yyyy, currentFirstMonth.mm, 1).getDay();
-      const lastDayOfMonth = new Date(currentFirstMonth.yyyy, currentFirstMonth.mm, 0).getDate();
-      for (let dd = lastDayOfMonth; dd > lastDayOfMonth - firstDayStartAt; dd--) {
-        content = [
-          {
-            yyyy: currentFirstMonth.yyyy,
-            mm: currentFirstMonth.mm - 1,
-            dd: dd,
-          },
-          ...content
-        ]
+  const getNextMonthPos = () => {
+    const nextMonth = new Date(currentYearOfCalendar, currentMonthOfCalendar + 1);
+    const nextMonthRef = weekCellRef.current[`${nextMonth.getFullYear()}${nextMonth.getMonth()}`]
+    if (!nextMonthRef) return null;
+
+    return nextMonthRef.current.offsetTop;
+  }
+
+  const getPrevMonthPos = () => {
+    const prevMonth = new Date(currentYearOfCalendar, currentMonthOfCalendar - 1);
+    const prevMonthRef = weekCellRef.current[`${prevMonth.getFullYear()}${prevMonth.getMonth()}`]
+    if (!prevMonthRef) return null;
+
+    return prevMonthRef.current.offsetTop;
+  }
+
+  const onScroll = () => {
+    const scrollY = containerRef.current.scrollTop // Don't get confused by what's scrolling - It's not the window
+
+    const targetDate = new Date(lastWeekOfCalendar.yyyy, lastWeekOfCalendar.mm - 1);
+    const targetYear = targetDate.getFullYear()
+    const targetMonth = targetDate.getMonth()
+    const targetRef = weekCellRef.current[`${targetYear}${targetMonth}`].current.offsetTop;
+
+    if (scrollY >= targetRef) {
+      const nextDate = moment(new Date(lastWeekOfCalendar.yyyy, lastWeekOfCalendar.mm, lastWeekOfCalendar.dd)).weekday(7);
+      const isEndOfCalendar = (nextDate.year() >= today.yyyy + 2);
+
+      if (isEndOfCalendar) {
+        const { yyyy, mm } = firstMonthOfCalendar;
+        weekCellRef.current[`${yyyy}${mm}`].current.scrollIntoView()
+        changeMonth(yyyy, mm)
+        return
+      }
+
+      if (!isEndOfCalendar) {
+        const nextStartMonth = moment(new Date(lastWeekOfCalendar.yyyy, lastWeekOfCalendar.mm, lastWeekOfCalendar.dd)).weekday(7).month();
+        const nextStartDayOfWeek = moment(new Date(lastWeekOfCalendar.yyyy, lastWeekOfCalendar.mm, lastWeekOfCalendar.dd)).weekday(6).date() + 1;
+        console.log(lastWeekOfCalendar)
+        const newCalendar = getCalendarContent(moment(new Date(lastWeekOfCalendar.yyyy, nextStartMonth, nextStartDayOfWeek)), true);
+        setCalendar([...calendar, ...newCalendar]);
+        setLastWeekOfCalendar(newCalendar[newCalendar.length - 1][0])
       }
     }
-    return [
-      content,
-      ...calendar
-    ]
+
+    const nextMonthPos = getNextMonthPos()
+    const prevMonthPos = getPrevMonthPos()
+    const offset = 50;
+
+    if (scrollY >= nextMonthPos - offset && nextMonthPos !== null) {
+      changeMonth(currentYearOfCalendar, currentMonthOfCalendar + 1)
+    } else if (scrollY <= prevMonthPos + offset && prevMonthPos !== null) {
+      changeMonth(currentYearOfCalendar, currentMonthOfCalendar - 1)
+    }
+  }
+
+  // Create multiple refs based on a week.
+  const getWeekCellRef = (week, arrayRef) => {
+    const firstWeekOfThisMonth = week.find(week => week.dd === 1);
+    if (firstWeekOfThisMonth) {
+      const { yyyy, mm } = firstWeekOfThisMonth;
+      arrayRef.current[`${yyyy}${mm}`] = React.createRef();
+      return arrayRef.current[`${yyyy}${mm}`]
+    }
+    return null
   }
 
   return (
@@ -132,37 +148,55 @@ const Calendar = () => {
         scrollToToday={scrollToToday}
         scrollToNextMonth={scrollToNextMonth}
       />
-      <Container ref={containerRef}>
+      <Container ref={containerRef} onScroll={onScroll}>
         {
-          adjustFirstMonthLength(calendar).map(month => {
+          calendar.map((week, index) => {
             return (
-              month.map((date) => {
-                const { yyyy, mm, dd, isToday, isFirstDayOfMonth, isLastDayOfCalendar } = date;
-                const isFocused = (currentMonthOfCalendar === mm);
-                // Create multiple refs based on a date.
-                dayCellRef.current[`${yyyy}${mm}${dd}`] = React.createRef();
-                return (
-                  <VizSensor
-                    key={`date_${yyyy}/${mm}/${dd}`}
-                    offset={{ top: -5, bottom: 130 }}
-                    containment={containerRef.current}
-                    onChange={(isVisible) => { if (isVisible) { changeMonth(yyyy, mm) } }}
-                    active={isFirstDayOfMonth ? true : false}
-                  >
-                    <DayCell
-                      isFocused={isFocused}
-                      ref={dayCellRef.current[`${yyyy}${mm}${dd}`]}
-                      isToday={isToday}
-                    >
-                      <InnerContainer ref={isLastDayOfCalendar ? lastCalendarDayRef : null} >
-                      </InnerContainer>
-                      <Content isToday={isToday}>
-                        {isFirstDayOfMonth && moment(new Date(yyyy, mm)).format('MMM')} {dd}
-                      </Content>
-                    </DayCell>
-                  </VizSensor>
-                );
-              })
+              <Week key={index} ref={getWeekCellRef(week, weekCellRef)}>
+                {
+                  week.map((date) => {
+                    const { yyyy, mm, dd } = date;
+                    const isFocused = (currentMonthOfCalendar === mm);
+                    const isToday = (moment(`${yyyy}-${mm + 1}-${dd}`).isSame(moment().format("YYYY-MM-DD")));
+                    return (
+                      <DayCell
+                        key={`${yyyy}${mm}${dd}`}
+                        isFocused={isFocused}
+                        isToday={isToday}
+                      >
+                        <Content isToday={isToday}>
+                          {dd === 1 && moment(new Date(yyyy, mm)).format('MMM')} {dd}
+                          <div>
+                            {
+                              epics.map(epic => {
+                                const { startDate, endDate } = epic.dateRange;
+                                const formattedStartDate = `${moment(startDate).year()}-${moment(startDate).month()}-${moment(startDate).date()}`;
+                                const formattedEndDate = `${moment(endDate).year()}-${moment(endDate).month()}-${moment(endDate).date()}`;
+                                const isStartDate = moment(`${yyyy}-${mm}-${dd}`).isSame(formattedStartDate)
+                                const isBetween = moment(`${yyyy}-${mm}-${dd}`).isBetween(formattedStartDate, formattedEndDate)
+                                const isEndDate = moment(`${yyyy}-${mm}-${dd}`).isSame(formattedEndDate)
+                                // console.log(isStartDate)
+                                return (
+                                  <div key={epic.key}>
+                                    {
+                                      (isStartDate || isEndDate || isBetween) &&
+                                      <Task style={{ backgroundColor: epic.issueColor.bg }}>
+                                        &nbsp;
+                                        {
+                                          isStartDate && <span>start- {epic.key}</span>
+                                        }
+                                      </Task>
+                                    }
+                                  </div>
+                                )
+                              })
+                            }
+                          </div>
+                        </Content>
+                      </DayCell>
+                    );
+                  })}
+              </Week>
             )
           })
         }
@@ -172,4 +206,12 @@ const Calendar = () => {
   )
 }
 
-export default Calendar;
+Calendar.propTypes = {
+  epics: PropTypes.array.isRequired,
+};
+
+const mapStateToProps = createStructuredSelector({
+  epics: selectEpicTickets,
+});
+
+export default connect(mapStateToProps, null)(Calendar);

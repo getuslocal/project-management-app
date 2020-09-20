@@ -1,6 +1,6 @@
 import axios from 'axios';
 import store from '../../redux/store';
-import { logout } from '../../redux/auth/auth.actions';
+import { logout, removeToken } from '../../redux/auth/auth.actions';
 
 // Set config defaults when creating the instance.
 const api = axios.create({
@@ -9,6 +9,19 @@ const api = axios.create({
     'Content-Type': 'application/json'
   },
 });
+
+// Add a request interceptor
+api.interceptors.request.use(
+  config => {
+    // Logout user if token does not exist on localstorage 
+    // before request is sent.
+    if (!localStorage.token) {
+      store.dispatch(logout());
+    }
+    return config;
+  },
+  error => Promise.reject(error)
+);
 
 /**
  intercept any error responses from the api

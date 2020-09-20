@@ -1,62 +1,94 @@
 import moment from 'moment';
 
-export default function getCalendarContent(startMonth, calendarLength = 1) {
-  let calendar = []
+export function getCalendarContent(startDate, isAppend = false) {
+  // const startDate = moment();
+  // const currentMonth = new Date(startDate.year(), startDate.month(), 1);
+  let calendar = [];
+  let yyyy = startDate.year();
+  let mm = startDate.month();
+  let dd = startDate.date();
+  let firstDayOfNextWeek = isAppend ? dd : 1;
 
-  for (let month = 0; month < calendarLength; month++) {
-    const thisMonth = new Date(startMonth.getFullYear(), startMonth.getMonth() + month);
-    const yyyy = thisMonth.getFullYear();
-    const mm = thisMonth.getMonth();
-    const thisMonthLength = new Date(yyyy, mm + 1, 0).getDate();
-    let content = [];
+  for (let weekNum = 0; weekNum < 20; weekNum++) {
+    let week = []
+    for (let dayNum = 0; dayNum < 7; dayNum++) {
+      const date = moment(new Date(yyyy, mm, firstDayOfNextWeek)).weekday(dayNum);
+      const formattedDate = date.toObject();
 
-    for (let dd = 1; dd <= thisMonthLength; dd++) {
-      let isToday = false;
-      let isLastDayOfCalendar = false;
-      let isFirstDayOfMonth = false;
-      thisMonth.setDate(dd);
+      if (dayNum === 6) {
+        // day = day.clone().add(1, 'd');
+        firstDayOfNextWeek = date.date() + 1;
+        // console.log('current month: ' + mm)
+        // console.log(formattedDate)
+        // console.log('firstDayOfNextWeek : ' + firstDayOfNextWeek)
+        // console.log('---------------')
 
-      // Check if current date is today.
-      if (moment(thisMonth).isSame(moment(), 'day')) {
-        isToday = true;
+        if (formattedDate.months === mm + 1) {
+          mm = formattedDate.months
+        }
+
+        if (formattedDate.months === 0 && mm === 11) {
+          mm = 0
+          yyyy++
+        }
       }
 
-      // Check if current date is the last day of this calendar.
-      if (month === calendarLength - 1 && dd === thisMonthLength) {
-        isLastDayOfCalendar = true;
-      }
-
-      // Check if current date is a first day of the month.
-      if (dd === 1) {
-        isFirstDayOfMonth = true;
-      }
-
-      content = [
-        ...content,
+      week = [
+        ...week,
         {
-          yyyy: yyyy,
-          mm: mm,
-          dd: dd,
-          isToday: isToday,
-          isFirstDayOfMonth: isFirstDayOfMonth,
-          isLastDayOfCalendar: isLastDayOfCalendar
+          yyyy: formattedDate.years,
+          mm: formattedDate.months,
+          dd: formattedDate.date,
         }
       ]
-
-      // if (dd % 7 === 0) {
-      //   week = [
-      //     ...week,
-      //     content.splice(- 7)
-      //   ]
-      // }
     }
 
     calendar = [
       ...calendar,
-      content
+      week
     ]
   }
 
+  return calendar;
+}
+
+export function getCalendarOfMonth(month) {
+  const yyyy = month.year()
+  const mm = month.month()
+  let calendar = [];
+  let firstDayOfNextWeek = 1;
+
+  for (let weekNum = 0; weekNum < 5; weekNum++) {
+    let week = []
+    for (let dayNum = 0; dayNum < 7; dayNum++) {
+      const date = moment(new Date(yyyy, mm, firstDayOfNextWeek)).weekday(dayNum);
+      const formattedDate = date.toObject();
+
+      if (dayNum === 6) {
+        firstDayOfNextWeek = date.date() + 1;
+      }
+
+      week = [
+        ...week,
+        {
+          yyyy: formattedDate.years,
+          mm: formattedDate.months,
+          dd: formattedDate.date,
+        }
+      ]
+    }
+
+    // If last element of the month loop is another month,
+    // not add it to calendar because it already exists.
+    if(week[6].mm !== mm) continue;
+
+    calendar = [
+      ...calendar,
+      week
+    ]
+  }
+
+  console.log(calendar)
 
   return calendar;
 }

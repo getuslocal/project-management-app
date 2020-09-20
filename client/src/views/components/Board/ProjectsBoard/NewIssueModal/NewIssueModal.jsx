@@ -23,6 +23,7 @@ import {
   TextButton,
   InnerWrapper
 } from './NewIssueModal.style';
+import moment from 'moment';
 
 const NewIssueModal = ({ setIsModalActive, projects, currentProjectId, membersList, userProfile, renderStyle }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -47,6 +48,11 @@ const NewIssueModal = ({ setIsModalActive, projects, currentProjectId, membersLi
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if(isEpicModal && (dateRange.startDate === null || dateRange.endDate === null)) {
+      alert('Please choose start and due dates')
+      return
+    }
+    // console.log(dateRange.startDate.toJSON())
     store.dispatch(createNewTicket({ ...issueFormValues, dateRange }));
     setIsModalActive(false);
   }
@@ -100,7 +106,7 @@ const NewIssueModal = ({ setIsModalActive, projects, currentProjectId, membersLi
                   name="issueType"
                   value={issueType}
                   width="40%"
-                  selectList={{}}
+                  selectList={isEpicModal ? {} : { ...IssueTypes, [issueType.toUpperCase()]: undefined }}
                   handleModalOpen={setIsModalOpen}
                   isModalOpen={isModalOpen}
                   handleSelectMenu={handleSelectMenu}
@@ -140,34 +146,38 @@ const NewIssueModal = ({ setIsModalActive, projects, currentProjectId, membersLi
                   handleChange={handleChange}
                   required
                 />
-
-                <ChildIssueMenu
-                  label="Child issues"
-                  name="childIssues"
-                  childIssues={childIssues}
-                  handleModalOpen={setIsModalOpen}
-                  handleSelectMenu={handleSelectMenu}
-                  isModalOpen={isModalOpen}
-                  handleChildIssueMenu={handleChildIssueMenu}
-                />
-
-                <FormSelectMenu
-                  label="Issue color"
-                  name="issueColor"
-                  value={issueColor.name}
-                  width="30%"
-                  selectList={{ ...IssueColors, [issueColor.name.toUpperCase()]: undefined }}
-                  handleModalOpen={setIsModalOpen}
-                  isModalOpen={isModalOpen}
-                  handleSelectMenu={handleSelectMenu}
-                  renderValue="name"
-                  iconStyle={{
-                    base: 'issueColor',
-                    type: issueColor.name,
-                    size: '11px',
-                    renderValue: 'name'
-                  }}
-                />
+                {
+                  isEpicModal && (
+                    <>
+                      <ChildIssueMenu
+                        label="Child issues"
+                        name="childIssues"
+                        childIssues={childIssues}
+                        handleModalOpen={setIsModalOpen}
+                        handleSelectMenu={handleSelectMenu}
+                        isModalOpen={isModalOpen}
+                        handleChildIssueMenu={handleChildIssueMenu}
+                      />
+                      <FormSelectMenu
+                        label="Issue color"
+                        name="issueColor"
+                        value={issueColor.name}
+                        width="30%"
+                        selectList={{ ...IssueColors, [issueColor.name.toUpperCase()]: undefined }}
+                        handleModalOpen={setIsModalOpen}
+                        isModalOpen={isModalOpen}
+                        handleSelectMenu={handleSelectMenu}
+                        renderValue="name"
+                        iconStyle={{
+                          base: 'issueColor',
+                          type: issueColor.name,
+                          size: '11px',
+                          renderValue: 'name'
+                        }}
+                      />
+                    </>
+                  )
+                }
 
                 <FormSelectMenu
                   label="Assignee"

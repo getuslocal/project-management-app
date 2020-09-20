@@ -11,7 +11,7 @@ import {
 } from './QuickTicket.style'
 import { IssueTypes, IssuePriorities } from '../../../../../../../shared/constants/issues';
 import Icon from '../../../../../../../shared/components/Icon/Icon';
-import SelectMenu from '../../../../../../../shared/components/CustomForm/FormSelectMenu/SelectMenu/SelectMenu';
+import SelectMenu from '../../../Form/FormSelectMenu/SelectMenu/SelectMenu';
 import { selectUser } from '../../../../../../../redux/auth/auth.selectors';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
