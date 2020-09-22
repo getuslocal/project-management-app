@@ -6,7 +6,7 @@ import { selectUser } from '../../../../../redux/auth/auth.selectors';
 import { selectMembersByProjectId } from '../../../../../redux/members/members.selectors';
 import { createStructuredSelector } from 'reselect';
 import { filterTicketsByUser, removeUserFilter, filterTicketsBySearch, clearAllFilters } from '../../../../../redux/tickets/tickets.actions';
-import NewIssueModal from '../NewIssueModal/NewIssueModal';
+import NewIssueModal from '../Modal/NewTicketModal/NewTicketModal';
 import {
   Container,
   Breadcrumbs,

@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect'
 import { selectEpicTickets } from '../../../../../../redux/tickets/tickets.selectors';
-import TicketModal from '../../KanbanBoard/Column/Ticket/TicketModal/TicketModal';
+import TicketModal from '../../Modal/TicketModal/TicketModal';
 import CalendarTask from './CalendarTask/CalendarTask';
 import {
   Container,

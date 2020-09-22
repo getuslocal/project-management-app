@@ -1,13 +1,5 @@
 import styled, { css } from 'styled-components'
 
-export const ModalContainer = styled.div`
-  position: absolute;
-  height: 100%;
-  left: 0;
-  width: 100%;
-  top: 0;
-`
-
 export const Blanket = styled.div`
   height: 100%;
   width: 100%;
@@ -15,25 +7,12 @@ export const Blanket = styled.div`
   top: 0;
   right: 0;
   left: 0;
-  z-index: 999;
-  background-color: rgba(23, 43, 77, .5);
+  z-index: 50;
 `
 
-export const MainContent = styled.div`
-  background-color: #fff;
-  position: relative;
-  z-index: 9999;
-  min-width: 800px;
-  width: 70%;
-  max-width: 1040px;
-  top: 50%;
-  left: 50%;
-  transform: translateY(-50%) translateX(-50%);
-  -webkit-transform: translateY(-50%) translateX(-50%);
-  border-radius: 3px;
-  padding: 2rem;
-  height: 600px;
-  max-height: 600px;
+export const InnerWrapper = styled.div`
+  padding: 0 30px;
+  min-height: 500px;
 `
 
 export const TopFixedContent = styled.div`
@@ -43,9 +22,14 @@ export const TopFixedContent = styled.div`
     cursor: pointer;
     color: rgb(66, 82, 110);
     &:not(:last-child) {
-      margin-right: 1em;
+      margin-right: 25px;
     }
   }
+
+  padding: 20px 30px;
+  font-size: 19px;
+  line-height: 1.5;
+  font-weight: 500;
 `
 
 export const TicketKey = styled.span`
@@ -67,12 +51,8 @@ export const Title = styled.p`
 `
 
 export const ButtonsContainer = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
   text-align: right;
-  padding: 16px 24px;
+  padding: 20px 30px;
 `
 
 export const SubmitButton = styled.input`
@@ -83,7 +63,6 @@ export const SubmitButton = styled.input`
   padding: .6em;
   font-size: 14px;
   font-weight: 500;
-  margin-right: 1.5em;
   border: none;
 
   &:hover {
@@ -98,7 +77,7 @@ export const FormContainer = styled.div`
 
 export const FormLeftContent = styled.div`
   width: 65%;
-  padding-right: 10%;
+  padding-right: 50px;
 `
 
 export const FormRightContent = styled.div`
@@ -115,15 +94,6 @@ export const TicketHistoryContent = styled.div`
       margin-bottom: .5em;
     }
   }
-`
-
-export const Fieldset = styled.fieldset`
-  border: none;
-  padding: 0;
-`
-
-export const Diviser = styled.div`
-  border-bottom: 1px solid #ddd;
 `
 
 export const CompleteButton = styled.button`

@@ -7,7 +7,7 @@ import {
   Bottom,
   CustomIcon
 } from './Ticket.style'
-import TicketModal from './TicketModal/TicketModal';
+import TicketModal from '../../../Modal/TicketModal/TicketModal';
 import { deleteTicket } from '../../../../../../../redux/tickets/tickets.actions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
