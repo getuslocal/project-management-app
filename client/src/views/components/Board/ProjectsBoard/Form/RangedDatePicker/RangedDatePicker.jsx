@@ -27,6 +27,7 @@ export default function RangedDatePicker({ dateRange, setdateRange }) {
           onFocusChange={focusedInput => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
           minimumNights={0}
           displayFormat="MMM DD YYYY"
+          required
         />
         <Discription>Allows the planned start and due date for a piece of work to be set.</Discription>
       </Container>

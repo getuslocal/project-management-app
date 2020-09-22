@@ -29,6 +29,8 @@ export default function DatePicker({ dateRange, setdateRange, isStartDate, isEnd
             focused={focused} // PropTypes.bool
             onFocusChange={({ focused }) => setFocused(focused)} // PropTypes.func.isRequired
             id="your_unique_id" // PropTypes.string.isRequired,
+            required
+            isOutsideRange={day => (day.isAfter(endDate))}
           />
         }
         {
@@ -40,6 +42,8 @@ export default function DatePicker({ dateRange, setdateRange, isStartDate, isEnd
             focused={focused} // PropTypes.bool
             onFocusChange={({ focused }) => setFocused(focused)} // PropTypes.func.isRequired
             id="your_unique_id" // PropTypes.string.isRequired,
+            required
+            isOutsideRange={day => (day.isBefore(startDate))}
           />
         }
       </FormContainer>

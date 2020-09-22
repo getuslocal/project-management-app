@@ -2,16 +2,25 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import FormSelectMenu from '../../Form/FormSelectMenu/FormSelectMenu';
-import { IssuePriorities } from '../../../../../../shared/constants/issues';
-import { selectMembersByProjectId } from '../../../../../../redux/members/members.selectors';
-import { selectProjectById } from '../../../../../../redux/projects/projects.selectors';
-import { updateTicket } from '../../../../../../redux/tickets/tickets.actions';
-import store from '../../../../../../redux/store';
-import IssueStatusMenu from '../../KanbanBoard/Column/Ticket/TicketModal/IssueStatusMenu/IssueStatusMenu';
-import Title from '../../KanbanBoard/Column/Ticket/TicketModal/Title/Title';
-import Description from '../../KanbanBoard/Column/Ticket/TicketModal/Description/Description';
-import Comment from '../../KanbanBoard/Column/Ticket/TicketModal/Comment/Comment';
+import FormSelectMenu from '../../../Form/FormSelectMenu/FormSelectMenu';
+import { IssuePriorities, IssueColors } from '../../../../../../../shared/constants/issues';
+import { selectMembersByProjectId } from '../../../../../../../redux/members/members.selectors';
+import { selectProjectById } from '../../../../../../../redux/projects/projects.selectors';
+import { updateEpicTicket } from '../../../../../../../redux/tickets/tickets.actions';
+import store from '../../../../../../../redux/store';
+import Title from '../../../KanbanBoard/Column/Ticket/TicketModal/Title/Title';
+import Description from '../../../KanbanBoard/Column/Ticket/TicketModal/Description/Description';
+import Comment from '../../../KanbanBoard/Column/Ticket/TicketModal/Comment/Comment';
+import ChildissueMenu from '../../../Form/ChildIssueMenu/ChildIssueMenu';
+import DatePicker from '../../../Form/DatePicker/DatePicker';
+import moment from 'moment';
+import {
+  ModalContainer,
+  Container,
+  Content,
+  Fieldset,
+  Diviser
+} from '../../Modal.style';
 import {
   InnerWrapper,
   FormContainer,
@@ -23,51 +32,50 @@ import {
   ButtonsContainer,
   SubmitButton,
   Blanket
-} from './TicketModal.style';
+} from '../TicketModal.style';
 import {
-  ModalContainer,
-  Container,
-  Content,
-  Fieldset,
-  Diviser
-} from '../Modal.style';
+  CompleteButton,
+} from './EpicModal.style';
 
-const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projectInfo, columnId, isEpicTicket }) => {
+const EpicModal = ({ ticket, setIsModalOpen, membersList, deleteTicket }) => {
   const [isSmallModalOpen, setIsSmallModalOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     issueType: ticket.issueType,
-    issueStatus: columnId,
     summary: ticket.summary,
     description: ticket.description,
     reporterId: ticket.reporterId,
     assigneeId: ticket.assigneeId,
     issuePriority: ticket.issuePriority,
     comments: ticket.comments,
+    issueColor: ticket.issueColor,
+    isEpicDone: ticket.isEpicDone,
+    childIssues: ticket.childIssues
+  });
+
+  const [dateRange, setdateRange] = useState({
+    startDate: moment(ticket.dateRange.startDate),
+    endDate: moment(ticket.dateRange.endDate)
   });
 
   const {
     issueType,
-    issueStatus,
     summary,
     description,
     reporterId,
     assigneeId,
     issuePriority,
     comments,
+    issueColor,
+    childIssues,
+    isEpicDone
   } = issueFormValues;
 
-
-  const columnsList = projectInfo.columns;
-  // @todo: Add updated time.
   const createAt = String(new Date(ticket.createdAt)).substring(0, 15);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const columnMove = {
-      beforeColumn: columnId,
-      afterColumn: issueStatus
-    }
-    store.dispatch(updateTicket(columnMove, ticket._id, issueFormValues));
+    console.log({ ...issueFormValues, dateRange })
+    store.dispatch(updateEpicTicket(ticket._id, { ...issueFormValues, dateRange }));
     setIsModalOpen(false);
   }
 
@@ -77,11 +85,15 @@ const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projec
   };
 
   const handleSelectMenu = (name, value) => {
-    if (isEpicTicket) {
-      setEpicFromValues({ ...epicFromValues, [name]: value });
+    setIssueFormValues({ ...issueFormValues, [name]: value });
+  };
+
+  const handleChildIssueMenu = (issueId, isActive = false) => {
+    if (isActive) {
+      setIssueFormValues({ ...issueFormValues, childIssues: childIssues.filter(issue => issue !== issueId) });
       return
     }
-    setIssueFormValues({ ...issueFormValues, [name]: value });
+    setIssueFormValues({ ...issueFormValues, childIssues: [...childIssues, issueId] });
   };
 
   return (
@@ -94,6 +106,7 @@ const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projec
             <i className="far fa-trash-alt" onClick={deleteTicket}></i>
             <i className="fas fa-times" onClick={() => setIsModalOpen(false)}></i>
           </TopFixedContent>
+
           <form onSubmit={handleSubmit}>
             <InnerWrapper>
               <FormContainer>
@@ -101,21 +114,40 @@ const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projec
                   <Fieldset>
                     <Title name="summary" currentValue={summary} handleChange={handleChange} />
                     <Description currentValue={description} handleChange={handleChange} />
+                    <ChildissueMenu
+                      label="Child issues"
+                      name="childIssues"
+                      isEpicTicket={true}
+                      childIssues={childIssues}
+                      handleModalOpen={setIsSmallModalOpen}
+                      isModalOpen={isSmallModalOpen}
+                      handleSelectMenu={handleSelectMenu}
+                      handleChildIssueMenu={handleChildIssueMenu}
+                    />
                     <Comment comments={ticket.comments} ticketId={ticket._id} />
                   </Fieldset>
                 </FormLeftContent>
                 <FormRightContent>
                   <Fieldset>
-                    <IssueStatusMenu
-                      name="issueStatus"
-                      value={columnsList[issueStatus].title}
-                      currentOrder={issueStatus}
-                      columnOrder={projectInfo.columnOrder}
-                      columnsList={{ ...columnsList, [issueStatus]: undefined }}
-                      handleModalOpen={setIsSmallModalOpen}
-                      isModalOpen={isSmallModalOpen}
-                      handleSelectMenu={handleSelectMenu}
-                      required
+                    <div>
+                      <CompleteButton
+                        isEpicDone={isEpicDone}
+                        className="icon-check"
+                        type="button"
+                        onClick={() => setIssueFormValues({ ...issueFormValues, isEpicDone: !isEpicDone })}
+                      >
+                        {isEpicDone ? 'Completed' : 'Mark Complete'}
+                      </CompleteButton>
+                    </div>
+                    <DatePicker
+                      setdateRange={setdateRange}
+                      dateRange={dateRange}
+                      isStartDate={true}
+                    />
+                    <DatePicker
+                      setdateRange={setdateRange}
+                      dateRange={dateRange}
+                      isEndDate={true}
                     />
                     <FormSelectMenu
                       label="Assignee"
@@ -169,6 +201,24 @@ const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projec
                       required
                       height="40px"
                     />
+                    <FormSelectMenu
+                      label="Issue color"
+                      name="issueColor"
+                      value={issueColor}
+                      selectList={{ ...IssueColors, [issueColor.toUpperCase()]: undefined }}
+                      handleModalOpen={setIsSmallModalOpen}
+                      isModalOpen={isSmallModalOpen}
+                      handleSelectMenu={handleSelectMenu}
+                      isTransparentBackground={true}
+                      renderValue="name"
+                      returnValue="name"
+                      iconStyle={{
+                        base: 'issueColor',
+                        type: issueColor,
+                        size: '11px',
+                        renderValue: 'name'
+                      }}
+                    />
                     <Diviser />
                     <TicketHistoryContent>
                       <p>Created : {createAt}</p>
@@ -188,7 +238,7 @@ const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projec
   )
 }
 
-TicketModal.propTypes = {
+EpicModal.propTypes = {
   membersList: PropTypes.object.isRequired,
   projectInfo: PropTypes.object.isRequired
 };
@@ -199,4 +249,4 @@ const mapStateToProps = (state, ownProps) => createStructuredSelector({
 });
 
 
-export default connect(mapStateToProps, null)(TicketModal);
+export default connect(mapStateToProps, null)(EpicModal);

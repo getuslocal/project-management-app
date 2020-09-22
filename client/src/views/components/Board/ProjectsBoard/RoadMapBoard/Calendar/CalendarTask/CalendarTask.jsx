@@ -17,19 +17,25 @@ const CalendarTask = ({ epics, date: { yyyy, mm, dd }, setIsModalOpen }) => {
           const isStartDate = thisDate.isSame(moment(startDate), 'day')
           const isBetween = thisDate.isBetween(moment(startDate), moment(endDate), 'day')
           const isEndDate = thisDate.isSame(moment(endDate), 'day')
-          const epicLength = moment(endDate).diff(moment(startDate), 'days') + 1; // 6 + 1 = 7
+          // const epicLength = moment(endDate).diff(moment(startDate), 'days') + 1; // 6 + 1 = 7
           const startDayOfWeek = moment(startDate).day(); // 0 - 6. ie:  4
           let multiplication = 1;
           let displayTask = false;
 
-          // @todo: Test this logic.
-          if (isStartDate && (7 - startDayOfWeek <= epicLength)) {
-            multiplication = (7 - startDayOfWeek);
+          if (isStartDate) {
+            const span = moment(endDate).diff(moment(startDate), 'days');
+            // console.log('span : ' + span)
+            if (span <= 6) {
+              multiplication = (7 - startDayOfWeek) - (6 - span);
+            } else {
+              multiplication = (7 - startDayOfWeek);
+            }
+            // console.log('multiplication : ' + multiplication)
             displayTask = true;
           } else if ((isBetween || isEndDate) && thisDate.day() === 0) {
             // @todo: Test this logic.
             const dif = moment(endDate).diff(thisDate, 'days');
-            if(dif >= 7) {
+            if (dif >= 7) {
               multiplication = 7
             } else {
               multiplication = dif + 1; // 4

@@ -52,10 +52,6 @@ const NewTicketModal = ({ setIsModalActive, projects, currentProjectId, membersL
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isEpicModal) {
-      if (dateRange.startDate === null || dateRange.endDate === null) {
-        alert('Please choose start and due dates')
-        return
-      }
       console.log({ ...issueFormValues, ...epicFromValues, dateRange })
       store.dispatch(createNewEpicTicket({ ...issueFormValues, ...epicFromValues, dateRange }));
     } else {

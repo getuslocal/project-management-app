@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect'
 import { selectEpicTickets } from '../../../../../../redux/tickets/tickets.selectors';
-import TicketModal from '../../Modal/TicketModal/TicketModal';
+import EpicModal from '../../Modal/TicketModal/EpicModal/EpicModal';
 import CalendarTask from './CalendarTask/CalendarTask';
 import {
   Container,
@@ -152,6 +152,7 @@ const Calendar = ({ epics }) => {
     return null
   }
 
+
   return (
     <>
       <CalendarHeader
@@ -194,10 +195,9 @@ const Calendar = ({ epics }) => {
       <div>{loading && 'Loading...'}</div>
       {
         isModalOpen && (
-          <TicketModal
+          <EpicModal
             ticket={isModalOpen}
             projectId={"5f416cea4c4a05257179ea2d"}
-            isEpicTicket={true}
             setIsModalOpen={setIsModalOpen}
           // deleteTicket={() => deleteTicket(ticket._id, columnId, projectId)}
           />
