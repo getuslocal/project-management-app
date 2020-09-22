@@ -14,12 +14,12 @@ const SelectMenu = ({ handleChildIssueMenu, ticketList, childIssues }) => {
         <ul>
           {
             ticketList.map(({ _id, key, summary, issueType }) => {
-              const isActive = childIssues.find(issue => issue._id === _id);
+              const isActive = childIssues.find(issue => issue === _id);
               return (
                 <ListItem
                   key={key}
                   isActive={isActive}
-                  onClick={() => handleChildIssueMenu({ _id, key, summary, issueType }, isActive)}
+                  onClick={() => handleChildIssueMenu(_id, isActive)}
                 >
                   {isActive && <Button ><i className="fas fa-times"></i></Button>}
                   <Icon iconStyle={{

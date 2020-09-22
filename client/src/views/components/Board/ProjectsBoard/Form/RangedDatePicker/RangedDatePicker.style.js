@@ -11,3 +11,10 @@ display: block;
     font-weight: 700;
     margin-bottom: 2px;
 `
+
+export const Discription = styled.p`
+font-weight: 400;
+    line-height: 20px;
+    font-size: 11px;
+    color: #6c798f;
+`

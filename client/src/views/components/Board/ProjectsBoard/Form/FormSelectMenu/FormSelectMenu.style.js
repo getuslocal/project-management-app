@@ -1,36 +1,5 @@
 import styled, { css } from 'styled-components'
 
-// Custom themes for FormInput and FormTextArea components.
-const issueDescriptionTheme = css`
-  border: 2px solid transparent;
-  
-  label{
-    font-size: 14px;
-    font-weight: 600;
-  }
-  
-  textarea {
-    font-size: 15px;
-    border: 1px solid transparent;
-
-    &:focus{
-      border: 1px solid rgb(223, 225, 230);
-      background-color: #fff;
-    }
-  }
-`;
-
-const issueSummaryTheme = css`
-  input {
-    border: 2px solid transparent;
-    font-size: 24px;
-    &:focus{
-      border: 2px solid rgb(76, 154, 255);
-      background-color: #fff;
-    }
-  }
-`;
-
 export const OuterWrapper = styled.div`
   width: ${props => (props.width ? props.width : '100%')};
   position: relative;
@@ -40,7 +9,7 @@ export const FormWrapper = styled.div`
   min-height: ${props => (props.height ? props.height : 'auto')};
   display: flex;
   align-items: center;
-  padding: 0.3125em .5em;
+  padding: 5px 8px;
   padding-right: 25px;
   border: 1px solid #dfe1e6;
   border-radius: 3px;

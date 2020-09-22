@@ -22,6 +22,11 @@ export default createGlobalStyle`
   font-weight: 900;
   content: '\f023';
 }
+.icon-check:before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: '\f00c';
+}
 .icon-envelope-open:before {
   font-family: "Font Awesome 5 Free";
   font-weight: 400;

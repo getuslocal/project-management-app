@@ -8,9 +8,9 @@ import FormSelectMenu from '../Form/FormSelectMenu/FormSelectMenu';
 import FormInput from '../Form/FormInput/FormInput';
 import FormTextArea from '../Form/FormTextArea/FormTextArea';
 import ChildIssueMenu from '../Form/ChildIssueMenu/ChildIssueMenu';
-import DatePicker from '../Form/DatePicker/DatePicker';
+import RangedDatePicker from '../Form/RangedDatePicker/RangedDatePicker';
 import store from '../../../../../redux/store';
-import { createNewTicket } from '../../../../../redux/tickets/tickets.actions';
+import { createNewTicket, createNewEpicTicket } from '../../../../../redux/tickets/tickets.actions';
 import {
   ModalContainer,
   Container,
@@ -23,11 +23,9 @@ import {
   TextButton,
   InnerWrapper
 } from './NewIssueModal.style';
-import moment from 'moment';
 
-const NewIssueModal = ({ setIsModalActive, projects, currentProjectId, membersList, userProfile, renderStyle }) => {
+const NewIssueModal = ({ setIsModalActive, projects, currentProjectId, membersList, userProfile, isEpicModal }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const isEpicModal = (renderStyle === "RoadMapBoard");
   const [issueFormValues, setIssueFormValues] = useState({
     projectId: currentProjectId,
     issueType: isEpicModal ? IssueTypes.EPIC : IssueTypes.TASK,
@@ -36,7 +34,9 @@ const NewIssueModal = ({ setIsModalActive, projects, currentProjectId, membersLi
     reporterId: userProfile._id,
     assigneeId: '',
     issuePriority: IssuePriorities.MEDIUM,
-    issueColor: isEpicModal ? IssueColors.PURPLE : null,
+  });
+  const [epicFromValues, setEpicFromValues] = useState({
+    issueColor: IssueColors.PURPLE.name,
     childIssues: []
   });
   const [dateRange, setdateRange] = useState({
@@ -44,16 +44,22 @@ const NewIssueModal = ({ setIsModalActive, projects, currentProjectId, membersLi
     endDate: null
   });
 
-  const { projectId, issueType, summary, description, reporterId, assigneeId, issuePriority, issueColor, childIssues } = issueFormValues;
+  const { projectId, issueType, summary, description, reporterId, assigneeId, issuePriority } = issueFormValues;
+  const { issueColor, childIssues } = epicFromValues;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(isEpicModal && (dateRange.startDate === null || dateRange.endDate === null)) {
-      alert('Please choose start and due dates')
-      return
+    if (isEpicModal) {
+      if (dateRange.startDate === null || dateRange.endDate === null) {
+        alert('Please choose start and due dates')
+        return
+      }
+      console.log({ ...issueFormValues, ...epicFromValues, dateRange })
+      store.dispatch(createNewEpicTicket({ ...issueFormValues, ...epicFromValues, dateRange }));
+    } else {
+      store.dispatch(createNewTicket({ ...issueFormValues }));
     }
-    // console.log(dateRange.startDate.toJSON())
-    store.dispatch(createNewTicket({ ...issueFormValues, dateRange }));
+
     setIsModalActive(false);
   }
 
@@ -63,15 +69,19 @@ const NewIssueModal = ({ setIsModalActive, projects, currentProjectId, membersLi
   };
 
   const handleSelectMenu = (name, value) => {
+    if (isEpicModal) {
+      setEpicFromValues({ ...epicFromValues, [name]: value });
+      return
+    }
     setIssueFormValues({ ...issueFormValues, [name]: value });
   };
 
-  const handleChildIssueMenu = (value, isActive = false) => {
+  const handleChildIssueMenu = (issueId, isActive = false) => {
     if (isActive) {
-      setIssueFormValues({ ...issueFormValues, childIssues: childIssues.filter(issue => issue._id !== value._id) });
+      setEpicFromValues({ ...epicFromValues, childIssues: childIssues.filter(issue => issue !== issueId) });
       return
     }
-    setIssueFormValues({ ...issueFormValues, childIssues: [...childIssues, value] });
+    setEpicFromValues({ ...epicFromValues, childIssues: [...childIssues, issueId] });
   };
 
   return (
@@ -127,7 +137,7 @@ const NewIssueModal = ({ setIsModalActive, projects, currentProjectId, membersLi
                   description="Priority in relation to other issues."
                 />
                 {
-                  isEpicModal && <DatePicker setdateRange={setdateRange} dateRange={dateRange} />
+                  isEpicModal && <RangedDatePicker setdateRange={setdateRange} dateRange={dateRange} />
                 }
                 <Diviser />
                 <FormInput
@@ -161,16 +171,17 @@ const NewIssueModal = ({ setIsModalActive, projects, currentProjectId, membersLi
                       <FormSelectMenu
                         label="Issue color"
                         name="issueColor"
-                        value={issueColor.name}
+                        value={issueColor}
                         width="30%"
-                        selectList={{ ...IssueColors, [issueColor.name.toUpperCase()]: undefined }}
+                        selectList={{ ...IssueColors, [issueColor.toUpperCase()]: undefined }}
                         handleModalOpen={setIsModalOpen}
                         isModalOpen={isModalOpen}
                         handleSelectMenu={handleSelectMenu}
                         renderValue="name"
+                        returnValue="name"
                         iconStyle={{
                           base: 'issueColor',
-                          type: issueColor.name,
+                          type: issueColor,
                           size: '11px',
                           renderValue: 'name'
                         }}

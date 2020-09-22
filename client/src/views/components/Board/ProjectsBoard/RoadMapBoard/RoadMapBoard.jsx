@@ -9,7 +9,7 @@ const RoadMapBoard = ({ project }) => {
 
   return (
     <Container>
-        <TopBar project={project} renderStyle="RoadMapBoard" />
+        <TopBar project={project} isEpicModal={true} />
         <Calendar />
     </Container>
   );

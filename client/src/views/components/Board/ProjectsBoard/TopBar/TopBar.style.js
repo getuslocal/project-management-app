@@ -63,7 +63,7 @@ export const ModalButton = styled.button`
     cursor: pointer;
   }
 
-  background-color: ${({renderStyle}) => renderStyle == "RoadMapBoard" ? 'purple' : 'rgb(0, 82, 204)'} ;
+  background-color: ${({isEpicModal}) => isEpicModal  ? 'purple' : 'rgb(0, 82, 204)'} ;
 `
 export const Right = styled.div`
   display: flex;

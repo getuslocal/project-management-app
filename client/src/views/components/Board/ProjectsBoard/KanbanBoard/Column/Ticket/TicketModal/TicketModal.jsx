@@ -3,15 +3,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import FormSelectMenu from '../../../../Form/FormSelectMenu/FormSelectMenu';
-import { IssueTypes, IssuePriorities } from '../../../../../../../../shared/constants/issues';
+import { IssueTypes, IssuePriorities, IssueStyles, IssueColors } from '../../../../../../../../shared/constants/issues';
 import { selectMembersByProjectId } from '../../../../../../../../redux/members/members.selectors';
 import { selectProjectById } from '../../../../../../../../redux/projects/projects.selectors';
-import { updateTicket } from '../../../../.././../../../redux/tickets/tickets.actions';
+import { updateTicket, updateEpicTicket } from '../../../../.././../../../redux/tickets/tickets.actions';
 import store from '../../../../.././../../../redux/store';
 import IssueStatusMenu from './IssueStatusMenu/IssueStatusMenu';
 import Title from './Title/Title';
 import Description from './Description/Description';
 import Comment from './Comment/Comment';
+import ChildissueMenu from '../../../../Form/ChildIssueMenu/ChildIssueMenu';
+import DatePicker from '../../../../Form/DatePicker/DatePicker';
+import moment from 'moment';
 import {
   ModalContainer,
   MainContent,
@@ -26,9 +29,11 @@ import {
   TopFixedContent,
   TicketKey,
   TicketHistoryContent,
+  CompleteButton,
 } from './TicketModal.style';
 
-const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projectInfo, columnId, }) => {
+
+const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projectInfo, columnId, isEpicTicket }) => {
   const [isSmallModalOpen, setIsSmallModalOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     issueType: ticket.issueType,
@@ -38,20 +43,54 @@ const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projec
     reporterId: ticket.reporterId,
     assigneeId: ticket.assigneeId,
     issuePriority: ticket.issuePriority,
-    comments: ticket.comments
+    comments: ticket.comments,
   });
-  const { issueType, issueStatus, summary, description, reporterId, assigneeId, issuePriority, comments } = issueFormValues;
+
+  const [epicFromValues, setEpicFromValues] = useState({
+    issueColor: ticket.issueColor,
+    isEpicDone: false,
+    childIssues: ticket.childIssues
+  });
+
+  const [dateRange, setdateRange] = useState(() => {
+    if (!isEpicTicket) return null
+    return {
+      startDate: moment(ticket.dateRange.startDate),
+      endDate: moment(ticket.dateRange.endDate)
+    }
+  });
+
+  const {
+    issueType,
+    issueStatus,
+    summary,
+    description,
+    reporterId,
+    assigneeId,
+    issuePriority,
+    comments,
+  } = issueFormValues;
+
+  const { issueColor, childIssues, isEpicDone } = epicFromValues;
+
   const columnsList = projectInfo.columns;
   // @todo: Add updated time.
-  const createAt = String(new Date(ticket.createdAt)).substring(0, 15)
+  const createAt = String(new Date(ticket.createdAt)).substring(0, 15);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const columnMove = {
-      beforeColumn: columnId,
-      afterColumn: issueStatus
+
+    if (isEpicTicket) {
+      console.log({ ...issueFormValues, ...epicFromValues, dateRange })
+      store.dispatch(updateEpicTicket(ticket._id, { ...issueFormValues, ...epicFromValues, dateRange }));
+    } else {
+      const columnMove = {
+        beforeColumn: columnId,
+        afterColumn: issueStatus
+      }
+      store.dispatch(updateTicket(columnMove, ticket._id, issueFormValues));
     }
-    store.dispatch(updateTicket(columnMove, ticket._id, issueFormValues));
+
     setIsModalOpen(false);
   }
 
@@ -61,7 +100,19 @@ const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projec
   };
 
   const handleSelectMenu = (name, value) => {
+    if (isEpicTicket) {
+      setEpicFromValues({ ...epicFromValues, [name]: value });
+      return
+    }
     setIssueFormValues({ ...issueFormValues, [name]: value });
+  };
+
+  const handleChildIssueMenu = (issueId, isActive = false) => {
+    if (isActive) {
+      setEpicFromValues({ ...epicFromValues, childIssues: childIssues.filter(issue => issue !== issueId) });
+      return
+    }
+    setEpicFromValues({ ...epicFromValues, childIssues: [...childIssues, issueId] });
   };
 
   return (
@@ -80,22 +131,64 @@ const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projec
               <Fieldset>
                 <Title name="summary" currentValue={summary} handleChange={handleChange} />
                 <Description currentValue={description} handleChange={handleChange} />
+                {
+                  isEpicTicket &&
+                  <ChildissueMenu
+                    label="Child issues"
+                    name="childIssues"
+                    isEpicTicket={isEpicTicket}
+                    childIssues={childIssues}
+                    handleModalOpen={setIsSmallModalOpen}
+                    isModalOpen={isSmallModalOpen}
+                    handleSelectMenu={handleSelectMenu}
+                    handleChildIssueMenu={handleChildIssueMenu}
+                  />
+                }
                 <Comment comments={ticket.comments} ticketId={ticket._id} />
               </Fieldset>
             </FormLeftContent>
             <FormRightContent>
               <Fieldset>
-                <IssueStatusMenu
-                  name="issueStatus"
-                  value={columnsList[issueStatus].title}
-                  currentOrder={issueStatus}
-                  columnOrder={projectInfo.columnOrder}
-                  columnsList={{ ...columnsList, [issueStatus]: undefined }}
-                  handleModalOpen={setIsSmallModalOpen}
-                  isModalOpen={isSmallModalOpen}
-                  handleSelectMenu={handleSelectMenu}
-                  required
-                />
+                {!isEpicTicket ?
+                  <IssueStatusMenu
+                    name="issueStatus"
+                    value={columnsList[issueStatus].title}
+                    currentOrder={issueStatus}
+                    columnOrder={projectInfo.columnOrder}
+                    columnsList={{ ...columnsList, [issueStatus]: undefined }}
+                    handleModalOpen={setIsSmallModalOpen}
+                    isModalOpen={isSmallModalOpen}
+                    handleSelectMenu={handleSelectMenu}
+                    required
+                  />
+                  :
+                  <>
+                    <div>
+                      <CompleteButton
+                        isEpicDone={isEpicDone}
+                        className="icon-check"
+                        type="button"
+                        onClick={() => setEpicFromValues({ ...epicFromValues, isEpicDone: !isEpicDone })}
+                      >
+                        {isEpicDone ?
+                          'Completed'
+                          :
+                          'Mark Complete'
+                        }
+                      </CompleteButton>
+                    </div>
+                    <DatePicker
+                      setdateRange={setdateRange}
+                      dateRange={dateRange}
+                      isStartDate={true}
+                    />
+                    <DatePicker
+                      setdateRange={setdateRange}
+                      dateRange={dateRange}
+                      isEndDate={true}
+                    />
+                  </>
+                }
                 <FormSelectMenu
                   label="Assignee"
                   name="assigneeId"
@@ -148,9 +241,29 @@ const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projec
                   required
                   height="40px"
                 />
+                {
+                  isEpicTicket &&
+                  <FormSelectMenu
+                    label="Issue color"
+                    name="issueColor"
+                    value={issueColor}
+                    selectList={{ ...IssueColors, [issueColor.toUpperCase()]: undefined }}
+                    handleModalOpen={setIsSmallModalOpen}
+                    isModalOpen={isSmallModalOpen}
+                    handleSelectMenu={handleSelectMenu}
+                    isTransparentBackground={true}
+                    renderValue="name"
+                    returnValue="name"
+                    iconStyle={{
+                      base: 'issueColor',
+                      type: issueColor,
+                      size: '11px',
+                      renderValue: 'name'
+                    }}
+                  />
+                }
                 <Diviser />
                 <TicketHistoryContent>
-                  {/* <p>Created July 25, 2020, 10:55 PM</p> */}
                   <p>Created : {createAt}</p>
                   <p>Updated : 18 minutes ago</p>
                 </TicketHistoryContent>

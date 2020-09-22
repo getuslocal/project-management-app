@@ -12,9 +12,6 @@ const ticketSchema = new Schema({
     type: String,
     trim: true,
   },
-  count: {
-    type: Number,
-  },
   issueType: {
     type: String,
     required: true,
@@ -22,14 +19,8 @@ const ticketSchema = new Schema({
   },
   issuePriority: {
     type: String,
+    required: true,
     trim: true,
-  },
-  issueColor: {
-    type: Object,
-  },
-  childIssues: {
-    type: Array,
-    minlength: 1
   },
   summary: {
     type: String,
@@ -69,8 +60,20 @@ const ticketSchema = new Schema({
       }
     }
   ],
+  childIssues: {
+    type: Array,
+  },
+  issueColor: {
+    type: String,
+  },
   dateRange: {
     type: Object
+  },
+  isEpicDone: {
+    type: Boolean
+  },
+  count: {
+    type: Number,
   },
 }, {
   timestamps: true,

@@ -5,7 +5,7 @@ import {
   UPDATE_COLUMN_ORDER,
   CREATE_NEW_TICKET,
   DELETE_TICKET,
-  UPDATE_TICKET
+  UPDATE_TICKET_COLUMN
 } from './projects.types';
 import { convertArrayToObject } from '../../shared/utils/functions';
 
@@ -85,7 +85,7 @@ const projectsReducer = (state = {}, action) => {
         }
       }
     }
-    case UPDATE_TICKET: {
+    case UPDATE_TICKET_COLUMN: {
       const { projectId, columnMove, ticketId } = payload;
       const project = state[projectId];
       const { beforeColumn, afterColumn } = columnMove;

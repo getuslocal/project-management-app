@@ -7,15 +7,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect'
 import { selectEpicTickets } from '../../../../../../redux/tickets/tickets.selectors';
+import TicketModal from '../../KanbanBoard/Column/Ticket/TicketModal/TicketModal';
+import CalendarTask from './CalendarTask/CalendarTask';
 import {
   Container,
   DayCell,
   Content,
   Week,
-  Task
+  Header,
 } from './Calendar.style';
 
-// @todo: Add limit to the prev month.
 const Calendar = ({ epics }) => {
   const [loading, setLoading] = useState(true);
   const [calendar, setCalendar] = useState([]);
@@ -27,6 +28,8 @@ const Calendar = ({ epics }) => {
     mm: new Date().getMonth(),
     dd: new Date().getDate(),
   }
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const changeMonth = (yyyy, mm) => {
     setCurrentMonth(new Date(yyyy, mm))
@@ -90,12 +93,15 @@ const Calendar = ({ epics }) => {
   }
 
   const onScroll = () => {
+
     const scrollY = containerRef.current.scrollTop // Don't get confused by what's scrolling - It's not the window
 
     const targetDate = new Date(lastWeekOfCalendar.yyyy, lastWeekOfCalendar.mm - 1);
     const targetYear = targetDate.getFullYear()
     const targetMonth = targetDate.getMonth()
     const targetRef = weekCellRef.current[`${targetYear}${targetMonth}`].current.offsetTop;
+
+    // const nxt = weekCellRef.current.filter(ref => ref.current.offsetTop >= scrollY)[0];
 
     if (scrollY >= targetRef) {
       const nextDate = moment(new Date(lastWeekOfCalendar.yyyy, lastWeekOfCalendar.mm, lastWeekOfCalendar.dd)).weekday(7);
@@ -120,7 +126,13 @@ const Calendar = ({ epics }) => {
 
     const nextMonthPos = getNextMonthPos()
     const prevMonthPos = getPrevMonthPos()
-    const offset = 50;
+    const offset = 10;
+
+    // When fast scrolling, the first month can be skipped so fix it. 
+    if (scrollY === 0) {
+      changeMonth(firstMonthOfCalendar.yyyy, firstMonthOfCalendar.mm)
+      return
+    }
 
     if (scrollY >= nextMonthPos - offset && nextMonthPos !== null) {
       changeMonth(currentYearOfCalendar, currentMonthOfCalendar + 1)
@@ -163,35 +175,13 @@ const Calendar = ({ epics }) => {
                         key={`${yyyy}${mm}${dd}`}
                         isFocused={isFocused}
                         isToday={isToday}
+                      // onClick={() => console.log('DayCell clicked')}
                       >
-                        <Content isToday={isToday}>
-                          {dd === 1 && moment(new Date(yyyy, mm)).format('MMM')} {dd}
-                          <div>
-                            {
-                              epics.map(epic => {
-                                const { startDate, endDate } = epic.dateRange;
-                                const formattedStartDate = `${moment(startDate).year()}-${moment(startDate).month()}-${moment(startDate).date()}`;
-                                const formattedEndDate = `${moment(endDate).year()}-${moment(endDate).month()}-${moment(endDate).date()}`;
-                                const isStartDate = moment(`${yyyy}-${mm}-${dd}`).isSame(formattedStartDate)
-                                const isBetween = moment(`${yyyy}-${mm}-${dd}`).isBetween(formattedStartDate, formattedEndDate)
-                                const isEndDate = moment(`${yyyy}-${mm}-${dd}`).isSame(formattedEndDate)
-                                // console.log(isStartDate)
-                                return (
-                                  <div key={epic.key}>
-                                    {
-                                      (isStartDate || isEndDate || isBetween) &&
-                                      <Task style={{ backgroundColor: epic.issueColor.bg }}>
-                                        &nbsp;
-                                        {
-                                          isStartDate && <span>start- {epic.key}</span>
-                                        }
-                                      </Task>
-                                    }
-                                  </div>
-                                )
-                              })
-                            }
-                          </div>
+                        <Content>
+                          <Header isToday={isToday}>
+                            {dd === 1 && moment(new Date(yyyy, mm)).format('MMM')} {dd}
+                          </Header>
+                          <CalendarTask epics={epics} date={date} setIsModalOpen={setIsModalOpen}/>
                         </Content>
                       </DayCell>
                     );
@@ -202,6 +192,17 @@ const Calendar = ({ epics }) => {
         }
       </Container>
       <div>{loading && 'Loading...'}</div>
+      {
+        isModalOpen && (
+          <TicketModal
+            ticket={isModalOpen}
+            projectId={"5f416cea4c4a05257179ea2d"}
+            isEpicTicket={true}
+            setIsModalOpen={setIsModalOpen}
+          // deleteTicket={() => deleteTicket(ticket._id, columnId, projectId)}
+          />
+        )
+      }
     </>
   )
 }

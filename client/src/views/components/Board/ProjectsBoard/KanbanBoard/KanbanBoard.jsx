@@ -94,7 +94,7 @@ const KanbanBoard = ({ project, tickets }) => {
   // @todo: change taskIds to ticketIds.
   return (
     <>
-      <TopBar project={project} />
+      <TopBar project={project} isEpicModal={false}/>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="all-columns" direction="horizontal" type="column">
           {provided => (

@@ -49,17 +49,16 @@ const Ticket = ({ ticket, index, columnId, projectId, deleteTicket, members }) =
         )}
       </Draggable>
       {
-        isModalOpen ? (
+        isModalOpen && (
           <TicketModal
             ticket={ticket}
             columnId={columnId}
             projectId={projectId}
+            isEpicTicket={false}
             setIsModalOpen={setIsModalOpen}
             deleteTicket={() => deleteTicket(ticket._id, columnId, projectId)}
           />
-        ) : (
-            <></>
-          )
+        )
       }
     </>
   )

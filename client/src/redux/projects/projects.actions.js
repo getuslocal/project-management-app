@@ -5,7 +5,8 @@ import {
   UPDATE_TWO_COLUMNS_TICKETS_ORDER,
   UPDATE_COLUMN_ORDER,
   FAIL_UPDATE_ORDER,
-  SUCCESS_UPDATE_ORDER
+  SUCCESS_UPDATE_ORDER,
+  UPDATE_TICKET_COLUMN
 } from './projects.types';
 import { updateWithProjectInfo } from '../roles/roles.actions';
 
@@ -73,4 +74,12 @@ export const updateColumnOrder = (projectId, newColumnOrder) => async dispatch =
       type: FAIL_UPDATE_ORDER,
     });
   }
+};
+
+// This is called when user edit an existng ticekt and changed issue status.
+export const updateTicketColumn= (columnMove, ticketId, projectId) => async dispatch => {
+  dispatch({
+    type: UPDATE_TICKET_COLUMN,
+    payload: { columnMove, ticketId, projectId }
+  });
 };

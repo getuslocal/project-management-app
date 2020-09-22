@@ -1,6 +1,4 @@
 const router = require('express').Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const Ticket = require('../models/ticket.model');
 const User = require('../models/user.model');
 const Project = require('../models/project.model');
@@ -27,23 +25,66 @@ router.post('/create', verify, async (req, res) => {
     description,
     assigneeId,
     reporterId,
-    issueColor,
-    childIssues,
-    dateRange } = req.body;
+  } = req.body;
 
   const newTicket = new Ticket({
-    projectId: projectId,
-    issueType: issueType,
-    issuePriority: issuePriority,
-    summary: summary,
-    description: description,
-    assigneeId: assigneeId,
-    reporterId: reporterId,
-    issueColor: issueColor,
-    childIssues: childIssues,
-    dateRange: dateRange,
+    projectId,
+    issueType,
+    issuePriority,
+    summary,
+    description,
+    assigneeId,
+    reporterId,
   });
-  
+
+  try {
+    //Create a new ticket
+    const savedNewTicket = await newTicket.save();
+    // Get a project key name which is a base of ticket key. ex: DEMO-001.
+    const project = await Project.findById(projectId);
+    const keyBase = project.key;
+    // Create a key for the ticket based on project key name and global count number.
+    const savedNewTicketWithKey = await Ticket.findOneAndUpdate(
+      { _id: savedNewTicket._id },
+      { $set: { key: `${keyBase}-${savedNewTicket.count}` } },
+      { new: true, runValidator: true }
+    )
+    res.json(savedNewTicketWithKey)
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+// @route  POST tickets/create/epic
+// @desc   Create a new epic ticket of the project.
+// @access Private
+router.post('/create/epic', verify, async (req, res) => {
+  const {
+    projectId,
+    issueType,
+    issuePriority,
+    summary,
+    description,
+    assigneeId,
+    reporterId,
+    issueColor,
+    childIssues,
+    dateRange,
+  } = req.body;
+
+  const newTicket = new Ticket({
+    projectId,
+    issueType,
+    issuePriority,
+    summary,
+    description,
+    assigneeId,
+    reporterId,
+    issueColor,
+    childIssues,
+    dateRange,
+  });
+
   try {
     //Create a new ticket
     const savedNewTicket = await newTicket.save();
@@ -78,8 +119,8 @@ router.delete('/:ticketId', verify, async (req, res) => {
 // @route  POST tickets/update
 // @desc   Update an existing ticket of the project.
 // @access Private
-router.post('/update/:ticketId', verify, async (req, res) => {
-  const ticketId = req.params.ticketId;
+router.post('/update/:id', verify, async (req, res) => {
+  const ticketId = req.params.id;
   const { issueType, issuePriority, summary, description, assigneeId, reporterId } = req.body;
   try {
     const updatedData = {
@@ -88,7 +129,49 @@ router.post('/update/:ticketId', verify, async (req, res) => {
       summary,
       description,
       assigneeId,
-      reporterId
+      reporterId,
+    };
+    const updatedTicket = await Ticket.findOneAndUpdate(
+      { _id: ticketId },
+      { $set: updatedData },
+      { new: true, runValidator: true }
+    );
+    res.json(updatedTicket)
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+// @route  POST tickets/update/epic/:ticektId
+// @desc   Update an existing epic ticket of the project.
+// @access Private
+router.post('/update/epic/:id', verify, async (req, res) => {
+  const ticketId = req.params.id;
+  const {
+    issueType,
+    issuePriority,
+    summary,
+    description,
+    assigneeId,
+    reporterId,
+    issueColor,
+    childIssues,
+    isEpicDone,
+    dateRange
+  } = req.body;
+
+  try {
+    const updatedData = {
+      issueType,
+      issuePriority,
+      summary,
+      description,
+      assigneeId,
+      reporterId,
+      issueColor,
+      childIssues,
+      isEpicDone,
+      dateRange
     };
     const updatedTicket = await Ticket.findOneAndUpdate(
       { _id: ticketId },

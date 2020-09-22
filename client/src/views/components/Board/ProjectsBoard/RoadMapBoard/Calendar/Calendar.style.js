@@ -1,21 +1,12 @@
 import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
-    height: 650px;
-    max-height: 650px;
-    overflow-y: scroll;
-    position: relative;
-
-    /* display: grid;
-    grid-template-columns: repeat(7, 14.28%);
-    grid-auto-rows: 130px; */
+  height: 650px;
+  max-height: 650px;
+  overflow-y: scroll;
+  position: relative;
 `
 
-export const InnerContainer = styled.div`
-`
-
-export const InnerRef = styled.div`
-`
 export const Week = styled.div`
   display: flex;
   flex-wrap: nowrap;
@@ -24,18 +15,13 @@ export const Week = styled.div`
 
 export const DayCell = styled.div`
   width: 100%;
+  min-height: 130px;
   height: 100%;
-  /* min-height: 130px; */
   text-align: right;
   border-left: 2px solid rgba(166, 168, 179, 0.12);
   border-bottom: 2px solid rgba(166, 168, 179, 0.12);
   color: rgba(0, 0, 0, 0.2);
   font-size: 14px;
-
-  &:last-child {
-    /* border-right: 2px solid rgba(166, 168, 179, 0.12);
-    margin-right: -2px; */
-  }
 
   &.gray {
     color: rgb(190, 190, 190);
@@ -74,10 +60,9 @@ export const DayCell = styled.div`
 
 export const Content = styled.div`
   height: 100%;
-  padding: 8px;
-  padding-top: ${(props) => props.isToday && '6px'};
-`
+  `
 
-export const Task = styled.div`
-
+export const Header = styled.div`
+padding: 8px;
+padding-top: ${(props) => props.isToday && '6px'};
 `

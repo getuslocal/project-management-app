@@ -33,6 +33,7 @@ const TopBar = ({
   searchFilter,
   userProfile,
   renderStyle,
+  isEpicModal
 }) => {
 
   const isFiltering = Object.keys(filters).some(key => filters[key].length > 0)
@@ -47,14 +48,14 @@ const TopBar = ({
           currentProjectId={projectId}
           membersList={membersList}
           userProfile={userProfile}
-          renderStyle={renderStyle}
+          isEpicModal={isEpicModal}
         />
       }
       <Left>
         <Breadcrumbs>Projects / {name}</Breadcrumbs>
-        <ModalButton renderStyle={renderStyle} onClick={() => setIsModalActive(true)}>
+        <ModalButton isEpicModal={isEpicModal} onClick={() => setIsModalActive(true)}>
           {
-            renderStyle === "RoadMapBoard" ?
+            isEpicModal ?
               "Create epic"
               :
               "Create issue"

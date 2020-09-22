@@ -13,12 +13,13 @@ export const IssuePriorities = {
   LOWEST: 'Lowest',
 };
 
+// @todo: just store color name on db and handle colors on style.js side.
 export const IssueColors = {
   PURPLE: {
     name: 'Purple',
-    font: '#8777D9',
-    bg: '#8777D9',
-    border: '#8777D9',
+    font: 'rgb(34 0 202)',
+    bg: 'rgba(135, 119, 217, 0.4)',
+    border: '#5237dc',
   },
   YELLOW: {
     name: 'Yellow',
@@ -29,7 +30,7 @@ export const IssueColors = {
   BLUE: {
     name: 'Blue',
     font: '#0a5eff',
-    bg: 'rgba(218, 231, 255, 0.7)',
+    bg: 'rgba(218, 231, 255, 0.9)',
     border: '#4786ff',
   },
   RED: {
@@ -38,4 +39,8 @@ export const IssueColors = {
     bg: 'rgba(253, 197, 208, 0.7)',
     border: '#fa607e',
   },
+};
+
+export const IssueStyles = {
+  EPIC: 'Epic',
 };

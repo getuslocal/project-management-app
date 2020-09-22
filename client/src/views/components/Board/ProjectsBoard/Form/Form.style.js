@@ -23,7 +23,7 @@ const CommonFormStyle = css`
   color: #172b4d;
   font-style: normal;
   line-height: 20px;
-  padding: 0.3125em .5em;
+  padding: 5px 8px;
   border : none;
   border: 1px solid #dfe1e6;
   border-radius: 3px;

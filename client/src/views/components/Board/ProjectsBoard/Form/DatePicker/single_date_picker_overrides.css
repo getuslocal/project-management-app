@@ -1,0 +1,35 @@
+/* Overriding styles of react dates : https://www.npmjs.com/package/react-dates*/
+
+.SingleDatePicker {
+  border: none;
+  position: relative;
+  padding-right: 25px;
+  padding-left: 8px;
+}
+
+.SingleDatePicker:after {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: '\f107';
+  position: absolute;
+  top: 0;
+  right: 10px;
+  font-size: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.SingleDatePicker .SingleDatePickerInput {
+  border: none;
+}
+.SingleDatePicker .SingleDatePickerInput .DateInput{
+  min-width: 200px;
+  width: 200px;
+}
+
+.SingleDatePicker input.DateInput_input {
+  padding: 0;
+  font-size: 14px;
+  font-weight: 400;
+  border-top: 2px solid transparent;
+}

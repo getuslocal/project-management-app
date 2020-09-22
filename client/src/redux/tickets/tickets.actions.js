@@ -12,6 +12,7 @@ import {
   FILTER_TICKETS_BY_SEARCH,
   CLEAR_ALL_FILTERS
 } from './tickets.types';
+import { updateTicketColumn } from '../projects/projects.actions';
 
 // Get tickets of the project.
 export const getTicketsByProjectId = (projectId) => async dispatch => {
@@ -30,6 +31,28 @@ export const getTicketsByProjectId = (projectId) => async dispatch => {
 export const createNewTicket = (formData, columnId = null) => async dispatch => {
   try {
     const res = await api.post("/tickets/create", formData);
+    const projectId = res.data.projectId;
+    const ticketId = res.data._id;
+    // Add the new ticket id to a proper project state location.
+    await api.post(`/projects/create-taskids/${projectId}`, { ticketId, columnId });
+    dispatch({
+      type: CREATE_NEW_TICKET,
+      payload: {
+        projectId: projectId,
+        data: res.data,
+        ticketId,
+        columnId
+      }
+    });
+  } catch (err) {
+    console.log(err)
+  }
+};
+
+// Create a new epic ticket.
+export const createNewEpicTicket = (formData, columnId = null) => async dispatch => {
+  try {
+    const res = await api.post("/tickets/create/epic", formData);
     const projectId = res.data.projectId;
     const ticketId = res.data._id;
     // Add the new ticket id to a proper project state location.
@@ -80,8 +103,25 @@ export const updateTicket = (columnMove, ticketId, formData) => async dispatch =
       payload: {
         data: res.data,
         ticketId,
-        projectId: projectId,
-        columnMove
+      }
+    });
+
+    // Update ticket column if changed on project state.
+    dispatch(updateTicketColumn(columnMove, ticketId, projectId));
+  } catch (err) {
+    console.log(err)
+  }
+};
+
+// Update a epic ticket by its id.
+export const updateEpicTicket = (ticketId, formData) => async dispatch => {
+  try {
+    const res = await api.post(`/tickets/update/epic/${ticketId}`, formData);
+    dispatch({
+      type: UPDATE_TICKET,
+      payload: {
+        data: res.data,
+        ticketId,
       }
     });
   } catch (err) {

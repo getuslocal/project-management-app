@@ -1,35 +1,48 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-import { DateRangePicker } from 'react-dates';
-import './react_dates_overrides.css';
+import { SingleDatePicker } from 'react-dates';
+import './single_date_picker_overrides.css';
 import {
-  Container,
+  FormContainer,
   Label,
-  Discription
-} from './DatePicker.style';
+} from '../Form.style';
 
-export default function DatePicker({ dateRange, setdateRange }) {
-  const [focusedInput, setFocusedInput] = useState(null);
+export default function DatePicker({ dateRange, setdateRange, isStartDate, isEndDate }) {
+  const [focused, setFocused] = useState(false);
   const { startDate, endDate } = dateRange;
 
   return (
     <div>
-      <Container>
-        <Label>Start and due date</Label>
-        <DateRangePicker
-          startDate={startDate} // momentPropTypes.momentObj or null,
-          startDateId="startDateMookh" // PropTypes.string.isRequired,
-          endDate={endDate} // momentPropTypes.momentObj or null,
-          endDateId="endDateMookh" // PropTypes.string.isRequired,
-          onDatesChange={({ startDate, endDate }) => setdateRange({ startDate, endDate })} // PropTypes.func.isRequired,
-          focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-          onFocusChange={focusedInput => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
-          minimumNights={0}
-          displayFormat="MMM DD YYYY"
-        />
-        <Discription>Allows the planned start and due date for a piece of work to be set.</Discription>
-      </Container>
+      <FormContainer>
+        <Label>
+          {isStartDate && 'Start'}
+          {isEndDate && 'Due'}
+          {' '}date
+        </Label>
+        {
+          isStartDate &&
+          <SingleDatePicker
+            displayFormat="MMMM DD, YYYY"
+            date={startDate} // momentPropTypes.momentObj or null
+            onDateChange={date => setdateRange({ ...dateRange, startDate: date })} // PropTypes.func.isRequired
+            focused={focused} // PropTypes.bool
+            onFocusChange={({ focused }) => setFocused(focused)} // PropTypes.func.isRequired
+            id="your_unique_id" // PropTypes.string.isRequired,
+          />
+        }
+        {
+          isEndDate &&
+          <SingleDatePicker
+            displayFormat="MMMM DD, YYYY"
+            date={endDate} // momentPropTypes.momentObj or null
+            onDateChange={date => setdateRange({ ...dateRange, endDate: date })} // PropTypes.func.isRequired
+            focused={focused} // PropTypes.bool
+            onFocusChange={({ focused }) => setFocused(focused)} // PropTypes.func.isRequired
+            id="your_unique_id" // PropTypes.string.isRequired,
+          />
+        }
+      </FormContainer>
     </div>
   )
 }
