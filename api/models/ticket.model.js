@@ -60,8 +60,8 @@ const ticketSchema = new Schema({
       }
     }
   ],
-  childIssues: {
-    type: Array,
+  linkedEpic: {
+    type: Schema.Types.ObjectId
   },
   issueColor: {
     type: String,

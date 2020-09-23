@@ -13,7 +13,6 @@ export const IssuePriorities = {
   LOWEST: 'Lowest',
 };
 
-// @todo: just store color name on db and handle colors on style.js side.
 export const IssueColors = {
   PURPLE: {
     name: 'Purple',

@@ -16,26 +16,44 @@ export const InnerWrapper = styled.div`
 `
 
 export const TopFixedContent = styled.div`
- text-align: right;
-  i{
-    font-size: 20px;
-    cursor: pointer;
-    color: rgb(66, 82, 110);
-    &:not(:last-child) {
-      margin-right: 25px;
-    }
-  }
-
   padding: 20px 30px;
-  font-size: 19px;
-  line-height: 1.5;
+  display:flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+`
+
+export const TopContentRight = styled.div`
+
+    i{
+      font-size: 20px;
+      cursor: pointer;
+      color: rgb(66, 82, 110);
+      &:not(:last-child) {
+        margin-right: 25px;
+      }
+    }
+`
+export const TopContentLeft = styled.div`
   font-weight: 500;
+  display: flex;
+  align-content: center;
+`
+
+export const Slash = styled.span`
+  color: rgb(94, 108, 132);
+  font-size: 12px;
 `
 
 export const TicketKey = styled.span`
-  float: left;
   font-size: 14px;
   color: rgb(94, 108, 132);
+  line-height: 1;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 200px;
   &:before{
     margin-right: 1em;
     position: relative;

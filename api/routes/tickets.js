@@ -35,6 +35,7 @@ router.post('/create', verify, async (req, res) => {
     description,
     assigneeId,
     reporterId,
+    linkedEpic: null
   });
 
   try {
@@ -68,7 +69,6 @@ router.post('/create/epic', verify, async (req, res) => {
     assigneeId,
     reporterId,
     issueColor,
-    childIssues,
     dateRange,
   } = req.body;
 
@@ -81,7 +81,6 @@ router.post('/create/epic', verify, async (req, res) => {
     assigneeId,
     reporterId,
     issueColor,
-    childIssues,
     dateRange,
   });
 
@@ -155,7 +154,6 @@ router.post('/update/epic/:id', verify, async (req, res) => {
     assigneeId,
     reporterId,
     issueColor,
-    childIssues,
     isEpicDone,
     dateRange
   } = req.body;
@@ -169,13 +167,30 @@ router.post('/update/epic/:id', verify, async (req, res) => {
       assigneeId,
       reporterId,
       issueColor,
-      childIssues,
       isEpicDone,
       dateRange
     };
     const updatedTicket = await Ticket.findOneAndUpdate(
       { _id: ticketId },
       { $set: updatedData },
+      { new: true, runValidator: true }
+    );
+    res.json(updatedTicket)
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+// @route  Post tickets/edit/link_epic/:id
+// @desc   Link an epic with existing child issues.
+// @access Private
+router.post('/edit/link_epic/:id', verify, async (req, res) => {
+  const ticketId = req.params.id;
+  const { epicId } = req.body;
+  try {
+    const updatedTicket = await Ticket.findOneAndUpdate(
+      { _id: ticketId },
+      { $set: { linkedEpic: epicId } },
       { new: true, runValidator: true }
     );
     res.json(updatedTicket)

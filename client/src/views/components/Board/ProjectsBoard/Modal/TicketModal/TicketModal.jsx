@@ -22,7 +22,11 @@ import {
   TicketHistoryContent,
   ButtonsContainer,
   SubmitButton,
-  Blanket
+  Blanket,
+  EpicWrapper,
+  TopContentLeft,
+  TopContentRight,
+  Slash
 } from './TicketModal.style';
 import {
   ModalContainer,
@@ -32,7 +36,7 @@ import {
   Diviser
 } from '../Modal.style';
 
-const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projectInfo, columnId, isEpicTicket }) => {
+const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projectInfo, columnId, isEpicTicket, linkedEpic }) => {
   const [isSmallModalOpen, setIsSmallModalOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     issueType: ticket.issueType,
@@ -90,9 +94,20 @@ const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projec
       <Container>
         <Content>
           <TopFixedContent>
-            <TicketKey className={`icon-issue-${issueType.toLowerCase()}`}>{ticket.key}</TicketKey>
-            <i className="far fa-trash-alt" onClick={deleteTicket}></i>
-            <i className="fas fa-times" onClick={() => setIsModalOpen(false)}></i>
+            <TopContentLeft>
+              {
+                linkedEpic &&
+                <>
+                  <TicketKey className="icon-issue-epic">{linkedEpic.summary}</TicketKey>
+                  <Slash style={{ margin: '0 6px' }}>/</Slash>
+                </>
+              }
+              <TicketKey className={`icon-issue-${issueType.toLowerCase()}`}>{ticket.key}</TicketKey>
+            </TopContentLeft>
+            <TopContentRight>
+              <i className="far fa-trash-alt" onClick={deleteTicket}></i>
+              <i className="fas fa-times" onClick={() => setIsModalOpen(false)}></i>
+            </TopContentRight>
           </TopFixedContent>
           <form onSubmit={handleSubmit}>
             <InnerWrapper>

@@ -9,8 +9,19 @@ export const selectTickets = createSelector(
 );
 
 export const selectEpicTickets = createSelector(
-  [tickets],
-  tickets => tickets.tickets.filter(ticket => ticket.issueType === 'Epic')
+  [selectTickets], //@todo: what is dif btw selectTickets and tickets here ? changes a trigger of re-calling this ? 
+  tickets => tickets.filter(ticket => ticket.issueType === 'Epic')
+);
+
+export const selectTicketsLinkedWithEpic = epicId => createSelector(
+  [selectTickets],
+  // Return ids of tickets linked with an epic as child issues.
+  tickets => tickets.filter(ticket => ticket.linkedEpic === epicId).map(ticket => ticket._id)
+);
+
+export const selectEpicById = id => createSelector(
+  [selectEpicTickets],
+  epics => epics.filter(epic => epic._id === id)[0]
 );
 
 export const selectFilters = createSelector(

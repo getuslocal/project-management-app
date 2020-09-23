@@ -5,18 +5,23 @@ import {
   TicketStatus,
   TicketSummary,
   Bottom,
-  CustomIcon
+  CustomIcon,
+  EpicWrapper,
+  Epic,
 } from './Ticket.style'
 import TicketModal from '../../../Modal/TicketModal/TicketModal';
 import { deleteTicket } from '../../../../../../../redux/tickets/tickets.actions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { selectMembersByProjectId } from '../../../../../../../redux/members/members.selectors';
+import { selectEpicById } from '../../../../../../../redux/tickets/tickets.selectors';
 import { createStructuredSelector } from 'reselect';
+import { IssueColors } from '../../../.././../../../shared/constants/issues'
 
-const Ticket = ({ ticket, index, columnId, projectId, deleteTicket, members }) => {
+const Ticket = ({ ticket, index, columnId, projectId, deleteTicket, members, linkedEpic }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { issueType, _id: ticketId, key, assigneeId } = ticket;
+  console.log(linkedEpic)
 
   return (
     <>
@@ -32,8 +37,18 @@ const Ticket = ({ ticket, index, columnId, projectId, deleteTicket, members }) =
             <TicketSummary>
               {ticket.summary}
             </TicketSummary>
+            {
+              linkedEpic &&
+              <EpicWrapper>
+                <Epic issueColor={IssueColors[linkedEpic.issueColor.toUpperCase()]}>
+                  {linkedEpic.summary}
+                </Epic>
+              </EpicWrapper>
+            }
             <Bottom>
-              <TicketStatus className={`icon-issue-${issueType.toLowerCase()}`}>{key}</TicketStatus>
+              <TicketStatus className={`icon-issue-${issueType.toLowerCase()}`}>
+                {key}
+              </TicketStatus>
               {
                 Object.keys(members).length > 0 && assigneeId ?
                   <CustomIcon iconStyle={{
@@ -52,6 +67,7 @@ const Ticket = ({ ticket, index, columnId, projectId, deleteTicket, members }) =
         isModalOpen && (
           <TicketModal
             ticket={ticket}
+            linkedEpic={linkedEpic}
             columnId={columnId}
             projectId={projectId}
             isEpicTicket={false}
@@ -69,7 +85,8 @@ Ticket.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
-  members: selectMembersByProjectId(ownProps.projectId)
+  members: selectMembersByProjectId(ownProps.projectId),
+  linkedEpic: selectEpicById(ownProps.ticket.linkedEpic)
 });
 
 export default connect(mapStateToProps, { deleteTicket })(Ticket);

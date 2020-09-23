@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import Icon from '../../../../../../../shared/components/Icon/Icon';
+import { IssueColors } from '../../../.././../../../shared/constants/issues'
 
 export const Container = styled.div`
   background-color: rgb(255, 255, 255);
@@ -37,7 +38,21 @@ export const Bottom = styled.div`
   align-items: center;
 `
 
+export const EpicWrapper = styled.div`
+  margin-bottom: 5px;
+`
+export const Epic = styled.p`
+  background-color: ${({issueColor}) => issueColor ? issueColor.bg : 'rgba(135, 119, 217, 0.4)'};
+  color: ${({issueColor}) => issueColor ? issueColor.font : 'rgb(64, 50, 148)'};
+  border-radius: 3px;
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 2px 4px;
+  text-transform: uppercase;
+`
+
 export const CustomIcon = styled(Icon)`
   margin-right: 0;
-
 `

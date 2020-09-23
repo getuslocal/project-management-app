@@ -7,6 +7,7 @@ import { selectMembersByProjectId } from '../../../../../redux/members/members.s
 import { createStructuredSelector } from 'reselect';
 import { filterTicketsByUser, removeUserFilter, filterTicketsBySearch, clearAllFilters } from '../../../../../redux/tickets/tickets.actions';
 import NewIssueModal from '../Modal/NewTicketModal/NewTicketModal';
+import NewEpicModal from '../Modal/NewTicketModal/NewEpicModal/NewEpicModal';
 import {
   Container,
   Breadcrumbs,
@@ -42,14 +43,24 @@ const TopBar = ({
   return (
     <Container>
       {
-        isModalActive &&
-        <NewIssueModal
-          setIsModalActive={setIsModalActive}
-          currentProjectId={projectId}
-          membersList={membersList}
-          userProfile={userProfile}
-          isEpicModal={isEpicModal}
-        />
+        isModalActive && (
+          isEpicModal ? (
+            <NewEpicModal
+              setIsModalActive={setIsModalActive}
+              currentProjectId={projectId}
+              membersList={membersList}
+              userProfile={userProfile}
+              isEpicModal={isEpicModal}
+            />
+          ) : (
+            <NewIssueModal
+              setIsModalActive={setIsModalActive}
+              currentProjectId={projectId}
+              membersList={membersList}
+              userProfile={userProfile}
+            />
+          )
+        )
       }
       <Left>
         <Breadcrumbs>Projects / {name}</Breadcrumbs>

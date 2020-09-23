@@ -6,6 +6,7 @@ import FormSelectMenu from '../../../Form/FormSelectMenu/FormSelectMenu';
 import { IssuePriorities, IssueColors } from '../../../../../../../shared/constants/issues';
 import { selectMembersByProjectId } from '../../../../../../../redux/members/members.selectors';
 import { selectProjectById } from '../../../../../../../redux/projects/projects.selectors';
+import { selectTicketsLinkedWithEpic } from '../../../../../../../redux/tickets/tickets.selectors';
 import { updateEpicTicket } from '../../../../../../../redux/tickets/tickets.actions';
 import store from '../../../../../../../redux/store';
 import Title from '../../../KanbanBoard/Column/Ticket/TicketModal/Title/Title';
@@ -31,13 +32,15 @@ import {
   TicketHistoryContent,
   ButtonsContainer,
   SubmitButton,
-  Blanket
+  Blanket,
+  TopContentRight,
+  TopContentLeft
 } from '../TicketModal.style';
 import {
   CompleteButton,
 } from './EpicModal.style';
 
-const EpicModal = ({ ticket, setIsModalOpen, membersList, deleteTicket }) => {
+const EpicModal = ({ ticket, setIsModalOpen, membersList, deleteTicket, linkedIssues }) => {
   const [isSmallModalOpen, setIsSmallModalOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     issueType: ticket.issueType,
@@ -49,8 +52,9 @@ const EpicModal = ({ ticket, setIsModalOpen, membersList, deleteTicket }) => {
     comments: ticket.comments,
     issueColor: ticket.issueColor,
     isEpicDone: ticket.isEpicDone,
-    childIssues: ticket.childIssues
   });
+
+  const [childIssues, setChildIssues] = useState(linkedIssues);
 
   const [dateRange, setdateRange] = useState({
     startDate: moment(ticket.dateRange.startDate),
@@ -66,7 +70,6 @@ const EpicModal = ({ ticket, setIsModalOpen, membersList, deleteTicket }) => {
     issuePriority,
     comments,
     issueColor,
-    childIssues,
     isEpicDone
   } = issueFormValues;
 
@@ -74,8 +77,8 @@ const EpicModal = ({ ticket, setIsModalOpen, membersList, deleteTicket }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ ...issueFormValues, dateRange })
-    store.dispatch(updateEpicTicket(ticket._id, { ...issueFormValues, dateRange }));
+    console.log(childIssues)
+    store.dispatch(updateEpicTicket(ticket._id, { ...issueFormValues, dateRange }, childIssues));
     setIsModalOpen(false);
   }
 
@@ -90,10 +93,10 @@ const EpicModal = ({ ticket, setIsModalOpen, membersList, deleteTicket }) => {
 
   const handleChildIssueMenu = (issueId, isActive = false) => {
     if (isActive) {
-      setIssueFormValues({ ...issueFormValues, childIssues: childIssues.filter(issue => issue !== issueId) });
+      setChildIssues(childIssues.filter(issue => issue !== issueId));
       return
     }
-    setIssueFormValues({ ...issueFormValues, childIssues: [...childIssues, issueId] });
+    setChildIssues([...childIssues, issueId]);
   };
 
   return (
@@ -102,9 +105,13 @@ const EpicModal = ({ ticket, setIsModalOpen, membersList, deleteTicket }) => {
       <Container>
         <Content>
           <TopFixedContent>
-            <TicketKey className={`icon-issue-${issueType.toLowerCase()}`}>{ticket.key}</TicketKey>
-            <i className="far fa-trash-alt" onClick={deleteTicket}></i>
-            <i className="fas fa-times" onClick={() => setIsModalOpen(false)}></i>
+            <TopContentLeft>
+              <TicketKey className={`icon-issue-${issueType.toLowerCase()}`}>{ticket.key}</TicketKey>
+            </TopContentLeft>
+            <TopContentRight>
+              <i className="far fa-trash-alt" onClick={deleteTicket}></i>
+              <i className="fas fa-times" onClick={() => setIsModalOpen(false)}></i>
+            </TopContentRight>
           </TopFixedContent>
 
           <form onSubmit={handleSubmit}>
@@ -245,7 +252,8 @@ EpicModal.propTypes = {
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
   membersList: selectMembersByProjectId(ownProps.projectId),
-  projectInfo: selectProjectById(ownProps.projectId)
+  projectInfo: selectProjectById(ownProps.projectId),
+  linkedIssues: selectTicketsLinkedWithEpic(ownProps.ticket._id),
 });
 
 

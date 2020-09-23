@@ -1,46 +1,58 @@
 import React, { useState } from 'react';
-import { IssueTypes, IssuePriorities } from '../../../../../../shared/constants/issues';
+import { IssueTypes, IssuePriorities, IssueColors } from '../../../../../../../shared/constants/issues';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { selectAllProjects } from '../../../../../../redux/projects/projects.selectors';
+import { selectAllProjects } from '../../../../../../../redux/projects/projects.selectors';
 import { createStructuredSelector } from 'reselect';
-import FormSelectMenu from '../../Form/FormSelectMenu/FormSelectMenu';
-import FormInput from '../../Form/FormInput/FormInput';
-import FormTextArea from '../../Form/FormTextArea/FormTextArea';
-import store from '../../../../../../redux/store';
-import { createNewTicket } from '../../../../../../redux/tickets/tickets.actions';
+import FormSelectMenu from '../../../Form/FormSelectMenu/FormSelectMenu';
+import FormInput from '../../../Form/FormInput/FormInput';
+import FormTextArea from '../../../Form/FormTextArea/FormTextArea';
+import ChildIssueMenu from '../../../Form/ChildIssueMenu/ChildIssueMenu';
+import RangedDatePicker from '../../../Form/RangedDatePicker/RangedDatePicker';
+import store from '../../../../../../../redux/store';
+import { createNewEpicTicket } from '../../../../../../../redux/tickets/tickets.actions';
 import {
   Title,
   SubmitButton,
   TextButton,
   InnerWrapper,
   ButtonsContainer,
-} from './NewTicketModal.style';
+} from './NewEpicModal.style';
 import {
   ModalContainer,
   Container,
   Content,
   Fieldset,
   Diviser,
-} from '../Modal.style';
+} from '../../Modal.style';
 
-const NewTicketModal = ({ setIsModalActive, projects, currentProjectId, membersList, userProfile }) => {
+const NewEpicModal = ({ setIsModalActive, projects, currentProjectId, membersList, userProfile }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     projectId: currentProjectId,
-    issueType: IssueTypes.TASK,
+    issueType: IssueTypes.EPIC,
     summary: '',
     description: '',
     reporterId: userProfile._id,
     assigneeId: '',
     issuePriority: IssuePriorities.MEDIUM,
+    issueColor: IssueColors.PURPLE.name,
   });
 
-  const { projectId, issueType, summary, description, reporterId, assigneeId, issuePriority } = issueFormValues;
+  const [childIssues, setChildIssues] = useState([])
+
+  const [dateRange, setdateRange] = useState({
+    startDate: null,
+    endDate: null
+  });
+
+  const { projectId, issueType, summary, description, reporterId, assigneeId, issuePriority, issueColor } = issueFormValues;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    store.dispatch(createNewTicket({ ...issueFormValues }));
+    console.log({ ...issueFormValues, dateRange })
+    console.log(childIssues)
+    store.dispatch(createNewEpicTicket({ ...issueFormValues, dateRange }, childIssues));
     setIsModalActive(false);
   }
 
@@ -51,6 +63,14 @@ const NewTicketModal = ({ setIsModalActive, projects, currentProjectId, membersL
 
   const handleSelectMenu = (name, value) => {
     setIssueFormValues({ ...issueFormValues, [name]: value });
+  };
+
+  const handleChildIssueMenu = (issueId, isActive = false) => {
+    if (isActive) {
+      setChildIssues(childIssues.filter(issue => issue !== issueId));
+      return
+    }
+    setChildIssues([...childIssues, issueId]);
   };
 
   return (
@@ -85,7 +105,7 @@ const NewTicketModal = ({ setIsModalActive, projects, currentProjectId, membersL
                   name="issueType"
                   value={issueType}
                   width="40%"
-                  selectList={{ ...IssueTypes, [issueType.toUpperCase()]: undefined }}
+                  selectList={{}}
                   handleModalOpen={setIsModalOpen}
                   isModalOpen={isModalOpen}
                   handleSelectMenu={handleSelectMenu}
@@ -105,6 +125,7 @@ const NewTicketModal = ({ setIsModalActive, projects, currentProjectId, membersL
                   iconStyle={{ base: 'priority', type: issuePriority, size: '12px' }}
                   description="Priority in relation to other issues."
                 />
+                <RangedDatePicker setdateRange={setdateRange} dateRange={dateRange} />
                 <Diviser />
                 <FormInput
                   label="Summary*"
@@ -121,6 +142,33 @@ const NewTicketModal = ({ setIsModalActive, projects, currentProjectId, membersL
                   value={description}
                   handleChange={handleChange}
                   required
+                />
+                <ChildIssueMenu
+                  label="Child issues"
+                  name="childIssues"
+                  childIssues={childIssues}
+                  handleModalOpen={setIsModalOpen}
+                  handleSelectMenu={handleSelectMenu}
+                  isModalOpen={isModalOpen}
+                  handleChildIssueMenu={handleChildIssueMenu}
+                />
+                <FormSelectMenu
+                  label="Issue color"
+                  name="issueColor"
+                  value={issueColor}
+                  width="30%"
+                  selectList={{ ...IssueColors, [issueColor.toUpperCase()]: undefined }}
+                  handleModalOpen={setIsModalOpen}
+                  isModalOpen={isModalOpen}
+                  handleSelectMenu={handleSelectMenu}
+                  renderValue="name"
+                  returnValue="name"
+                  iconStyle={{
+                    base: 'issueColor',
+                    type: issueColor,
+                    size: '11px',
+                    renderValue: 'name'
+                  }}
                 />
                 <FormSelectMenu
                   label="Assignee"
@@ -162,7 +210,7 @@ const NewTicketModal = ({ setIsModalActive, projects, currentProjectId, membersL
                 />
               </Fieldset>
             </InnerWrapper>
-            <ButtonsContainer isEpicModal={false}>
+            <ButtonsContainer isEpicModal={true}>
               <SubmitButton value="Create" type="submit" />
               <TextButton onClick={() => setIsModalActive(false)}>Cancel</TextButton>
             </ButtonsContainer>
@@ -174,7 +222,7 @@ const NewTicketModal = ({ setIsModalActive, projects, currentProjectId, membersL
   )
 }
 
-NewTicketModal.propTypes = {
+NewEpicModal.propTypes = {
   projects: PropTypes.object.isRequired,
 };
 
@@ -182,4 +230,4 @@ const mapStateToProps = createStructuredSelector({
   projects: selectAllProjects,
 });
 
-export default connect(mapStateToProps, null)(NewTicketModal);
+export default connect(mapStateToProps, null)(NewEpicModal);
