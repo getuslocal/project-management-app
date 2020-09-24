@@ -8,10 +8,10 @@ import { selectMembersByProjectId } from '../../../../../../redux/members/member
 import { selectProjectById } from '../../../../../../redux/projects/projects.selectors';
 import { updateTicket, deleteTicket } from '../../../../../../redux/tickets/tickets.actions';
 import { updateTicketStatus } from '../../../../../../redux/projects/projects.actions';
-import IssueStatusMenu from '../../KanbanBoard/Column/Ticket/TicketModal/IssueStatusMenu/IssueStatusMenu';
-import Title from '../../KanbanBoard/Column/Ticket/TicketModal/Title/Title';
-import Description from '../../KanbanBoard/Column/Ticket/TicketModal/Description/Description';
-import Comment from '../../KanbanBoard/Column/Ticket/TicketModal/Comment/Comment';
+import IssueStatusMenu from './IssueStatusMenu/IssueStatusMenu';
+import Title from './Title/Title';
+import Description from './Description/Description';
+import Comment from './Comment/Comment';
 import {
   InnerWrapper,
   FormContainer,
@@ -23,12 +23,12 @@ import {
   Blanket,
   TopContentLeft,
   TopContentRight,
-  Slash
+  Slash,
+  Content
 } from './TicketModal.style';
 import {
   ModalContainer,
   Container,
-  Content,
   Fieldset,
   Diviser
 } from '../Modal.style';

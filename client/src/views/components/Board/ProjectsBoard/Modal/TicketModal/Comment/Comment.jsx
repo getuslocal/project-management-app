@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import Icon from '../../../../../../../../../shared/components/Icon/Icon';
-import { selectUser } from '../../../../../../../../../redux/auth/auth.selectors';
+import Icon from '../../../../../../../shared/components/Icon/Icon';
+import { selectUser } from '../../../../../../../redux/auth/auth.selectors';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { addComment, deleteComment } from '../../../../../../../../../redux/tickets/tickets.actions';
+import { addComment, deleteComment } from '../../../../../../../redux/tickets/tickets.actions';
 import {
   Container,
   Title,

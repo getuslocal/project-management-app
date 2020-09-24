@@ -94,12 +94,12 @@ export const FormContainer = styled.div`
 `
 
 export const FormLeftContent = styled.div`
-  width: 65%;
+  width: 68%;
   padding-right: 50px;
 `
 
 export const FormRightContent = styled.div`
-  width: 35%;
+  width: 32%;
 `
 
 export const TicketHistoryContent = styled.div`
@@ -112,4 +112,15 @@ export const TicketHistoryContent = styled.div`
       margin-bottom: .5em;
     }
   }
+`
+export const Content = styled.div`
+  vertical-align: middle;
+  display: inline-block;
+  background-color: #fff;
+  position: relative;
+  z-index: 200;
+  min-width: 600px;
+  width: 100%;
+  max-width: 1040px;
+  border-radius: 3px;
 `

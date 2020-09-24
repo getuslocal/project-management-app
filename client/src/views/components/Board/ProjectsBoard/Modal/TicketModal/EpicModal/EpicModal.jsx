@@ -8,16 +8,15 @@ import { selectMembersByProjectId } from '../../../../../../../redux/members/mem
 import { selectProjectById } from '../../../../../../../redux/projects/projects.selectors';
 import { selectTicketsLinkedWithEpic } from '../../../../../../../redux/tickets/tickets.selectors';
 import { updateTicket, deleteTicket } from '../../../../../../../redux/tickets/tickets.actions';
-import Title from '../../../KanbanBoard/Column/Ticket/TicketModal/Title/Title';
-import Description from '../../../KanbanBoard/Column/Ticket/TicketModal/Description/Description';
-import Comment from '../../../KanbanBoard/Column/Ticket/TicketModal/Comment/Comment';
+import Title from '../Title/Title';
+import Description from '../Description/Description';
+import Comment from '../Comment/Comment';
 import ChildissueMenu from '../../../Form/ChildIssueMenu/ChildIssueMenu';
 import DatePicker from '../../../Form/DatePicker/DatePicker';
 import moment from 'moment';
 import {
   ModalContainer,
   Container,
-  Content,
   Fieldset,
   Diviser
 } from '../../Modal.style';
@@ -31,7 +30,8 @@ import {
   TicketHistoryContent,
   Blanket,
   TopContentRight,
-  TopContentLeft
+  TopContentLeft,
+  Content
 } from '../TicketModal.style';
 import {
   CompleteButton,
