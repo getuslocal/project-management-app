@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import Icon from '../../../../../../../shared/components/Icon/Icon';
-import { IssueColors } from '../../../.././../../../shared/constants/issues'
 
 export const Container = styled.div`
   background-color: rgb(255, 255, 255);
@@ -10,9 +9,8 @@ export const Container = styled.div`
   border-radius: 3px;
   box-shadow: rgba(23, 43, 77, 0.2) 0px 1px 1px, rgba(23, 43, 77, 0.2) 0px 0px 1px;
   background-color: ${props => (props.isDragging ? 'rgb(222 ,235, 255)' : 'white')} ;
-
-  cursor: pointer;
   &:hover{
+    cursor: pointer;
     background-color: rgb(244, 245, 247);
   }
 `

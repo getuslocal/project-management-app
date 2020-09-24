@@ -7,7 +7,6 @@ import { createStructuredSelector } from 'reselect';
 import FormSelectMenu from '../../Form/FormSelectMenu/FormSelectMenu';
 import FormInput from '../../Form/FormInput/FormInput';
 import FormTextArea from '../../Form/FormTextArea/FormTextArea';
-import store from '../../../../../../redux/store';
 import { createNewTicket } from '../../../../../../redux/tickets/tickets.actions';
 import {
   Title,
@@ -24,7 +23,14 @@ import {
   Diviser,
 } from '../Modal.style';
 
-const NewTicketModal = ({ setIsModalActive, projects, currentProjectId, membersList, userProfile }) => {
+const NewTicketModal = ({
+  setIsModalActive,
+  projects,
+  currentProjectId,
+  membersList,
+  userProfile,
+  createNewTicket
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     projectId: currentProjectId,
@@ -40,7 +46,11 @@ const NewTicketModal = ({ setIsModalActive, projects, currentProjectId, membersL
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    store.dispatch(createNewTicket({ ...issueFormValues }));
+    // Set a linked epic null.
+    issueFormValues.linkedEpic = null;
+    // Create a new ticket with form values.
+    createNewTicket(issueFormValues);
+    // Close this modal.
     setIsModalActive(false);
   }
 
@@ -182,4 +192,4 @@ const mapStateToProps = createStructuredSelector({
   projects: selectAllProjects,
 });
 
-export default connect(mapStateToProps, null)(NewTicketModal);
+export default connect(mapStateToProps, { createNewTicket })(NewTicketModal);

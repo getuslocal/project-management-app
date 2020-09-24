@@ -17,32 +17,13 @@ router.get('/:projectId', verify, (req, res) => {
 // @desc   Create a new ticket of the project.
 // @access Private
 router.post('/create', verify, async (req, res) => {
-  const {
-    projectId,
-    issueType,
-    issuePriority,
-    summary,
-    description,
-    assigneeId,
-    reporterId,
-  } = req.body;
-
-  const newTicket = new Ticket({
-    projectId,
-    issueType,
-    issuePriority,
-    summary,
-    description,
-    assigneeId,
-    reporterId,
-    linkedEpic: null
-  });
-
+  const formData = req.body;
   try {
     //Create a new ticket
+    const newTicket = new Ticket(formData);
     const savedNewTicket = await newTicket.save();
     // Get a project key name which is a base of ticket key. ex: DEMO-001.
-    const project = await Project.findById(projectId);
+    const project = await Project.findById(savedNewTicket.projectId);
     const keyBase = project.key;
     // Create a key for the ticket based on project key name and global count number.
     const savedNewTicketWithKey = await Ticket.findOneAndUpdate(
@@ -55,53 +36,6 @@ router.post('/create', verify, async (req, res) => {
     res.status(400).send(err);
   }
 });
-
-// @route  POST tickets/create/epic
-// @desc   Create a new epic ticket of the project.
-// @access Private
-router.post('/create/epic', verify, async (req, res) => {
-  const {
-    projectId,
-    issueType,
-    issuePriority,
-    summary,
-    description,
-    assigneeId,
-    reporterId,
-    issueColor,
-    dateRange,
-  } = req.body;
-
-  const newTicket = new Ticket({
-    projectId,
-    issueType,
-    issuePriority,
-    summary,
-    description,
-    assigneeId,
-    reporterId,
-    issueColor,
-    dateRange,
-  });
-
-  try {
-    //Create a new ticket
-    const savedNewTicket = await newTicket.save();
-    // Get a project key name which is a base of ticket key. ex: DEMO-001.
-    const project = await Project.findById(projectId);
-    const keyBase = project.key;
-    // Create a key for the ticket based on project key name and global count number.
-    const savedNewTicketWithKey = await Ticket.findOneAndUpdate(
-      { _id: savedNewTicket._id },
-      { $set: { key: `${keyBase}-${savedNewTicket.count}` } },
-      { new: true, runValidator: true }
-    )
-    res.json(savedNewTicketWithKey)
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
-
 
 // @route  DELETE tickets/:ticketId/
 // @desc   Delete a ticket of the id
@@ -120,77 +54,17 @@ router.delete('/:ticketId', verify, async (req, res) => {
 // @access Private
 router.post('/update/:id', verify, async (req, res) => {
   const ticketId = req.params.id;
-  const { issueType, issuePriority, summary, description, assigneeId, reporterId } = req.body;
-  try {
-    const updatedData = {
-      issueType,
-      issuePriority,
-      summary,
-      description,
-      assigneeId,
-      reporterId,
-    };
-    const updatedTicket = await Ticket.findOneAndUpdate(
-      { _id: ticketId },
-      { $set: updatedData },
-      { new: true, runValidator: true }
-    );
-    res.json(updatedTicket)
-  } catch (err) {
-    res.status(400).send(err);
+  const updatedValue = req.body;
+
+  // Check the requested body's format is valid.
+  if (!updatedValue || typeof (updatedValue) !== "object") {
+    res.status(400).send("Invalid submission");
   }
-});
 
-// @route  POST tickets/update/epic/:ticektId
-// @desc   Update an existing epic ticket of the project.
-// @access Private
-router.post('/update/epic/:id', verify, async (req, res) => {
-  const ticketId = req.params.id;
-  const {
-    issueType,
-    issuePriority,
-    summary,
-    description,
-    assigneeId,
-    reporterId,
-    issueColor,
-    isEpicDone,
-    dateRange
-  } = req.body;
-
-  try {
-    const updatedData = {
-      issueType,
-      issuePriority,
-      summary,
-      description,
-      assigneeId,
-      reporterId,
-      issueColor,
-      isEpicDone,
-      dateRange
-    };
-    const updatedTicket = await Ticket.findOneAndUpdate(
-      { _id: ticketId },
-      { $set: updatedData },
-      { new: true, runValidator: true }
-    );
-    res.json(updatedTicket)
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
-
-// @route  Post tickets/edit/link_epic/:id
-// @desc   Link an epic with existing child issues.
-// @access Private
-router.post('/edit/link_epic/:id', verify, async (req, res) => {
-  const ticketId = req.params.id;
-  const { epicId } = req.body;
   try {
     const updatedTicket = await Ticket.findOneAndUpdate(
       { _id: ticketId },
-      { $set: { linkedEpic: epicId } },
+      { $set: updatedValue },
       { new: true, runValidator: true }
     );
     res.json(updatedTicket)

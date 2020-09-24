@@ -8,7 +8,7 @@ import {
   Label,
 } from '../Form.style';
 
-export default function DatePicker({ dateRange, setdateRange, isStartDate, isEndDate }) {
+export default function DatePicker({ dateRange, handleDateChange, isStartDate, isEndDate }) {
   const [focused, setFocused] = useState(false);
   const { startDate, endDate } = dateRange;
 
@@ -25,7 +25,7 @@ export default function DatePicker({ dateRange, setdateRange, isStartDate, isEnd
           <SingleDatePicker
             displayFormat="MMMM DD, YYYY"
             date={startDate} // momentPropTypes.momentObj or null
-            onDateChange={date => setdateRange({ ...dateRange, startDate: date })} // PropTypes.func.isRequired
+            onDateChange={date => handleDateChange({ ...dateRange, startDate: date })} // PropTypes.func.isRequired
             focused={focused} // PropTypes.bool
             onFocusChange={({ focused }) => setFocused(focused)} // PropTypes.func.isRequired
             id="your_unique_id" // PropTypes.string.isRequired,
@@ -38,7 +38,7 @@ export default function DatePicker({ dateRange, setdateRange, isStartDate, isEnd
           <SingleDatePicker
             displayFormat="MMMM DD, YYYY"
             date={endDate} // momentPropTypes.momentObj or null
-            onDateChange={date => setdateRange({ ...dateRange, endDate: date })} // PropTypes.func.isRequired
+            onDateChange={date => handleDateChange({ ...dateRange, endDate: date })} // PropTypes.func.isRequired
             focused={focused} // PropTypes.bool
             onFocusChange={({ focused }) => setFocused(focused)} // PropTypes.func.isRequired
             id="your_unique_id" // PropTypes.string.isRequired,

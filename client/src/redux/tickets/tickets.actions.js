@@ -11,9 +11,8 @@ import {
   REMOVE_USER_FILTER,
   FILTER_TICKETS_BY_SEARCH,
   CLEAR_ALL_FILTERS,
-  LINK_EPIC_WITH_TICKET,
 } from './tickets.types';
-import { updateTicketColumn, updateColumnWithNewTicket } from '../projects/projects.actions';
+import { updateColumnWithNewTicket } from '../projects/projects.actions';
 
 // Get tickets of the project.
 export const getTicketsByProjectId = (projectId) => async dispatch => {
@@ -32,20 +31,16 @@ export const getTicketsByProjectId = (projectId) => async dispatch => {
 export const createNewTicket = (formData, columnId = null) => async dispatch => {
   try {
     const res = await api.post("/tickets/create", formData);
-    const projectId = res.data.projectId;
-    const ticketId = res.data._id;
-    // Add the new ticket id to a proper project state location.
-    await api.post(`/projects/create-taskids/${projectId}`, { ticketId, columnId });
     dispatch({
       type: CREATE_NEW_TICKET,
       payload: {
         data: res.data,
       }
     });
-
-    // 
+    // Update a certain column with a new ticket created.
+    const projectId = res.data.projectId;
+    const ticketId = res.data._id;
     dispatch(updateColumnWithNewTicket(projectId, ticketId, columnId));
-
   } catch (err) {
     console.log(err)
   }
@@ -54,34 +49,32 @@ export const createNewTicket = (formData, columnId = null) => async dispatch => 
 // Create a new epic ticket.
 export const createNewEpicTicket = (formData, childIssues) => async dispatch => {
   try {
-    const res = await api.post("/tickets/create/epic", formData);
-
+    const res = await api.post("/tickets/create", formData);
     dispatch({
       type: CREATE_NEW_TICKET,
       payload: {
         data: res.data,
       }
     });
-
     // Link child issues with the epic.
+    const epicId = res.data._id
     childIssues.forEach(childIssueId => {
-      dispatch(linkEpicWithTicket(childIssueId, { epicId: res.data._id }))
+      dispatch(updateTicket(childIssueId, { linkedEpic: epicId }))
     })
   } catch (err) {
     console.log(err)
   }
 };
 
-// Link epic with child tickets.
-const linkEpicWithTicket = (childIssueId, epicId) => async dispatch => {
+// Update a ticket by id.
+export const updateTicket = (ticketId, updatedValue) => async dispatch => {
   try {
-    console.log('linkEpicWithTicket')
-    const res = await api.post(`/tickets/edit/link_epic/${childIssueId}`, epicId);
+    const res = await api.post(`/tickets/update/${ticketId}`, updatedValue);
     dispatch({
       type: UPDATE_TICKET,
       payload: {
         data: res.data,
-        ticketId: childIssueId
+        ticketId,
       }
     });
   } catch (err) {
@@ -89,7 +82,7 @@ const linkEpicWithTicket = (childIssueId, epicId) => async dispatch => {
   }
 };
 
-// Delete a ticket by its id.
+// Delete a ticket by id.
 export const deleteTicket = (ticketId, columnId) => async dispatch => {
   try {
     const res = await api.delete(`/tickets/${ticketId}`);
@@ -109,44 +102,21 @@ export const deleteTicket = (ticketId, columnId) => async dispatch => {
   }
 };
 
-// Update a ticket by its id.
-export const updateTicket = (columnMove, ticketId, formData) => async dispatch => {
+// Delete a ticket by id.
+export const deleteEpicTicket = (ticketId) => async dispatch => {
   try {
-    const res = await api.post(`/tickets/update/${ticketId}`, formData);
+    const res = await api.delete(`/tickets/${ticketId}`);
     const projectId = res.data.projectId;
-    // Update the ticket column id on db.
-    await api.post(`/projects/update-taskids/${projectId}`, { ticketId, columnMove });
+    // Delete the ticket inside the column of the project board.
+    await api.post(`/projects/delete-taskids/${projectId}`, { columnId, ticketId });
     dispatch({
-      type: UPDATE_TICKET,
+      type: DELETE_TICKET,
       payload: {
-        data: res.data,
+        projectId,
+        columnId,
         ticketId,
       }
     });
-
-    // Update ticket column if changed on project state.
-    dispatch(updateTicketColumn(columnMove, ticketId, projectId));
-  } catch (err) {
-    console.log(err)
-  }
-};
-
-// Update a epic ticket by its id.
-export const updateEpicTicket = (ticketId, formData, childIssues) => async dispatch => {
-  try {
-    const res = await api.post(`/tickets/update/epic/${ticketId}`, formData);
-    dispatch({
-      type: UPDATE_TICKET,
-      payload: {
-        data: res.data,
-        ticketId,
-      }
-    });
-
-    // Link child issues with the epic.
-    childIssues.forEach(childIssueId => {
-      dispatch(linkEpicWithTicket(childIssueId, { epicId: ticketId }))
-    })
   } catch (err) {
     console.log(err)
   }

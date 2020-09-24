@@ -9,7 +9,6 @@ import FormInput from '../../../Form/FormInput/FormInput';
 import FormTextArea from '../../../Form/FormTextArea/FormTextArea';
 import ChildIssueMenu from '../../../Form/ChildIssueMenu/ChildIssueMenu';
 import RangedDatePicker from '../../../Form/RangedDatePicker/RangedDatePicker';
-import store from '../../../../../../../redux/store';
 import { createNewEpicTicket } from '../../../../../../../redux/tickets/tickets.actions';
 import {
   Title,
@@ -26,7 +25,14 @@ import {
   Diviser,
 } from '../../Modal.style';
 
-const NewEpicModal = ({ setIsModalActive, projects, currentProjectId, membersList, userProfile }) => {
+const NewEpicModal = ({
+  setIsModalActive,
+  projects,
+  currentProjectId,
+  membersList,
+  userProfile,
+  createNewEpicTicket
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     projectId: currentProjectId,
@@ -52,7 +58,7 @@ const NewEpicModal = ({ setIsModalActive, projects, currentProjectId, membersLis
     e.preventDefault();
     console.log({ ...issueFormValues, dateRange })
     console.log(childIssues)
-    store.dispatch(createNewEpicTicket({ ...issueFormValues, dateRange }, childIssues));
+    createNewEpicTicket({ ...issueFormValues, dateRange }, childIssues);
     setIsModalActive(false);
   }
 
@@ -230,4 +236,4 @@ const mapStateToProps = createStructuredSelector({
   projects: selectAllProjects,
 });
 
-export default connect(mapStateToProps, null)(NewEpicModal);
+export default connect(mapStateToProps, { createNewEpicTicket })(NewEpicModal);

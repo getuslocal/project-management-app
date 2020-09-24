@@ -8,7 +8,6 @@ import {
   Title,
   TicketsList,
   CreateTicketButton,
-  ButtonContainer,
   Counter
 } from './Column.style'
 
@@ -26,14 +25,17 @@ const Column = ({ column, tickets, index, projectId }) => {
   return (
     <Draggable draggableId={column.id} index={index}>
       {(provided, snapshot) => (
-        <Container {...provided.draggableProps} ref={provided.innerRef}>
-          <Content isDragging={snapshot.isDragging}>
-            <Title {...provided.dragHandleProps}>{column.title}<Counter>{ticketsCounter}</Counter></Title>
+        <Container
+          {...provided.draggableProps}
+          ref={provided.innerRef}
+          isDragging={snapshot.isDragging}
+        >
+          <Title {...provided.dragHandleProps}>{column.title}<Counter>{ticketsCounter}</Counter></Title>
+          <Content>
             <Droppable droppableId={column.id} type="task">
               {provided => (
                 <TicketsList ref={provided.innerRef} {...provided.droppableProps}>
                   <InnerList tickets={tickets} columnId={column.id} projectId={projectId} />
-                  <ButtonContainer>
                     {
                       isQuickTicketActive ?
                         <QuickTicket
@@ -47,7 +49,6 @@ const Column = ({ column, tickets, index, projectId }) => {
                           onClick={() => setIsQuickTicketActive(true)}
                         >+ Create ticket</CreateTicketButton>
                     }
-                  </ButtonContainer>
                   {provided.placeholder}
                 </TicketsList>
               )}

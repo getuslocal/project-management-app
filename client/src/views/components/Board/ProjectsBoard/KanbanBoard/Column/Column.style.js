@@ -1,14 +1,5 @@
 import styled, {css}  from 'styled-components'
 
-export const Container = styled.div`
-  min-width: 300px;
-  max-width: 300px;
-  display: flex;
-  flex-direction: column;
-  align-self: auto;
-  flex: 1 1 auto;
-  `
-
 export const CreateTicketButton = styled.div`
   padding: .75em;
   border-radius: 3px;
@@ -26,18 +17,14 @@ export const CreateTicketButton = styled.div`
   `}
 `
 
-export const Content = styled.div`
-  background-color: rgb(244, 245, 247);
-  border-radius: 6px;
-  margin-left: 6px;
-  margin-right: 6px;
+export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-self: auto;
-  flex: 1 1 auto;
-  min-width: 288px;
-  max-width: 288px;
-  padding: .5em;
+  margin: 0px 5px;
+  min-height: 400px;
+  width: 25%;
+  border-radius: 3px;
+  background: rgb(244, 245, 247);
   box-shadow: ${props => (props.isDragging ? 'rgba(0, 0, 0, 0.2) 0 3px 3px 0' : 'none')};
 
   &:hover{
@@ -46,13 +33,19 @@ export const Content = styled.div`
       color: inherit;
     }
   }
-  `
+`
+
+export const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0 5px;
+`
+
 export const Title = styled.p`
-    font-weight: 500;
-    color: rgb(94, 108, 132);
-    font-size: 14px;
-    padding: .5em;
-    margin-bottom: .5em;
+  font-weight: 500;
+  color: rgb(94, 108, 132);
+  font-size: 14px;
+  padding: 10px;
 `
 
 export const TicketsList = styled.div`
@@ -60,9 +53,6 @@ export const TicketsList = styled.div`
   min-height: 100px;
 `
 
-export const ButtonContainer = styled.div`
-
-`
 export const Counter = styled.span`
   margin-left: 1em;
   font-size: 0.875em;

@@ -15,7 +15,7 @@ const FormSelectMenu = ({
   columnOrder,
   handleModalOpen,
   isModalOpen,
-  handleSelectMenu,
+  handleStatusChange,
 }) => (
     <Container>
       <Button
@@ -37,7 +37,7 @@ const FormSelectMenu = ({
                   const isFirstColumn = (columnsList[key]['id'] === columnOrder[0]);
                   const isLastColumn = (columnsList[key]['id'] === columnOrder[columnOrder.length - 1]);
                   return (
-                    <ListItem key={key} onClick={() => handleSelectMenu(name, columnsList[key]['id'])}>
+                    <ListItem key={key} onClick={() => handleStatusChange(columnsList[key]['id'])}>
                       <Span isFirstColumn={isFirstColumn} isLastColumn={isLastColumn} >
                         {columnsList[key]['title']}
                       </Span>

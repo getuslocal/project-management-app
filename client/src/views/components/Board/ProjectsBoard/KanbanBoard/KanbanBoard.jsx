@@ -31,6 +31,7 @@ const InnerList = React.memo(props => {
 
 const KanbanBoard = ({ project, tickets }) => {
   const { columnOrder, columns, _id, name } = project;
+  console.log('KanbanBoard render')
 
   const onDragEnd = result => {
     // console.log(result)

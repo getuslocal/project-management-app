@@ -6,8 +6,8 @@ import FormSelectMenu from '../../Form/FormSelectMenu/FormSelectMenu';
 import { IssuePriorities } from '../../../../../../shared/constants/issues';
 import { selectMembersByProjectId } from '../../../../../../redux/members/members.selectors';
 import { selectProjectById } from '../../../../../../redux/projects/projects.selectors';
-import { updateTicket } from '../../../../../../redux/tickets/tickets.actions';
-import store from '../../../../../../redux/store';
+import { updateTicket, deleteTicket } from '../../../../../../redux/tickets/tickets.actions';
+import { updateTicketStatus } from '../../../../../../redux/projects/projects.actions';
 import IssueStatusMenu from '../../KanbanBoard/Column/Ticket/TicketModal/IssueStatusMenu/IssueStatusMenu';
 import Title from '../../KanbanBoard/Column/Ticket/TicketModal/Title/Title';
 import Description from '../../KanbanBoard/Column/Ticket/TicketModal/Description/Description';
@@ -20,10 +20,7 @@ import {
   TopFixedContent,
   TicketKey,
   TicketHistoryContent,
-  ButtonsContainer,
-  SubmitButton,
   Blanket,
-  EpicWrapper,
   TopContentLeft,
   TopContentRight,
   Slash
@@ -36,7 +33,18 @@ import {
   Diviser
 } from '../Modal.style';
 
-const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projectInfo, columnId, isEpicTicket, linkedEpic }) => {
+const TicketModal = ({
+  ticket,
+  setIsModalOpen,
+  deleteTicket,
+  membersList,
+  projectInfo,
+  columnId,
+  linkedEpic,
+  updateTicket,
+  updateTicketStatus
+}) => {
+
   const [isSmallModalOpen, setIsSmallModalOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     issueType: ticket.issueType,
@@ -60,19 +68,12 @@ const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projec
     comments,
   } = issueFormValues;
 
-
   const columnsList = projectInfo.columns;
   // @todo: Add updated time.
   const createAt = String(new Date(ticket.createdAt)).substring(0, 15);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const columnMove = {
-      beforeColumn: columnId,
-      afterColumn: issueStatus
-    }
-    store.dispatch(updateTicket(columnMove, ticket._id, issueFormValues));
-    setIsModalOpen(false);
+  const updateTicketField = (updatedValue) => {
+    updateTicket(ticket._id, updatedValue);
   }
 
   const handleChange = event => {
@@ -81,11 +82,17 @@ const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projec
   };
 
   const handleSelectMenu = (name, value) => {
-    if (isEpicTicket) {
-      setEpicFromValues({ ...epicFromValues, [name]: value });
-      return
-    }
     setIssueFormValues({ ...issueFormValues, [name]: value });
+    updateTicketField({ [name]: value })
+  };
+
+  const handleStatusChange = (afterColumn) => {
+    const columnMove = {
+      beforeColumn: columnId,
+      afterColumn: afterColumn
+    }
+    setIssueFormValues({ ...issueFormValues, issueStatus: afterColumn });
+    updateTicketStatus(columnMove, ticket._id, projectInfo._id);
   };
 
   return (
@@ -105,11 +112,11 @@ const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projec
               <TicketKey className={`icon-issue-${issueType.toLowerCase()}`}>{ticket.key}</TicketKey>
             </TopContentLeft>
             <TopContentRight>
-              <i className="far fa-trash-alt" onClick={deleteTicket}></i>
+              <i className="far fa-trash-alt" onClick={() => deleteTicket(ticket._id, columnId)}></i>
               <i className="fas fa-times" onClick={() => setIsModalOpen(false)}></i>
             </TopContentRight>
           </TopFixedContent>
-          <form onSubmit={handleSubmit}>
+          <form>
             <InnerWrapper>
               <FormContainer>
                 <FormLeftContent>
@@ -129,7 +136,7 @@ const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projec
                       columnsList={{ ...columnsList, [issueStatus]: undefined }}
                       handleModalOpen={setIsSmallModalOpen}
                       isModalOpen={isSmallModalOpen}
-                      handleSelectMenu={handleSelectMenu}
+                      handleStatusChange={handleStatusChange}
                       required
                     />
                     <FormSelectMenu
@@ -193,9 +200,6 @@ const TicketModal = ({ ticket, setIsModalOpen, deleteTicket, membersList, projec
                 </FormRightContent>
               </FormContainer>
             </InnerWrapper>
-            <ButtonsContainer>
-              <SubmitButton value="Update" type="submit" />
-            </ButtonsContainer>
           </form>
         </Content>
       </Container>
@@ -214,4 +218,4 @@ const mapStateToProps = (state, ownProps) => createStructuredSelector({
 });
 
 
-export default connect(mapStateToProps, null)(TicketModal);
+export default connect(mapStateToProps, { updateTicket, updateTicketStatus, deleteTicket })(TicketModal);

@@ -10,7 +10,6 @@ import {
   Epic,
 } from './Ticket.style'
 import TicketModal from '../../../Modal/TicketModal/TicketModal';
-import { deleteTicket } from '../../../../../../../redux/tickets/tickets.actions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { selectMembersByProjectId } from '../../../../../../../redux/members/members.selectors';
@@ -18,10 +17,9 @@ import { selectEpicById } from '../../../../../../../redux/tickets/tickets.selec
 import { createStructuredSelector } from 'reselect';
 import { IssueColors } from '../../../.././../../../shared/constants/issues'
 
-const Ticket = ({ ticket, index, columnId, projectId, deleteTicket, members, linkedEpic }) => {
+const Ticket = ({ ticket, index, columnId, projectId, members, linkedEpic }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { issueType, _id: ticketId, key, assigneeId } = ticket;
-  console.log(linkedEpic)
 
   return (
     <>
@@ -70,9 +68,7 @@ const Ticket = ({ ticket, index, columnId, projectId, deleteTicket, members, lin
             linkedEpic={linkedEpic}
             columnId={columnId}
             projectId={projectId}
-            isEpicTicket={false}
             setIsModalOpen={setIsModalOpen}
-            deleteTicket={() => deleteTicket(ticket._id, columnId, projectId)}
           />
         )
       }
@@ -81,7 +77,8 @@ const Ticket = ({ ticket, index, columnId, projectId, deleteTicket, members, lin
 }
 
 Ticket.propTypes = {
-  deleteTicket: PropTypes.func.isRequired,
+  members: PropTypes.object.isRequired,
+  linkedEpic: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
@@ -89,4 +86,4 @@ const mapStateToProps = (state, ownProps) => createStructuredSelector({
   linkedEpic: selectEpicById(ownProps.ticket.linkedEpic)
 });
 
-export default connect(mapStateToProps, { deleteTicket })(Ticket);
+export default connect(mapStateToProps, null)(Ticket);

@@ -11,7 +11,7 @@ export const Blanket = styled.div`
 `
 
 export const InnerWrapper = styled.div`
-  padding: 0 30px;
+  padding: 0 30px 30px;
   min-height: 500px;
 `
 

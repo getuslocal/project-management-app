@@ -7,8 +7,7 @@ import { IssuePriorities, IssueColors } from '../../../../../../../shared/consta
 import { selectMembersByProjectId } from '../../../../../../../redux/members/members.selectors';
 import { selectProjectById } from '../../../../../../../redux/projects/projects.selectors';
 import { selectTicketsLinkedWithEpic } from '../../../../../../../redux/tickets/tickets.selectors';
-import { updateEpicTicket } from '../../../../../../../redux/tickets/tickets.actions';
-import store from '../../../../../../../redux/store';
+import { updateTicket, deleteTicket } from '../../../../../../../redux/tickets/tickets.actions';
 import Title from '../../../KanbanBoard/Column/Ticket/TicketModal/Title/Title';
 import Description from '../../../KanbanBoard/Column/Ticket/TicketModal/Description/Description';
 import Comment from '../../../KanbanBoard/Column/Ticket/TicketModal/Comment/Comment';
@@ -30,8 +29,6 @@ import {
   TopFixedContent,
   TicketKey,
   TicketHistoryContent,
-  ButtonsContainer,
-  SubmitButton,
   Blanket,
   TopContentRight,
   TopContentLeft
@@ -40,7 +37,15 @@ import {
   CompleteButton,
 } from './EpicModal.style';
 
-const EpicModal = ({ ticket, setIsModalOpen, membersList, deleteTicket, linkedIssues }) => {
+const EpicModal = ({
+  ticket,
+  setIsModalOpen,
+  membersList,
+  linkedIssues,
+  updateTicket,
+  deleteTicket,
+}) => {
+
   const [isSmallModalOpen, setIsSmallModalOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     issueType: ticket.issueType,
@@ -74,12 +79,10 @@ const EpicModal = ({ ticket, setIsModalOpen, membersList, deleteTicket, linkedIs
   } = issueFormValues;
 
   const createAt = String(new Date(ticket.createdAt)).substring(0, 15);
+  const epicId = ticket._id;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(childIssues)
-    store.dispatch(updateEpicTicket(ticket._id, { ...issueFormValues, dateRange }, childIssues));
-    setIsModalOpen(false);
+  const updateTicketField = (updatedValue) => {
+    updateTicket(epicId, updatedValue);
   }
 
   const handleChange = event => {
@@ -89,14 +92,22 @@ const EpicModal = ({ ticket, setIsModalOpen, membersList, deleteTicket, linkedIs
 
   const handleSelectMenu = (name, value) => {
     setIssueFormValues({ ...issueFormValues, [name]: value });
+    updateTicketField({ [name]: value })
   };
 
-  const handleChildIssueMenu = (issueId, isActive = false) => {
-    if (isActive) {
-      setChildIssues(childIssues.filter(issue => issue !== issueId));
+  const handleDateChange = (updatedDateRange) => {
+    setdateRange(updatedDateRange);
+    updateTicketField({ dateRange: updatedDateRange })
+  };
+
+  const handleChildIssueMenu = (childIssueId, isRemoved = false) => {
+    if (isRemoved) {
+      setChildIssues(childIssues.filter(issue => issue !== childIssueId));
+      updateTicket(childIssueId, { linkedEpic: null });
       return
     }
-    setChildIssues([...childIssues, issueId]);
+    setChildIssues([...childIssues, childIssueId]);
+    updateTicket(childIssueId, { linkedEpic: epicId });
   };
 
   return (
@@ -109,12 +120,11 @@ const EpicModal = ({ ticket, setIsModalOpen, membersList, deleteTicket, linkedIs
               <TicketKey className={`icon-issue-${issueType.toLowerCase()}`}>{ticket.key}</TicketKey>
             </TopContentLeft>
             <TopContentRight>
-              <i className="far fa-trash-alt" onClick={deleteTicket}></i>
+              <i className="far fa-trash-alt" onClick={() => deleteTicket()}></i>
               <i className="fas fa-times" onClick={() => setIsModalOpen(false)}></i>
             </TopContentRight>
           </TopFixedContent>
-
-          <form onSubmit={handleSubmit}>
+          <form>
             <InnerWrapper>
               <FormContainer>
                 <FormLeftContent>
@@ -141,18 +151,18 @@ const EpicModal = ({ ticket, setIsModalOpen, membersList, deleteTicket, linkedIs
                         isEpicDone={isEpicDone}
                         className="icon-check"
                         type="button"
-                        onClick={() => setIssueFormValues({ ...issueFormValues, isEpicDone: !isEpicDone })}
+                        onClick={() => handleSelectMenu('isEpicDone', !isEpicDone)}
                       >
                         {isEpicDone ? 'Completed' : 'Mark Complete'}
                       </CompleteButton>
                     </div>
                     <DatePicker
-                      setdateRange={setdateRange}
+                      handleDateChange={handleDateChange}
                       dateRange={dateRange}
                       isStartDate={true}
                     />
                     <DatePicker
-                      setdateRange={setdateRange}
+                      handleDateChange={handleDateChange}
                       dateRange={dateRange}
                       isEndDate={true}
                     />
@@ -235,9 +245,6 @@ const EpicModal = ({ ticket, setIsModalOpen, membersList, deleteTicket, linkedIs
                 </FormRightContent>
               </FormContainer>
             </InnerWrapper>
-            <ButtonsContainer>
-              <SubmitButton value="Update" type="submit" />
-            </ButtonsContainer>
           </form>
         </Content>
       </Container>
@@ -247,7 +254,9 @@ const EpicModal = ({ ticket, setIsModalOpen, membersList, deleteTicket, linkedIs
 
 EpicModal.propTypes = {
   membersList: PropTypes.object.isRequired,
-  projectInfo: PropTypes.object.isRequired
+  projectInfo: PropTypes.object.isRequired,
+  updateTicket: PropTypes.func.isRequired,
+  deleteTicket: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
@@ -257,4 +266,4 @@ const mapStateToProps = (state, ownProps) => createStructuredSelector({
 });
 
 
-export default connect(mapStateToProps, null)(EpicModal);
+export default connect(mapStateToProps, { updateTicket, deleteTicket })(EpicModal);
