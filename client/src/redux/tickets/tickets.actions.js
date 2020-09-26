@@ -12,7 +12,7 @@ import {
   FILTER_TICKETS_BY_SEARCH,
   CLEAR_ALL_FILTERS,
 } from './tickets.types';
-import { updateColumnWithNewTicket } from '../projects/projects.actions';
+import { updateColumnWithNewTicket, updateColumnWithDeletedTicket } from '../projects/projects.actions';
 
 // Get tickets of the project.
 export const getTicketsByProjectId = (projectId) => async dispatch => {
@@ -28,7 +28,7 @@ export const getTicketsByProjectId = (projectId) => async dispatch => {
 };
 
 // Create a new ticket.
-export const createNewTicket = (formData, columnId = null) => async dispatch => {
+export const createNewTicket = (formData, columnId) => async dispatch => {
   try {
     const res = await api.post("/tickets/create", formData);
     dispatch({
@@ -86,37 +86,34 @@ export const updateTicket = (ticketId, updatedValue) => async dispatch => {
 export const deleteTicket = (ticketId, columnId) => async dispatch => {
   try {
     const res = await api.delete(`/tickets/${ticketId}`);
-    const projectId = res.data.projectId;
-    // Delete the ticket inside the column of the project board.
-    await api.post(`/projects/delete-taskids/${projectId}`, { columnId, ticketId });
     dispatch({
       type: DELETE_TICKET,
       payload: {
-        projectId,
-        columnId,
         ticketId,
       }
     });
+    // Update column of the ticket after it's deleted.
+    const projectId = res.data.projectId;
+    dispatch(updateColumnWithDeletedTicket(projectId, ticketId, columnId));
   } catch (err) {
     console.log(err)
   }
 };
 
 // Delete a ticket by id.
-export const deleteEpicTicket = (ticketId) => async dispatch => {
+export const deleteEpicTicket = (ticketId, childIssues) => async dispatch => {
   try {
     const res = await api.delete(`/tickets/${ticketId}`);
-    const projectId = res.data.projectId;
-    // Delete the ticket inside the column of the project board.
-    await api.post(`/projects/delete-taskids/${projectId}`, { columnId, ticketId });
     dispatch({
       type: DELETE_TICKET,
       payload: {
-        projectId,
-        columnId,
         ticketId,
       }
     });
+    // Initiate linked epic field of child issues of the epic.
+    childIssues.forEach(childIssueId => {
+      dispatch(updateTicket(childIssueId, { linkedEpic: null }))
+    })
   } catch (err) {
     console.log(err)
   }

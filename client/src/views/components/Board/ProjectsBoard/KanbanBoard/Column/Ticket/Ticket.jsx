@@ -78,7 +78,7 @@ const Ticket = ({ ticket, index, columnId, projectId, members, linkedEpic }) => 
 
 Ticket.propTypes = {
   members: PropTypes.object.isRequired,
-  linkedEpic: PropTypes.object.isRequired
+  linkedEpic: PropTypes.object
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({

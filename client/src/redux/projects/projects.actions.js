@@ -7,7 +7,8 @@ import {
   FAIL_UPDATE_ORDER,
   SUCCESS_UPDATE_ORDER,
   UPDATE_TICKET_STATUS,
-  UPDATE_COLUMN_WITH_NEW_TICKET
+  UPDATE_COLUMN_WITH_NEW_TICKET,
+  UPDATE_COLUMN_WITH_DELETED_TICKET
 } from './projects.types';
 import { updateWithProjectInfo } from '../roles/roles.actions';
 
@@ -31,7 +32,7 @@ export const updateOneColumnTicketsOrder = (projectId, newColumn) => async dispa
       type: UPDATE_ONE_COLUMN_TICKETS_ORDER,
       payload: { projectId, newColumn }
     });
-    await api.post("/projects/update/tickets-order", { projectId, newColumn });
+    await api.post(`/projects/update/tickets_order/${projectId}`, { newColumn });
     dispatch({
       type: SUCCESS_UPDATE_ORDER,
     });
@@ -48,7 +49,7 @@ export const updateTwoColumnsTicketsOrder = (projectId, newColumn) => async disp
       type: UPDATE_TWO_COLUMNS_TICKETS_ORDER,
       payload: { projectId, newColumn }
     });
-    await api.post("/projects/update/tickets-order", { projectId, newColumn });
+    await api.post(`/projects/update/tickets_order/${projectId}`, { newColumn });
     dispatch({
       type: SUCCESS_UPDATE_ORDER,
     });
@@ -65,7 +66,7 @@ export const updateColumnOrder = (projectId, newColumnOrder) => async dispatch =
       type: UPDATE_COLUMN_ORDER,
       payload: { projectId, newColumnOrder }
     });
-    await api.post("/projects/update/column-order", { projectId, newColumnOrder });
+    await api.post(`/projects/update/column_order/${projectId}`, { newColumnOrder });
     dispatch({
       type: SUCCESS_UPDATE_ORDER,
     });
@@ -79,29 +80,30 @@ export const updateColumnOrder = (projectId, newColumnOrder) => async dispatch =
 // This is called when user edit an existng ticekt and changed issue status.
 export const updateTicketStatus = (columnMove, ticketId, projectId) => async dispatch => {
   // Update the ticket column id on db.
-  await api.post(`/projects/update-taskids/${projectId}`, { ticketId, columnMove });
+  await api.post(`/projects/update/column/update_twocol_taskids/${projectId}`, { ticketId, columnMove });
   dispatch({
     type: UPDATE_TICKET_STATUS,
     payload: { columnMove, ticketId, projectId }
   });
 };
 
-// @todo: Configure this to update when ticket is deleted. @9/23
+// Update column when a ticket in the column is created.
 export const updateColumnWithNewTicket = (projectId, ticketId, columnId) => async dispatch => {
   // Add the new ticket id to a proper project state location.
-  await api.post(`/projects/create-taskids/${projectId}`, { ticketId, columnId });
+  console.log(columnId)
+  await api.post(`/projects/update/column/create_taskids/${projectId}`, { ticketId, columnId });
   dispatch({
     type: UPDATE_COLUMN_WITH_NEW_TICKET,
     payload: { projectId, ticketId, columnId }
   });
 };
 
-// This is called when user edit an existng ticekt and changed issue status.
+// Update column when a ticket in the column is deleted.
 export const updateColumnWithDeletedTicket = (projectId, ticketId, columnId) => async dispatch => {
-  // Add the new ticket id to a proper project state location.
-  await api.post(`/projects/create-taskids/${projectId}`, { ticketId, columnId });
+  // Delete the ticket in the column.
+  await api.post(`/projects/update/column/delete_taskids/${projectId}`, { columnId, ticketId });
   dispatch({
-    type: UPDATE_COLUMN_WITH_NEW_TICKET,
+    type: UPDATE_COLUMN_WITH_DELETED_TICKET,
     payload: { projectId, ticketId, columnId }
   });
 };

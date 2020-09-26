@@ -7,7 +7,7 @@ import { IssuePriorities, IssueColors } from '../../../../../../../shared/consta
 import { selectMembersByProjectId } from '../../../../../../../redux/members/members.selectors';
 import { selectProjectById } from '../../../../../../../redux/projects/projects.selectors';
 import { selectTicketsLinkedWithEpic } from '../../../../../../../redux/tickets/tickets.selectors';
-import { updateTicket, deleteTicket } from '../../../../../../../redux/tickets/tickets.actions';
+import { updateTicket, deleteEpicTicket } from '../../../../../../../redux/tickets/tickets.actions';
 import Title from '../Title/Title';
 import Description from '../Description/Description';
 import Comment from '../Comment/Comment';
@@ -43,7 +43,7 @@ const EpicModal = ({
   membersList,
   linkedIssues,
   updateTicket,
-  deleteTicket,
+  deleteEpicTicket,
 }) => {
 
   const [isSmallModalOpen, setIsSmallModalOpen] = useState(false);
@@ -85,6 +85,8 @@ const EpicModal = ({
     updateTicket(epicId, updatedValue);
   }
 
+  console.log(childIssues)
+
   const handleChange = event => {
     const { name, value } = event.target;
     setIssueFormValues({ ...issueFormValues, [name]: value });
@@ -120,7 +122,10 @@ const EpicModal = ({
               <TicketKey className={`icon-issue-${issueType.toLowerCase()}`}>{ticket.key}</TicketKey>
             </TopContentLeft>
             <TopContentRight>
-              <i className="far fa-trash-alt" onClick={() => deleteTicket()}></i>
+              <i className="far fa-trash-alt" onClick={() => {
+                deleteEpicTicket(epicId, childIssues);
+                setIsModalOpen(false);
+              }}></i>
               <i className="fas fa-times" onClick={() => setIsModalOpen(false)}></i>
             </TopContentRight>
           </TopFixedContent>
@@ -256,7 +261,7 @@ EpicModal.propTypes = {
   membersList: PropTypes.object.isRequired,
   projectInfo: PropTypes.object.isRequired,
   updateTicket: PropTypes.func.isRequired,
-  deleteTicket: PropTypes.func.isRequired,
+  deleteEpicTicket: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
@@ -266,4 +271,4 @@ const mapStateToProps = (state, ownProps) => createStructuredSelector({
 });
 
 
-export default connect(mapStateToProps, { updateTicket, deleteTicket })(EpicModal);
+export default connect(mapStateToProps, { updateTicket, deleteEpicTicket })(EpicModal);

@@ -49,7 +49,9 @@ const NewTicketModal = ({
     // Set a linked epic null.
     issueFormValues.linkedEpic = null;
     // Create a new ticket with form values.
-    createNewTicket(issueFormValues);
+    // Get first column where a new ticket is added onto.
+    const columnId = projects[currentProjectId].columnOrder[0];
+    createNewTicket(issueFormValues, columnId);
     // Close this modal.
     setIsModalActive(false);
   }

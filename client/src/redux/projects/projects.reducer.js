@@ -6,6 +6,7 @@ import {
   DELETE_TICKET,
   UPDATE_TICKET_STATUS,
   UPDATE_COLUMN_WITH_NEW_TICKET,
+  UPDATE_COLUMN_WITH_DELETED_TICKET,
 } from './projects.types';
 import { convertArrayToObject } from '../../shared/utils/functions';
 
@@ -53,22 +54,21 @@ const projectsReducer = (state = {}, action) => {
     case UPDATE_COLUMN_WITH_NEW_TICKET: {
       const { projectId, ticketId, columnId } = payload
       const project = state[projectId];
-      const targetColumn = columnId ? columnId : state[projectId].columnOrder[0];
       return {
         ...state,
         [projectId]: {
           ...project,
           columns: {
             ...project.columns,
-            [targetColumn]: {
-              ...project.columns[targetColumn],
-              taskIds: [...project.columns[targetColumn].taskIds, ticketId]
+            [columnId]: {
+              ...project.columns[columnId],
+              taskIds: [...project.columns[columnId].taskIds, ticketId]
             }
           }
         }
       }
     }
-    case DELETE_TICKET: {
+    case UPDATE_COLUMN_WITH_DELETED_TICKET: {
       const { projectId, columnId, ticketId } = payload;
       const project = state[projectId];
       return {
