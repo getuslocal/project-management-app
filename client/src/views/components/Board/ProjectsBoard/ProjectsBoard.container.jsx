@@ -4,20 +4,20 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom'
 import { createStructuredSelector } from 'reselect';
-import { selectAllProjects } from '../../../../redux/projects/projects.selectors';
+import { selectIsProjectsLoaded } from '../../../../redux/projects/projects.selectors';
 import Spinner from '../../../../shared/components/WithSpinner/Spinner';
 
-const ProjectsBoardContainer = ({ projects, ...props }) => {
+const ProjectsBoardContainer = ({ isLoading, ...props }) => {
   return (
-    Object.keys(projects).length > 0 ?
-      <ProjectsBoard key={props.match.params.project} {...props} />
-      :
+    isLoading ?
       <Spinner />
+      :
+      <ProjectsBoard key={props.match.params.project} {...props} />
   )
 }
 
 const mapStateToProps = createStructuredSelector({
-  projects: selectAllProjects,
+  isLoading: selectIsProjectsLoaded,
 });
 
 export default compose(

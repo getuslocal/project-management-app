@@ -1,9 +1,9 @@
 import { createSelector } from 'reselect';
 
-const selectMembers = state => state.members;
+const members = state => state.members;
 
-export const selectAllMembers = createSelector(
-  [selectMembers],
+export const selectMembers = createSelector(
+  [members],
   members => members
 );
 export const selectMembersByProjectId = (projectId) => createSelector(

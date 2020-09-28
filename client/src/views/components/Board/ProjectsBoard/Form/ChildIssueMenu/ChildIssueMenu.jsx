@@ -23,8 +23,8 @@ const ChildissueMenu = ({
   name,
   childIssues,
   handleChildIssueMenu,
-  handleModalOpen,
-  isModalOpen,
+  setIsSelectMenuOpen,
+  isSelectMenuOpen,
   tickets,
   isEpicTicket
 }) => {
@@ -33,7 +33,7 @@ const ChildissueMenu = ({
       <Label isEpicTicket={isEpicTicket}>{label}</Label>
       <InnerContainer
         isEpicTicket={isEpicTicket}
-        onClick={e => !isEpicTicket ? handleModalOpen(name) : e.preventDefault()}
+        onClick={e => !isEpicTicket ? setIsSelectMenuOpen(name) : e.preventDefault()}
       >
         <ListContainer isEpicTicket={isEpicTicket}>
           {
@@ -66,7 +66,7 @@ const ChildissueMenu = ({
         </ListContainer>
       </InnerContainer>
       {
-        isModalOpen === name ?
+        isSelectMenuOpen === name ?
           <SelectMenu
             handleChildIssueMenu={handleChildIssueMenu}
             // Pass tickets which are not epic issue types.
@@ -78,7 +78,7 @@ const ChildissueMenu = ({
       }
       {
         isEpicTicket ?
-          <AddButton type="button" onClick={() => handleModalOpen(name)}>+ Add child issue</AddButton>
+          <AddButton type="button" onClick={() => setIsSelectMenuOpen(name)}>+ Add child issue</AddButton>
           :
           <Description>Click to search for issues to link. If you leave it blank, no link will be made.</Description>
       }

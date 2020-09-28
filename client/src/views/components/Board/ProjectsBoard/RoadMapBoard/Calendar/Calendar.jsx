@@ -3,21 +3,11 @@ import { useState } from 'react';
 import moment from 'moment';
 import { getCalendarContent, getCalendarOfMonth } from './getCalendarContent';
 import CalendarHeader from './CalendarHeader/CalendarHeader';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect'
-import { selectEpicTickets } from '../../../../../../redux/tickets/tickets.selectors';
-import EpicModal from '../../Modal/TicketModal/EpicModal/EpicModal';
-import CalendarTask from './CalendarTask/CalendarTask';
-import {
-  Container,
-  DayCell,
-  Content,
-  Week,
-  Header,
-} from './Calendar.style';
+import CalendarContent from './CalendarContent/CalendarContent';
+import { withRouter } from 'react-router-dom'
 
-const Calendar = ({ epics }) => {
+const Calendar = ({...props}) => {
+  console.log(props)
   const [loading, setLoading] = useState(true);
   const [calendar, setCalendar] = useState([]);
   const [lastWeekOfCalendar, setLastWeekOfCalendar] = useState(null);
@@ -28,19 +18,17 @@ const Calendar = ({ epics }) => {
     mm: new Date().getMonth(),
     dd: new Date().getDate(),
   }
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const changeMonth = (yyyy, mm) => {
-    setCurrentMonth(new Date(yyyy, mm))
-  }
-
   // Create some refs to scroll to specific element.
   const containerRef = useRef(null);
   const weekCellRef = useRef([]);
 
   const currentYearOfCalendar = currentMonth.getFullYear();
   const currentMonthOfCalendar = currentMonth.getMonth();
+
+  // Update month in viewport.
+  const changeMonth = (yyyy, mm) => {
+    setCurrentMonth(new Date(yyyy, mm))
+  }
 
   useEffect(() => {
     const calendar = getCalendarContent(moment(new Date(today.yyyy, today.mm)));
@@ -152,7 +140,6 @@ const Calendar = ({ epics }) => {
     return null
   }
 
-
   return (
     <>
       <CalendarHeader
@@ -161,58 +148,17 @@ const Calendar = ({ epics }) => {
         scrollToToday={scrollToToday}
         scrollToNextMonth={scrollToNextMonth}
       />
-      <Container ref={containerRef} onScroll={onScroll}>
-        {
-          calendar.map((week, index) => {
-            return (
-              <Week key={index} ref={getWeekCellRef(week, weekCellRef)}>
-                {
-                  week.map((date) => {
-                    const { yyyy, mm, dd } = date;
-                    const isFocused = (currentMonthOfCalendar === mm);
-                    const isToday = (moment(`${yyyy}-${mm + 1}-${dd}`).isSame(moment().format("YYYY-MM-DD")));
-                    return (
-                      <DayCell
-                        key={`${yyyy}${mm}${dd}`}
-                        isFocused={isFocused}
-                        isToday={isToday}
-                      // onClick={() => console.log('DayCell clicked')}
-                      >
-                        <Content>
-                          <Header isToday={isToday}>
-                            {dd === 1 && moment(new Date(yyyy, mm)).format('MMM')} {dd}
-                          </Header>
-                          <CalendarTask epics={epics} date={date} setIsModalOpen={setIsModalOpen}/>
-                        </Content>
-                      </DayCell>
-                    );
-                  })}
-              </Week>
-            )
-          })
-        }
-      </Container>
+      <CalendarContent
+        containerRef={containerRef}
+        onScroll={onScroll}
+        calendar={calendar}
+        currentMonthOfCalendar={currentMonthOfCalendar}
+        getWeekCellRef={getWeekCellRef}
+        weekCellRef={weekCellRef}
+      />
       <div>{loading && 'Loading...'}</div>
-      {
-        isModalOpen && (
-          <EpicModal
-            ticket={isModalOpen}
-            projectId={"5f416cea4c4a05257179ea2d"}
-            setIsModalOpen={setIsModalOpen}
-          // deleteTicket={() => deleteTicket(ticket._id, columnId, projectId)}
-          />
-        )
-      }
     </>
   )
 }
 
-Calendar.propTypes = {
-  epics: PropTypes.array.isRequired,
-};
-
-const mapStateToProps = createStructuredSelector({
-  epics: selectEpicTickets,
-});
-
-export default connect(mapStateToProps, null)(Calendar);
+export default withRouter(Calendar);

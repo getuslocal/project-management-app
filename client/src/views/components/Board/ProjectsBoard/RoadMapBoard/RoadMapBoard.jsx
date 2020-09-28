@@ -6,7 +6,6 @@ import {
 } from './RoadMapBoard.style';
 
 const RoadMapBoard = ({ project }) => {
-
   return (
     <Container>
         <TopBar project={project} isEpicModal={true} />

@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import FormSelectMenu from '../../../Form/FormSelectMenu/FormSelectMenu';
 import { IssuePriorities, IssueColors } from '../../../../../../../shared/constants/issues';
-import { selectMembersByProjectId } from '../../../../../../../redux/members/members.selectors';
 import { selectProjectById } from '../../../../../../../redux/projects/projects.selectors';
 import { selectTicketsLinkedWithEpic } from '../../../../../../../redux/tickets/tickets.selectors';
 import { updateTicket, deleteEpicTicket } from '../../../../../../../redux/tickets/tickets.actions';
@@ -45,8 +44,7 @@ const EpicModal = ({
   updateTicket,
   deleteEpicTicket,
 }) => {
-
-  const [isSmallModalOpen, setIsSmallModalOpen] = useState(false);
+  const [isSelectMenuOpen, setIsSelectMenuOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     issueType: ticket.issueType,
     summary: ticket.summary,
@@ -113,7 +111,7 @@ const EpicModal = ({
   };
 
   return (
-    <ModalContainer onClick={() => { if (isSmallModalOpen) setIsSmallModalOpen(false); }}>
+    <ModalContainer onClick={() => { if (isSelectMenuOpen) setIsSelectMenuOpen(false); }}>
       <Blanket onClick={() => setIsModalOpen(false)} />
       <Container>
         <Content>
@@ -141,8 +139,8 @@ const EpicModal = ({
                       name="childIssues"
                       isEpicTicket={true}
                       childIssues={childIssues}
-                      handleModalOpen={setIsSmallModalOpen}
-                      isModalOpen={isSmallModalOpen}
+                      setIsSelectMenuOpen={setIsSelectMenuOpen}
+                      isSelectMenuOpen={isSelectMenuOpen}
                       handleSelectMenu={handleSelectMenu}
                       handleChildIssueMenu={handleChildIssueMenu}
                     />
@@ -174,16 +172,16 @@ const EpicModal = ({
                     <FormSelectMenu
                       label="Assignee"
                       name="assigneeId"
-                      value={membersList[assigneeId] ? membersList[assigneeId].name : "Unassigned"}
+                      value={membersList && membersList[assigneeId] ? membersList[assigneeId].name : "Unassigned"}
                       selectList={{ ...membersList, [assigneeId]: undefined }}
-                      handleModalOpen={setIsSmallModalOpen}
-                      isModalOpen={isSmallModalOpen}
+                      setIsSelectMenuOpen={setIsSelectMenuOpen}
+                      isSelectMenuOpen={isSelectMenuOpen}
                       handleSelectMenu={handleSelectMenu}
                       renderValue="name"
                       returnValue="_id"
                       iconStyle={{
                         base: 'userIcon',
-                        type: membersList[assigneeId] ? membersList[assigneeId].pictureUrl : 'https://cdn.pixabay.com/photo/2018/11/13/21/43/instagram-3814049_960_720.png', // @todo: figure out a better way.
+                        type: membersList && membersList[assigneeId] ? membersList[assigneeId].pictureUrl : 'https://cdn.pixabay.com/photo/2018/11/13/21/43/instagram-3814049_960_720.png', // @todo: figure out a better way.
                         size: '30px',
                         renderValue: 'pictureUrl'
                       }}
@@ -195,8 +193,8 @@ const EpicModal = ({
                       name="issuePriority"
                       value={issuePriority}
                       selectList={{ ...IssuePriorities, [issuePriority.toUpperCase()]: undefined }}
-                      handleModalOpen={setIsSmallModalOpen}
-                      isModalOpen={isSmallModalOpen}
+                      setIsSelectMenuOpen={setIsSelectMenuOpen}
+                      isSelectMenuOpen={isSelectMenuOpen}
                       handleSelectMenu={handleSelectMenu}
                       required
                       isTransparentBackground={true}
@@ -206,17 +204,17 @@ const EpicModal = ({
                     <FormSelectMenu
                       label="Reporter"
                       name="reporterId"
-                      value={membersList[reporterId].name}
+                      value={membersList && membersList[reporterId].name}
                       selectList={{ ...membersList, [reporterId]: undefined }}
-                      handleModalOpen={setIsSmallModalOpen}
-                      isModalOpen={isSmallModalOpen}
+                      setIsSelectMenuOpen={setIsSelectMenuOpen}
+                      isSelectMenuOpen={isSelectMenuOpen}
                       handleSelectMenu={handleSelectMenu}
                       renderValue='name'
                       returnValue="_id"
                       isTransparentBackground={true}
                       iconStyle={{
                         base: 'userIcon',
-                        type: membersList[reporterId].pictureUrl,
+                        type: membersList && membersList[reporterId].pictureUrl,
                         size: '30px',
                         renderValue: 'pictureUrl'
                       }}
@@ -228,8 +226,8 @@ const EpicModal = ({
                       name="issueColor"
                       value={issueColor}
                       selectList={{ ...IssueColors, [issueColor.toUpperCase()]: undefined }}
-                      handleModalOpen={setIsSmallModalOpen}
-                      isModalOpen={isSmallModalOpen}
+                      setIsSelectMenuOpen={setIsSelectMenuOpen}
+                      isSelectMenuOpen={isSelectMenuOpen}
                       handleSelectMenu={handleSelectMenu}
                       isTransparentBackground={true}
                       renderValue="name"
@@ -258,15 +256,11 @@ const EpicModal = ({
 }
 
 EpicModal.propTypes = {
-  membersList: PropTypes.object.isRequired,
-  projectInfo: PropTypes.object.isRequired,
   updateTicket: PropTypes.func.isRequired,
   deleteEpicTicket: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
-  membersList: selectMembersByProjectId(ownProps.projectId),
-  projectInfo: selectProjectById(ownProps.projectId),
   linkedIssues: selectTicketsLinkedWithEpic(ownProps.ticket._id),
 });
 

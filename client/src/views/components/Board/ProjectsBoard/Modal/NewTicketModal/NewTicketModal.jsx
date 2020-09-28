@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { IssueTypes, IssuePriorities } from '../../../../../../shared/constants/issues';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { selectAllProjects } from '../../../../../../redux/projects/projects.selectors';
+import { selectProjects } from '../../../../../../redux/projects/projects.selectors';
 import { createStructuredSelector } from 'reselect';
 import FormSelectMenu from '../../Form/FormSelectMenu/FormSelectMenu';
 import FormInput from '../../Form/FormInput/FormInput';
@@ -16,7 +16,6 @@ import {
   ButtonsContainer,
 } from './NewTicketModal.style';
 import {
-  ModalContainer,
   Container,
   Content,
   Fieldset,
@@ -24,14 +23,14 @@ import {
 } from '../Modal.style';
 
 const NewTicketModal = ({
-  setIsModalActive,
+  setIsModalOpen,
   projects,
   currentProjectId,
   membersList,
   userProfile,
-  createNewTicket
+  createNewTicket,
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSelectMenuOpen, setIsSelectMenuOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     projectId: currentProjectId,
     issueType: IssueTypes.TASK,
@@ -53,7 +52,7 @@ const NewTicketModal = ({
     const columnId = projects[currentProjectId].columnOrder[0];
     createNewTicket(issueFormValues, columnId);
     // Close this modal.
-    setIsModalActive(false);
+    setIsModalOpen(false);
   }
 
   const handleChange = event => {
@@ -66,8 +65,7 @@ const NewTicketModal = ({
   };
 
   return (
-    <ModalContainer onClick={() => { if (isModalOpen) setIsModalOpen(false); }}>
-      <Container>
+      <Container onClick={() => { if (isSelectMenuOpen) setIsSelectMenuOpen(false); }}>
         <Content>
           <form onSubmit={handleSubmit}>
             <Title>Create issue</Title>
@@ -79,8 +77,8 @@ const NewTicketModal = ({
                   value={projects[projectId].name}
                   width="40%"
                   selectList={{}}
-                  handleModalOpen={setIsModalOpen}
-                  isModalOpen={isModalOpen}
+                  setIsSelectMenuOpen={setIsSelectMenuOpen}
+                  isSelectMenuOpen={isSelectMenuOpen}
                   handleSelectMenu={handleSelectMenu}
                   renderValue='name'
                   returnValue="_id"
@@ -98,8 +96,8 @@ const NewTicketModal = ({
                   value={issueType}
                   width="40%"
                   selectList={{ ...IssueTypes, [issueType.toUpperCase()]: undefined }}
-                  handleModalOpen={setIsModalOpen}
-                  isModalOpen={isModalOpen}
+                  setIsSelectMenuOpen={setIsSelectMenuOpen}
+                  isSelectMenuOpen={isSelectMenuOpen}
                   handleSelectMenu={handleSelectMenu}
                   iconStyle={{ base: 'issue', type: issueType, size: '9px' }}
                   description="Some issue types are unavailable due to incompatible field configuration and/or workflow associations."
@@ -111,8 +109,8 @@ const NewTicketModal = ({
                   value={issuePriority}
                   width="40%"
                   selectList={{ ...IssuePriorities, [issuePriority.toUpperCase()]: undefined }}
-                  handleModalOpen={setIsModalOpen}
-                  isModalOpen={isModalOpen}
+                  setIsSelectMenuOpen={setIsSelectMenuOpen}
+                  isSelectMenuOpen={isSelectMenuOpen}
                   handleSelectMenu={handleSelectMenu}
                   iconStyle={{ base: 'priority', type: issuePriority, size: '12px' }}
                   description="Priority in relation to other issues."
@@ -137,17 +135,17 @@ const NewTicketModal = ({
                 <FormSelectMenu
                   label="Assignee"
                   name="assigneeId"
-                  value={assigneeId ? membersList[assigneeId].name : 'Unassigned'}
+                  value={assigneeId && membersList ? membersList[assigneeId].name : 'Unassigned'}
                   width="60%"
                   selectList={{ ...membersList, [assigneeId]: undefined }}
-                  handleModalOpen={setIsModalOpen}
-                  isModalOpen={isModalOpen}
+                  setIsSelectMenuOpen={setIsSelectMenuOpen}
+                  isSelectMenuOpen={isSelectMenuOpen}
                   handleSelectMenu={handleSelectMenu}
                   renderValue="name"
                   returnValue="_id"
                   iconStyle={{
                     base: 'userIcon',
-                    type: assigneeId ? membersList[assigneeId].pictureUrl : 'https://cdn.pixabay.com/photo/2018/11/13/21/43/instagram-3814049_960_720.png',
+                    type: assigneeId && membersList ? membersList[assigneeId].pictureUrl : 'https://cdn.pixabay.com/photo/2018/11/13/21/43/instagram-3814049_960_720.png',
                     size: '25px',
                     renderValue: 'pictureUrl'
                   }}
@@ -155,18 +153,18 @@ const NewTicketModal = ({
                 <FormSelectMenu
                   label="Reporter*"
                   name="reporterId"
-                  value={membersList[reporterId].name}
+                  value={membersList && membersList[reporterId].name}
                   width="60%"
                   selectList={{ ...membersList, [reporterId]: undefined }}
-                  handleModalOpen={setIsModalOpen}
-                  isModalOpen={isModalOpen}
+                  setIsSelectMenuOpen={setIsSelectMenuOpen}
+                  isSelectMenuOpen={isSelectMenuOpen}
                   handleSelectMenu={handleSelectMenu}
                   renderValue='name'
                   returnValue="_id"
                   description="Start typing to get a list of possible matches."
                   iconStyle={{
                     base: 'userIcon',
-                    type: membersList[reporterId].pictureUrl,
+                    type: membersList && membersList[reporterId].pictureUrl,
                     size: '25px',
                     renderValue: 'pictureUrl'
                   }}
@@ -176,22 +174,21 @@ const NewTicketModal = ({
             </InnerWrapper>
             <ButtonsContainer isEpicModal={false}>
               <SubmitButton value="Create" type="submit" />
-              <TextButton onClick={() => setIsModalActive(false)}>Cancel</TextButton>
+              <TextButton onClick={() => setIsModalOpen(false)}>Cancel</TextButton>
             </ButtonsContainer>
           </form>
         </Content>
       </Container>
-
-    </ModalContainer>
   )
 }
 
 NewTicketModal.propTypes = {
   projects: PropTypes.object.isRequired,
+  createNewTicket: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  projects: selectAllProjects,
+  projects: selectProjects,
 });
 
 export default connect(mapStateToProps, { createNewTicket })(NewTicketModal);

@@ -67,6 +67,11 @@ export default createGlobalStyle`
   font-weight: 900;
   content: '\f107';
 }
+.icon-plus:before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: '\f067';
+}
 .icon-issue-task:before {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;

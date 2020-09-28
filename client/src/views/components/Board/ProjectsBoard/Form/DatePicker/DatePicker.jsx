@@ -28,7 +28,7 @@ export default function DatePicker({ dateRange, handleDateChange, isStartDate, i
             onDateChange={date => handleDateChange({ ...dateRange, startDate: date })} // PropTypes.func.isRequired
             focused={focused} // PropTypes.bool
             onFocusChange={({ focused }) => setFocused(focused)} // PropTypes.func.isRequired
-            id="your_unique_id" // PropTypes.string.isRequired,
+            id="single_date_picker_start" // PropTypes.string.isRequired,
             required
             isOutsideRange={day => (day.isAfter(endDate))}
           />
@@ -41,7 +41,7 @@ export default function DatePicker({ dateRange, handleDateChange, isStartDate, i
             onDateChange={date => handleDateChange({ ...dateRange, endDate: date })} // PropTypes.func.isRequired
             focused={focused} // PropTypes.bool
             onFocusChange={({ focused }) => setFocused(focused)} // PropTypes.func.isRequired
-            id="your_unique_id" // PropTypes.string.isRequired,
+            id="single_date_picker_end" // PropTypes.string.isRequired,
             required
             isOutsideRange={day => (day.isBefore(startDate))}
           />

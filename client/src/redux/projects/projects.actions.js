@@ -8,7 +8,8 @@ import {
   SUCCESS_UPDATE_ORDER,
   UPDATE_TICKET_STATUS,
   UPDATE_COLUMN_WITH_NEW_TICKET,
-  UPDATE_COLUMN_WITH_DELETED_TICKET
+  UPDATE_COLUMN_WITH_DELETED_TICKET,
+  SET_CURRENT_PROJECT_ID,
 } from './projects.types';
 import { updateWithProjectInfo } from '../roles/roles.actions';
 
@@ -24,6 +25,13 @@ export const getProjectsOfOwner = (ownerId) => async dispatch => {
   } catch (err) {
     console.log(err)
   }
+};
+
+export const setCurrentProjectId = (projectId) => async dispatch => {
+  dispatch({
+    type: SET_CURRENT_PROJECT_ID,
+    payload: projectId
+  });
 };
 
 export const updateOneColumnTicketsOrder = (projectId, newColumn) => async dispatch => {

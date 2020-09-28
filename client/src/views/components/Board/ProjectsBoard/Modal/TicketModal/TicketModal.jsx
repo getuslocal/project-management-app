@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import FormSelectMenu from '../../Form/FormSelectMenu/FormSelectMenu';
 import { IssuePriorities } from '../../../../../../shared/constants/issues';
-import { selectMembersByProjectId } from '../../../../../../redux/members/members.selectors';
 import { selectProjectById } from '../../../../../../redux/projects/projects.selectors';
 import { updateTicket, deleteTicket } from '../../../../../../redux/tickets/tickets.actions';
 import { updateTicketStatus } from '../../../../../../redux/projects/projects.actions';
@@ -35,17 +34,18 @@ import {
 
 const TicketModal = ({
   ticket,
+  linkedEpic,
+  columnId,
+  membersList,
   setIsModalOpen,
   deleteTicket,
-  membersList,
   projectInfo,
-  columnId,
-  linkedEpic,
   updateTicket,
   updateTicketStatus
 }) => {
 
-  const [isSmallModalOpen, setIsSmallModalOpen] = useState(false);
+  const [isSelectMenuOpen, setIsSelectMenuOpen] = useState(false);
+
   const [issueFormValues, setIssueFormValues] = useState({
     issueType: ticket.issueType,
     issueStatus: columnId,
@@ -96,7 +96,7 @@ const TicketModal = ({
   };
 
   return (
-    <ModalContainer onClick={() => { if (isSmallModalOpen) setIsSmallModalOpen(false); }}>
+    <ModalContainer onClick={() => { if (isSelectMenuOpen) setIsSelectMenuOpen(false); }}>
       <Blanket onClick={() => setIsModalOpen(false)} />
       <Container>
         <Content>
@@ -134,24 +134,24 @@ const TicketModal = ({
                       currentOrder={issueStatus}
                       columnOrder={projectInfo.columnOrder}
                       columnsList={{ ...columnsList, [issueStatus]: undefined }}
-                      handleModalOpen={setIsSmallModalOpen}
-                      isModalOpen={isSmallModalOpen}
+                      setIsSelectMenuOpen={setIsSelectMenuOpen}
+                      isSelectMenuOpen={isSelectMenuOpen}
                       handleStatusChange={handleStatusChange}
                       required
                     />
                     <FormSelectMenu
                       label="Assignee"
                       name="assigneeId"
-                      value={membersList[assigneeId] ? membersList[assigneeId].name : "Unassigned"}
+                      value={membersList && membersList[assigneeId] ? membersList[assigneeId].name : "Unassigned"}
                       selectList={{ ...membersList, [assigneeId]: undefined }}
-                      handleModalOpen={setIsSmallModalOpen}
-                      isModalOpen={isSmallModalOpen}
+                      setIsSelectMenuOpen={setIsSelectMenuOpen}
+                      isSelectMenuOpen={isSelectMenuOpen}
                       handleSelectMenu={handleSelectMenu}
                       renderValue="name"
                       returnValue="_id"
                       iconStyle={{
                         base: 'userIcon',
-                        type: membersList[assigneeId] ? membersList[assigneeId].pictureUrl : 'https://cdn.pixabay.com/photo/2018/11/13/21/43/instagram-3814049_960_720.png', // @todo: figure out a better way.
+                        type: membersList && membersList[assigneeId] ? membersList[assigneeId].pictureUrl : 'https://cdn.pixabay.com/photo/2018/11/13/21/43/instagram-3814049_960_720.png', // @todo: figure out a better way.
                         size: '30px',
                         renderValue: 'pictureUrl'
                       }}
@@ -163,8 +163,8 @@ const TicketModal = ({
                       name="issuePriority"
                       value={issuePriority}
                       selectList={{ ...IssuePriorities, [issuePriority.toUpperCase()]: undefined }}
-                      handleModalOpen={setIsSmallModalOpen}
-                      isModalOpen={isSmallModalOpen}
+                      setIsSelectMenuOpen={setIsSelectMenuOpen}
+                      isSelectMenuOpen={isSelectMenuOpen}
                       handleSelectMenu={handleSelectMenu}
                       required
                       isTransparentBackground={true}
@@ -174,17 +174,17 @@ const TicketModal = ({
                     <FormSelectMenu
                       label="Reporter"
                       name="reporterId"
-                      value={membersList[reporterId].name}
+                      value={membersList && membersList[reporterId].name}
                       selectList={{ ...membersList, [reporterId]: undefined }}
-                      handleModalOpen={setIsSmallModalOpen}
-                      isModalOpen={isSmallModalOpen}
+                      setIsSelectMenuOpen={setIsSelectMenuOpen}
+                      isSelectMenuOpen={isSelectMenuOpen}
                       handleSelectMenu={handleSelectMenu}
                       renderValue='name'
                       returnValue="_id"
                       isTransparentBackground={true}
                       iconStyle={{
                         base: 'userIcon',
-                        type: membersList[reporterId].pictureUrl,
+                        type: membersList && membersList[reporterId].pictureUrl,
                         size: '30px',
                         renderValue: 'pictureUrl'
                       }}
@@ -208,13 +208,11 @@ const TicketModal = ({
 }
 
 TicketModal.propTypes = {
-  membersList: PropTypes.object.isRequired,
   projectInfo: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
-  membersList: selectMembersByProjectId(ownProps.projectId),
-  projectInfo: selectProjectById(ownProps.projectId)
+  projectInfo: selectProjectById(ownProps.currentProjectId)
 });
 
 

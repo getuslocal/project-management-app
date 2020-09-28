@@ -14,10 +14,10 @@ import {
 
 const FormSelectMenu = ({
   label,
-  handleModalOpen,
+  setIsSelectMenuOpen,
+  isSelectMenuOpen,
   selectList,
   handleSelectMenu,
-  isModalOpen,
   description,
   width,
   renderValue,
@@ -35,7 +35,7 @@ const FormSelectMenu = ({
         <FormWrapper
           height={height}
           isTransparentBackground={isTransparentBackground}
-          onClick={() => handleModalOpen(name)}
+          onClick={() => setIsSelectMenuOpen(name)}
         >
           <Icon iconStyle={iconStyle} />
           <Input
@@ -46,7 +46,7 @@ const FormSelectMenu = ({
           />
         </FormWrapper>
         {
-          isModalOpen === name ?
+          isSelectMenuOpen === name ?
             <SelectMenu
               handleSelectMenu={handleSelectMenu}
               selectList={selectList}

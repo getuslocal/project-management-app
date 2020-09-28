@@ -12,7 +12,9 @@ import { selectIsTicketsLoaded } from '../../../../redux/tickets/tickets.selecto
 import { createStructuredSelector } from 'reselect';
 import { getTicketsByProjectId } from '../../../../redux/tickets/tickets.actions';
 import { getMembersByProjectId } from '../../../../redux/members/members.actions';
+import { setCurrentProjectId } from '../../../../redux/projects/projects.actions';
 import WithSpinner from '../../../../shared/components/WithSpinner/WithSpinner';
+import Modal from './Modal/Modal';
 
 const KanbanBoardWithSpinner = WithSpinner(KanbanBoard);
 
@@ -23,6 +25,7 @@ const ProjectsBoard = ({
   // tickets, @todo: Figure out if drill up tickets state to here later.
   getTicketsByProjectId,
   getMembersByProjectId,
+  setCurrentProjectId,
   isLoading,
   ...props
 }) => {
@@ -35,6 +38,7 @@ const ProjectsBoard = ({
   useEffect(() => {
     getTicketsByProjectId(projectId)
     getMembersByProjectId(projectMembers, projectId)
+    setCurrentProjectId(projectId)
   }, []);
 
   return (
@@ -70,5 +74,5 @@ const mapStateToProps = (state, ownProps) => createStructuredSelector({
 
 export default connect(
   mapStateToProps,
-  { getTicketsByProjectId, getMembersByProjectId }
+  { getTicketsByProjectId, getMembersByProjectId, setCurrentProjectId }
 )(ProjectsBoard);

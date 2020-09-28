@@ -7,14 +7,14 @@ import {
   Span
 } from './IssueStatusMenu.style';
 
-const FormSelectMenu = ({
+const IssueStatusMenu = ({
   name,
   value,
   currentOrder,
   columnsList,
   columnOrder,
-  handleModalOpen,
-  isModalOpen,
+  setIsSelectMenuOpen,
+  isSelectMenuOpen,
   handleStatusChange,
 }) => (
     <Container>
@@ -23,12 +23,12 @@ const FormSelectMenu = ({
         isLastColumn={(currentOrder === columnOrder[columnOrder.length - 1])}
         type="button"
         className="icon-angle-down"
-        onClick={() => handleModalOpen(name)}
+        onClick={() => setIsSelectMenuOpen(name)}
       >
         {value}
       </Button>
       {
-        isModalOpen === name ?
+        isSelectMenuOpen === name ?
           <DropDownMenu>
             <ul>
               {
@@ -53,4 +53,4 @@ const FormSelectMenu = ({
     </Container>
   );
 
-export default FormSelectMenu;
+export default IssueStatusMenu;

@@ -16,6 +16,7 @@ import { selectMembersByProjectId } from '../../../../../../../redux/members/mem
 import { selectEpicById } from '../../../../../../../redux/tickets/tickets.selectors';
 import { createStructuredSelector } from 'reselect';
 import { IssueColors } from '../../../.././../../../shared/constants/issues'
+import Modal from '../../../Modal/Modal';
 
 const Ticket = ({ ticket, index, columnId, projectId, members, linkedEpic }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -63,11 +64,11 @@ const Ticket = ({ ticket, index, columnId, projectId, members, linkedEpic }) => 
       </Draggable>
       {
         isModalOpen && (
-          <TicketModal
+          <Modal
+            isTicketModalOpen={true}
             ticket={ticket}
             linkedEpic={linkedEpic}
             columnId={columnId}
-            projectId={projectId}
             setIsModalOpen={setIsModalOpen}
           />
         )

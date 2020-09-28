@@ -23,19 +23,19 @@ export const IssueColors = {
   YELLOW: {
     name: 'Yellow',
     font: '#fc9b10',
-    bg: '#fef0db',
+    bg: 'rgb(251 234 210)',
     border: '#fdb44d',
   },
   BLUE: {
     name: 'Blue',
     font: '#0a5eff',
-    bg: 'rgba(218, 231, 255, 0.9)',
+    bg: 'rgb(218, 231, 255)',
     border: '#4786ff',
   },
   RED: {
     name: 'Red',
     font: '#f8254e',
-    bg: 'rgba(253, 197, 208, 0.7)',
+    bg: 'rgba(253, 197, 208, 0.8)',
     border: '#fa607e',
   },
 };
