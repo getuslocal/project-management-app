@@ -1,30 +1,30 @@
 import React, { useState } from 'react';
-import { IssueTypes, IssuePriorities, IssueColors } from '../../../../../../../shared/constants/issues';
+import { IssueTypes, IssuePriorities, IssueColors } from '../../../../../../shared/constants/issues';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { selectProjects } from '../../../../../../../redux/projects/projects.selectors';
+import { selectProjects } from '../../../../../../redux/projects/projects.selectors';
 import { createStructuredSelector } from 'reselect';
-import FormSelectMenu from '../../../Form/FormSelectMenu/FormSelectMenu';
-import FormInput from '../../../Form/FormInput/FormInput';
-import FormTextArea from '../../../Form/FormTextArea/FormTextArea';
-import ChildIssueMenu from '../../../Form/ChildIssueMenu/ChildIssueMenu';
-import RangedDatePicker from '../../../Form/RangedDatePicker/RangedDatePicker';
-import { createNewEpicTicket } from '../../../../../../../redux/tickets/tickets.actions';
+import FormSelectMenu from '../../Form/FormSelectMenu/FormSelectMenu';
+import FormInput from '../../Form/FormInput/FormInput';
+import ChildIssueMenu from '../../Form/ChildIssueMenu/ChildIssueMenu';
+import RangedDatePicker from '../../Form/RangedDatePicker/RangedDatePicker';
+import { createNewEpicTicket } from '../../../../../../redux/tickets/tickets.actions';
+import Description from './Description/Description';
 import {
   Title,
   SubmitButton,
   TextButton,
   InnerWrapper,
   ButtonsContainer,
-} from './NewEpicModal.style';
+} from './IssueCreateEpic.style';
 import {
   Container,
   Content,
   Fieldset,
   Diviser,
-} from '../../Modal.style';
+} from '../Modal.style';
 
-const NewEpicModal = ({
+const IssueCreateEpic = ({
   setIsModalOpen,
   projects,
   currentProjectId,
@@ -76,6 +76,10 @@ const NewEpicModal = ({
     }
     setChildIssues([...childIssues, issueId]);
   };
+
+  const handleEditorText = (text) => {
+    setIssueFormValues({ ...issueFormValues, description: text });
+  }
 
   return (
     <Container onClick={() => { if (isSelectMenuOpen) setIsSelectMenuOpen(false); }}>
@@ -138,13 +142,9 @@ const NewEpicModal = ({
                 handleChange={handleChange}
                 required
               />
-              <FormTextArea
-                label="Description*"
-                rows="12"
-                name="description"
+              <Description
                 value={description}
-                handleChange={handleChange}
-                required
+                onChange={handleEditorText}
               />
               <ChildIssueMenu
                 label="Child issues"
@@ -223,7 +223,7 @@ const NewEpicModal = ({
   )
 }
 
-NewEpicModal.propTypes = {
+IssueCreateEpic.propTypes = {
   projects: PropTypes.object.isRequired,
   createNewEpicTicket: PropTypes.func.isRequired,
 };
@@ -232,4 +232,4 @@ const mapStateToProps = createStructuredSelector({
   projects: selectProjects,
 });
 
-export default connect(mapStateToProps, { createNewEpicTicket })(NewEpicModal);
+export default connect(mapStateToProps, { createNewEpicTicket })(IssueCreateEpic);

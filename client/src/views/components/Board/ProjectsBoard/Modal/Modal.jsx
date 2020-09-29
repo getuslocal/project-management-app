@@ -5,10 +5,10 @@ import { selectUser } from '../../../../../redux/auth/auth.selectors';
 import { selectMembers } from '../../../../../redux/members/members.selectors';
 import { selectCurrentProjectId } from '../../../../../redux/projects/projects.selectors';
 import { createStructuredSelector } from 'reselect';
-import NewTicketModal from './NewTicketModal/NewTicketModal';
-import NewEpicModal from './NewTicketModal/NewEpicModal/NewEpicModal';
-import EpicModal from './TicketModal/EpicModal/EpicModal';
-import TicketModal from './TicketModal/TicketModal';
+import IssueCreate from './IssueCreate/IssueCreate';
+import IssueCreateEpic from './IssueCreate/IssueCreateEpic';
+import IssueDetailEpic from './IssueDetail/IssueDetailEpic';
+import IssueDetail from './IssueDetail/IssueDetail';
 import {
   ModalContainer,
 } from './Modal.style';
@@ -40,19 +40,8 @@ const Modal = ({
   return (
     <ModalContainer>
       {
-        isNewEpicModalOpen && (
-          <NewEpicModal
-            currentProjectId={currentProjectId}
-            membersList={members[currentProjectId]}
-            userProfile={userProfile}
-            setIsModalOpen={setIsModalOpen}
-            {...props}
-          />
-        )
-      }
-      {
         isNewTicketModalOpen && (
-          <NewTicketModal
+          <IssueCreate
             currentProjectId={currentProjectId}
             membersList={members[currentProjectId]}
             userProfile={userProfile}
@@ -61,8 +50,9 @@ const Modal = ({
         )
       }
       {
-        isEpicModalOpen && (
-          <EpicModal
+        isNewEpicModalOpen && (
+          <IssueCreateEpic
+            currentProjectId={currentProjectId}
             membersList={members[currentProjectId]}
             userProfile={userProfile}
             setIsModalOpen={setIsModalOpen}
@@ -72,9 +62,19 @@ const Modal = ({
       }
       {
         isTicketModalOpen && (
-          <TicketModal
+          <IssueDetail
             membersList={members[currentProjectId]}
             currentProjectId={currentProjectId}
+            setIsModalOpen={setIsModalOpen}
+            {...props}
+          />
+        )
+      }
+      {
+        isEpicModalOpen && (
+          <IssueDetailEpic
+            membersList={members[currentProjectId]}
+            userProfile={userProfile}
             setIsModalOpen={setIsModalOpen}
             {...props}
           />

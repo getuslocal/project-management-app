@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import FormSelectMenu from '../../Form/FormSelectMenu/FormSelectMenu';
@@ -24,7 +25,7 @@ import {
   TopContentRight,
   Slash,
   Content
-} from './TicketModal.style';
+} from './IssueDetail.style';
 import {
   ModalContainer,
   Container,
@@ -69,16 +70,27 @@ const TicketModal = ({
   } = issueFormValues;
 
   const columnsList = projectInfo.columns;
-  // @todo: Add updated time.
-  const createAt = String(new Date(ticket.createdAt)).substring(0, 15);
+  const createAt = moment(new Date(ticket.createdAt)).format('lll');
+  const updatedAt = moment(new Date(ticket.updatedAt)).fromNow();
 
   const updateTicketField = (updatedValue) => {
+    console.log(updatedValue)
     updateTicket(ticket._id, updatedValue);
   }
+
+  const [typingTimeout, setTypingTimeout] = useState(0)
 
   const handleChange = event => {
     const { name, value } = event.target;
     setIssueFormValues({ ...issueFormValues, [name]: value });
+    // Clear timeout throughout the typing.
+    clearTimeout(typingTimeout);
+    // Set a timeout to run after typing ends.
+    const typingTimer = setTimeout(function () {
+      // Update summary field 1000ms after stops typing. 
+      updateTicketField({ summary: value })
+    }, 1000)
+    setTypingTimeout(typingTimer)
   };
 
   const handleSelectMenu = (name, value) => {
@@ -95,6 +107,14 @@ const TicketModal = ({
     updateTicketStatus(columnMove, ticket._id, projectInfo._id);
   };
 
+  const handleEditorText = (text) => {
+    setIssueFormValues({ ...issueFormValues, description: text });
+  }
+
+  const saveDescription = () => {
+    updateTicketField({ description: description })
+  }
+
   return (
     <ModalContainer onClick={() => { if (isSelectMenuOpen) setIsSelectMenuOpen(false); }}>
       <Blanket onClick={() => setIsModalOpen(false)} />
@@ -104,10 +124,10 @@ const TicketModal = ({
             <TopContentLeft>
               {
                 linkedEpic &&
-                <>
+                <Fragment>
                   <TicketKey className="icon-issue-epic">{linkedEpic.summary}</TicketKey>
                   <Slash style={{ margin: '0 6px' }}>/</Slash>
-                </>
+                </Fragment>
               }
               <TicketKey className={`icon-issue-${issueType.toLowerCase()}`}>{ticket.key}</TicketKey>
             </TopContentLeft>
@@ -121,9 +141,20 @@ const TicketModal = ({
               <FormContainer>
                 <FormLeftContent>
                   <Fieldset>
-                    <Title name="summary" currentValue={summary} handleChange={handleChange} />
-                    <Description currentValue={description} handleChange={handleChange} />
-                    <Comment comments={ticket.comments} ticketId={ticket._id} />
+                    <Title
+                      name="summary"
+                      currentValue={summary}
+                      handleChange={handleChange}
+                    />
+                    <Description
+                      currentValue={description}
+                      handleEditorText={handleEditorText}
+                      saveDescription={saveDescription}
+                    />
+                    <Comment
+                      comments={comments}
+                      ticketId={ticket._id}
+                    />
                   </Fieldset>
                 </FormLeftContent>
                 <FormRightContent>
@@ -151,7 +182,8 @@ const TicketModal = ({
                       returnValue="_id"
                       iconStyle={{
                         base: 'userIcon',
-                        type: membersList && membersList[assigneeId] ? membersList[assigneeId].pictureUrl : 'https://cdn.pixabay.com/photo/2018/11/13/21/43/instagram-3814049_960_720.png', // @todo: figure out a better way.
+                        type: membersList && membersList[assigneeId] ? membersList[assigneeId].pictureUrl :
+                          'https://cdn.pixabay.com/photo/2018/11/13/21/43/instagram-3814049_960_720.png', // @todo: figure out a better way.
                         size: '30px',
                         renderValue: 'pictureUrl'
                       }}
@@ -194,7 +226,7 @@ const TicketModal = ({
                     <Diviser />
                     <TicketHistoryContent>
                       <p>Created : {createAt}</p>
-                      <p>Updated : 18 minutes ago</p>
+                      <p>Updated : {updatedAt}</p>
                     </TicketHistoryContent>
                   </Fieldset>
                 </FormRightContent>

@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { addComment, deleteComment } from '../../../../../../../redux/tickets/tickets.actions';
+import Button from '../../../../../../../shared/components/Button/Button'
 import {
   Container,
   Title,
   Top,
   Textarea,
-  Button,
   Bottom,
   TextAreaWrapper,
   CommentWrapper,
@@ -22,11 +22,11 @@ import {
   Delete,
   Time,
   ButtonsContainer,
-  CancelButton
 } from './Comment.style';
 
 const Comment = ({ currentUser, comments, ticketId, addComment, deleteComment }) => {
   const [text, setText] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
   const { _id: userId, pictureUrl } = currentUser;
   return (
     <Container>
@@ -45,18 +45,30 @@ const Comment = ({ currentUser, comments, ticketId, addComment, deleteComment })
             placeholder="Add a comment..."
             value={text}
             onChange={(e) => setText(e.target.value)}
+            onClick={() => setIsOpen(true)}
           />
           {
-            text.length > 0 ?
-              <ButtonsContainer>
-                <Button type="button" onClick={() => {
+            isOpen &&
+            <ButtonsContainer>
+              <Button
+                text="Save"
+                variant="primary"
+                onClick={() => {
                   addComment(ticketId, { text })
                   setText('')
-                }}>Save</Button>
-                <CancelButton type="button" onClick={() => setText('')}>Cancel</CancelButton>
-              </ButtonsContainer>
-              :
-              <></>
+                }}
+                type="button"
+              />
+              <Button
+                text="Cancel"
+                variant="text"
+                onClick={() => {
+                  setIsOpen(false)
+                  setText('')
+                }}
+                type="button"
+              />
+            </ButtonsContainer>
           }
         </TextAreaWrapper>
       </Top>
@@ -79,10 +91,8 @@ const Comment = ({ currentUser, comments, ticketId, addComment, deleteComment })
                 />
                 <Options>
                   {
-                    userId === comment.user ?
-                      <Delete onClick={() => deleteComment(ticketId, comment._id)}>Delete</Delete>
-                      :
-                      <></>
+                    userId === comment.user &&
+                    <Delete onClick={() => deleteComment(ticketId, comment._id)}>Delete</Delete>
                   }
                 </Options>
               </CommentContent>

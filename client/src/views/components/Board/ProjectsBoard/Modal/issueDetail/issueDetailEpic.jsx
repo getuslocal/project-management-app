@@ -2,23 +2,22 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import FormSelectMenu from '../../../Form/FormSelectMenu/FormSelectMenu';
-import { IssuePriorities, IssueColors } from '../../../../../../../shared/constants/issues';
-import { selectProjectById } from '../../../../../../../redux/projects/projects.selectors';
-import { selectTicketsLinkedWithEpic } from '../../../../../../../redux/tickets/tickets.selectors';
-import { updateTicket, deleteEpicTicket } from '../../../../../../../redux/tickets/tickets.actions';
-import Title from '../Title/Title';
-import Description from '../Description/Description';
-import Comment from '../Comment/Comment';
-import ChildissueMenu from '../../../Form/ChildIssueMenu/ChildIssueMenu';
-import DatePicker from '../../../Form/DatePicker/DatePicker';
+import FormSelectMenu from '../../Form/FormSelectMenu/FormSelectMenu';
+import { IssuePriorities, IssueColors } from '../../../../../../shared/constants/issues';
+import { selectTicketsLinkedWithEpic } from '../../../../../../redux/tickets/tickets.selectors';
+import { updateTicket, deleteEpicTicket } from '../../../../../../redux/tickets/tickets.actions';
+import Title from './Title/Title';
+import Description from './Description/Description';
+import Comment from './Comment/Comment';
+import ChildissueMenu from '../../Form/ChildIssueMenu/ChildIssueMenu';
+import DatePicker from '../../Form/DatePicker/DatePicker';
 import moment from 'moment';
 import {
   ModalContainer,
   Container,
   Fieldset,
   Diviser
-} from '../../Modal.style';
+} from '../Modal.style';
 import {
   InnerWrapper,
   FormContainer,
@@ -31,10 +30,10 @@ import {
   TopContentRight,
   TopContentLeft,
   Content
-} from '../TicketModal.style';
+} from './IssueDetail.style';
 import {
   CompleteButton,
-} from './EpicModal.style';
+} from './IssueDetaillEpic.style';
 
 const EpicModal = ({
   ticket,
@@ -59,10 +58,14 @@ const EpicModal = ({
 
   const [childIssues, setChildIssues] = useState(linkedIssues);
 
+  console.log('redner')
+
   const [dateRange, setdateRange] = useState({
     startDate: moment(ticket.dateRange.startDate),
     endDate: moment(ticket.dateRange.endDate)
   });
+
+  const [typingTimeout, setTypingTimeout] = useState(0)
 
   const {
     issueType,
@@ -76,18 +79,27 @@ const EpicModal = ({
     isEpicDone
   } = issueFormValues;
 
-  const createAt = String(new Date(ticket.createdAt)).substring(0, 15);
+  console.log(comments)
+
+  const createAt = moment(new Date(ticket.createdAt)).format('lll');
+  const updatedAt = moment(new Date(ticket.updatedAt)).fromNow();
   const epicId = ticket._id;
 
   const updateTicketField = (updatedValue) => {
     updateTicket(epicId, updatedValue);
   }
 
-  console.log(childIssues)
-
   const handleChange = event => {
     const { name, value } = event.target;
     setIssueFormValues({ ...issueFormValues, [name]: value });
+    // Clear timeout throughout the typing.
+    clearTimeout(typingTimeout);
+    // Set a timeout to run after typing ends.
+    const typingTimer = setTimeout(function () {
+      // Update summary field 1000ms after stops typing. 
+      updateTicketField({ summary: value })
+    }, 1000)
+    setTypingTimeout(typingTimer)
   };
 
   const handleSelectMenu = (name, value) => {
@@ -109,6 +121,15 @@ const EpicModal = ({
     setChildIssues([...childIssues, childIssueId]);
     updateTicket(childIssueId, { linkedEpic: epicId });
   };
+
+
+  const handleEditorText = (text) => {
+    setIssueFormValues({ ...issueFormValues, description: text });
+  }
+
+  const saveDescription = () => {
+    updateTicketField({ description: description })
+  }
 
   return (
     <ModalContainer onClick={() => { if (isSelectMenuOpen) setIsSelectMenuOpen(false); }}>
@@ -133,7 +154,11 @@ const EpicModal = ({
                 <FormLeftContent>
                   <Fieldset>
                     <Title name="summary" currentValue={summary} handleChange={handleChange} />
-                    <Description currentValue={description} handleChange={handleChange} />
+                    <Description
+                      currentValue={description}
+                      handleEditorText={handleEditorText}
+                      saveDescription={saveDescription}
+                    />
                     <ChildissueMenu
                       label="Child issues"
                       name="childIssues"
@@ -144,7 +169,10 @@ const EpicModal = ({
                       handleSelectMenu={handleSelectMenu}
                       handleChildIssueMenu={handleChildIssueMenu}
                     />
-                    <Comment comments={ticket.comments} ticketId={ticket._id} />
+                    <Comment
+                      comments={comments}
+                      ticketId={ticket._id}
+                    />
                   </Fieldset>
                 </FormLeftContent>
                 <FormRightContent>
@@ -242,7 +270,7 @@ const EpicModal = ({
                     <Diviser />
                     <TicketHistoryContent>
                       <p>Created : {createAt}</p>
-                      <p>Updated : 18 minutes ago</p>
+                      <p>Updated : {updatedAt}</p>
                     </TicketHistoryContent>
                   </Fieldset>
                 </FormRightContent>

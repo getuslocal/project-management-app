@@ -7,8 +7,10 @@ export const color = {
   warning: '#F89C1C', // orange
   secondary: '#F4F5F7', // light grey
 
+  blue: 'rgb(0,82,204)',
   smokewhite: '#F5F5F5',
   purple: '#390099',
+  white: '#fff',
 
   textDarkest: '#172b4d',
   textDark: '#42526E',
@@ -18,7 +20,6 @@ export const color = {
   textVeryLight2: 'rgb(211, 212, 213)',
   textLink: '#0052cc',
 
-  white: '#fff',
 
   backgroundDarkPrimary: '#0747A6',
   backgroundMedium: '#dfe1e6',
@@ -30,6 +31,12 @@ export const color = {
   borderLightest: '#dfe1e6',
   borderLight: '#C1C7D0',
   borderInputFocus: '#4c9aff',
+
+  hoverGray: '#091e420d',
+};
+
+export const font = {
+  regular: 'font-family: Poppins, sans-serif;',
 };
 
 export const fontSize = {

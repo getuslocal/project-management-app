@@ -14,16 +14,33 @@ Padding.defaultProps = {
 }
 
 export const Margin = styled.div`
-  margin-top: ${(props) => props.top}em;
-  margin-right: ${(props) => props.right}em;
-  margin-bottom: ${(props) => props.bottom}em;
-  margin-left: ${(props) => props.left}em;
+  margin-top: ${(props) => props.top}px;
+  margin-right: ${(props) => props.right}px;
+  margin-bottom: ${(props) => props.bottom}px;
+  margin-left: ${(props) => props.left}px;
 `
 Margin.defaultProps = {
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0
+}
+
+// Add hover effect to element.
+export const Hover = styled.div`
+  display : ${(props) => props.inlineBlock ? 'inline-block' : 'block'};
+  &:hover{
+    background-color: ${(props) => props.bgColor} !important;
+    border-radius: ${(props) => props.borderRadius}px;
+    opacity: ${(props) => props.opacity};
+  }
+`
+
+Hover.defaultProps = {
+  bgColor: "#fff",
+  borderRadius: 0,
+  inlineBlock: false,
+  opacity: 1,
 }
 
 export const Text = styled.span`
@@ -55,14 +72,4 @@ Border.defaultProps = {
     bottom: "0px",
     left: "0px",
     color: "#c9d2db"
-}
-
-export const Strong = styled.span`
-  font-size: ${props => props.fs};
-  color: ${props => props.color};
-  font-weight: 600;
-`
-Strong.defaultProps = {
-    "font-size": "14px",
-    "font-color": "#262626"
 }

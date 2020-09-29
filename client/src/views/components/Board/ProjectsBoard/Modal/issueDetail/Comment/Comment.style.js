@@ -47,7 +47,10 @@ export const Textarea = styled(TextareaAutosize)`
 `
 
 export const ButtonsContainer = styled.div`
-  margin-top: .35em;
+  margin-top: 5px;
+  & > button {
+    margin-right: 6px;
+  }
 `
 
 // @todo: get this from share dir.

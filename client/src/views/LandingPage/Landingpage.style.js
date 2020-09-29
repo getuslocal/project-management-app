@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { color, fontSize } from '../../shared/utils/styles';
-import StyledButton from '../../shared/components/Button/CustomLinkButton/CustomLinkButton';
 import LandingBg from './assets/landing-bg.png'
 
 export const LandingContainer = styled.div`

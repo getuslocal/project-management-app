@@ -9,7 +9,6 @@ import {
   EpicWrapper,
   Epic,
 } from './Ticket.style'
-import TicketModal from '../../../Modal/TicketModal/TicketModal';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { selectMembersByProjectId } from '../../../../../../../redux/members/members.selectors';

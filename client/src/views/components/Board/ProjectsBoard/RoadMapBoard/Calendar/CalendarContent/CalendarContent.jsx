@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import moment from 'moment';
 import CalendarTask from './CalendarTask/CalendarTask';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect'
-import { selectEpicTickets } from '../../../../../../../redux/tickets/tickets.selectors';
 import Modal from '../../../Modal/Modal';
 import {
   Container,
@@ -22,13 +18,13 @@ const CalendarContent = ({
   currentMonthOfCalendar,
   getWeekCellRef,
   weekCellRef,
-  epics,
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [IssueCreateModalOpen, setIssueCreateModalOpen] = useState(false);
+  const [IssueDetailModalOpen, setIssueDetailModalOpen] = useState(false);
+  const [epic, setEpic] = useState(null);
   const [defaultStartDate, setDefaultStartDate] = useState(null);
-
   return (
-    <>
+    <Fragment>
       <Container ref={containerRef} onScroll={onScroll}>
         {
           calendar.map((week, index) => {
@@ -49,12 +45,12 @@ const CalendarContent = ({
                           <Header isToday={isToday}>
                             {dd === 1 && moment(new Date(yyyy, mm)).format('MMM')} {dd}
                             <QuickAddButton className="icon-plus" onClick={() => {
-                              setIsModalOpen(true)
+                              setIssueCreateModalOpen(true)
                               setDefaultStartDate(moment(new Date(yyyy, mm, dd)))
                             }}>
                             </QuickAddButton>
                           </Header>
-                          <CalendarTask epics={epics} date={date} />
+                          <CalendarTask date={date} setIssueDetailModalOpen={setIssueDetailModalOpen} setEpic={setEpic} />
                         </Content>
                       </DayCell>
                     );
@@ -64,23 +60,23 @@ const CalendarContent = ({
           })
         }
       </Container>
-      {isModalOpen &&
+      {IssueCreateModalOpen &&
         <Modal
           isNewEpicModalOpen={true}
-          setIsModalOpen={setIsModalOpen}
+          setIsModalOpen={setIssueCreateModalOpen}
           defaultStartDate={defaultStartDate}
         />
       }
-    </>
+      {IssueDetailModalOpen &&
+        <Modal
+          isEpicModalOpen={true}
+          setIsModalOpen={setIssueDetailModalOpen}
+          ticket={epic}
+        />
+      }
+    </Fragment>
   )
 }
 
-CalendarContent.propTypes = {
-  epics: PropTypes.array.isRequired,
-};
 
-const mapStateToProps = createStructuredSelector({
-  epics: selectEpicTickets,
-});
-
-export default connect(mapStateToProps, null)(CalendarContent);
+export default CalendarContent;

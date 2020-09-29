@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 import { IssueColors } from '../../../../../../../../shared/constants/issues';
-import Modal from '../../../../Modal/Modal';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect'
+import { selectEpicTickets } from '../../../../../../../../redux/tickets/tickets.selectors';
 import {
   Task,
   Container
 } from './CalendarTask.style';
 
-const CalendarTask = ({ epics, date: { yyyy, mm, dd } }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalEpic, setModalEpic] = useState(null);
+const CalendarTask = ({
+  epics,
+  date: { yyyy, mm, dd },
+  setIssueDetailModalOpen,
+  setEpic
+}) => {
   return (
     <>
       <Container className="calendarTaskContainer">
@@ -50,8 +56,8 @@ const CalendarTask = ({ epics, date: { yyyy, mm, dd } }) => {
                   }}
                   onClick={() => {
                     if (isGhost) return
-                    setIsModalOpen(true)
-                    setModalEpic(epic)
+                    setIssueDetailModalOpen(true)
+                    setEpic(epic)
                   }}
                 >
                   {displaySummary && epic.summary}
@@ -61,16 +67,16 @@ const CalendarTask = ({ epics, date: { yyyy, mm, dd } }) => {
           })
         }
       </Container>
-      {/* Render Epic issue details modal */}
-      {isModalOpen &&
-        <Modal
-          isEpicModalOpen={true}
-          setIsModalOpen={setIsModalOpen}
-          ticket={modalEpic}
-        />
-      }
     </>
   )
 }
 
-export default CalendarTask
+CalendarTask.propTypes = {
+  epics: PropTypes.array.isRequired,
+};
+
+const mapStateToProps = createStructuredSelector({
+  epics: selectEpicTickets,
+});
+
+export default connect(mapStateToProps, null)(CalendarTask);
