@@ -25,13 +25,13 @@ const getTickets = (ticketMap, taskIds) => {
 }
 
 const InnerList = React.memo(props => {
-  const { column, ticketMap, index, projectId } = props;
-  return <Column column={column} tickets={getTickets(ticketMap, column.taskIds)} index={index} projectId={projectId} />
+  const { column, ticketMap, index } = props;
+  return <Column column={column} tickets={getTickets(ticketMap, column.taskIds)} index={index} />
 })
 
 const KanbanBoard = ({ project, tickets }) => {
   const { columnOrder, columns, _id, name } = project;
-  console.log('KanbanBoard render')
+  console.log(tickets)
 
   const onDragEnd = result => {
     // console.log(result)
@@ -95,7 +95,7 @@ const KanbanBoard = ({ project, tickets }) => {
   // @todo: change taskIds to ticketIds.
   return (
     <>
-      <TopBar project={project} isEpicModal={false}/>
+      <TopBar project={project} isEpicModal={false} />
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="all-columns" direction="horizontal" type="column">
           {provided => (
@@ -103,7 +103,7 @@ const KanbanBoard = ({ project, tickets }) => {
               {
                 columnOrder.map((columnId, index) => {
                   const thisColumn = columns[columnId];
-                  return <InnerList key={thisColumn.id} column={thisColumn} ticketMap={tickets} index={index} projectId={_id} />
+                  return <InnerList key={thisColumn.id} column={thisColumn} ticketMap={tickets} index={index} />
                 })
               }
               {provided.placeholder}

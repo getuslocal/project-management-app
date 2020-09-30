@@ -3,17 +3,17 @@ import {
   GET_MEMBERS_BY_PROJECTID,
 } from './members.types';
 
-export const getMembersByProjectId = (members, projectId) => async dispatch => {
+export const getMembersByProjectId = (members) => async dispatch => {
   try {
-    let membersList = {};
+    let membersList = [];
     for (const memberId of members) {
-      const memberInfo = await api.get(`/users/${memberId}`);
-      const memberData = memberInfo.data;
-      membersList = { ...membersList, [memberData._id]: memberData }
+      const res = await api.get(`/users/${memberId}`);
+      const memberData = res.data;
+      membersList = [ ...membersList, memberData ]
     };
     dispatch({
       type: GET_MEMBERS_BY_PROJECTID,
-      payload: { [projectId]: membersList }
+      payload: membersList
     });
   } catch (err) {
     console.log(err)

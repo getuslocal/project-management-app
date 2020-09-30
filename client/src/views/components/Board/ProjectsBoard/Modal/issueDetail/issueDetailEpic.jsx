@@ -170,7 +170,7 @@ const EpicModal = ({
                       handleChildIssueMenu={handleChildIssueMenu}
                     />
                     <Comment
-                      comments={comments}
+                      comments={ticket.comments}
                       ticketId={ticket._id}
                     />
                   </Fieldset>

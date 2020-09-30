@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { selectUserFilter, selectSearchFilter, selectFilters } from '../../../../../redux/tickets/tickets.selectors';
 import { selectUser } from '../../../../../redux/auth/auth.selectors';
-import { selectMembersByProjectId } from '../../../../../redux/members/members.selectors';
+import { selectMembers } from '../../../../../redux/members/members.selectors';
 import { createStructuredSelector } from 'reselect';
 import { filterTicketsByUser, removeUserFilter, filterTicketsBySearch, clearAllFilters } from '../../../../../redux/tickets/tickets.actions';
 import Modal from '../Modal/Modal';
@@ -25,7 +25,7 @@ import {
 const TopBar = ({
   project: { name },
   userFilter,
-  membersList,
+  members,
   filterTicketsByUser,
   filterTicketsBySearch,
   removeUserFilter,
@@ -53,20 +53,20 @@ const TopBar = ({
           <Members>
             <ul>
               {
-                Object.keys(membersList).map(key => {
+                members.map(member => {
                   // Check if the user is already filtered.
-                  const isActive = userFilter.some(user => user === key);
+                  const isActive = userFilter.some(user => user === member._id);
                   return (
-                    <IconList key={key} onClick={() => {
+                    <IconList key={member._id} onClick={() => {
                       if (isActive) {
-                        removeUserFilter(key)
+                        removeUserFilter(member._id)
                       } else {
-                        filterTicketsByUser(key)
+                        filterTicketsByUser(member._id)
                       }
                     }}>
                       <CustomIcon isActive={isActive} iconStyle={{
                         base: 'userIcon',
-                        type: membersList[key].pictureUrl,
+                        type: member.pictureUrl,
                         size: '37px',
                       }} />
                     </IconList>
@@ -96,7 +96,7 @@ TopBar.propTypes = {
   userFilter: PropTypes.array.isRequired,
   searchFilter: PropTypes.string.isRequired,
   userProfile: PropTypes.object.isRequired,
-  membersList: PropTypes.object,
+  members: PropTypes.array,
   filters: PropTypes.object.isRequired,
   filterTicketsByUser: PropTypes.func.isRequired,
   filterTicketsBySearch: PropTypes.func.isRequired,
@@ -108,7 +108,7 @@ const mapStateToProps = (state, ownProps) => createStructuredSelector({
   userFilter: selectUserFilter,
   searchFilter: selectSearchFilter,
   userProfile: selectUser,
-  membersList: selectMembersByProjectId(ownProps.project._id),
+  members: selectMembers,
   filters: selectFilters,
 });
 

@@ -14,11 +14,11 @@ import {
 const InnerList = React.memo(props => {
   return (
     props.tickets.map((ticket, index) =>
-      <Ticket key={ticket._id} ticket={ticket} index={index} columnId={props.columnId} projectId={props.projectId} />)
+      <Ticket key={ticket._id} ticket={ticket} index={index} columnId={props.columnId} />)
   )
 })
 
-const Column = ({ column, tickets, index, projectId }) => {
+const Column = ({ column, tickets, index }) => {
   const [isQuickTicketActive, setIsQuickTicketActive] = useState(false);
   const ticketsCounter = tickets.length;
 
@@ -35,12 +35,11 @@ const Column = ({ column, tickets, index, projectId }) => {
             <Droppable droppableId={column.id} type="task">
               {provided => (
                 <TicketsList ref={provided.innerRef} {...provided.droppableProps}>
-                  <InnerList tickets={tickets} columnId={column.id} projectId={projectId} />
+                  <InnerList tickets={tickets} columnId={column.id} />
                     {
                       isQuickTicketActive ?
                         <QuickTicket
                           setIsQuickTicketActive={setIsQuickTicketActive}
-                          projectId={projectId}
                           columnId={column.id}
                         />
                         :

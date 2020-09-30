@@ -7,14 +7,13 @@ import {
 } from './TextEdittedContent.style';
 
 const TextEdittedContent = ({ content, ...props }) => {
-  console.log(content)
   return (
     <Container className="ql-snow">
       {
-        content.length > 0 ?
-          <Content className="ql-editor" dangerouslySetInnerHTML={{ __html: content }} {...props} />
-          :
+        !content.length > 0 || content === "<p><br></p>" ?
           <Placeholder {...props}>Add a description...</Placeholder>
+          :
+          <Content className="ql-editor" dangerouslySetInnerHTML={{ __html: content }} {...props} />
       }
     </Container>
   )

@@ -13,6 +13,7 @@ import { IssueTypes, IssuePriorities } from '../../../../../../../shared/constan
 import Icon from '../../../../../../../shared/components/Icon/Icon';
 import SelectMenu from '../../../Form/FormSelectMenu/SelectMenu/SelectMenu';
 import { selectUser } from '../../../../../../../redux/auth/auth.selectors';
+import { selectCurrentProjectId } from '../../../../../../../redux/projects/projects.selectors';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -21,7 +22,6 @@ import { createNewTicket } from '../../../../../../../redux/tickets/tickets.acti
 const QuickTicket = ({ setIsQuickTicketActive, projectId, user, createNewTicket, columnId }) => {
   const [isActive, setIsActive] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
-    projectId: projectId,
     issueType: 'Task',
     summary: '',
     description: '',
@@ -33,6 +33,7 @@ const QuickTicket = ({ setIsQuickTicketActive, projectId, user, createNewTicket,
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    issueFormValues.projectId = projectId;
     createNewTicket(issueFormValues, columnId);
     setIsQuickTicketActive(false);
   }
@@ -108,6 +109,7 @@ QuickTicket.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   user: selectUser,
+  projectId: selectCurrentProjectId,
 });
 
 export default connect(mapStateToProps, { createNewTicket })(QuickTicket);

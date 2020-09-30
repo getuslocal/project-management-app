@@ -56,6 +56,7 @@ const Comment = ({ currentUser, comments, ticketId, addComment, deleteComment })
                 onClick={() => {
                   addComment(ticketId, { text })
                   setText('')
+                  setIsOpen(false)
                 }}
                 type="button"
               />

@@ -37,7 +37,7 @@ const ProjectsBoard = ({
 
   useEffect(() => {
     getTicketsByProjectId(projectId)
-    getMembersByProjectId(projectMembers, projectId)
+    getMembersByProjectId(projectMembers)
     setCurrentProjectId(projectId)
   }, []);
 

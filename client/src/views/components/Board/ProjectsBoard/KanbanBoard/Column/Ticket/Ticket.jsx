@@ -11,16 +11,15 @@ import {
 } from './Ticket.style'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { selectMembersByProjectId } from '../../../../../../../redux/members/members.selectors';
+import { selectMemberById } from '../../../../../../../redux/members/members.selectors';
 import { selectEpicById } from '../../../../../../../redux/tickets/tickets.selectors';
 import { createStructuredSelector } from 'reselect';
 import { IssueColors } from '../../../.././../../../shared/constants/issues'
 import Modal from '../../../Modal/Modal';
 
-const Ticket = ({ ticket, index, columnId, projectId, members, linkedEpic }) => {
+const Ticket = ({ ticket, index, columnId, assignee, linkedEpic }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { issueType, _id: ticketId, key, assigneeId } = ticket;
-
+  const { issueType, _id: ticketId, key } = ticket;
   return (
     <>
       <Draggable draggableId={ticketId} index={index}>
@@ -47,16 +46,12 @@ const Ticket = ({ ticket, index, columnId, projectId, members, linkedEpic }) => 
               <TicketStatus className={`icon-issue-${issueType.toLowerCase()}`}>
                 {key}
               </TicketStatus>
-              {
-                Object.keys(members).length > 0 && assigneeId ?
-                  <CustomIcon iconStyle={{
-                    base: 'userIcon',
-                    type: members[assigneeId].pictureUrl,
-                    size: '27px',
-                  }} />
-                  :
-                  <></>
-              }
+              {assignee && (
+                <CustomIcon iconStyle={{
+                  base: 'userIcon',
+                  type: assignee.pictureUrl,
+                  size: '27px',
+                }} />)}
             </Bottom>
           </Container>
         )}
@@ -77,12 +72,12 @@ const Ticket = ({ ticket, index, columnId, projectId, members, linkedEpic }) => 
 }
 
 Ticket.propTypes = {
-  members: PropTypes.object.isRequired,
+  assignee: PropTypes.object,
   linkedEpic: PropTypes.object
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
-  members: selectMembersByProjectId(ownProps.projectId),
+  assignee: selectMemberById(ownProps.ticket.assigneeId),
   linkedEpic: selectEpicById(ownProps.ticket.linkedEpic)
 });
 

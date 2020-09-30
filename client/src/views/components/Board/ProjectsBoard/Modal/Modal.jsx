@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { selectUser } from '../../../../../redux/auth/auth.selectors';
-import { selectMembers } from '../../../../../redux/members/members.selectors';
 import { selectCurrentProjectId } from '../../../../../redux/projects/projects.selectors';
 import { createStructuredSelector } from 'reselect';
 import IssueCreate from './IssueCreate/IssueCreate';
@@ -14,7 +13,6 @@ import {
 } from './Modal.style';
 
 const propTypes = {
-  membersList: PropTypes.object,
   userProfile: PropTypes.object.isRequired,
   currentProjectId: PropTypes.string.isRequired,
 };
@@ -27,7 +25,6 @@ const defaultProps = {
 };
 
 const Modal = ({
-  members,
   userProfile,
   currentProjectId,
   setIsModalOpen,
@@ -35,6 +32,7 @@ const Modal = ({
   isNewTicketModalOpen,
   isEpicModalOpen,
   isTicketModalOpen,
+  ticket,
   ...props
 }) => {
   return (
@@ -43,7 +41,6 @@ const Modal = ({
         isNewTicketModalOpen && (
           <IssueCreate
             currentProjectId={currentProjectId}
-            membersList={members[currentProjectId]}
             userProfile={userProfile}
             setIsModalOpen={setIsModalOpen}
           />
@@ -53,7 +50,6 @@ const Modal = ({
         isNewEpicModalOpen && (
           <IssueCreateEpic
             currentProjectId={currentProjectId}
-            membersList={members[currentProjectId]}
             userProfile={userProfile}
             setIsModalOpen={setIsModalOpen}
             {...props}
@@ -63,9 +59,9 @@ const Modal = ({
       {
         isTicketModalOpen && (
           <IssueDetail
-            membersList={members[currentProjectId]}
             currentProjectId={currentProjectId}
             setIsModalOpen={setIsModalOpen}
+            ticket={ticket}
             {...props}
           />
         )
@@ -73,9 +69,9 @@ const Modal = ({
       {
         isEpicModalOpen && (
           <IssueDetailEpic
-            membersList={members[currentProjectId]}
             userProfile={userProfile}
             setIsModalOpen={setIsModalOpen}
+            ticket={ticket}
             {...props}
           />
         )
@@ -90,7 +86,6 @@ Modal.defaultProps = defaultProps;
 const mapStateToProps = createStructuredSelector({
   userProfile: selectUser,
   currentProjectId: selectCurrentProjectId,
-  members: selectMembers,
 });
 
 export default connect(mapStateToProps, null)(Modal);

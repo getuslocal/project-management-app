@@ -4,9 +4,10 @@ const members = state => state.members;
 
 export const selectMembers = createSelector(
   [members],
-  members => members
+  members => members.members
 );
-export const selectMembersByProjectId = (projectId) => createSelector(
+
+export const selectMemberById = (id) => createSelector(
   [selectMembers],
-  members => members[projectId] ? members[projectId] : {}
+  members => members.find(member => member._id === id)
 );

@@ -10,18 +10,19 @@ import { Hover } from '../../../../../../../shared/utils/global';
 import { color } from '../../../../../../../shared/utils/styles';
 import Button from '../../../../../../../shared/components/Button/Button'
 
-const Description = ({ currentValue, handleEditorText, saveDescription }) => {
+const Description = ({ currentValue, updateTicketField }) => {
   const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [description, setDescription] = useState(currentValue);
   return (
     <Container>
       <Label>Description</Label>
       {
         isEditorOpen ?
           <Fragment>
-            <TextEditor value={currentValue} onChange={handleEditorText} />
+            <TextEditor value={description} onChange={(text) => setDescription(text)} />
             <ButtonsContainer>
               <Button text="Save" variant="primary" type="button" onClick={() => {
-                saveDescription()
+                updateTicketField({ description: description })
                 setIsEditorOpen(false)
               }} />
               <Button text="Cancel" variant="text" type="button" onClick={() => setIsEditorOpen(false)} />

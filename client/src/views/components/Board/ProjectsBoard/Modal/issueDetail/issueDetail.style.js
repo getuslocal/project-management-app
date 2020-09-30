@@ -1,4 +1,3 @@
-
 import styled from 'styled-components'
 
 export const Blanket = styled.div`
@@ -9,57 +8,6 @@ export const Blanket = styled.div`
   right: 0;
   left: 0;
   z-index: 50;
-`
-
-export const InnerWrapper = styled.div`
-  padding: 0 30px 30px;
-  min-height: 500px;
-`
-
-export const TopFixedContent = styled.div`
-  padding: 20px 30px;
-  display:flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: center;
-`
-
-export const TopContentRight = styled.div`
-
-    i{
-      font-size: 20px;
-      cursor: pointer;
-      color: rgb(66, 82, 110);
-      &:not(:last-child) {
-        margin-right: 25px;
-      }
-    }
-`
-export const TopContentLeft = styled.div`
-  font-weight: 500;
-  display: flex;
-  align-content: center;
-`
-
-export const Slash = styled.span`
-  color: rgb(94, 108, 132);
-  font-size: 12px;
-`
-
-export const TicketKey = styled.span`
-  font-size: 14px;
-  color: rgb(94, 108, 132);
-  line-height: 1;
-  display: inline-block;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 200px;
-  &:before{
-    margin-right: 1em;
-    position: relative;
-    top: -1.5px;
-  }
 `
 
 export const Title = styled.p`
@@ -90,31 +38,22 @@ export const SubmitButton = styled.input`
   }
 `
 
-export const FormContainer = styled.div`
+export const Content = styled.div`
+    padding: 0 30px 30px;
+  min-height: 500px;
   display: flex;
 `
 
-export const FormLeftContent = styled.div`
+export const Left = styled.div`
   width: 68%;
   padding-right: 50px;
 `
 
-export const FormRightContent = styled.div`
+export const Right = styled.div`
   width: 32%;
 `
 
-export const TicketHistoryContent = styled.div`
-  margin-top: 1em;
-  p {
-    color: rgb(107, 119, 140);
-    white-space: nowrap;
-    font-size: 12px;
-    &:not(:last-child) {
-      margin-bottom: .5em;
-    }
-  }
-`
-export const Content = styled.div`
+export const Wrapper = styled.div`
   vertical-align: middle;
   display: inline-block;
   background-color: #fff;
@@ -124,4 +63,43 @@ export const Content = styled.div`
   width: 100%;
   max-width: 1040px;
   border-radius: 3px;
+`
+
+// 
+export const SectionContainer = styled.div`
+  margin: 20px 0;
+  position: relative;
+`
+
+export const SectionTitle = styled.p`
+  display: block;
+  color: #5e6c84;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 4px;
+`
+
+export const SectionContent = styled.div`
+  font-size: 14px;
+  padding: 5px 8px;
+  min-height: 35px;
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
+  position: relative;
+
+  &:hover {
+    background-color: #091e420d;
+    cursor: pointer;
+  }
+
+  &.icon-angle-down{
+    &:after{
+      position: absolute;
+      right: 10px;
+    }
+  }
+`
+export const IconCont = styled.span`
+  margin-right: 10px;
 `
