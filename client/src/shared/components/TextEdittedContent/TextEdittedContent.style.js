@@ -4,6 +4,9 @@ import { font } from '../../utils/styles';
 export const Container = styled.div`
   padding: 5px;
   border-radius: 3px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
 `;
 
 export const Content = styled.div`

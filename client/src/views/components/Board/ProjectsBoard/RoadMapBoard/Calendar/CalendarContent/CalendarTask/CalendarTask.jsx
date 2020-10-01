@@ -16,6 +16,7 @@ const CalendarTask = ({
   setIssueDetailModalOpen,
   setEpic
 }) => {
+  console.log(epics)
   return (
     <>
       <Container className="calendarTaskContainer">

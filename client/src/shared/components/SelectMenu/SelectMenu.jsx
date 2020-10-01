@@ -4,17 +4,14 @@ import {
   Lists,
   List
 } from './SelectMenu.style';
-// import Icon from '../../../shared/components/Icon/Icon';
 import useOutsideClick from "../../hooks/useOutsideClick";
 
 const SelectMenu = ({
   options,
   width,
   isActive,
-  name,
   onChange,
   renderValue,
-  renderOption,
   setIsMenuOpen
 }) => {
   const menuRef = useRef();

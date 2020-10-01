@@ -6,25 +6,20 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { addComment, deleteComment } from '../../../../../../../redux/tickets/tickets.actions';
 import Button from '../../../../../../../shared/components/Button/Button'
+import Comment from './Comment/Comment'
 import {
   Container,
   Title,
   Top,
   Textarea,
-  Bottom,
+  CommentsList,
   TextAreaWrapper,
-  CommentWrapper,
-  CommentContent,
-  CommentTextarea,
-  Name,
-  Options,
-  Edit,
-  Delete,
-  Time,
   ButtonsContainer,
-} from './Comment.style';
-
-const Comment = ({ currentUser, comments, ticketId, addComment, deleteComment }) => {
+} from './Comments.style';
+import {
+  IconCont
+} from '../IssueDetail.style';
+const Comments = ({ currentUser, comments, ticketId, addComment, deleteComment }) => {
   const [text, setText] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const { _id: userId, pictureUrl } = currentUser;
@@ -32,11 +27,9 @@ const Comment = ({ currentUser, comments, ticketId, addComment, deleteComment })
     <Container>
       <Title>Comments</Title>
       <Top>
-        <Icon iconStyle={{
-          base: 'userIcon',
-          type: pictureUrl,
-          size: '30px',
-        }} />
+        <IconCont>
+          <Icon type="user-icon" imageUrl={pictureUrl} size={32} />
+        </IconCont>
         <TextAreaWrapper>
           <Textarea
             name="comments"
@@ -73,39 +66,21 @@ const Comment = ({ currentUser, comments, ticketId, addComment, deleteComment })
           }
         </TextAreaWrapper>
       </Top>
-      <Bottom>
-        {
-          comments.map(comment => (
-            <CommentWrapper key={comment._id}>
-              <Icon iconStyle={{
-                base: 'userIcon',
-                type: comment.pictureUrl,
-                size: '30px',
-              }} />
-              <CommentContent>
-                <Name>{comment.name}
-                  <Time>a month ago</Time>
-                </Name>
-                <CommentTextarea
-                  value={comment.text}
-                  readOnly
-                />
-                <Options>
-                  {
-                    userId === comment.user &&
-                    <Delete onClick={() => deleteComment(ticketId, comment._id)}>Delete</Delete>
-                  }
-                </Options>
-              </CommentContent>
-            </CommentWrapper>
-          ))
-        }
-      </Bottom>
+      {
+        comments.map(comment =>
+          <Comment
+            key={comment._id}
+            comment={comment}
+            userId={userId}
+            deleteComment={() => deleteComment(ticketId, comment._id)}
+          />
+        )
+      }
     </Container>
   )
 }
 
-Comment.propTypes = {
+Comments.propTypes = {
   currentUser: PropTypes.object.isRequired,
   addComment: PropTypes.func.isRequired,
   deleteComment: PropTypes.func.isRequired,
@@ -115,4 +90,4 @@ const mapStateToProps = createStructuredSelector({
   currentUser: selectUser
 });
 
-export default connect(mapStateToProps, { addComment, deleteComment })(Comment);
+export default connect(mapStateToProps, { addComment, deleteComment })(Comments);

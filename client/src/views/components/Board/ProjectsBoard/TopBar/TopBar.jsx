@@ -64,11 +64,12 @@ const TopBar = ({
                         filterTicketsByUser(member._id)
                       }
                     }}>
-                      <CustomIcon isActive={isActive} iconStyle={{
-                        base: 'userIcon',
-                        type: member.pictureUrl,
-                        size: '37px',
-                      }} />
+                      <CustomIcon
+                        type="user-icon"
+                        imageUrl={member.pictureUrl}
+                        size={37}
+                        isActive={isActive}
+                      />
                     </IconList>
                   )
                 })

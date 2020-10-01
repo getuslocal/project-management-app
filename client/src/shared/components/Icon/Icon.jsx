@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  IconContent,
   StyledIcon
 } from './Icon.style';
 
@@ -15,6 +14,8 @@ const fontIconCodes = {
   [`unlock`]: '\f09c',
   [`dashboard`]: '\f84c',
   [`inbox`]: '\f0f3',
+  [`trash`]: '\f2ed',
+  [`close`]: '\f00d',
   [`project`]: '\f0ae',
   [`setting`]: '\f013',
   [`sort-down`]: '\f0dd',
@@ -27,6 +28,10 @@ const fontIconCodes = {
   [`priority-high`]: '\f062',
   [`priority-highest`]: '\f062',
   [`user-icon`]: '',
+  [`issue-purple`]: '',
+  [`issue-yellow`]: '',
+  [`issue-blue`]: '',
+  [`issue-red`]: '',
 };
 
 const propTypes = {

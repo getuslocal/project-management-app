@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+import { IssueColors } from '../../constants/issues';
 
 export const StyledIcon = styled.i`
   display: inline-block;
@@ -26,6 +27,13 @@ const issueType = css`
 
 `
 
+const issueColor = css`
+  height: ${props => `${props.size}px`};
+  width:  ${props => `${props.size}px`};
+  display :  inline-block;
+  border-radius: 2px;
+`
+
 const userIcon = css`
   background-image: url(${props => props.imageUrl});
   height: ${props => `${props.size}px`};
@@ -36,7 +44,6 @@ const userIcon = css`
   border-radius: 50%;
   object-fit: cover;
 `
-
 
 const customIcons = {
   task: css`
@@ -68,6 +75,22 @@ const customIcons = {
   `,
   [`user-icon`]: css`
     ${userIcon}
+  `,
+  [`issue-purple`]: css`
+    background-color:${IssueColors['PURPLE'].font};
+    ${issueColor}
+  `,
+  [`issue-yellow`]: css`
+    background-color:${IssueColors['YELLOW'].font};
+    ${issueColor}
+  `,
+  [`issue-blue`]: css`
+    background-color:${IssueColors['BLUE'].font};
+    ${issueColor}
+  `,
+  [`issue-red`]: css`
+    background-color:${IssueColors['RED'].font};
+    ${issueColor}
   `,
 };
 

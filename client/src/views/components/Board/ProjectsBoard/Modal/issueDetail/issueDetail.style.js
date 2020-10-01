@@ -17,29 +17,8 @@ export const Title = styled.p`
   margin-bottom: 1.5em;
 `
 
-export const ButtonsContainer = styled.div`
-  text-align: right;
-  padding: 20px 30px;
-`
-
-export const SubmitButton = styled.input`
-  font-weight: 600;
-  background-color: rgb(0, 82, 204);
-  border-radius: 3px;
-  color: #fff;
-  padding: .6em;
-  font-size: 14px;
-  font-weight: 500;
-  border: none;
-
-  &:hover {
-    opacity: .9;
-    cursor: pointer;
-  }
-`
-
 export const Content = styled.div`
-    padding: 0 30px 30px;
+  padding: 0 30px 30px;
   min-height: 500px;
   display: flex;
 `
@@ -65,7 +44,13 @@ export const Wrapper = styled.div`
   border-radius: 3px;
 `
 
-// 
+export const ButtonsContainer = styled.div`
+  text-align: right;
+  padding: 20px 30px;
+`
+
+
+// Each section specific.
 export const SectionContainer = styled.div`
   margin: 20px 0;
   position: relative;

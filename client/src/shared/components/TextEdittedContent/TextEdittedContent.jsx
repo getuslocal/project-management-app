@@ -6,9 +6,9 @@ import {
   Placeholder,
 } from './TextEdittedContent.style';
 
-const TextEdittedContent = ({ content, ...props }) => {
+const TextEdittedContent = ({ content, onClick, ...props }) => {
   return (
-    <Container className="ql-snow">
+    <Container className="ql-snow" onClick={onClick} >
       {
         !content.length > 0 || content === "<p><br></p>" ?
           <Placeholder {...props}>Add a description...</Placeholder>

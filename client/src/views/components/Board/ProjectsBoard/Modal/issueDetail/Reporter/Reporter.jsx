@@ -29,7 +29,7 @@ function Reporter({ value, updateTicketField, members }) {
         value={value}
         isActive={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
-        onChange={(option) => updateTicketField({ assigneeId: option.value })}
+        onChange={(option) => updateTicketField({ reporterId: option.value })}
         options={members.filter(member => member._id !== value).map(option => ({
           value: option._id,
         }))}

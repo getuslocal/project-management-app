@@ -3,14 +3,20 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { SingleDatePicker } from 'react-dates';
 import './single_date_picker_overrides.css';
+import moment from 'moment';
 import {
   FormContainer,
   Label,
 } from '../Form.style';
 
-export default function DatePicker({ dateRange, handleDateChange, isStartDate, isEndDate }) {
+export default function DatePicker({ dateRange, updateTicketField, isStartDate, isEndDate }) {
   const [focused, setFocused] = useState(false);
-  const { startDate, endDate } = dateRange;
+  const momentedStartDate = moment(dateRange.startDate);
+  const momentedEndDate = moment(dateRange.endDate);
+
+  const handleDateChange = (updatedDateRange) => {
+    updateTicketField({ dateRange: updatedDateRange })
+  };
 
   return (
     <div>
@@ -24,26 +30,26 @@ export default function DatePicker({ dateRange, handleDateChange, isStartDate, i
           isStartDate &&
           <SingleDatePicker
             displayFormat="MMMM DD, YYYY"
-            date={startDate} // momentPropTypes.momentObj or null
+            date={momentedStartDate} // momentPropTypes.momentObj or null
             onDateChange={date => handleDateChange({ ...dateRange, startDate: date })} // PropTypes.func.isRequired
             focused={focused} // PropTypes.bool
             onFocusChange={({ focused }) => setFocused(focused)} // PropTypes.func.isRequired
             id="single_date_picker_start" // PropTypes.string.isRequired,
             required
-            isOutsideRange={day => (day.isAfter(endDate))}
+            isOutsideRange={day => (day.isAfter(momentedEndDate))}
           />
         }
         {
           isEndDate &&
           <SingleDatePicker
             displayFormat="MMMM DD, YYYY"
-            date={endDate} // momentPropTypes.momentObj or null
+            date={momentedEndDate} // momentPropTypes.momentObj or null
             onDateChange={date => handleDateChange({ ...dateRange, endDate: date })} // PropTypes.func.isRequired
             focused={focused} // PropTypes.bool
             onFocusChange={({ focused }) => setFocused(focused)} // PropTypes.func.isRequired
             id="single_date_picker_end" // PropTypes.string.isRequired,
             required
-            isOutsideRange={day => (day.isBefore(startDate))}
+            isOutsideRange={day => (day.isBefore(momentedStartDate))}
           />
         }
       </FormContainer>

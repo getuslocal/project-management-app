@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
+import Icon from '../../../../../../../shared/components/Icon/Icon';
 import {
   Container,
   Key,
@@ -28,8 +29,8 @@ const IssueDetailHeader = ({
         <Key className={`icon-issue-${issueType.toLowerCase()}`}>{ticketKey}</Key>
       </Left>
       <Right>
-        <i className="far fa-trash-alt" onClick={handleDeleteTicket}></i>
-        <i className="fas fa-times" onClick={() => setIsModalOpen(false)}></i>
+        <Icon type="trash" onClick={handleDeleteTicket} size={20} />
+        <Icon type="close" onClick={() => setIsModalOpen(false)} isSolid={true} size={20}/>
       </Right>
     </Container>
   )

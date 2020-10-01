@@ -15,7 +15,6 @@ export const Left = styled.div`
 
 export const Right = styled.div`
   i{
-    font-size: 20px;
     cursor: pointer;
     color: rgb(66, 82, 110);
     &:not(:last-child) {

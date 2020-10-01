@@ -47,11 +47,10 @@ const Ticket = ({ ticket, index, columnId, assignee, linkedEpic }) => {
                 {key}
               </TicketStatus>
               {assignee && (
-                <CustomIcon iconStyle={{
-                  base: 'userIcon',
-                  type: assignee.pictureUrl,
-                  size: '27px',
-                }} />)}
+                <CustomIcon
+                  type="user-icon"
+                  imageUrl={assignee.pictureUrl}
+                  size={27} />)}
             </Bottom>
           </Container>
         )}

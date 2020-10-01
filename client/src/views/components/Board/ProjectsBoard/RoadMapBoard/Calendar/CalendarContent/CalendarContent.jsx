@@ -69,9 +69,10 @@ const CalendarContent = ({
       }
       {IssueDetailModalOpen &&
         <Modal
-          isEpicModalOpen={true}
+          isTicketModalOpen={true}
           setIsModalOpen={setIssueDetailModalOpen}
           ticket={epic}
+          isEpic={true}
         />
       }
     </Fragment>
