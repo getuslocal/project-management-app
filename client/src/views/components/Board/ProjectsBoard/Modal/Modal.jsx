@@ -35,6 +35,7 @@ const Modal = ({
   ticket,
   ...props
 }) => {
+  // console.log(ticket)
   return (
     <ModalContainer>
       {

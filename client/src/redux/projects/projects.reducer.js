@@ -14,7 +14,7 @@ import { convertArrayToObject } from '../../shared/utils/functions';
 const INITIAL_STATE = {
   projects: {},
   currentProjectId: null,
-  loading: true
+  loading: true,
 }
 
 const projectsReducer = (state = INITIAL_STATE, action) => {

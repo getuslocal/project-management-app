@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
+import { withRouter } from 'react-router-dom';
+import queryString from 'query-string';
+import { compose } from 'redux';
 import {
   Container,
   TicketStatus,
@@ -11,17 +14,25 @@ import {
 } from './Ticket.style'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { selectMemberById } from '../../../../../../../redux/members/members.selectors';
+import { selectMembers } from '../../../../../../../redux/members/members.selectors';
 import { selectEpicById } from '../../../../../../../redux/tickets/tickets.selectors';
 import { createStructuredSelector } from 'reselect';
 import { IssueColors } from '../../../.././../../../shared/constants/issues'
-import Modal from '../../../Modal/Modal';
 
-const Ticket = ({ ticket, index, columnId, assignee, linkedEpic }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { issueType, _id: ticketId, key } = ticket;
+const Ticket = ({ ticket, index, linkedEpic, members, ...props }) => {
+  const { issueType, _id: ticketId, key, assigneeId } = ticket;
+
+  // Open this ticket detail modal when clicked.
+  const openIssueDetailModal = () => {
+    const stringified = queryString.stringify({ selectedIssue: key });
+    props.history.push(`${props.match.url}?${stringified}`)
+  }
+
+  // Get assignee object of this ticket.
+  const assignee = members.find(member => member._id === assigneeId)
+
   return (
-    <>
+    <Fragment>
       <Draggable draggableId={ticketId} index={index}>
         {(provided, snapshot) => (
           <Container
@@ -29,7 +40,7 @@ const Ticket = ({ ticket, index, columnId, assignee, linkedEpic }) => {
             {...provided.dragHandleProps}
             ref={provided.innerRef}
             isDragging={snapshot.isDragging}
-            onClick={() => setIsModalOpen(true)}
+            onClick={openIssueDetailModal}
           >
             <TicketSummary>
               {ticket.summary}
@@ -55,29 +66,23 @@ const Ticket = ({ ticket, index, columnId, assignee, linkedEpic }) => {
           </Container>
         )}
       </Draggable>
-      {
-        isModalOpen && (
-          <Modal
-            isTicketModalOpen={true}
-            ticket={ticket}
-            linkedEpic={linkedEpic}
-            columnId={columnId}
-            setIsModalOpen={setIsModalOpen}
-          />
-        )
-      }
-    </>
+    </Fragment>
   )
 }
 
 Ticket.propTypes = {
-  assignee: PropTypes.object,
-  linkedEpic: PropTypes.object
+  linkedEpic: PropTypes.object,
+  members: PropTypes.array.isRequired,
+  ticket: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
-  assignee: selectMemberById(ownProps.ticket.assigneeId),
+  members: selectMembers,
   linkedEpic: selectEpicById(ownProps.ticket.linkedEpic)
 });
 
-export default connect(mapStateToProps, null)(Ticket);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, null)
+)(Ticket)

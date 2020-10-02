@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import queryString from 'query-string';
 
 const tickets = state => state.tickets;
 const selectFilter = state => state.tickets.filter;
@@ -6,6 +7,17 @@ const selectFilter = state => state.tickets.filter;
 export const selectTickets = createSelector(
   [tickets],
   tickets => tickets.tickets
+);
+
+// Select ticket by key name passed as query string.
+export const selectTicketByKey = search => createSelector(
+  [selectTickets],
+  tickets => {
+    console.log(tickets)
+    // Parse query string passed to get ticket key.
+    const parsed = queryString.parse(search);
+    return tickets.find(ticket => ticket.key === parsed.selectedIssue)
+  }
 );
 
 export const selectEpicTickets = createSelector(

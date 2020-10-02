@@ -14,13 +14,14 @@ import {
 const InnerList = React.memo(props => {
   return (
     props.tickets.map((ticket, index) =>
-      <Ticket key={ticket._id} ticket={ticket} index={index} columnId={props.columnId} />)
+      <Ticket key={ticket._id} ticket={ticket} index={index} />)
   )
 })
 
 const Column = ({ column, tickets, index }) => {
   const [isQuickTicketActive, setIsQuickTicketActive] = useState(false);
   const ticketsCounter = tickets.length;
+  console.log(tickets)
 
   return (
     <Draggable draggableId={column.id} index={index}>
@@ -35,19 +36,19 @@ const Column = ({ column, tickets, index }) => {
             <Droppable droppableId={column.id} type="task">
               {provided => (
                 <TicketsList ref={provided.innerRef} {...provided.droppableProps}>
-                  <InnerList tickets={tickets} columnId={column.id} />
-                    {
-                      isQuickTicketActive ?
-                        <QuickTicket
-                          setIsQuickTicketActive={setIsQuickTicketActive}
-                          columnId={column.id}
-                        />
-                        :
-                        <CreateTicketButton
-                          isFirstColumn={(index === 0)}
-                          onClick={() => setIsQuickTicketActive(true)}
-                        >+ Create ticket</CreateTicketButton>
-                    }
+                  <InnerList tickets={tickets} />
+                  {
+                    isQuickTicketActive ?
+                      <QuickTicket
+                        setIsQuickTicketActive={setIsQuickTicketActive}
+                        columnId={column.id}
+                      />
+                      :
+                      <CreateTicketButton
+                        isFirstColumn={(index === 0)}
+                        onClick={() => setIsQuickTicketActive(true)}
+                      >+ Create ticket</CreateTicketButton>
+                  }
                   {provided.placeholder}
                 </TicketsList>
               )}

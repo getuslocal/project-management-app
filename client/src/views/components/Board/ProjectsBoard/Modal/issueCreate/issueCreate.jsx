@@ -187,7 +187,7 @@ IssueCreate.propTypes = {
   createNewTicket: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
+const mapStateToProps = (state, ownProps) => createStructuredSelector({
   projects: selectProjects,
 });
 

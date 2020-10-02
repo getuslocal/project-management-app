@@ -8,7 +8,7 @@ import { selectTicketsLinkedWithEpic } from '../../../../../../redux/tickets/tic
 import { updateTicket, deleteEpicTicket } from '../../../../../../redux/tickets/tickets.actions';
 import Title from './Title/Title';
 import Description from './Description/Description';
-import Comment from './Comment/Comment';
+import Comment from './Comments/Comments';
 import ChildissueMenu from '../../Form/ChildIssueMenu/ChildIssueMenu';
 import DatePicker from '../../Form/DatePicker/DatePicker';
 import moment from 'moment';

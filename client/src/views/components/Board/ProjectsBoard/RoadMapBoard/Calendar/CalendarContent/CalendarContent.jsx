@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from 'react';
 import moment from 'moment';
 import CalendarTask from './CalendarTask/CalendarTask';
-import Modal from '../../../Modal/Modal';
+import IssueCreateEpic from '../../../Modal/IssueCreate/IssueCreateEpic';
 import {
   Container,
   DayCell,
@@ -19,9 +19,7 @@ const CalendarContent = ({
   getWeekCellRef,
   weekCellRef,
 }) => {
-  const [IssueCreateModalOpen, setIssueCreateModalOpen] = useState(false);
-  const [IssueDetailModalOpen, setIssueDetailModalOpen] = useState(false);
-  const [epic, setEpic] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [defaultStartDate, setDefaultStartDate] = useState(null);
   return (
     <Fragment>
@@ -45,12 +43,12 @@ const CalendarContent = ({
                           <Header isToday={isToday}>
                             {dd === 1 && moment(new Date(yyyy, mm)).format('MMM')} {dd}
                             <QuickAddButton className="icon-plus" onClick={() => {
-                              setIssueCreateModalOpen(true)
+                              setIsModalOpen(true)
                               setDefaultStartDate(moment(new Date(yyyy, mm, dd)))
                             }}>
                             </QuickAddButton>
                           </Header>
-                          <CalendarTask date={date} setIssueDetailModalOpen={setIssueDetailModalOpen} setEpic={setEpic} />
+                          <CalendarTask date={date} setIsModalOpen={setIsModalOpen} />
                         </Content>
                       </DayCell>
                     );
@@ -60,19 +58,10 @@ const CalendarContent = ({
           })
         }
       </Container>
-      {IssueCreateModalOpen &&
-        <Modal
-          isNewEpicModalOpen={true}
-          setIsModalOpen={setIssueCreateModalOpen}
+      {isModalOpen &&
+        <IssueCreateEpic
+          setIsModalOpen={setIsModalOpen}
           defaultStartDate={defaultStartDate}
-        />
-      }
-      {IssueDetailModalOpen &&
-        <Modal
-          isTicketModalOpen={true}
-          setIsModalOpen={setIssueDetailModalOpen}
-          ticket={epic}
-          isEpic={true}
         />
       }
     </Fragment>

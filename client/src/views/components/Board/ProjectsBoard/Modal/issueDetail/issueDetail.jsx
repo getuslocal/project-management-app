@@ -1,9 +1,13 @@
-import React, { useState, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { selectProjectById } from '../../../../../../redux/projects/projects.selectors';
 import { updateTicket, deleteTicket } from '../../../../../../redux/tickets/tickets.actions';
+import { selectTicketByKey } from '../../../../../../redux/tickets/tickets.selectors';
+import { IssueTypes } from '../../../../../../shared/constants/issues'
 import Header from './Header/Header';
 import Title from './Title/Title';
 import Description from './Description/Description';
@@ -33,15 +37,12 @@ import {
 
 const IssueDetail = ({
   ticket,
-  linkedEpic,
-  columnId,
-  setIsModalOpen,
   projectInfo,
   deleteTicket,
   updateTicket,
-  isEpic
+  ...props
 }) => {
-  const [isSelectMenuOpen, setIsSelectMenuOpen] = useState(false);
+
   const {
     issueType,
     summary,
@@ -53,25 +54,31 @@ const IssueDetail = ({
     _id: ticketId,
     key,
     createdAt,
-    updatedAt
+    updatedAt,
+    linkedEpic
   } = ticket;
-  console.log(ticket.issueColor)
+
+  const isEpic = (ticket.issueType === IssueTypes.EPIC);
 
   const updateTicketField = (updatedValue) => {
     updateTicket(ticket._id, updatedValue);
   }
 
+  const closeModal = () => {
+    props.history.push(props.match.url)
+  }
+
   return (
-    <ModalContainer onClick={() => { if (isSelectMenuOpen) setIsSelectMenuOpen(false); }}>
-      <Blanket onClick={() => setIsModalOpen(false)} />
+    <ModalContainer>
+      <Blanket onClick={closeModal} />
       <Container>
         <Wrapper>
           <Header
             linkedEpic={linkedEpic}
             ticketKey={key}
             issueType={issueType}
-            handleDeleteTicket={() => deleteTicket(ticketId, columnId)}
-            setIsModalOpen={setIsModalOpen}
+            handleDeleteTicket={() => deleteTicket(ticketId, 'columnId')}
+            closeModal={closeModal}
           />
           <Content>
             <Left>
@@ -100,13 +107,11 @@ const IssueDetail = ({
               <Fieldset>
                 {!isEpic ? (
                   <Status
-                    value={columnId}
                     columns={projectInfo.columns}
                     columnOrder={projectInfo.columnOrder}
                     projectId={projectInfo._id}
                     ticketId={ticketId}
-                  />
-                ) : (
+                  />) : (
                     <Fragment>
                       <Complete
                         isEpicDone={ticket.isEpicDone}
@@ -141,8 +146,7 @@ const IssueDetail = ({
                   <Colors
                     value={ticket.issueColor}
                     updateTicketField={updateTicketField}
-                  />
-                )}
+                  />)}
                 <Diviser />
                 <Dates createAt={createdAt} updatedAt={updatedAt} />
               </Fieldset>
@@ -156,9 +160,6 @@ const IssueDetail = ({
 
 IssueDetail.propTypes = {
   ticket: PropTypes.object.isRequired,
-  linkedEpic: PropTypes.object,
-  columnId: PropTypes.string,
-  setIsModalOpen: PropTypes.func.isRequired,
   projectInfo: PropTypes.object.isRequired,
   updateTicket: PropTypes.func.isRequired,
   deleteTicket: PropTypes.func.isRequired,
@@ -166,15 +167,15 @@ IssueDetail.propTypes = {
 
 IssueDetail.defaultProps = {
   ticket: {},
-  linkedEpic: {},
-  columnId: "",
   projectInfo: {},
-  isEpic: false,
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
-  projectInfo: selectProjectById(ownProps.currentProjectId)
+  projectInfo: selectProjectById(ownProps.currentProjectId),
+  ticket: selectTicketByKey(ownProps.location.search),
 });
 
-
-export default connect(mapStateToProps, { updateTicket, deleteTicket })(IssueDetail);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, { updateTicket, deleteTicket })
+)(IssueDetail);
