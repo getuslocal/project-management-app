@@ -41,8 +41,8 @@ const roles = {
         linkUrl: '/members'
       },
       {
-        label: 'Settings',
-        linkUrl: '/settings'
+        label: 'About',
+        linkUrl: '/about'
       },
     ],
     dropDownMenu: null
