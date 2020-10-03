@@ -1,12 +1,12 @@
-import React, { Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { selectProjectById } from '../../../../../../redux/projects/projects.selectors';
-import { updateTicket, deleteTicket } from '../../../../../../redux/tickets/tickets.actions';
-import { selectTicketByKey } from '../../../../../../redux/tickets/tickets.selectors';
+import { updateTicket, deleteTicket, deleteEpicTicket } from '../../../../../../redux/tickets/tickets.actions';
+import { selectTicketByKey, selectTicketsLinkedWithEpic } from '../../../../../../redux/tickets/tickets.selectors';
 import { IssueTypes } from '../../../../../../shared/constants/issues'
 import Header from './Header/Header';
 import Title from './Title/Title';
@@ -19,8 +19,8 @@ import Status from './Status/Status';
 import Dates from './Dates/Dates';
 import Colors from './Colors/Colors';
 import Complete from './Complete/Complete';
-import DatePicker from '../../Form/DatePicker/DatePicker';
-import ChildissueMenu from '../../Form/ChildIssueMenu/ChildIssueMenu';
+import DatePicker from './DatePicker/DatePicker';
+import ChildIssue from './ChildIssue/ChildIssue';
 import {
   Content,
   Blanket,
@@ -35,11 +35,19 @@ import {
   Diviser
 } from '../Modal.style';
 
+const getColumnIdOfTicket = (columns, ticketId) => {
+  const foundColumn = Object.values(columns).find(column => column.taskIds.includes(ticketId));
+  if (foundColumn) return foundColumn.id;
+  else return null
+}
+
 const IssueDetail = ({
   ticket,
   projectInfo,
   deleteTicket,
+  deleteEpicTicket,
   updateTicket,
+  linkedIssues,
   ...props
 }) => {
 
@@ -55,13 +63,23 @@ const IssueDetail = ({
     key,
     createdAt,
     updatedAt,
-    linkedEpic
+    linkedEpic,
   } = ticket;
 
   const isEpic = (ticket.issueType === IssueTypes.EPIC);
+  const [childIssues, setChildIssues] = useState(linkedIssues);
 
   const updateTicketField = (updatedValue) => {
     updateTicket(ticket._id, updatedValue);
+  }
+  const handleDeleteTicket = () => {
+    if (isEpic) {
+      deleteEpicTicket(ticketId, childIssues)
+    } else {
+      const columnId = getColumnIdOfTicket(projectInfo.columns, ticketId);
+      deleteTicket(ticketId, columnId)
+    }
+    props.history.push(props.match.url)
   }
 
   const closeModal = () => {
@@ -77,7 +95,7 @@ const IssueDetail = ({
             linkedEpic={linkedEpic}
             ticketKey={key}
             issueType={issueType}
-            handleDeleteTicket={() => deleteTicket(ticketId, 'columnId')}
+            handleDeleteTicket={handleDeleteTicket}
             closeModal={closeModal}
           />
           <Content>
@@ -91,12 +109,13 @@ const IssueDetail = ({
                   currentValue={description}
                   updateTicketField={updateTicketField}
                 />
-                {/* {isEpic && (
-                  <ChildissueMenu
-                    isEpicTicket={true}
-                    childIssues={ticket.childIssues}
-                    updateTicketField={updateTicketField}
-                  />)} */}
+                {isEpic && (
+                  <ChildIssue
+                    epicId={ticketId}
+                    childIssues={childIssues}
+                    setChildIssues={setChildIssues}
+                    updateTicket={updateTicket}
+                  />)}
                 <Comments
                   comments={comments}
                   ticketId={ticketId}
@@ -161,8 +180,10 @@ const IssueDetail = ({
 IssueDetail.propTypes = {
   ticket: PropTypes.object.isRequired,
   projectInfo: PropTypes.object.isRequired,
+  linkedIssues: PropTypes.array.isRequired,
   updateTicket: PropTypes.func.isRequired,
   deleteTicket: PropTypes.func.isRequired,
+  deleteEpicTicket: PropTypes.func.isRequired,
 };
 
 IssueDetail.defaultProps = {
@@ -173,9 +194,10 @@ IssueDetail.defaultProps = {
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
   projectInfo: selectProjectById(ownProps.currentProjectId),
   ticket: selectTicketByKey(ownProps.location.search),
+  linkedIssues: selectTicketsLinkedWithEpic(ownProps.location.search),
 });
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { updateTicket, deleteTicket })
+  connect(mapStateToProps, { updateTicket, deleteTicket, deleteEpicTicket })
 )(IssueDetail);

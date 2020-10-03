@@ -28,6 +28,7 @@ function Priority({ value, updateTicketField }) {
         setIsMenuOpen={setIsMenuOpen}
         onChange={(option) => updateTicketField({ issuePriority: option.value })}
         options={Object.values(IssuePriorities).filter(option => option !== value).map(option => ({
+          key: option,
           value: option,
         }))}
         renderValue={({ value: type }) => (

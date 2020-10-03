@@ -49,7 +49,8 @@ const IssueStatusMenu = ({
         onChange={(option) => handleStatusChange(option)}
         options={Object.values(columns).filter(column => column.id !== beforeColumn).map(column => ({
           value: column.title,
-          id: column.id
+          id: column.id,
+          key: column.id,
         }))}
         renderValue={({ value, id }) => {
           const isFirstColumn = (id === columnOrder[0]);

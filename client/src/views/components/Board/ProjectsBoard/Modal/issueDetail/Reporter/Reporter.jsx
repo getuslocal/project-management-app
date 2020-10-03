@@ -31,6 +31,7 @@ function Reporter({ value, updateTicketField, members }) {
         setIsMenuOpen={setIsMenuOpen}
         onChange={(option) => updateTicketField({ reporterId: option.value })}
         options={members.filter(member => member._id !== value).map(option => ({
+          key: option._id,
           value: option._id,
         }))}
         renderValue={({ value: reporterId }) => renderUser(reporterId, members)}

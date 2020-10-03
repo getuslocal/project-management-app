@@ -18,7 +18,7 @@ const Complete = ({ isEpicDone, updateTicketField }) => (
 );
 
 Complete.propTypes = {
-  isEpicDone: PropTypes.bool.isRequired,
+  isEpicDone: PropTypes.bool,
   updateTicketField: PropTypes.func.isRequired,
 }
 

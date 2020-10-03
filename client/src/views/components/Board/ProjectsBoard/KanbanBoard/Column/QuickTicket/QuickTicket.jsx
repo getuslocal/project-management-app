@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import {
   Container,
   TextArea,
   DropDownMenu,
   Content,
-  DropDownContent,
   Button,
   ButtonContainer,
-  CloseButton
+  CloseButton,
+  IconCont,
+  AngleDownIcon
 } from './QuickTicket.style'
 import { IssueTypes, IssuePriorities } from '../../../../../../../shared/constants/issues';
 import Icon from '../../../../../../../shared/components/Icon/Icon';
-import SelectMenu from '../../../Form/FormSelectMenu/SelectMenu/SelectMenu';
+import SelectMenu from '../../../../../../../shared/components/SelectMenu/SelectMenu';
 import { selectUser } from '../../../../../../../redux/auth/auth.selectors';
 import { selectCurrentProjectId } from '../../../../../../../redux/projects/projects.selectors';
 import PropTypes from 'prop-types';
@@ -22,7 +23,7 @@ import { createNewTicket } from '../../../../../../../redux/tickets/tickets.acti
 const QuickTicket = ({ setIsQuickTicketActive, projectId, user, createNewTicket, columnId }) => {
   const [isActive, setIsActive] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
-    issueType: 'Task',
+    issueType: IssueTypes.TASK,
     summary: '',
     description: '',
     reporterId: user._id,
@@ -43,9 +44,6 @@ const QuickTicket = ({ setIsQuickTicketActive, projectId, user, createNewTicket,
     setIssueFormValues({ ...issueFormValues, [name]: value });
   };
 
-  const handleSelectMenu = (name, value) => {
-    setIssueFormValues({ ...issueFormValues, [name]: value });
-  };
   return (
     <Container onClick={() => { if (isActive) setIsActive(false) }}>
       <form onSubmit={handleSubmit}>
@@ -58,39 +56,20 @@ const QuickTicket = ({ setIsQuickTicketActive, projectId, user, createNewTicket,
         />
         <DropDownMenu>
           <Content onClick={() => setIsActive(true)}>
-            <Icon iconStyle={{
-              base: 'issue',
-              type: issueType,
-              size: '9px',
-            }} />
-            <Icon iconStyle={{
-              base: 'angle',
-              type: 'down',
-              size: '13px',
-            }} />
+            <Icon type={issueType.toLowerCase()} size={12} />
+            <AngleDownIcon>
+              <Icon type="angle-down" size={13} isSolid={true} />
+            </AngleDownIcon>
           </Content>
-          {
-            isActive ?
-              <DropDownContent>
-                <SelectMenu
-                  handleSelectMenu={handleSelectMenu}
-                  selectList={{
-                    ...IssueTypes,
-                    [issueType.toUpperCase()]: undefined,
-                    ['EPIC']: undefined
-                  }}
-                  name="issueType"
-                  value={issueType}
-                  width="130px"
-                  iconStyle={{
-                    base: 'issue',
-                    size: '9px',
-                  }}
-                />
-              </DropDownContent>
-              :
-              <></>
-          }
+          <SelectMenu
+            isActive={isActive}
+            width={150}
+            left={-10}
+            setIsMenuOpen={setIsActive}
+            onChange={(option) => setIssueFormValues({ ...issueFormValues, issueType: option.value })}
+            options={renderType(IssueTypes, issueType)}
+            renderValue={({ value: issueType }) => renderOption(issueType)}
+          />
         </DropDownMenu>
         <ButtonContainer>
           <Button type="submit" value="Create" />
@@ -101,6 +80,21 @@ const QuickTicket = ({ setIsQuickTicketActive, projectId, user, createNewTicket,
   )
 }
 
+const renderType = (IssueTypes, currentType) => (
+  Object.values(IssueTypes).filter(type => type !== currentType && type !== IssueTypes.EPIC).map(option => ({
+    key: option,
+    value: option,
+  }))
+)
+
+const renderOption = (issueType) => (
+  <Fragment>
+    <IconCont>
+      <Icon type={issueType.toLowerCase()} size={12} top={-1} />
+    </IconCont>
+    {issueType}
+  </Fragment>
+);
 
 QuickTicket.propTypes = {
   user: PropTypes.object.isRequired,

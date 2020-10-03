@@ -7,7 +7,6 @@ import { selectMembers } from '../../../../../redux/members/members.selectors';
 import { createStructuredSelector } from 'reselect';
 import { filterTicketsByUser, removeUserFilter, filterTicketsBySearch, clearAllFilters } from '../../../../../redux/tickets/tickets.actions';
 import IssueCreate from '../Modal/IssueCreate/IssueCreate';
-import IssueCreateEpic from '../Modal/IssueCreate/IssueCreateEpic';
 
 import {
   Container,
@@ -83,16 +82,12 @@ const TopBar = ({
           }
         </Right>
       </Container>
-      {isModalOpen && (!isEpicModal ? (
+      {isModalOpen && (
         <IssueCreate
           setIsModalOpen={setIsModalOpen}
+          isEpic={isEpicModal}
         />
-      ) : (
-          <IssueCreateEpic
-            setIsModalOpen={setIsModalOpen}
-          />
-        ))
-      }
+      )}
     </>
   )
 }

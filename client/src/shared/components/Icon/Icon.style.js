@@ -24,7 +24,15 @@ export const StyledIcon = styled.i`
 `;
 
 const issueType = css`
-
+  font-weight: 900;
+  display:inline-block;
+  font-size:  ${props => `${props.size - 4}px`};
+  text-align: center;
+  height: ${props => `${props.size}px`};
+  line-height: ${props => `${props.size}px`};
+  width:  ${props => `${props.size}px`};
+  border-radius: 2px;
+  color: #fff;
 `
 
 const issueColor = css`
@@ -47,16 +55,20 @@ const userIcon = css`
 
 const customIcons = {
   task: css`
-  ${issueType}
+    background-color: rgb(79, 173, 230);
+    ${issueType}
   `,
   bug: css`
-  ${issueType}
+    background-color: rgb(228, 77, 66);
+    ${issueType}
   `,
   story: css`
-  ${issueType}
+    background-color: rgb(101, 186, 67);
+    ${issueType}
   `,
   epic: css`
-  ${issueType}
+    background-color: rgb(101, 84, 192);
+    ${issueType}
   `,
   [`priority-medium`]: css`
     color: rgb(233, 127, 51);
@@ -74,6 +86,9 @@ const customIcons = {
     color: rgb(205, 19, 23);
   `,
   [`user-icon`]: css`
+    ${userIcon}
+  `,
+  [`project-icon`]: css`
     ${userIcon}
   `,
   [`issue-purple`]: css`

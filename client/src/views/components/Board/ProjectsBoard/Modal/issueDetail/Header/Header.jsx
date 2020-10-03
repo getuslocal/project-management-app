@@ -22,13 +22,12 @@ const IssueDetailHeader = ({
   return (
     <Container>
       <Left>
-        {
-          epic &&
+        {epic && (
           <Fragment>
             <Key className="icon-issue-epic">{epic.summary}</Key>
             <Slash style={{ margin: '0 6px' }}>/</Slash>
           </Fragment>
-        }
+        )}
         <Key className={`icon-issue-${issueType.toLowerCase()}`}>{ticketKey}</Key>
       </Left>
       <Right>
@@ -40,7 +39,7 @@ const IssueDetailHeader = ({
 }
 
 IssueDetailHeader.propTypes = {
-  linkedEpic: PropTypes.object,
+  epic: PropTypes.object,
   ticketKey: PropTypes.string.isRequired,
   issueType: PropTypes.string.isRequired,
   handleDeleteTicket: PropTypes.func.isRequired,

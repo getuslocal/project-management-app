@@ -32,6 +32,11 @@ const fontIconCodes = {
   [`issue-yellow`]: '',
   [`issue-blue`]: '',
   [`issue-red`]: '',
+  [`project-icon`]: '',
+  [`task`]: '\f00c',
+  [`bug`]: '\f12a',
+  [`story`]: '\f02e',
+  [`epic`]: '\f0e7',
 };
 
 const propTypes = {

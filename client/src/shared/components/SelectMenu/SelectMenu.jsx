@@ -2,7 +2,8 @@ import React, { useRef } from 'react';
 import {
   Container,
   Lists,
-  List
+  List,
+  EmptyMessage
 } from './SelectMenu.style';
 import useOutsideClick from "../../hooks/useOutsideClick";
 
@@ -12,7 +13,8 @@ const SelectMenu = ({
   isActive,
   onChange,
   renderValue,
-  setIsMenuOpen
+  setIsMenuOpen,
+  ...props
 }) => {
   const menuRef = useRef();
 
@@ -22,12 +24,12 @@ const SelectMenu = ({
   });
 
   return (
-    <Container width={width} isActive={isActive} ref={menuRef}>
+    <Container width={width} isActive={isActive} ref={menuRef} {...props}>
       <Lists>
         {
           options.map(option => {
             return (
-              <List key={option.value} onClick={() => {
+              <List key={option.key} onClick={() => {
                 onChange(option)
                 setIsMenuOpen(false)
               }}>
@@ -41,6 +43,7 @@ const SelectMenu = ({
             )
           })
         }
+        {options.length === 0 && <EmptyMessage>No options found.</EmptyMessage>}
       </Lists>
     </Container>
   )

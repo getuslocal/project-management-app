@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from 'react';
 import moment from 'moment';
 import CalendarTask from './CalendarTask/CalendarTask';
-import IssueCreateEpic from '../../../Modal/IssueCreate/IssueCreateEpic';
+import IssueCreate from '../../../Modal/IssueCreate/IssueCreate';
 import {
   Container,
   DayCell,
@@ -59,7 +59,8 @@ const CalendarContent = ({
         }
       </Container>
       {isModalOpen &&
-        <IssueCreateEpic
+        <IssueCreate
+          isEpic={true}
           setIsModalOpen={setIsModalOpen}
           defaultStartDate={defaultStartDate}
         />

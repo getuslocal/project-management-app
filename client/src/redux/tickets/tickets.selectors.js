@@ -9,6 +9,11 @@ export const selectTickets = createSelector(
   tickets => tickets.tickets
 );
 
+export const selectNonEpicTickets = createSelector(
+  [selectTickets],
+  tickets => tickets.filter(ticket => ticket.issueType !== 'Epic')
+);
+
 // Select ticket by key name passed as query string.
 export const selectTicketByKey = search => createSelector(
   [selectTickets],
@@ -25,10 +30,14 @@ export const selectEpicTickets = createSelector(
   tickets => tickets.filter(ticket => ticket.issueType === 'Epic')
 );
 
-export const selectTicketsLinkedWithEpic = epicId => createSelector(
+export const selectTicketsLinkedWithEpic = search => createSelector(
   [selectTickets],
   // Return ids of tickets linked with an epic as child issues.
-  tickets => tickets.filter(ticket => ticket.linkedEpic === epicId).map(ticket => ticket._id)
+  tickets => {
+    const parsed = queryString.parse(search);
+    const foundEpic = tickets.find(ticket => ticket.key === parsed.selectedIssue)
+    return tickets.filter(ticket => ticket.linkedEpic === foundEpic._id).map(ticket => ticket._id)
+  }
 );
 
 export const selectEpicById = id => createSelector(

@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import SelectMenu from '../../../../../../../shared/components/SelectMenu/SelectMenu';
 import Icon from '../../../../../../../shared/components/Icon/Icon';
 import { selectMembers } from '../../../../../../../redux/members/members.selectors';
@@ -45,6 +45,7 @@ function Assignee({ value, updateTicketField, members }) {
         setIsMenuOpen={setIsMenuOpen}
         onChange={(option) => updateTicketField({ assigneeId: option.value })}
         options={members.filter(member => member._id !== value).map(option => ({
+          key: option._id,
           value: option._id,
         }))}
         renderValue={({ value: assigneeId }) => renderUser(assigneeId, members)}

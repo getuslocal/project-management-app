@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker } from 'react-dates';
@@ -9,10 +10,9 @@ import {
   Discription
 } from './RangedDatePicker.style';
 
-export default function RangedDatePicker({ dateRange, setdateRange }) {
+const RangedDatePicker = ({ dateRange, setDateRange }) => {
   const [focusedInput, setFocusedInput] = useState(null);
   const { startDate, endDate } = dateRange;
-
   return (
     <div>
       <Container>
@@ -22,7 +22,7 @@ export default function RangedDatePicker({ dateRange, setdateRange }) {
           startDateId="startDateMookh" // PropTypes.string.isRequired,
           endDate={endDate} // momentPropTypes.momentObj or null,
           endDateId="endDateMookh" // PropTypes.string.isRequired,
-          onDatesChange={({ startDate, endDate }) => setdateRange({ startDate, endDate })} // PropTypes.func.isRequired,
+          onDatesChange={({ startDate, endDate }) => setDateRange({ startDate, endDate })} // PropTypes.func.isRequired,
           focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
           onFocusChange={focusedInput => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
           minimumNights={0}
@@ -35,3 +35,10 @@ export default function RangedDatePicker({ dateRange, setdateRange }) {
     </div>
   )
 }
+
+RangedDatePicker.propTypes = {
+  dateRange: PropTypes.object.isRequired,
+  setDateRange: PropTypes.func.isRequired,
+}
+
+export default RangedDatePicker;

@@ -19,8 +19,11 @@ export const TextArea = styled.textarea`
 `
 export const DropDownMenu = styled.div`
   display: inline-block;
+  position: relative;
 `
 export const Content = styled.div`
+display: flex;
+align-items: center;
   &:hover{
     cursor: pointer;
   }
@@ -59,4 +62,10 @@ export const CloseButton = styled.span`
     cursor: pointer;
     background-color: rgba(9, 30, 66, 0.08);
   }
+`
+export const AngleDownIcon = styled.span`
+  margin-left: 10px;
+`
+export const IconCont = styled.span`
+  margin-right: 10px;
 `

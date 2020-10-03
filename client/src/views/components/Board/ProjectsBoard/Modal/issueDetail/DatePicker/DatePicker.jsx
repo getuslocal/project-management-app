@@ -5,9 +5,9 @@ import { SingleDatePicker } from 'react-dates';
 import './single_date_picker_overrides.css';
 import moment from 'moment';
 import {
-  FormContainer,
+  Container,
   Label,
-} from '../Form.style';
+} from './DatePicker.style';
 
 export default function DatePicker({ dateRange, updateTicketField, isStartDate, isEndDate }) {
   const [focused, setFocused] = useState(false);
@@ -20,7 +20,7 @@ export default function DatePicker({ dateRange, updateTicketField, isStartDate, 
 
   return (
     <div>
-      <FormContainer>
+      <Container>
         <Label>
           {isStartDate && 'Start'}
           {isEndDate && 'Due'}
@@ -52,7 +52,7 @@ export default function DatePicker({ dateRange, updateTicketField, isStartDate, 
             isOutsideRange={day => (day.isBefore(momentedStartDate))}
           />
         }
-      </FormContainer>
+      </Container>
     </div>
   )
 }

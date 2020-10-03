@@ -7,7 +7,6 @@ import CalendarContent from './CalendarContent/CalendarContent';
 import { withRouter } from 'react-router-dom'
 
 const Calendar = ({...props}) => {
-  console.log(props)
   const [loading, setLoading] = useState(true);
   const [calendar, setCalendar] = useState([]);
   const [lastWeekOfCalendar, setLastWeekOfCalendar] = useState(null);
@@ -105,7 +104,7 @@ const Calendar = ({...props}) => {
       if (!isEndOfCalendar) {
         const nextStartMonth = moment(new Date(lastWeekOfCalendar.yyyy, lastWeekOfCalendar.mm, lastWeekOfCalendar.dd)).weekday(7).month();
         const nextStartDayOfWeek = moment(new Date(lastWeekOfCalendar.yyyy, lastWeekOfCalendar.mm, lastWeekOfCalendar.dd)).weekday(6).date() + 1;
-        console.log(lastWeekOfCalendar)
+        // console.log(lastWeekOfCalendar)
         const newCalendar = getCalendarContent(moment(new Date(lastWeekOfCalendar.yyyy, nextStartMonth, nextStartDayOfWeek)), true);
         setCalendar([...calendar, ...newCalendar]);
         setLastWeekOfCalendar(newCalendar[newCalendar.length - 1][0])
