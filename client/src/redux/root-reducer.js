@@ -5,6 +5,7 @@ import rolesReducer from './roles/roles.reducer'
 import projectsReducer from './projects/projects.reducer'
 import ticketsReducer from './tickets/tickets.reducer'
 import membersReducer from './members/members.reducer'
+import organizationsReducer from './organizations/organizations.reducer'
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   projects: projectsReducer,
   tickets: ticketsReducer,
   members: membersReducer,
+  organization: organizationsReducer,
 })
 
 export default rootReducer

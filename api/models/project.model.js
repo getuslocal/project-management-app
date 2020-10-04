@@ -12,6 +12,11 @@ const projectSchema = new Schema({
         required: true,
         trim: true,
     },
+    orgId: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        trim: true,
+    },
     name: {
         type: String,
         required: true,

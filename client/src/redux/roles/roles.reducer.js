@@ -4,7 +4,7 @@ import {
 } from './roles.types';
 import { getProjectLabelAndLinkMap } from './roles.utils';
 
-const rolesReducer = (state = {}, action) => {
+const rolesReducer = (state = null, action) => {
   const { type, payload } = action;
   switch (type) {
     case GET_ROLES:

@@ -34,7 +34,7 @@ const Sidebar = ({ user: { name, role, pictureUrl }, roles }) => (
     <nav>
       <ul>
         {
-          roles.map(component => (
+          Object.values(roles).map(component => (
             <LinkList key={component.id} {...component} />
           ))
         }

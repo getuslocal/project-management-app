@@ -14,9 +14,10 @@ import {
 } from './projects.types';
 import { updateWithProjectInfo } from '../roles/roles.actions';
 
-export const getProjectsOfOwner = (ownerId) => async dispatch => {
+// Get projects of the user who is in a certain organization.
+export const getProjectsOfUser = (orgId, userId) => async dispatch => {
   try {
-    const res = await api.get(`/projects/${ownerId}`);
+    const res = await api.get(`/projects/${orgId}/${userId}`);
     dispatch({
       type: GET_PROJECTS,
       payload: res.data

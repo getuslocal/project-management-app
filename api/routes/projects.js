@@ -4,11 +4,11 @@ const jwt = require('jsonwebtoken');
 const Project = require('../models/project.model');
 const verify = require('../middleware/auth');
 
-// @route  GET projects/:ownerId
-// @desc   Get projects of the user.
+// @route  GET projects/:org_id/:user_id
+// @desc   Get projects of the user who is in a certain organization.
 // @access Private 
-router.get('/:id', verify, (req, res) => {
-  Project.find({ owner: req.params.id })
+router.get('/:org_id/:user_id', verify, (req, res) => {
+  Project.find({ orgId: req.params.org_id, members: req.params.user_id })
     .then(project => res.json(project))
     .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -63,8 +63,6 @@ router.post('/create', verify, async (req, res) => {
   }
 
 });
-
-
 
 // @route  POST projects/update/tickets_order/:project_id
 // @desc   Update ticket order within the column 

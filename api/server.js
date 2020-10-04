@@ -3,6 +3,7 @@ const cors = require('cors');
 const userRouter = require('./routes/users');
 const projectRouter = require('./routes/projects');
 const ticketRouter = require('./routes/tickets');
+const organizationRouter = require('./routes/organizations');
 const connectDB = require('./config/db');
 
 const app = express();
@@ -19,6 +20,7 @@ connectDB();
 app.use('/users', userRouter);
 app.use('/projects', projectRouter);
 app.use('/tickets', ticketRouter);
+app.use('/organizations', organizationRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

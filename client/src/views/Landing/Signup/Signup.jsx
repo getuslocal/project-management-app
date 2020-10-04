@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import FormInput from '../../../shared/components/Form/IconInput/IconInput';
 import CheckBox from '../../../shared/components/Form/CheckBox/CheckBox';
-import FormButton from '../../../shared/components/Form/FormButton/FormButton';
 import { Margin } from '../../../shared/utils/global';
 import {
   FormTitle,

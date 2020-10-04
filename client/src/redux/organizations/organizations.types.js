@@ -1,0 +1,1 @@
+export const GET_ORGANIZATION = 'GET_ORGANIZATION';

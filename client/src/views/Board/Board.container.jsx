@@ -1,15 +1,47 @@
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
-import WithSpinner from '../../shared/components/WithSpinner/WithSpinner';
+import { getOrganization } from '../../redux/organizations/organizations.actions';
+import { getRoles } from '../../redux/roles/roles.actions';
 import Board from './Board';
+import PropTypes from 'prop-types';
+import Spinner from '../../shared/components/WithSpinner/Spinner';
+
+const BoardContainer = ({ organization, roles, user, getRoles, getOrganization, ...props }) => {
+  const isOrgLoaded = !!organization;
+  const isRolesLoaded = !!roles;
+
+  // Handles featching necessary data before rendering Board component.
+  useEffect(() => {
+    // Get roles of the user based on user role.
+    getRoles(user.role)
+    // Get organization data of the user.
+    getOrganization(user.orgId);
+  }, []);
+
+  return (
+    isOrgLoaded && isRolesLoaded ? (
+      <Board
+        user={user}
+        roles={roles}
+        organization={organization}
+        {...props}
+      />
+    ) : (
+        <Spinner />
+      )
+  )
+}
+
+BoardContainer.propTypes = {
+  organization: PropTypes.object,
+  roles: PropTypes.object,
+  user: PropTypes.object.isRequired,
+  getOrganization: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = state => ({
-  isLoading: !state.auth.checkUserCredentials
+  organization: state.organization,
+  roles: state.roles,
 });
 
-const BoardContainer = compose(
-  connect(mapStateToProps),
-  WithSpinner
-)(Board);
-
-export default BoardContainer;
+export default connect(mapStateToProps, { getRoles, getOrganization })(BoardContainer);

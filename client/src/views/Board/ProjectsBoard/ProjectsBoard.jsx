@@ -29,7 +29,7 @@ const ProjectsBoard = ({
   isLoading,
   ...props
 }) => {
-  console.log(project)
+  // console.log(project)
   const { members: projectMembers, _id: projectId, key: projectKeyName } = project
   const { tab } = props.match.params;
   const projectUri = baseUrl + '/' + projectId;
