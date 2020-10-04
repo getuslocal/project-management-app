@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import FormInput from '../../../shared/components/Form/IconInput/IconInput';
-import FormCheckBox from '../../../shared/components/Form/FormCheckBox/FormCheckBox';
+import CheckBox from '../../../shared/components/Form/CheckBox/CheckBox';
 import FormButton from '../../../shared/components/Form/FormButton/FormButton';
 import { Margin } from '../../../shared/utils/global';
 import {
@@ -13,9 +13,9 @@ import {
 import { register } from '../../../redux/auth/auth.actions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import ErrorMessage  from '../../../shared/components/ErrorMessage/ErrorMessage';
+import ErrorMessage from '../../../shared/components/ErrorMessage/ErrorMessage';
 import { Redirect } from 'react-router-dom';
-
+import { SubmitButton } from '../Landing.style'
 
 const SignupForm = ({ register, isAuthenticated, errorMessage }) => {
   const [userCredentials, setUserCredentials] = useState({
@@ -54,11 +54,11 @@ const SignupForm = ({ register, isAuthenticated, errorMessage }) => {
         Sign up <GrayText>for your account</GrayText>
       </FormTitle>
       {errorMessage ?
-        <Margin bottom={2} >
-          <ErrorMessage errorMessage={errorMessage}/>
+        <Margin bottom={40} >
+          <ErrorMessage errorMessage={errorMessage} />
         </Margin> : ''}
       <form onSubmit={handleSubmit}>
-        <Margin bottom={3} >
+        <Margin bottom={40} >
           <FormInput
             type='text'
             name='name'
@@ -69,7 +69,7 @@ const SignupForm = ({ register, isAuthenticated, errorMessage }) => {
             required
           />
         </Margin>
-        <Margin bottom={3} >
+        <Margin bottom={40} >
           <FormInput
             type='email'
             name='email'
@@ -80,7 +80,7 @@ const SignupForm = ({ register, isAuthenticated, errorMessage }) => {
             required
           />
         </Margin>
-        <Margin bottom={3} >
+        <Margin bottom={40} >
           <FormInput
             type='password'
             name='password'
@@ -91,7 +91,7 @@ const SignupForm = ({ register, isAuthenticated, errorMessage }) => {
             required
           />
         </Margin>
-        <Margin bottom={3} >
+        <Margin bottom={40} >
           <FormInput
             type='password'
             name='confirmPassword'
@@ -102,18 +102,14 @@ const SignupForm = ({ register, isAuthenticated, errorMessage }) => {
             required
           />
         </Margin>
-        <Margin bottom={4} >
-          <FormCheckBox
+        <Margin bottom={40} >
+          <CheckBox
             name='checkbox'
             type='checkbox'
           />
         </Margin>
-        <Margin bottom={2} >
-          <FormButton
-            name='button'
-            type='submit'
-            value='Sign up now'
-          />
+        <Margin bottom={30} >
+          <SubmitButton name='button' type='submit' value='Sign up now' />
         </Margin>
         <FormSmallText>Try right now ? <LinkText to="/">Use guest login</LinkText></FormSmallText>
       </form>

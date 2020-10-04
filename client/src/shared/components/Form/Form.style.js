@@ -28,20 +28,29 @@ const CommonFormStyle = css`
   border: 1px solid #dfe1e6;
   border-radius: 3px;
   background-color: rgb(250, 251, 252);
-
+  transition: all .2s;
+  
   &:hover {
     background-color: #091e420d;
+  }
+
+  &:focus{
+    background-color: #fff;
+    outline: none;
+    border-color: rgb(76, 154, 255);
+    box-shadow: rgb(76,154,255) 0px 0px 0px 1px;
+    background-color: #fff;
   }
 `
 
 export const Input = styled.input`
   ${CommonFormStyle}
-  width: ${props => (props.width ? props.width : '100%')};
+  width: ${props => (props.width ? `${props.width}px` : '100%')};
 `
 
 export const TextArea = styled.textarea`
   ${CommonFormStyle}
-  width: ${props => (props.width ? props.width : '100%')};
+  width: ${props => (props.width ? `${props.width}px`: '100%')};
 `
 
 export const Description = styled.p`

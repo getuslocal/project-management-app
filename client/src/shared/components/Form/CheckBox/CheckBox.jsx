@@ -3,7 +3,7 @@ import {
   FormCheckBoxContainer,
   FormCheckBoxInput,
   FormCheckBoxLabel,
-} from './FormCheckBox.style';
+} from './CheckBox.style';
 
 const FormCheckBox = ({ name, ...props }) => {
   const [checked, setChecked] = useState(false);

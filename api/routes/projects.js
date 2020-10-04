@@ -7,8 +7,8 @@ const verify = require('../middleware/auth');
 // @route  GET projects/:ownerId
 // @desc   Get projects of the user.
 // @access Private 
-router.get('/:owner_id', verify, (req, res) => {
-  Project.find({ owner: req.params.owner_id })
+router.get('/:id', verify, (req, res) => {
+  Project.find({ owner: req.params.id })
     .then(project => res.json(project))
     .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -64,31 +64,34 @@ router.post('/create', verify, async (req, res) => {
 
 });
 
+
+
 // @route  POST projects/update/tickets_order/:project_id
 // @desc   Update ticket order within the column 
 // @access Private 
-router.post('/update/tickets_order/:project_id', verify, (req, res) => {
-  const projectId = req.params.project_id;
-  const { newColumn } = req.body;
-  Project.findById(projectId)
-    .then(project => {
-      if (newColumn.newStart !== undefined && newColumn.newFinish !== undefined) {
-        const { newStart, newFinish } = newColumn;
-        project.columns = {
-          ...project.columns,
-          [newStart.id]: newStart,
-          [newFinish.id]: newFinish
-        }
-      } else {
-        project.columns = {
-          ...project.columns,
-          [newColumn.id]: newColumn
-        }
-      }
-      project.save()
-        .then(() => res.json('project updated !'))
-        .catch(err => res.status(400).json('Error: ' + err));
-    })
+router.post('/update/:id', verify, async (req, res) => {
+  const projectId = req.params.id;
+  const { key, owner, name, projectIconUrl, description, category } = req.body;
+
+  const updatedValue = {
+    key: key,
+    owner: owner,
+    name: name,
+    projectIconUrl: projectIconUrl,
+    description: description,
+    category: category,
+  };
+
+  try {
+    const updatedProject = await Project.findOneAndUpdate(
+      { _id: projectId },
+      { $set: updatedValue },
+      { new: true, runValidator: true }
+    );
+    res.json(updatedProject)
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
 // @route  POST projects/update/column_order/:project_id

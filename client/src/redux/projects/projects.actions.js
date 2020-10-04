@@ -1,6 +1,7 @@
 import api from '../../shared/utils/api';
 import {
   GET_PROJECTS,
+  UPDATE_PROJECT,
   UPDATE_ONE_COLUMN_TICKETS_ORDER,
   UPDATE_TWO_COLUMNS_TICKETS_ORDER,
   UPDATE_COLUMN_ORDER,
@@ -22,6 +23,22 @@ export const getProjectsOfOwner = (ownerId) => async dispatch => {
     });
     // Update roles state with project info.
     dispatch(updateWithProjectInfo(res.data));
+  } catch (err) {
+    console.log(err)
+  }
+};
+
+// Update project 
+export const updateProject = (projectId, formData) => async dispatch => {
+  try {
+    const res = await api.post(`/projects/update/${projectId}`, formData);
+    dispatch({
+      type: UPDATE_PROJECT,
+      payload: {
+        updatedProject: res.data,
+        projectId
+      }
+    });
   } catch (err) {
     console.log(err)
   }

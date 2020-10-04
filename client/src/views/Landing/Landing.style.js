@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { color, fontSize } from '../../shared/utils/styles';
+import { color, fontSize, padding } from '../../shared/utils/styles';
 import LandingBg from './assets/landing-bg.png'
 
 export const LandingContainer = styled.div`
@@ -61,3 +61,26 @@ width: 100%;
 border-bottom: 1px solid transparent;
 border-top: 2px solid ${color.smokewhite};
  `
+
+export const SubmitButton = styled.input`
+  display: inline-block;
+  background: ${color.primary};
+  line-height: 1;
+  padding: ${padding.med} ${padding.double};
+  border: 0;
+  text-align: center;
+  cursor: pointer;
+  font-weight: 400;
+  color: ${color.white};
+  border-radius: 5px;
+  width: 100%;
+  box-shadow: 0 5px blue;
+  top: 0;
+
+  &:active {
+    position: relative;
+    outline: none;
+    top: 5px;
+    box-shadow: none;
+  }
+`;

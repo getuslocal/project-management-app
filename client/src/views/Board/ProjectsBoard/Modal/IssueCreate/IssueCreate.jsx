@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { selectCurrentProjectId, selectProjects } from '../../../../../redux/projects/projects.selectors';
 import { selectUser } from '../../../../../redux/auth/auth.selectors';
 import { createStructuredSelector } from 'reselect';
-import FormInput from '../../Form/FormInput/FormInput';
+import Input from '../../../../../shared/components/Form/Input/Input';
 import { createNewTicket, createNewEpicTicket } from '../../../../../redux/tickets/tickets.actions';
 import Description from './Description/Description';
 import ChildIssue from './ChildIssue/ChildIssue';
@@ -105,7 +105,7 @@ const IssueCreate = ({
                   handleSelectMenu={handleSelectMenu}
                 />
                 <Diviser />
-                <FormInput
+                <Input
                   label="Summary"
                   type="text"
                   name="summary"

@@ -29,6 +29,7 @@ const ProjectsBoard = ({
   isLoading,
   ...props
 }) => {
+  console.log(project)
   const { members: projectMembers, _id: projectId, key: projectKeyName } = project
   const { tab } = props.match.params;
   const projectUri = baseUrl + '/' + projectId;
@@ -53,16 +54,26 @@ const ProjectsBoard = ({
     <Fragment>
       <TopNavigationBar title={projectKeyName} tabs={tabs} baseUrl={projectUri} currentRoute={currentRoute} />
       <Switch>
-        <Route exact path={projectUri} render={() =>
-          <KanbanBoardWithSpinner isLoading={isLoading} project={project} />
-        }
+        <Route
+          exact
+          path={projectUri}
+          render={() => <KanbanBoardWithSpinner isLoading={isLoading} project={project} />}
         />
-        <Route exact path={`${projectUri}/roadmap`} render={() =>
-          <RoadMapBoard project={project} />
-        }
+        <Route
+          exact
+          path={`${projectUri}/roadmap`}
+          render={() => <RoadMapBoard project={project} />}
         />
-        <Route exact path={`${projectUri}/members`} component={MembersBoard} />
-        <Route exact path={`${projectUri}/about`} component={AboutBoard} />
+        <Route
+          exact
+          path={`${projectUri}/members`}
+          component={MembersBoard}
+        />
+        <Route
+          exact
+          path={`${projectUri}/about`}
+          render={() => <AboutBoard project={project} />}
+        />
       </Switch>
       {(isModalOpen && !isLoading) && (
         <IssueDetail
