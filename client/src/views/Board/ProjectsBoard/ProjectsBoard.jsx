@@ -12,7 +12,7 @@ import { selectProjectById } from '../../../redux/projects/projects.selectors';
 import { selectIsTicketsLoaded } from '../../../redux/tickets/tickets.selectors';
 import { createStructuredSelector } from 'reselect';
 import { getTicketsByProjectId } from '../../../redux/tickets/tickets.actions';
-import { getMembersByProjectId } from '../../../redux/members/members.actions';
+import { getMembersOfProject } from '../../../redux/members/members.actions';
 import { setCurrentProjectId } from '../../../redux/projects/projects.actions';
 import WithSpinner from '../../../shared/components/WithSpinner/WithSpinner';
 import IssueDetail from './Modal/IssueDetail/IssueDetail';
@@ -24,7 +24,7 @@ const ProjectsBoard = ({
   baseUrl,
   project,
   getTicketsByProjectId,
-  getMembersByProjectId,
+  getMembersOfProject,
   setCurrentProjectId,
   isLoading,
   ...props
@@ -39,7 +39,7 @@ const ProjectsBoard = ({
 
   useEffect(() => {
     getTicketsByProjectId(projectId)
-    getMembersByProjectId(projectMembers)
+    getMembersOfProject(projectMembers)
     setCurrentProjectId(projectId)
   }, []);
 
@@ -88,7 +88,7 @@ ProjectsBoard.propTypes = {
   project: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
   getTicketsByProjectId: PropTypes.func.isRequired,
-  getMembersByProjectId: PropTypes.func.isRequired,
+  getMembersOfProject: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
@@ -98,5 +98,5 @@ const mapStateToProps = (state, ownProps) => createStructuredSelector({
 
 export default connect(
   mapStateToProps,
-  { getTicketsByProjectId, getMembersByProjectId, setCurrentProjectId }
+  { getTicketsByProjectId, getMembersOfProject, setCurrentProjectId }
 )(ProjectsBoard);

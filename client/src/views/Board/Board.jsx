@@ -1,9 +1,13 @@
 import React, { Fragment, useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { selectIsProjectsLoaded } from '../../redux/projects/projects.selectors';
+import { createStructuredSelector } from 'reselect';
 import PropTypes from 'prop-types';
 import Sidebar from '../Sidebar/Sidebar';
 import NotFound from '../NotFound/NotFound';
 import { getProjectsOfUser } from '../../redux/projects/projects.actions';
+import Spinner from '../../shared/components/WithSpinner/Spinner';
 import store from '../../redux/store';
 import {
   Container
@@ -14,6 +18,7 @@ const Board = ({
   user,
   roles,
   organization,
+  loading,
   ...props
 }) => {
 
@@ -32,7 +37,13 @@ const Board = ({
               <Route
                 key={role.id}
                 path={`/app/${role.linkUrl}/${role.linkVariable}`}
-                render={() => <Component component={role} baseUrl={props.match.url} />}
+                render={() =>
+                  loading ? (
+                    <Spinner />
+                  ) : (
+                      <Component component={role} baseUrl={props.match.url} />
+                    )
+                }
               />
             )
           })}
@@ -47,6 +58,11 @@ Board.propTypes = {
   user: PropTypes.object.isRequired,
   roles: PropTypes.object.isRequired,
   organization: PropTypes.object,
+  loading: PropTypes.bool.isRequired,
 };
 
-export default Board;
+const mapStateToProps = createStructuredSelector({
+  loading: selectIsProjectsLoaded,
+});
+
+export default connect(mapStateToProps, null)(Board);

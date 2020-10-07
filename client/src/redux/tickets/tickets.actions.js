@@ -27,6 +27,24 @@ export const getTicketsByProjectId = (projectId) => async dispatch => {
   }
 };
 
+// Get all tickets of the organization.
+export const getTicketsOfOrganization = (projectIds) => async dispatch => {
+  let ticketsList = [];
+  try {
+    for (const projectId of projectIds) {
+      const res = await api.get(`/tickets/${projectId}`);
+      const ticketData = res.data;
+      ticketsList = [...ticketsList, ...ticketData]
+    };
+    dispatch({
+      type: GET_TICKETS,
+      payload: ticketsList
+    });
+  } catch (err) {
+    console.log(err)
+  }
+};
+
 // Create a new ticket.
 export const createNewTicket = (formData, columnId) => async dispatch => {
   try {

@@ -1,24 +1,24 @@
-.board-content-top {
-  padding: 2em;
+.issue-type-cont {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  width: 100%;
 }
 
-.board-content-top .ticket-status {
-  -webkit-box-shadow: 0 2px 6px 0 rgba(15, 53, 169, 0.1);
-          box-shadow: 0 2px 6px 0 rgba(15, 53, 169, 0.1);
+.issue-type-cont .ticket-status {
+  -webkit-box-shadow: 0 2px 4px 1px rgba(15, 53, 169, 0.1);
+          box-shadow: 0 2px 4px 1px rgba(15, 53, 169, 0.1);
   border-radius: 8px;
   display: inline-block;
-  width: 17%;
+  width: 22%;
   background-color: #fff;
-  padding: 1em 1.5em;
+  padding: 20px 30px;
 }
 
-.board-content-top .ticket-status .ticket-icon {
+.issue-type-cont .ticket-status .ticket-icon {
   border-radius: 50%;
   width: 3.5rem;
   height: 3.5rem;
@@ -29,24 +29,25 @@
   text-align: center;
 }
 
-.board-content-top .ticket-status .ticket-icon i {
+.issue-type-cont .ticket-status .ticket-icon i {
   color: #0f35a9;
   line-height: 3.5rem;
   font-size: 1.5em;
 }
 
-.board-content-top .ticket-status p {
+.issue-type-cont .ticket-status p {
   font-size: .85em;
   color: #8993a4;
-}
-
-.board-content-top .ticket-status p.ticket-number {
-  color: black;
-  font-size: 1.4em;
   font-weight: 600;
 }
 
-.board-content-top .ticket-status .ticket-content {
+.issue-type-cont .ticket-status p.ticket-number {
+  color: black;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.issue-type-cont .ticket-status .ticket-content {
   display: inline-block;
 }
 /*# sourceMappingURL=dashboard.css.map */

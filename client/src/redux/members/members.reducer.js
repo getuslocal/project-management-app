@@ -1,5 +1,5 @@
 import {
-  GET_MEMBERS_BY_PROJECTID,
+  GET_MEMBERS,
 } from './members.types';
 
 const INITIAL_STATE = {
@@ -10,7 +10,7 @@ const INITIAL_STATE = {
 const membersReducer = (state = INITIAL_STATE, action) => {
   const { type, payload } = action;
   switch (type) {
-    case GET_MEMBERS_BY_PROJECTID:
+    case GET_MEMBERS:
       return {
         ...state,
         members : payload,

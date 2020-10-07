@@ -7,6 +7,12 @@ export const selectProjects = createSelector(
   projects => projects.projects
 );
 
+
+export const selectProjectsIds = createSelector(
+  [selectProjects],
+  projects => Object.values(projects).map(project => project._id)
+);
+
 export const selectIsProjectsLoaded = createSelector(
   [projects],
   projects => projects.loading

@@ -16,7 +16,7 @@ router.get('/authenticate', verify, (req, res) => {
 
 
 // @route  GET users/:userId
-// @desc   Return user data based on the id.
+// @desc   Get user by id.
 // @access Private 
 router.get('/:userId', verify, (req, res) => {
   User.findById(req.params.userId).select('-password')
@@ -24,6 +24,14 @@ router.get('/:userId', verify, (req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 })
 
+// @route  GET users/org/:org_id
+// @desc   Get users in the organization.
+// @access Private 
+router.get('/org/:org_id', verify, (req, res) => {
+  User.find({ orgId: req.params.org_id }).select('-password')
+    .then(user => res.json(user))
+    .catch(err => res.status(400).json('Error: ' + err));
+})
 
 // @route  POST users/register
 // @desc   Register user 
@@ -51,7 +59,7 @@ router.post('/register', async (req, res) => {
     name: name,
     email: email,
     password: hashedPassword,
-    pictureUrl:''
+    pictureUrl: ''
   });
 
   try {

@@ -1,3 +1,8 @@
 import { createSelector } from 'reselect';
 
-const organization = state => state.organization;
+export const organization = state => state.organization;
+
+export const selectOrganization = createSelector(
+  [organization],
+  organization => organization
+);
