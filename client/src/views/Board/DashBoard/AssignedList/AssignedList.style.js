@@ -49,6 +49,7 @@ export const TableHeader = styled.th`
 export const TableData = styled.td`
   padding: 10px 7px;
   width: ${(props) => props.width ? `${props.width}px` : 'auto'};
+  font-size: 14px;
 `;
 export const ResultCounter = styled.p`
   position: absolute;

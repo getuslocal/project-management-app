@@ -21,8 +21,6 @@ const InnerList = React.memo(props => {
 const Column = ({ column, tickets, index }) => {
   const [isQuickTicketActive, setIsQuickTicketActive] = useState(false);
   const ticketsCounter = tickets.length;
-  console.log(tickets)
-
   return (
     <Draggable draggableId={column.id} index={index}>
       {(provided, snapshot) => (

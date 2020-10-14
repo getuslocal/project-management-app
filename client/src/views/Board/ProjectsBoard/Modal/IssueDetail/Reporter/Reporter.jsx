@@ -12,29 +12,32 @@ import {
   IconCont
 } from '../IssueDetail.style';
 
-function Reporter({ value, updateTicketField, members }) {
+function Reporter({ value, updateTicketField, members, updateTicketHistory }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const member = members.find(member => member._id === value)
+  const currentReporter = members.find(member => member._id === value)
   return (
     <SectionContainer>
       <SectionTitle>Reporter</SectionTitle>
       <SectionContent className="icon-angle-down" onClick={() => setIsMenuOpen(true)}>
         <IconCont>
-          <Icon type="user-icon" imageUrl={member && member.pictureUrl} size={30} top={2} />
+          <Icon type="user-icon" imageUrl={currentReporter && currentReporter.pictureUrl} size={30} top={2} />
         </IconCont>
-        {member && member.name}
+        {currentReporter && currentReporter.name}
       </SectionContent>
       <SelectMenu
         name="reporterId"
         value={value}
         isActive={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
-        onChange={(option) => updateTicketField({ reporterId: option.value })}
-        options={members.filter(member => member._id !== value).map(option => ({
-          key: option._id,
-          value: option._id,
+        onChange={({ value: reporter }) => {
+          updateTicketField({ field: 'reporterId', value: reporter._id });
+          updateTicketHistory('Reporter', currentReporter.name, reporter.name);
+        }}
+        options={members.filter(member => member._id !== value).map(reporter => ({
+          key: reporter._id,
+          value: reporter,
         }))}
-        renderValue={({ value: reporterId }) => renderUser(reporterId, members)}
+        renderValue={({ value: reporter }) => renderUser(reporter._id, members)}
       />
     </SectionContainer>
   )

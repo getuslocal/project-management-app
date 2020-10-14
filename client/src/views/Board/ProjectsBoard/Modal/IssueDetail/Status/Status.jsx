@@ -19,14 +19,16 @@ const IssueStatusMenu = ({
   columnOrder,
   projectId,
   ticketId,
+  updateTicketHistory
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const beforeColumn = getColumnIdOfTicket(columns, ticketId);
+  const currentColumnTitle = columns[beforeColumn].title;
 
-  const handleStatusChange = (column) => {
+  const handleStatusChange = (afterColumn) => {
     const columnMove = {
       beforeColumn: beforeColumn,
-      afterColumn: column.id
+      afterColumn: afterColumn
     }
     store.dispatch(updateTicketStatus(columnMove, ticketId, projectId))
   };
@@ -39,14 +41,16 @@ const IssueStatusMenu = ({
         className="icon-angle-down"
         onClick={() => setIsMenuOpen(true)}
       >
-        {beforeColumn && columns[beforeColumn].title}
+        {beforeColumn && currentColumnTitle}
       </Button>
       <SelectMenu
-        name="issuePriority"
         value={beforeColumn}
         isActive={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
-        onChange={(option) => handleStatusChange(option)}
+        onChange={(updatedColumn) => {
+          handleStatusChange(updatedColumn.id)
+          updateTicketHistory('Status', currentColumnTitle, updatedColumn.value)
+        }}
         options={Object.values(columns).filter(column => column.id !== beforeColumn).map(column => ({
           value: column.title,
           id: column.id,

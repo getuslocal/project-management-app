@@ -10,33 +10,36 @@ import {
   IconCont
 } from '../IssueDetail.style';
 
-function Priority({ value, updateTicketField }) {
+function Priority({ value: currentPriority, updateTicketField, updateTicketHistory }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <SectionContainer>
       <SectionTitle>Priority</SectionTitle>
       <SectionContent className="icon-angle-down" onClick={() => setIsMenuOpen(true)}>
         <IconCont>
-          <Icon type={`priority-${value.toLowerCase()}`} isSolid={true} size={12} />
+          <Icon type={`priority-${currentPriority.toLowerCase()}`} isSolid={true} size={12} />
         </IconCont>
-        {value}
+        {currentPriority}
       </SectionContent>
       <SelectMenu
         name="issuePriority"
-        value={value}
+        value={currentPriority}
         isActive={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
-        onChange={(option) => updateTicketField({ issuePriority: option.value })}
-        options={Object.values(IssuePriorities).filter(option => option !== value).map(option => ({
+        onChange={({ value: updatedPriority }) => {
+          updateTicketField({ field: "issuePriority", value: updatedPriority })
+          updateTicketHistory('Priority', currentPriority, updatedPriority)
+        }}
+        options={Object.values(IssuePriorities).filter(option => option !== currentPriority).map(option => ({
           key: option,
           value: option,
         }))}
-        renderValue={({ value: type }) => (
+        renderValue={({ value: priority }) => (
           <Fragment>
             <IconCont>
-              <Icon type={`priority-${type.toLowerCase()}`} isSolid={true} size={12} />
+              <Icon type={`priority-${priority.toLowerCase()}`} isSolid={true} size={12} />
             </IconCont>
-            {type}
+            {priority}
           </Fragment>
         )}
       />

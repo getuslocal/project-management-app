@@ -7,10 +7,13 @@ import { getMembersOfOrganization } from '../../../redux/members/members.actions
 import { selectProjectsIds } from '../../../redux/projects/projects.selectors';
 import { selectOrganization } from '../../../redux/organizations/organizations.selectors';
 import { createStructuredSelector } from 'reselect';
+import { selectTickets } from '../../../redux/tickets/tickets.selectors';
+import Spinner from '../../../shared/components/WithSpinner/Spinner';
 
 const DashBoardContainer = ({
   projectIds,
   organization,
+  tickets,
   getTicketsOfOrganization,
   getMembersOfOrganization,
   ...props
@@ -23,7 +26,13 @@ const DashBoardContainer = ({
     // Get all members of organization.
     getMembersOfOrganization(organization._id)
   }, []);
-  return <DashBoard {...props} />
+  return (
+    tickets.length > 0 ? (
+      <DashBoard tickets={tickets} {...props} />
+    ) : (
+        <Spinner />
+      )
+  )
 }
 
 DashBoardContainer.propTypes = {
@@ -35,6 +44,7 @@ DashBoardContainer.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   projectIds: selectProjectsIds,
+  tickets: selectTickets,
   organization: selectOrganization
 });
 

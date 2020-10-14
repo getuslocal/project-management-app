@@ -18,7 +18,7 @@ export const selectNonEpicTickets = createSelector(
 export const selectTicketByKey = search => createSelector(
   [selectTickets],
   tickets => {
-    console.log(tickets)
+    // console.log('selector called')
     // Parse query string passed to get ticket key.
     const parsed = queryString.parse(search);
     return tickets.find(ticket => ticket.key === parsed.selectedIssue)

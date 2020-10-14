@@ -6,6 +6,7 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { selectProjectById } from '../../../../../redux/projects/projects.selectors';
 import { updateTicket, deleteTicket, deleteEpicTicket } from '../../../../../redux/tickets/tickets.actions';
+import { updateHistory } from '../../../../../redux/projects/projects.actions';
 import { selectTicketByKey, selectTicketsLinkedWithEpic } from '../../../../../redux/tickets/tickets.selectors';
 import { IssueTypes } from '../../../../../shared/constants/issues'
 import Header from './Header/Header';
@@ -48,6 +49,7 @@ const IssueDetail = ({
   deleteEpicTicket,
   updateTicket,
   linkedIssues,
+  updateHistory,
   ...props
 }) => {
 
@@ -65,13 +67,30 @@ const IssueDetail = ({
     updatedAt,
     linkedEpic,
   } = ticket;
+  console.log('IssueDetail render')
 
   const isEpic = (ticket.issueType === IssueTypes.EPIC);
   const [childIssues, setChildIssues] = useState(linkedIssues);
 
   const updateTicketField = (updatedValue) => {
+    // Update ticket.
     updateTicket(ticket._id, updatedValue);
   }
+
+  // Update history of project.
+  const updateTicketHistory = (field, beforeValue, afterValue, type = "Update") => {
+    const logData = {
+      ticketId: ticket._id,
+      type: type,
+      field: field,
+      before: beforeValue,
+      after: afterValue,
+    }
+    console.log(logData)
+    updateHistory(projectInfo._id, logData)
+  }
+
+  // Delete Ticket
   const handleDeleteTicket = () => {
     if (isEpic) {
       deleteEpicTicket(ticketId, childIssues)
@@ -82,6 +101,7 @@ const IssueDetail = ({
     props.history.push(props.match.url)
   }
 
+  // Close modal by removing query string of selectedIssue.
   const closeModal = () => {
     props.history.push(props.match.url)
   }
@@ -104,10 +124,12 @@ const IssueDetail = ({
                 <Title
                   currentValue={summary}
                   updateTicketField={updateTicketField}
+                  updateTicketHistory={updateTicketHistory}
                 />
                 <Description
                   currentValue={description}
                   updateTicketField={updateTicketField}
+                  updateTicketHistory={updateTicketHistory}
                 />
                 {isEpic && (
                   <ChildIssue
@@ -119,6 +141,7 @@ const IssueDetail = ({
                 <Comments
                   comments={comments}
                   ticketId={ticketId}
+                  updateTicketHistory={updateTicketHistory}
                 />
               </Fieldset>
             </Left>
@@ -130,36 +153,43 @@ const IssueDetail = ({
                     columnOrder={projectInfo.columnOrder}
                     projectId={projectInfo._id}
                     ticketId={ticketId}
+                    updateTicketHistory={updateTicketHistory}
                   />) : (
                     <Fragment>
                       <Complete
                         isEpicDone={ticket.isEpicDone}
                         updateTicketField={updateTicketField}
+                        updateTicketHistory={updateTicketHistory}
                       />
                       <DatePicker
                         dateRange={ticket.dateRange}
                         updateTicketField={updateTicketField}
                         isStartDate={true}
+                        updateTicketHistory={updateTicketHistory}
                       />
                       <DatePicker
                         dateRange={ticket.dateRange}
                         updateTicketField={updateTicketField}
                         isEndDate={true}
+                        updateTicketHistory={updateTicketHistory}
                       />
                     </Fragment>
                   )}
                 <Assignee
                   value={assigneeId}
                   updateTicketField={updateTicketField}
+                  updateTicketHistory={updateTicketHistory}
                 />
                 <Priority
                   value={issuePriority}
                   updateTicketField={updateTicketField}
+                  updateTicketHistory={updateTicketHistory}
                 />
                 <Reporter
                   value={reporterId}
                   projectId={projectInfo._id}
                   updateTicketField={updateTicketField}
+                  updateTicketHistory={updateTicketHistory}
                 />
                 {isEpic && (
                   <Colors
@@ -184,6 +214,7 @@ IssueDetail.propTypes = {
   updateTicket: PropTypes.func.isRequired,
   deleteTicket: PropTypes.func.isRequired,
   deleteEpicTicket: PropTypes.func.isRequired,
+  updateHistory: PropTypes.func.isRequired,
 };
 
 IssueDetail.defaultProps = {
@@ -199,5 +230,5 @@ const mapStateToProps = (state, ownProps) => createStructuredSelector({
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { updateTicket, deleteTicket, deleteEpicTicket })
+  connect(mapStateToProps, { updateTicket, deleteTicket, deleteEpicTicket, updateHistory })
 )(IssueDetail);

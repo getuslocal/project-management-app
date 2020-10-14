@@ -54,17 +54,17 @@ router.delete('/:ticketId', verify, async (req, res) => {
 // @access Private
 router.post('/update/:id', verify, async (req, res) => {
   const ticketId = req.params.id;
-  const updatedValue = req.body;
+  const { field, value } = req.body;
 
   // Check the requested body's format is valid.
-  if (!updatedValue || typeof (updatedValue) !== "object") {
+  if (!field) {
     res.status(400).send("Invalid submission");
   }
 
   try {
     const updatedTicket = await Ticket.findOneAndUpdate(
       { _id: ticketId },
-      { $set: updatedValue },
+      { $set: { [field]: value } },
       { new: true, runValidator: true }
     );
     res.json(updatedTicket)

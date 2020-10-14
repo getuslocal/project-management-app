@@ -23,7 +23,7 @@ export const getMembersOfProject = (members) => async dispatch => {
 export const getMembersOfOrganization = (orgId) => async dispatch => {
   try {
     const res = await api.get(`/users/org/${orgId}`);
-    console.log(res)
+    // console.log(res)
     dispatch({
       type: GET_MEMBERS,
       payload: res.data

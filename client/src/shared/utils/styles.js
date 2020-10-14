@@ -1,7 +1,7 @@
 import { css } from 'styled-components';
 
 export const color = {
-  primary: '#0052cc', // Blue
+  primary: '#0f35a9', // Blue
   success: '#0B875B', // green
   danger: '#E13C3C', // red
   warning: '#F89C1C', // orange
@@ -11,6 +11,7 @@ export const color = {
   smokewhite: '#F5F5F5',
   purple: '#390099',
   white: '#fff',
+  black: '#172b4d',
 
   textDarkest: '#172b4d',
   textDark: '#42526E',
@@ -20,7 +21,6 @@ export const color = {
   textVeryLight2: 'rgb(211, 212, 213)',
   textLink: '#0052cc',
 
-
   backgroundDarkPrimary: '#0747A6',
   backgroundMedium: '#dfe1e6',
   backgroundLight: '#ebecf0',
@@ -28,7 +28,7 @@ export const color = {
   backgroundLightPrimary: '#D2E5FE',
   backgroundLightSuccess: '#E4FCEF',
 
-  borderLightest: '#dfe1e6',
+  borderLightest: 'rgba(211, 212, 213, .36)',
   borderLight: '#C1C7D0',
   borderInputFocus: '#4c9aff',
 

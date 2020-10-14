@@ -8,6 +8,11 @@ const userSchema = new Schema({
     trim: true,
     minlength: 5
   },
+  position: {
+    type: String,
+    required: true,
+    trim: true,
+  },
   name: {
     type: String,
     required: true,

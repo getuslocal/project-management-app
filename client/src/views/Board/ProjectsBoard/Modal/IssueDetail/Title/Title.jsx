@@ -4,7 +4,7 @@ import {
 } from './Title.style';
 import TextareaAutosize from 'react-textarea-autosize';
 
-const Title = ({ currentValue, updateTicketField, ...props }) => {
+const Title = ({ currentValue, updateTicketField, updateTicketHistory, ...props }) => {
   const [typingTimeout, setTypingTimeout] = useState(0);
   const [summary, setSummary] = useState(currentValue);
 
@@ -16,13 +16,13 @@ const Title = ({ currentValue, updateTicketField, ...props }) => {
     // Set a timeout to run after typing ends.
     const typingTimer = setTimeout(function () {
       // Update summary field 1000ms after stops typing. 
-      updateTicketField({ summary: value })
+      updateTicketField({ field: 'summary', value: value })
+      updateTicketHistory('Summary', null, null)
     }, 1000)
     setTypingTimeout(typingTimer)
   };
 
   return (
-
     <Container>
       <TextareaAutosize
         minRows={1}

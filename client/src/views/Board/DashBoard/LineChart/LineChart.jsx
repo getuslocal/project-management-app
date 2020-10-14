@@ -27,7 +27,7 @@ class LineChart extends React.Component {
           yAxes: [{
             display: true,
             gridLines: {
-              color: 'rgba(0,0,0,.1)',
+              color: 'rgba(0,0,0,.08)',
               borderDash: [2],
             },
           }]

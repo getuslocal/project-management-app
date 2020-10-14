@@ -1,3 +1,4 @@
+import { object } from 'prop-types';
 import { createSelector } from 'reselect';
 
 const projects = state => state.projects;
@@ -27,3 +28,16 @@ export const selectProjectById = id => createSelector(
   [selectProjects],
   projects => projects[id]
 );
+
+export const selectProjectHistory = id => createSelector(
+  [selectProjects],
+  projects => {
+    if (id) return projects[id].history;
+    const histories = Object.values(projects).reduce((acc, project) => {
+      acc = [...acc, ...project.history]
+      return acc;
+    }, []);
+    return histories
+  }
+);
+

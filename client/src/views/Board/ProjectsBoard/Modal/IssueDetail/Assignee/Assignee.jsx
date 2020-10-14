@@ -18,9 +18,9 @@ const UnassignText = styled.p`
   font-size: 14px;
 `
 
-function Assignee({ value, updateTicketField, members }) {
+function Assignee({ value, updateTicketField, members, updateTicketHistory }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const member = members.find(member => member._id === value)
+  const currentMember = members.find(member => member._id === value)
   return (
     <SectionContainer>
       <SectionTitle>Assignee</SectionTitle>
@@ -29,9 +29,9 @@ function Assignee({ value, updateTicketField, members }) {
           value ?
             <Fragment>
               <IconCont>
-                <Icon type="user-icon" imageUrl={member && member.pictureUrl} size={30} top={2} />
+                <Icon type="user-icon" imageUrl={currentMember && currentMember.pictureUrl} size={30} top={2} />
               </IconCont>
-              {member && member.name}
+              {currentMember && currentMember.name}
             </Fragment>
             :
             <Fragment>
@@ -43,12 +43,15 @@ function Assignee({ value, updateTicketField, members }) {
         value={value}
         isActive={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
-        onChange={(option) => updateTicketField({ assigneeId: option.value })}
-        options={members.filter(member => member._id !== value).map(option => ({
-          key: option._id,
-          value: option._id,
+        onChange={({ value: member }) => {
+          updateTicketField({ field: 'assigneeId', value: member._id });
+          updateTicketHistory('Assignee', currentMember.name, member.name);
+        }}
+        options={members.filter(member => member._id !== value).map(member => ({
+          key: member._id,
+          value: member,
         }))}
-        renderValue={({ value: assigneeId }) => renderUser(assigneeId, members)}
+        renderValue={({ value: member }) => renderUser(member._id, members)}
       />
     </SectionContainer>
   )

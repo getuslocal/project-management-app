@@ -14,7 +14,7 @@ const roles = {
     icon: 'icon-dashboard',
     tabs: [
       {
-        label: 'All projects',
+        label: 'Overview',
         linkUrl: ''
       },
     ],
@@ -52,7 +52,7 @@ const roles = {
     component: 'People',
     linkUrl: 'people-management',
     linkVariable: '',
-    title: 'People Management',
+    title: 'Project Management',
     icon: 'icon-user',
     tabs: []
   },
@@ -94,7 +94,6 @@ export const getRolesOfUser = (role) => {
         dashboard: roles.dashboard,
         projects: roles.projects,
         peopleManage: roles.peopleManage,
-        inbox: roles.inbox,
         adminSetting: roles.adminSetting,
       };
     case rolesList.PROJECTMANAGER:
@@ -102,13 +101,11 @@ export const getRolesOfUser = (role) => {
         dashboard: roles.dashboard,
         projects: roles.projects,
         projectMembers: roles.projectMembers,
-        inbox: roles.inbox,
       };
     case rolesList.DEVELOPER:
       return {
         dashboard: roles.dashboard,
         projects: roles.projects,
-        inbox: roles.inbox,
       };
     default:
       break;

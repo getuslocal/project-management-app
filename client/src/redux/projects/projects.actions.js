@@ -11,6 +11,7 @@ import {
   UPDATE_COLUMN_WITH_NEW_TICKET,
   UPDATE_COLUMN_WITH_DELETED_TICKET,
   SET_CURRENT_PROJECT_ID,
+  UPDATE_HISTORY
 } from './projects.types';
 import { updateWithProjectInfo } from '../roles/roles.actions';
 
@@ -43,6 +44,16 @@ export const updateProject = (projectId, formData) => async dispatch => {
   } catch (err) {
     console.log(err)
   }
+};
+
+// Update ticket history when it is updated/created/deleted.
+export const updateHistory = (projectId, logData) => async dispatch => {
+  const res = await api.post(`/projects/update/history/${projectId}`, logData);
+  // console.log(res)
+  dispatch({
+    type: UPDATE_HISTORY,
+    payload: { projectId, updatedHistory: res.data }
+  });
 };
 
 export const setCurrentProjectId = (projectId) => async dispatch => {

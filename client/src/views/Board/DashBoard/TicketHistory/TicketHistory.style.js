@@ -1,10 +1,8 @@
 import styled, { css } from 'styled-components'
-import { color } from '../../../../shared/utils/styles'
 
 export const Container = styled.div`
   position:relative;
   height: 100%;
-  padding: 5px;
 `;
 
 export const Table = styled.table`
@@ -15,6 +13,7 @@ word-wrap: break-word;
 `;
 
 export const Head = styled.thead`
+  border-bottom: 2px solid #dfe1e6;
   color: #6c798f;
   display:table;
   table-layout:fixed;/* even columns width , fix width of table too*/
@@ -24,24 +23,21 @@ export const Head = styled.thead`
 `;
 
 export const Body = styled.tbody`
-  /* max-height: 280px; */
-  /* overflow:auto; */
-  /* display: block; */
+  max-height: 280px;
+  overflow:auto;
+  display: block;
 `;
 export const BodyTableRow = styled.tr`
-  &:not(:last-child) {
-    border-bottom: 1px solid rgba(211, 212, 213, .36);
-  }
+  border-bottom: 1px solid #dfe1e6;
   width: 100%;
-  /* padding: 5px; */
   display:table;
   table-layout:fixed;
 `;
 
 export const TableHeader = styled.th`
-  color: ${color.textVeryLight};
-  font-size: 14.5px;
-  font-weight: 500;
+  color: #5e6c84;
+  font-size: 12px;
+  font-weight: 600;
   line-height: 16px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -53,28 +49,12 @@ export const TableHeader = styled.th`
 export const TableData = styled.td`
   padding: 10px 7px;
   width: ${(props) => props.width ? `${props.width}px` : 'auto'};
-  font-size: 14px;
-  font-weight: 500;
-  color: ${color.textDark};
-  
-  & > i {
-    color: ${color.textVeryLight2};
-    margin-right: 10px;
-  }
 `;
-export const FlexContainer = styled.div`
-  display: flex;
-  align-items: center;
-
-  & > i {
-    margin-right: 10px;
-  }
-`;
-export const Count = styled.p`
-  font-size: 13.5px;
-  font-weight: 500;
-  color: ${color.textMedium};
+export const ResultCounter = styled.p`
   position: absolute;
   bottom: 0;
   right: 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: #5e6c84;
 `;

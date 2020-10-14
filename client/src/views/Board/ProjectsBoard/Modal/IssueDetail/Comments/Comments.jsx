@@ -19,7 +19,7 @@ import {
 import {
   IconCont
 } from '../IssueDetail.style';
-const Comments = ({ currentUser, comments, ticketId, addComment, deleteComment }) => {
+const Comments = ({ currentUser, comments, ticketId, addComment, deleteComment, updateTicketHistory }) => {
   const [text, setText] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const { _id: userId, pictureUrl } = currentUser;
@@ -50,6 +50,7 @@ const Comments = ({ currentUser, comments, ticketId, addComment, deleteComment }
                   addComment(ticketId, { text })
                   setText('')
                   setIsOpen(false)
+                  updateTicketHistory(null, null, null, 'Comment')
                 }}
                 type="button"
               />

@@ -2,6 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Project = require('../models/project.model');
+const User = require('../models/user.model');
 const verify = require('../middleware/auth');
 
 // @route  GET projects/:org_id/:user_id
@@ -52,7 +53,8 @@ router.post('/create', verify, async (req, res) => {
     members: members,
     columns: defaultColumns,
     columnOrder: columnOrder,
-    projectIconUrl: ''
+    projectIconUrl: '',
+    history: [],
   });
 
   try {
@@ -87,6 +89,40 @@ router.post('/update/:id', verify, async (req, res) => {
       { new: true, runValidator: true }
     );
     res.json(updatedProject)
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+// @route  POST projects/update/tickets_order/:project_id
+// @desc   Update ticket order within the column 
+// @access Private 
+router.post('/update/history/:id', verify, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select('-password');
+    const post = await Project.findById(req.params.id);
+    const { ticketId, type, field, before, after } = req.body;
+
+    const newHistory = {
+      ticketId: ticketId,
+      type: type,
+      editor: user._id,
+      field: field,
+      before: before,
+      after: after,
+    };
+
+    // If the history length is equal or greater than 30,
+    // remove the last history item.
+    if (post.history.length >= 50) {
+      post.history.pop()
+    }
+
+    post.history.unshift(newHistory);
+
+    await post.save();
+
+    res.json(post.history);
   } catch (err) {
     res.status(400).send(err);
   }

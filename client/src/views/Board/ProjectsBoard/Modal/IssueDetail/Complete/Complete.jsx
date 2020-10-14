@@ -4,13 +4,18 @@ import {
   Button
 } from './Complete.style';
 
-const Complete = ({ isEpicDone, updateTicketField }) => (
+const Complete = ({ isEpicDone, updateTicketField, updateTicketHistory }) => (
   <div>
     <Button
       isEpicDone={isEpicDone}
       className="icon-check"
       type="button"
-      onClick={() => updateTicketField({ isEpicDone: !isEpicDone })}
+      onClick={() => {
+        updateTicketField({ field: 'isEpicDone', value: !isEpicDone })
+        if (!isEpicDone) {
+          updateTicketHistory(null, null, null, 'Complete')
+        }
+      }}
     >
       {isEpicDone ? 'Completed' : 'Mark Complete'}
     </Button>

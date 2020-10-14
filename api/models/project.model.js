@@ -2,53 +2,95 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const projectSchema = new Schema({
-    key: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-    owner: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-    orgId: {
+  key: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  owner: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  orgId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    trim: true,
+  },
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  members: {
+    type: Array,
+    required: true,
+    minlength: 1
+  },
+  columns: {
+    type: Object,
+    required: true,
+  },
+  columnOrder: {
+    type: Array,
+    required: true,
+  },
+  projectIconUrl: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
+  history: [
+    {
+      ticketId: {
         type: Schema.Types.ObjectId,
-        required: true,
-        trim: true,
-    },
-    name: {
+        required: true
+      },
+      type: {
         type: String,
-        required: true,
-        trim: true,
-    },
-    members: {
-        type: Array,
-        required: true,
-        minlength: 1
-    },
-    columns: {
-        type: Object,
-        required: true,
-    },
-    columnOrder: {
-        type: Array,
-        required: true,
-    },
-    projectIconUrl: {
+        required: true
+      },
+      editor: {
         type: String,
-        required: true,
-    },
-    description: {
+        required: true
+      },
+      field: {
         type: String,
-        required: true,
-    },
-    category: {
+        required: function () {
+          if (this.field === null) return false
+          return true
+        }
+      },
+      before: {
         type: String,
-        required: true,
-    },
+        required: function () {
+          if (this.before === null) return false
+          return true
+        }
+      },
+      after: {
+        type: String,
+        required: function () {
+          if (this.after === null) return false
+          return true
+        }
+      },
+      date: {
+        type: Date,
+        default: Date.now,
+        required: true
+      }
+    }
+  ],
 }, {
-    timestamps: true
+  timestamps: true
 });
 
 const Project = mongoose.model('Project', projectSchema);

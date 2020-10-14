@@ -1,6 +1,7 @@
 import {
   GET_PROJECTS,
   UPDATE_PROJECT,
+  UPDATE_HISTORY,
   SET_CURRENT_PROJECT_ID,
   UPDATE_ONE_COLUMN_TICKETS_ORDER,
   UPDATE_TWO_COLUMNS_TICKETS_ORDER,
@@ -33,6 +34,17 @@ const projectsReducer = (state = INITIAL_STATE, action) => {
         projects: {
           ...state.projects,
           [payload.projectId]: payload.updatedProject
+        },
+      }
+    case UPDATE_HISTORY:
+      return {
+        ...state,
+        projects: {
+          ...state.projects,
+          [payload.projectId]: {
+            ...state.projects[payload.projectId],
+            history: payload.updatedHistory
+          }
         },
       }
     case SET_CURRENT_PROJECT_ID:

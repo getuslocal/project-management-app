@@ -12,7 +12,7 @@ import {
   FILTER_TICKETS_BY_SEARCH,
   CLEAR_ALL_FILTERS,
 } from './tickets.types';
-import { updateColumnWithNewTicket, updateColumnWithDeletedTicket } from '../projects/projects.actions';
+import { updateColumnWithNewTicket, updateColumnWithDeletedTicket, updateHistory } from '../projects/projects.actions';
 
 // Get tickets of the project.
 export const getTicketsByProjectId = (projectId) => async dispatch => {
@@ -59,6 +59,15 @@ export const createNewTicket = (formData, columnId) => async dispatch => {
     const projectId = res.data.projectId;
     const ticketId = res.data._id;
     dispatch(updateColumnWithNewTicket(projectId, ticketId, columnId));
+    // Update history of project.
+    const logData = {
+      ticketId: ticketId,
+      type: 'New',
+      field: null,
+      before: null,
+      after: null,
+    }
+    dispatch(updateHistory(projectId, logData));
   } catch (err) {
     console.log(err)
   }

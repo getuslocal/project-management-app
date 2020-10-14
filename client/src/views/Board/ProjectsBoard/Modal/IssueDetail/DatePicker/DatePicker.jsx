@@ -9,13 +9,18 @@ import {
   Label,
 } from './DatePicker.style';
 
-export default function DatePicker({ dateRange, updateTicketField, isStartDate, isEndDate }) {
+export default function DatePicker({ dateRange, updateTicketField, isStartDate, isEndDate, updateTicketHistory }) {
   const [focused, setFocused] = useState(false);
   const momentedStartDate = moment(dateRange.startDate);
   const momentedEndDate = moment(dateRange.endDate);
 
   const handleDateChange = (updatedDateRange) => {
-    updateTicketField({ dateRange: updatedDateRange })
+    updateTicketField({ field: 'dateRange', value: updatedDateRange })
+    if (isStartDate) {
+      updateTicketHistory('Start Date', momentedStartDate, updatedDateRange.startDate)
+    } else if (isEndDate) {
+      updateTicketHistory('Due Date', momentedEndDate, updatedDateRange.endDate)
+    }
   };
 
   return (

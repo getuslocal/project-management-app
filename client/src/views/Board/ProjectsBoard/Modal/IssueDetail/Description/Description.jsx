@@ -10,7 +10,7 @@ import { Hover } from '../../../../../../shared/utils/global';
 import { color } from '../../../../../../shared/utils/styles';
 import Button from '../../../../../../shared/components/Button/Button'
 
-const Description = ({ currentValue, updateTicketField }) => {
+const Description = ({ currentValue, updateTicketField, updateTicketHistory }) => {
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [description, setDescription] = useState(currentValue);
   return (
@@ -22,8 +22,9 @@ const Description = ({ currentValue, updateTicketField }) => {
             <TextEditor value={description} onChange={(text) => setDescription(text)} />
             <ButtonsContainer>
               <Button text="Save" variant="primary" type="button" onClick={() => {
-                updateTicketField({ description: description })
+                updateTicketField({ field: 'description', value: description })
                 setIsEditorOpen(false)
+                updateTicketHistory('Description', null, null)
               }} />
               <Button text="Cancel" variant="text" type="button" onClick={() => setIsEditorOpen(false)} />
             </ButtonsContainer>

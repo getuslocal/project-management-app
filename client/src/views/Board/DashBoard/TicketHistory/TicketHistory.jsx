@@ -12,7 +12,7 @@ import {
   TableData,
   BodyTableRow,
   ResultCounter
-} from './AssignedList.style';
+} from './TicketHistory.style';
 
 export const AssignedList = ({ tickets }) => {
   return (
@@ -32,7 +32,7 @@ export const AssignedList = ({ tickets }) => {
               return (
                 <BodyTableRow key={ticket._id}>
                   <TableData width="30px" ><Icon type={ticket.issueType.toLowerCase()} size={13} top={-2} /></TableData>
-                  <TableData width="120px" style={{ color: '#5e6c84', fontWeight: 500 }}>{ticket.key}</TableData>
+                  <TableData width="120px" style={{ color: '#5e6c84', fontWeight: 500, fontSize: '14px' }}>{ticket.key}</TableData>
                   <TableData width="">{ticket.summary}</TableData>
                   <TableData width="30px"><Icon type={`priority-${ticket.issuePriority.toLowerCase()}`} isSolid={true} size={13} /></TableData>
                 </BodyTableRow>
