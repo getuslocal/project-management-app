@@ -5,7 +5,7 @@ export const Container = styled.div`
 `;
 
 export const SectionContainer = styled.div`
-  box-shadow: 0 1px 4px 2px rgba(15, 53, 169, .1);
+  box-shadow: ${props => props.noBoxShadow ? 'unset' : '0 1px 4px 2px rgba(15, 53, 169, .1)'};
   border-radius: 5px;
   width: ${(props) => props.width ? props.width : 'auto'};
   /* border-top: 5px solid #0f35a9; */

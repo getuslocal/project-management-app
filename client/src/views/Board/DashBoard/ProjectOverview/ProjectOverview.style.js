@@ -21,7 +21,6 @@ export const NameCont = styled.div`
 `;
 
 export const Name = styled.p`
-  color: ${color.textDarkest};
   font-size: 26px;
   font-weight: 600;
   margin-bottom: 5px;
@@ -32,7 +31,7 @@ export const IconCont = styled.p`
   right: 0;
   & > i {
     &::before {
-      border: 2px solid ${color.secondary}
+      border: 2px solid ${color.secondary};
     }
   }
 `;
@@ -62,7 +61,6 @@ export const ProjectLeadCont = styled.div`
   align-items: center;
 `;
 export const ProjectLead = styled.p`
-    color: ${color.textDark};
     font-weight: 500;
     display: flex;
     align-items: center;

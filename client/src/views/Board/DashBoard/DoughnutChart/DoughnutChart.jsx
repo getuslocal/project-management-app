@@ -41,14 +41,14 @@ class DoughnutChart extends React.Component {
               },
             }
           }
-        }
-        // legend: {
-        //   position: "right",
-        //   labels: {
-        //     fontSize: 14,
-        //     padding: 20,
-        //   }
-        // },
+        },
+        legend: {
+          position: "right",
+          labels: {
+            fontSize: 14,
+            padding: 20,
+          }
+        },
       },
     });
   }

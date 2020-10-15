@@ -27,21 +27,6 @@ export const ProjectsList = ({ projects, members }) => {
           ))
         }
       </ListContainer>
-            {/* <Right>
-        <RightTitle>Issue status</RightTitle>
-        <TaskTypeCont>
-          <TaskType><Icon type="ticket" isSolid={true} size={16} />To do <Number>18 issues</Number></TaskType>
-        </TaskTypeCont>
-        <TaskTypeCont>
-          <TaskType><Icon type="spinner" isSolid={true} size={16} />In Progress <Number>18 issues</Number></TaskType>
-        </TaskTypeCont>
-        <TaskTypeCont>
-          <TaskType><Icon type="check-square" size={16} />In Review <Number>18 issues</Number></TaskType>
-        </TaskTypeCont>
-        <TaskTypeCont>
-          <TaskType><Icon type="glass-cheers" isSolid={true} size={16} />Done <Number>18 issues</Number></TaskType>
-        </TaskTypeCont>
-      </Right> */}
     </div>
   )
 }

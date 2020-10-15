@@ -12,6 +12,7 @@ import AssignedList from './AssignedList/AssignedList';
 import ProgressBar from './ProgressBar/ProgressBar';
 import IssueHistory from './IssueHistory/IssueHistory';
 import ProjectOverview from './ProjectOverview/ProjectOverview';
+import { Margin } from '../../../shared/utils/global'
 import {
   Container,
   Row,
@@ -93,59 +94,53 @@ const DashBoard = ({ component, baseUrl, tickets, ...props }) => {
       <TopNavigationBar title={component.title} tabs={component.tabs} baseUrl={baseUrl} currentRoute={currentRoute} />
       <Container>
         <Row>
-          <SectionContainer width="70%">
-            {
-              !dashboardParams ? (
-                <Fragment>
-                  <SectionTitle>Tasks</SectionTitle>
+          {
+            !dashboardParams ? (
+              <SectionContainer width="70%">
+                <SectionTitle>Tasks</SectionTitle>
+                <SectionContent height="350px">
+                  <BarChart
+                    data={data ? data[3].data : []}
+                    title={data ? data[3].title : ''}
+                  />
+                </SectionContent>
+              </SectionContainer>
+            ) : (
+                <SectionContainer width="70%">
+                  <SectionTitle>Project Overview</SectionTitle>
                   <SectionContent height="350px">
-                    <BarChart
-                      data={data ? data[3].data : []}
-                      title={data ? data[3].title : ''}
-                      />
+                    <ProjectOverview projectId={dashboardParams} />
                   </SectionContent>
-                </Fragment>
-              ) : (
-                <Fragment>
-                    <SectionTitle>Project Overview</SectionTitle>
-                    <SectionContent height="350px">
-                      <ProjectOverview projectId={dashboardParams} />
-                    </SectionContent>
-                  </Fragment>
-                )
-              }
-          </SectionContainer>
+                </SectionContainer>
+              )
+          }
           <SectionContainer width="28%">
             <ProgressBar />
           </SectionContainer>
         </Row>
-              {/* <Row>
-                {dashboardParams && <IssueTypes />}
-              </Row> */}
         {
           !dashboardParams ? (
             <Row style={{ marginBottom: '45px' }}>
               <ProjectsList />
             </Row>
           ) : (
-              <Row>
-                <SectionContainer width="49%">
-                  <SectionTitle>Ticket Status</SectionTitle>
-                  <SectionContent height="340px">
-                    <DoughnutChart
-                      data={data ? data[3].data : []}
-                      title={data ? data[3].title : ''}
-                      colors={['rgba(15,53,169)', '#8CD7F8', 'rgba(101,186,67, .6)', 'rgba(86, 3, 173, .7)']}
-                    />
-                  </SectionContent>
-                </SectionContainer>
-                <SectionContainer width="49%">
-                  <SectionTitle>Assigned to me</SectionTitle>
-                  <SectionContent height="350px">
-                    <AssignedList />
-                  </SectionContent>
-                </SectionContainer>
-              </Row>
+              <Margin top={35} >
+                <Row>
+                  <SectionContainer noBoxShadow={true} >
+                    <IssueTypes />
+                  </SectionContainer>
+                  <SectionContainer width="calc(100% - 420px - 2%)">
+                    <SectionTitle>Ticket Status</SectionTitle>
+                    <SectionContent height="330px">
+                      <DoughnutChart
+                        data={data ? data[3].data : []}
+                        title={data ? data[3].title : ''}
+                        colors={['rgba(15,53,169)', '#8CD7F8', 'rgba(101,186,67, .6)', 'rgba(86, 3, 173, .7)']}
+                      />
+                    </SectionContent>
+                  </SectionContainer>
+                </Row>
+              </Margin>
             )
         }
         {
