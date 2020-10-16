@@ -21,15 +21,15 @@ export const TopRight = styled.div`
 `;
 
 export const NameText = styled.div`
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   margin-bottom: 7px;
 `;
 
 export const CategoryText = styled.div`
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 500;
-  color: ${color.textLight};
+  color: ${color.textMedium};
   `;
 
 export const ImageWithProgressBar = styled.div`
@@ -52,15 +52,15 @@ export const ProgressBarInner = styled.div`
 export const Center = styled.div`
   padding-bottom: 20px;
   margin-bottom: 10px;
-  min-height: 100px;
+  min-height: 120px;
   border-bottom: 1px solid rgba(211, 212, 213, .36);
 `;
 
 export const DescriptionText = styled.div`
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 500;
   color: ${color.textLight};
-  line-height: 1.6;
+  line-height: 1.8;
 `;
 
 export const Bottom = styled.div`

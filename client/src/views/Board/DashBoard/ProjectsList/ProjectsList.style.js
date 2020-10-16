@@ -9,5 +9,5 @@ export const ListContainer = styled.div`
 export const SectionTitle = styled.p`
   font-weight: 600;
   font-size: 16px;
-  margin: 15px 0;
+  margin-bottom: 15px;
 `;

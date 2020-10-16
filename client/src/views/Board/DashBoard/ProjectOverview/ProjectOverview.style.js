@@ -3,8 +3,8 @@ import { color } from '../../../../shared/utils/styles'
 import Button from '../../../../shared/components/Button/Button'
 
 export const Container = styled.div`
-  padding: 0 20px;
-  min-height: 330px;
+  padding: 20px 30px 10px;
+  min-height: 370px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -21,14 +21,13 @@ export const NameCont = styled.div`
 `;
 
 export const Name = styled.p`
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 600;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  margin-right: 20px;
 `;
 
 export const IconCont = styled.p`
-  position: absolute;
-  right: 0;
   & > i {
     &::before {
       border: 2px solid ${color.secondary};
@@ -40,12 +39,13 @@ export const Category = styled.p`
   margin-bottom: 20px;
   font-size: 16px;
   font-weight: 500;
-  color: ${color.textLight};
+  color: ${color.textDark};
 `;
 
 export const Description = styled.p`
   font-size: 14px;
   line-height: 2;
+  padding-right: 5%;
   color: ${color.textDark};
 `;
 
@@ -67,7 +67,7 @@ export const ProjectLead = styled.p`
     
     & > i {
     vertical-align: middle;
-    margin-right: 10px;
+    margin-right: 7px;
   }
 `;
 
@@ -85,7 +85,7 @@ export const Member = styled.div`
 
 export const BottomTitle = styled.p`
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   margin-right: 10px;
 `;
 

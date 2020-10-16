@@ -1,22 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import Chart from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-Chart.plugins.unregister(ChartDataLabels);
-// Chart.defaults.global.defaultFontColor = 'red';
 
-class LineChart extends React.Component {
-  constructor(props) {
-    super(props);
-    this.canvasRef = React.createRef();
-  }
-
-  componentDidMount() {
-    const myChartRef = this.canvasRef.current.getContext("2d");
+const LineChart = () => {
+  const canvasRef = useRef(null)
+  useEffect(() => {
+    const myChartRef = canvasRef.current.getContext("2d");
 
     new Chart(myChartRef, {
       type: 'line',
       options: {
         maintainAspectRatio: false,
+        responsive: true,
         scales: {
           xAxes: [{
             display: true,
@@ -63,11 +57,9 @@ class LineChart extends React.Component {
         ]
       }
     });
-  }
+  }, []);
 
-  render() {
-    return <canvas ref={this.canvasRef} />;
-  }
+  return <canvas ref={canvasRef} />
 }
 
 export default LineChart;

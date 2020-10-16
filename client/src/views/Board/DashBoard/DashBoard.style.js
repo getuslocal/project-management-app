@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components'
 
 export const Container = styled.div`
-
 `;
 
 export const SectionContainer = styled.div`
@@ -12,19 +11,20 @@ export const SectionContainer = styled.div`
   `;
 
 export const SectionContent = styled.div`
+  /* height: calc(100% - 42px); */
   padding: 10px;
-  min-height: ${(props) => props.height ? props.height : 'auto'};
+  height: ${(props) => props.height ? props.height : 'auto'};
 `;
 
 export const Row = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin: 20px 0;
+  margin: 20px 0 30px;
 `;
 
 export const SectionTitle = styled.p`
   font-weight: 600;
   font-size: 16px;
-  padding: 20px 20px 0;
+  padding: 20px 20px 10px;
 `;

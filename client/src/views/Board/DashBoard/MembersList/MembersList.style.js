@@ -4,7 +4,7 @@ import { color } from '../../../../shared/utils/styles'
 export const Container = styled.div`
   position:relative;
   height: 100%;
-  padding: 5px;
+  padding: 0 5px 5px;
 `;
 
 export const Table = styled.table`
@@ -28,6 +28,7 @@ export const Body = styled.tbody`
   /* overflow:auto; */
   /* display: block; */
 `;
+
 export const BodyTableRow = styled.tr`
   &:not(:last-child) {
     border-bottom: 1px solid rgba(211, 212, 213, .36);
@@ -39,7 +40,7 @@ export const BodyTableRow = styled.tr`
 `;
 
 export const TableHeader = styled.th`
-  color: ${color.textVeryLight};
+  color: ${color.textLight};
   font-size: 14.5px;
   font-weight: 500;
   line-height: 16px;

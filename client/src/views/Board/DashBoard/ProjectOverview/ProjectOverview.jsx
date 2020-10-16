@@ -26,12 +26,12 @@ export const ProjectOverview = ({ project, members }) => {
   const membersOfProject = members.filter(member => project.members.includes(member._id));
   const projectLead = membersOfProject.find(member => member._id === project.owner)
   return (
-    <Container>
+    <Container> 
       <Top>
         <NameCont>
           <Name>{project.name}</Name>
           <IconCont>
-            <Icon type="project-icon" imageUrl={project.projectIconUrl} size={70} />
+            <Icon type="project-icon" imageUrl={project.projectIconUrl} size={45}/>
           </IconCont>
         </NameCont>
         <Category>{project.category}</Category>

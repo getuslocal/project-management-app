@@ -4,13 +4,13 @@ import { color } from '../../../../shared/utils/styles'
 export const Block = styled.div`
   box-shadow: 0 1px 4px 2px rgba(15, 53, 169, .1);
   border-radius: 5px;
-  padding: 25px;
-  width: 200px;
-  height: 200px;
+  padding: 20px;
+  width: 50%;
 `;
 
 export const Row = styled.div`
   display: flex;
+  width: 100%;
 
   &:first-child{
     margin-bottom: 20px;
@@ -34,12 +34,13 @@ export const BlockContent = styled.div`
 `;
 
 export const Number = styled.p`
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 600;
   margin-bottom: 10px;
 `;
 
 export const BlockTitle = styled.p`
   font-weight: 500;
-  color: ${color.textDark};
+  font-size: 17px;
+  color: ${color.textMedium};
 `;

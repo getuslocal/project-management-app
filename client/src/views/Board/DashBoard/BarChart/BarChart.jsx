@@ -1,17 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js';
 
-// BarChart
-class BarChart extends React.Component {
-  constructor(props) {
-    super(props);
-    this.canvasRef = React.createRef();
+const barChartOption = {
+  maintainAspectRatio: false,
+  legend: {
+    // display: false,
+    // position: 'top',
+    labels: {
+      fontColor: '#172b4d',
+      fontStyle: "500",
+      fontSize: 14,
+      boxWidth: 14,
+      fontFamily: "Poppins",
+      padding: 20
+    }
+  },
+  animation: {
+    duration: 1000
+  },
+  // responsive: true,
+  scales: {
+    xAxes: [{
+      stacked: true,
+      gridLines: {
+        display: false,
+        drawBorder: false,
+      },
+      ticks: {
+        fontColor: 'rgba(0,0,0,.3)',
+        fontStyle: "bold",
+      },
+    }],
+    yAxes: [{
+      stacked: true,
+      gridLines: {
+        color: 'rgba(0,0,0,.08)',
+        borderDash: [3],
+        drawBorder: false,
+      },
+      ticks: {
+        fontColor: 'rgba(0,0,0,.3)',
+        fontStyle: "bold",
+        padding: 10
+      },
+    }]
   }
+}
 
-  componentDidMount() {
-    const myChartRef = this.canvasRef.current.getContext("2d");
-
-    this.myChart = new Chart(myChartRef, {
+const BarChart = () => {
+  const canvasRef = useRef(null)
+  useEffect(() => {
+    const myChartRef = canvasRef.current.getContext("2d");
+    new Chart(myChartRef, {
       type: 'bar',
       data: {
         labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -30,56 +70,13 @@ class BarChart extends React.Component {
           },
         ]
       },
-      options: {
-        // 凡例
-        legend: {
-          position: 'top',
-          labels: {
-            fontColor: '#172b4d',
-            fontStyle: "500",
-            fontSize: 14,
-            boxWidth: 14,
-            fontFamily: "Poppins",
-            padding: 20
-          }
-        },
-        // responsive: false,
-        maintainAspectRatio: false,
-        scales: {
-          xAxes: [{
-            stacked: true,
-            gridLines: {
-              display: false,
-              drawBorder: false,
-            },
-            ticks: {
-              fontColor: 'rgba(0,0,0,.3)',
-              fontStyle: "bold",
-            },
-          }],
-          yAxes: [{
-            stacked: true,
-            gridLines: {
-              color: 'rgba(0,0,0,.08)',
-              borderDash: [3],
-              drawBorder: false,
-            },
-            ticks: {
-              fontColor: 'rgba(0,0,0,.3)',
-              fontStyle: "bold",
-              padding: 10
-            },
-          }]
-        }
-      }
+      options: barChartOption,
     });
-  }
+  }, []);
 
-  render() {
-    return (
-      <canvas ref={this.canvasRef} />
-    );
-  }
+  return (
+    <canvas ref={canvasRef} />
+  );
 }
 
 export default BarChart;

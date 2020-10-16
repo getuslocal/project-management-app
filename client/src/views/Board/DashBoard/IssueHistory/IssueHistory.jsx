@@ -8,6 +8,7 @@ import Icon from '../../../../shared/components/Icon/Icon';
 import moment from 'moment'
 import {
   Container,
+  ListContainer,
   List,
   IconCont,
   MainContent,
@@ -16,7 +17,11 @@ import {
   Date,
   Top,
   Bottom,
-  Comment
+  Comment,
+  Left,
+  Right,
+  CircleMark,
+  Result
 } from './IssueHistory.style';
 
 /*
@@ -46,59 +51,67 @@ s*/
 
 export const IssueHistory = ({ historyList, members, tickets }) => {
   return (
-    <Container>
-      <ul>
-        {historyList.map(history => {
-          const { editor, field, ticketId, before, after, date, type } = history;
-          const editorData = members.find(member => member._id === editor);
-          const ticket = tickets.find(ticket => ticket._id === ticketId)
-          return (
-            <List key={history._id}>
-              <IconCont>
-                <Icon type="user-icon" imageUrl={editorData && editorData.pictureUrl} size={30} />
-              </IconCont>
-              <MainContent>
-                <Top>
-                  <EditorName>{editorData && editorData.name}</EditorName>
-                  {type === "Update" &&
-                    <span> updated <Bold>{field && field}</Bold>
-                      {before && (
-                        <Fragment>
-                          {' '}from{' '}
-                          <Bold>{before}</Bold>
-                        </Fragment>
-                      )}
-                      {after && (
-                        <Fragment>
-                          {' '}to{' '}
-                          <Bold>{after}</Bold>
-                        </Fragment>
-                      )}
-                      {' '}on{' '}
-                      {ticket && ticket.key} - {ticket && ticket.summary}
-                    </span>
-                  }
-                  {type === "New" &&
-                    <span> created a new ticket </span>
-                  }
-                  {type === "Complete" &&
-                    <span> maked complete on </span>
-                  }
-                  {type === "Comment" &&
-                    <span> commented on </span>
-                  }
-                </Top>
-                <Bottom>
-                  <Icon type={ticket && ticket.issueType.toLowerCase()} isSolid={true} size={12} top={-1} />
+    <Fragment>
+      <Container>
+        <ListContainer>
+          {historyList.map(history => {
+            const { editor, field, ticketId, before, after, date, type } = history;
+            const editorData = members.find(member => member._id === editor);
+            const ticket = tickets.find(ticket => ticket._id === ticketId)
+            return (
+              <List key={history._id}>
+                <Left>
                   <Date>{moment(date).fromNow()}</Date>
-                  <Comment>Comment</Comment>
-                </Bottom>
-              </MainContent>
-            </List>
-          )
-        })}
-      </ul>
-    </Container>
+                  <CircleMark />
+                </Left>
+                <Right>
+                  <IconCont>
+                    <Icon type="user-icon" imageUrl={editorData && editorData.pictureUrl} size={30} />
+                  </IconCont>
+                  <MainContent>
+                    <Top>
+                      <EditorName>{editorData && editorData.name}</EditorName>
+                      {type === "Update" &&
+                        <span> updated <Bold>{field && field}</Bold>
+                          {before && (
+                            <Fragment>
+                              {' '}from{' '}
+                              <Bold>{before}</Bold>
+                            </Fragment>
+                          )}
+                          {after && (
+                            <Fragment>
+                              {' '}to{' '}
+                              <Bold>{after}</Bold>
+                            </Fragment>
+                          )}
+                        </span>
+                      }
+                      {type === "New" &&
+                        <span> created a new ticket </span>
+                      }
+                      {type === "Complete" &&
+                        <span> maked complete on </span>
+                      }
+                      {type === "Comment" &&
+                        <span> commented on </span>
+                      }
+                    </Top>
+                    <Bottom>
+                      <Icon type={ticket && ticket.issueType.toLowerCase()} isSolid={true} size={12} top={-1} />
+                      <Comment>{ticket && ticket.key} - {ticket && ticket.summary}</Comment>
+                    </Bottom>
+                  </MainContent>
+                </Right>
+              </List>
+            )
+          })}
+        </ListContainer>
+      </Container>
+      <Result>
+        Display the latest 20 updates
+      </Result>
+    </Fragment>
   )
 }
 

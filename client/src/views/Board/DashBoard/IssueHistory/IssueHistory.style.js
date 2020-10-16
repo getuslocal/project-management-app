@@ -1,8 +1,36 @@
 import styled, { css } from 'styled-components'
+import { color } from '../../../../shared/utils/styles'
 
 export const Container = styled.div`
   max-height : 370px;
   overflow-y : scroll;
+
+  /* The emerging W3C standard
+   that is currently Firefox-only */
+    scrollbar-width: thin;
+    scrollbar-color: blue orange;
+
+  /* Works on Chrome/Edge/Safari */
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    background: ${color.borderLightest};
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${color.textDark};
+}
+`;
+export const ListContainer = styled.ul`
+position: relative;
+
+  &:before{
+    left: 115px;
+    height: 100%;
+    content: "";
+    position: absolute;
+    border-left: 2px solid ${color.primary};    
+  }
 `;
 
 export const SectionContainer = styled.div`
@@ -20,8 +48,7 @@ export const List = styled.li`
   display: flex;
   width: 100%;
   margin: 20px 0;
-  /* border-bottom: 1px solid #dfe1e6; */
-  padding: 5px;
+  padding: 5px 10px 5px 0;
 `;
 
 export const IconCont = styled.div`
@@ -42,22 +69,61 @@ export const Bold = styled.span`
 `;
 
 export const Date = styled.span`
-  margin: 0 10px;
   color: rgb(94, 108, 132);
   font-weight: 500;
   font-size: 11px;
+  display: inline-block;
+  text-align: right;
+  width: 100%;
+  margin-top: 10px;
+`;
+export const CircleMark = styled.span`
+  top: 10px;
+  left: 109px;
+  width: 14px;
+  border: 3px solid ${color.primary};
+  height: 14px;
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
 `;
 
 export const Top = styled.p`
   margin-bottom: 7px;
+
+  & > i {
+    vertical-align: middle;
+  }
+`;
+export const Left = styled.div`
+  min-width: 100px;
+  position: relative;
+  margin-right: 30px;
+`;
+export const Right = styled.div`
+  display: flex;
 `;
 
 export const Bottom = styled.p`
   display: flex;
   align-items: center;
+
+  & > i {
+    margin-right: 7px;
+  }
+
 `;
 export const Comment = styled.span`
   color: #3b73af;
   font-weight: 500;
   font-size: 11px;
+`;
+export const Result = styled.p`
+  font-weight: 500;
+  font-size: 11px;
+  text-align: right;
+  color: ${color.textMedium};
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
 `;
