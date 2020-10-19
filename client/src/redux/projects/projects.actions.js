@@ -63,13 +63,13 @@ export const setCurrentProjectId = (projectId) => async dispatch => {
   });
 };
 
-export const updateOneColumnTicketsOrder = (projectId, newColumn) => async dispatch => {
+export const updateOneColumnTicketsOrder = (projectId, newColumnOrder) => async dispatch => {
   try {
     dispatch({
       type: UPDATE_ONE_COLUMN_TICKETS_ORDER,
       payload: { projectId, newColumn }
     });
-    await api.post(`/projects/update/tickets_order/${projectId}`, { newColumn });
+    await api.post(`/projects/update/column_order/${projectId}`, { newColumnOrder });
     dispatch({
       type: SUCCESS_UPDATE_ORDER,
     });
@@ -86,7 +86,7 @@ export const updateTwoColumnsTicketsOrder = (projectId, newColumn) => async disp
       type: UPDATE_TWO_COLUMNS_TICKETS_ORDER,
       payload: { projectId, newColumn }
     });
-    await api.post(`/projects/update/tickets_order/${projectId}`, { newColumn });
+    await api.post(`/projects/column/update_twocol_taskids/${projectId}`, { newColumn });
     dispatch({
       type: SUCCESS_UPDATE_ORDER,
     });

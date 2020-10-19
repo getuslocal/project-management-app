@@ -37,11 +37,11 @@ const roles = {
         linkUrl: '/roadmap'
       },
       {
-        label: 'Members',
-        linkUrl: '/members'
+        label: 'Calendar',
+        linkUrl: '/calendar'
       },
       {
-        label: 'About',
+        label: 'Setting',
         linkUrl: '/about'
       },
     ],

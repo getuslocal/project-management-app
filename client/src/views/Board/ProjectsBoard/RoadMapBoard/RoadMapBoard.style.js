@@ -1,29 +1,21 @@
-import styled, {css} from 'styled-components';
+import styled from 'styled-components'
 
 export const Container = styled.div`
-`
-
-export const MainContent = styled.div`
+  height: 750px;
   width: 100%;
-  min-width: 1000px;
-  margin-top: ${(props) => props.isNavigationVisible == false && props.fixedContentHeight}px;
+  display: flex;
+  position: relative;
 `
 
-export const FixedContent = styled.div`
-  /* padding: 1px 0; */
-  position: static;
+export const Left = styled.div`
+  width: 270px;
+  min-width: 270px;
+  height: 100%;
+  background: whitesmoke;
+`
 
-    ${(props) =>
-      props.isNavigationVisible == false &&
-      css`
-      position: fixed;
-      padding-left: 3em;
-      padding-right: 3em;
-      top: 0;
-      right: 0;
-      left: 230px;
-      width: calc(100% - 230px);
-      z-index: 200;
-      background-color: #fff;
-    `};
+export const Right = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow-x: scroll;
 `

@@ -25,7 +25,7 @@ export const ListContainer = styled.ul`
 position: relative;
 
   &:before{
-    left: 115px;
+    left: 125px;
     height: 100%;
     content: "";
     position: absolute;
@@ -79,7 +79,7 @@ export const Date = styled.span`
 `;
 export const CircleMark = styled.span`
   top: 10px;
-  left: 109px;
+  left: 119px;
   width: 14px;
   border: 3px solid ${color.primary};
   height: 14px;
@@ -96,7 +96,7 @@ export const Top = styled.p`
   }
 `;
 export const Left = styled.div`
-  min-width: 100px;
+  min-width: 110px;
   position: relative;
   margin-right: 30px;
 `;

@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import queryString from 'query-string';
 import TopNavigationBar from '../../TopNavigationBar/TopNavigationBar';
 import KanbanBoard from './KanbanBoard/KanbanBoard';
+import CalendarBoard from './CalendarBoard/CalendarBoard';
 import RoadMapBoard from './RoadMapBoard/RoadMapBoard';
-import MembersBoard from './MembersBoard/MembersBoard';
 import AboutBoard from './AboutBoard/AboutBoard';
 import { selectProjectById } from '../../../redux/projects/projects.selectors';
 import { selectIsTicketsLoaded } from '../../../redux/tickets/tickets.selectors';
@@ -30,7 +30,7 @@ const ProjectsBoard = ({
   ...props
 }) => {
   // console.log(project)
-  const { members: projectMembers, _id: projectId, key: projectKeyName } = project
+  const { members: projectMembers, _id: projectId, key: projectKeyName, name} = project
   const { tab } = props.match.params;
   const projectUri = baseUrl + '/' + projectId;
   const currentRoute = tab ? tab : '';
@@ -52,7 +52,7 @@ const ProjectsBoard = ({
 
   return (
     <Fragment>
-      <TopNavigationBar title={projectKeyName} tabs={tabs} baseUrl={projectUri} currentRoute={currentRoute} />
+      <TopNavigationBar title={name} tabs={tabs} baseUrl={projectUri} currentRoute={currentRoute} />
       <Switch>
         <Route
           exact
@@ -66,8 +66,8 @@ const ProjectsBoard = ({
         />
         <Route
           exact
-          path={`${projectUri}/members`}
-          component={MembersBoard}
+          path={`${projectUri}/calendar`}
+          render={() => <CalendarBoard project={project} />}
         />
         <Route
           exact
