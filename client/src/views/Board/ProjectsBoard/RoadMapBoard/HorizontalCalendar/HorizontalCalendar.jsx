@@ -16,10 +16,10 @@ const getCalendarContent = (todayCellRef) => {
   while (dateEnd.diff(dateStart, 'days') >= 0) {
     const isToday = dateStart.isSame(moment(), 'day');
     days.push(
-      <DayCell ref={isToday ? todayCellRef : null}>
+      <DayCell key={`${dateStart.year()}-${dateStart.month()}-${dateStart.date()}`} ref={isToday ? todayCellRef : null}>
         {
           dateStart.day() === 4 &&
-          <p>
+          <p style={{ marginBottom: '5px' }}>
             {dateStart.format('MMM')}
             {dateStart.year() !== moment().year() && " '" + dateStart.format('YY')}
           </p>
@@ -27,7 +27,7 @@ const getCalendarContent = (todayCellRef) => {
         <Day isToday={isToday}>
           <DayName>{dateStart.format('dd').charAt(0)}</DayName>
           {dateStart.format('D')}
-          <Border></Border>
+          <Border isWeekend={(dateStart.day() === 0 || dateStart.day() === 6)}></Border>
         </Day>
       </DayCell>
     )
@@ -36,10 +36,7 @@ const getCalendarContent = (todayCellRef) => {
   return days
 }
 
-const HorizontalCalendar = ({todayCellRef}) => {
-
-  // useEffect(() => {
-  // }, []);
+const HorizontalCalendar = ({ todayCellRef }) => {
 
   return (
     <Container>

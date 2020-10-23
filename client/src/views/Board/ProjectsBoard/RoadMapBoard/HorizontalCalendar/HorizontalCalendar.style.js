@@ -4,15 +4,19 @@ import { color } from '../../../../../shared/utils/styles'
 export const Container = styled.div`
   display: flex;
   flex-wrap: none;
+  position: relative; // For current offsetLeft value.
+  padding-top: 3px;
+  margin-bottom: 20px;
 `
 
 export const DayCell = styled.div`
-  text-align: center;
+  /* text-align: center; */
   align-self: flex-end;
   min-width: 50px;
   width: 50px;
   font-size: 12.5px;
   font-weight: 500;
+  /* background: ${color.backgroundLightest}; */
 `
 
 export const Day = styled.div`
@@ -47,7 +51,20 @@ export const Border = styled.div`
   background-color: ${color.borderLightest};
   position: absolute;
   top: 25px;
-  left: 25px;
+  left: 0;
+
+  ${props => props.isWeekend && css`
+    &::after{
+      content: "";
+      position: absolute;
+      height: 100%;
+      width: 48px;
+      top: 0;
+      left: 2px;
+      background-image: linear-gradient(148deg, rgba(211, 212, 213, 0.36) 8.33%, #ffffff 8.33%, #ffffff 50%, rgba(211, 212, 213, 0.36) 50%, rgba(211, 212, 213, 0.36) 58.33%, #ffffff 58.33%, #ffffff 100%);
+      background-size: 11.32px 7.08px;
+    }
+  `}
 `
 
 export const DayName = styled.span`

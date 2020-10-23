@@ -7,6 +7,7 @@ import {
 const fontIconCodes = {
   [`user`]: '\f007',
   [`times`]: '\f00d',
+  [`plus`]: '\f067',
   [`link`]: '\f0c1',
   [`ticket`]: '\f3ff',
   [`spinner`]: '\f110',

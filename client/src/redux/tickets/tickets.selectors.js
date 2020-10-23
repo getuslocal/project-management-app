@@ -30,6 +30,7 @@ export const selectEpicTickets = createSelector(
   tickets => tickets.filter(ticket => ticket.issueType === 'Epic')
 );
 
+// @todo: Organize this fucntion as selectChildIssues is very similar as this.
 export const selectTicketsLinkedWithEpic = search => createSelector(
   [selectTickets],
   // Return ids of tickets linked with an epic as child issues.
@@ -39,6 +40,12 @@ export const selectTicketsLinkedWithEpic = search => createSelector(
     return tickets.filter(ticket => ticket.linkedEpic === foundEpic._id).map(ticket => ticket._id)
   }
 );
+
+export const selectChildIssues = epicId => createSelector(
+  [selectTickets],
+  tickets => tickets.filter(ticket => ticket.linkedEpic === epicId)
+);
+
 
 export const selectEpicById = id => createSelector(
   [selectEpicTickets],

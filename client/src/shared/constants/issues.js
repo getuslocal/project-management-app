@@ -16,9 +16,9 @@ export const IssuePriorities = {
 export const IssueColors = {
   PURPLE: {
     name: 'Purple',
-    font: 'rgb(34 0 202)',
-    bg: 'rgba(135, 119, 217, 0.4)',
-    border: '#5237dc',
+    font: 'rgb(21, 1, 123)',
+    bg: '#ddd6ff',
+    border: '#9e8aff',
   },
   YELLOW: {
     name: 'Yellow',
@@ -29,14 +29,15 @@ export const IssueColors = {
   BLUE: {
     name: 'Blue',
     font: '#0a5eff',
-    bg: 'rgb(218, 231, 255)',
+    // bg: 'rgb(218, 231, 255)',
+    bg: 'rgba(0, 0, 230, .83)',
     border: '#4786ff',
   },
   RED: {
     name: 'Red',
-    font: '#f8254e',
-    bg: 'rgba(253, 197, 208, 0.8)',
-    border: '#fa607e',
+    font: 'rgb(142, 17, 41)',
+    bg: '#ffdde4',
+    border: '#fd7993',
   },
 };
 
