@@ -29,7 +29,7 @@ export const color = {
   backgroundLightSuccess: '#E4FCEF',
 
   borderLightest: 'rgba(211, 212, 213, .36)',
-  borderLight: 'rgba(211, 212, 213, .85)',
+  borderLight: 'rgba(211, 212, 213, 1)',
   borderInputFocus: '#4c9aff',
 
   hoverGray: '#091e420d',

@@ -18,9 +18,16 @@ export const DayCell = styled.div`
   font-weight: 500;
   /* background: ${color.backgroundLightest}; */
 `
+export const MonthName = styled.p`
+  color: ${color.textVeryLight};
+  font-weight: 600;
+  text-transform:uppercase;
+`
 
 export const Day = styled.div`
-position: relative;
+  position: relative;
+  color: ${color.textMedium};
+  font-weight: 600;
 
   ${props => props.isToday && css`
     color: ${color.blue};
@@ -61,8 +68,8 @@ export const Border = styled.div`
       width: 48px;
       top: 0;
       left: 2px;
-      background-image: linear-gradient(148deg, rgba(211, 212, 213, 0.36) 8.33%, #ffffff 8.33%, #ffffff 50%, rgba(211, 212, 213, 0.36) 50%, rgba(211, 212, 213, 0.36) 58.33%, #ffffff 58.33%, #ffffff 100%);
-      background-size: 11.32px 7.08px;
+      background-size: auto auto;
+      background-image: repeating-linear-gradient(146deg, transparent, transparent 6px, rgba(211, 212, 213, 0.36) 6px, rgba(211, 212, 213, 0.36) 7px );
     }
   `}
 `
@@ -70,4 +77,5 @@ export const Border = styled.div`
 export const DayName = styled.span`
   color: ${color.textLight};
   margin-right: 5px;
+  font-weight: 500;
 `

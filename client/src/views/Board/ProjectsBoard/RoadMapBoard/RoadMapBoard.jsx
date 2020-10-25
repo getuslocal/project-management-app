@@ -9,8 +9,12 @@ import PropTypes from 'prop-types';
 import {
   Container,
   Left,
+  TopLeftContent,
   TopText,
-  Right
+  Right,
+  ViewButton,
+  Option,
+  TodayButton
 } from './RoadMapBoard.style'
 
 const RoadMapBoard = ({ project, epics }) => {
@@ -30,16 +34,23 @@ const RoadMapBoard = ({ project, epics }) => {
   return (
     <Fragment>
       <TopBar project={project} isEpicModal={true} />
-      {/* <button onClick={scrollToToday}>Today</button> */}
       <Container>
         <Left>
-          <TopText>{`Epic`}<span>3 total</span></TopText>
+          <TopLeftContent>
+            <ViewButton>
+              <Option isActive={true}>Weeks</Option>
+              <Option>Months</Option>
+            </ViewButton>
+            <TodayButton onClick={scrollToToday}>Today</TodayButton>
+          </TopLeftContent>
         </Left>
         <Right ref={scrollContainerRef}>
           <HorizontalCalendar todayCellRef={todayCellRef} />
-          {
-            epics.map(epic => <EpicList key={epic._id} epic={epic} />)
-          }
+          <div>
+            {
+              epics.map(epic => <EpicList key={epic._id} epic={epic} />)
+            }
+          </div>
         </Right>
       </Container>
     </Fragment>

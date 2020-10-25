@@ -6,7 +6,8 @@ import {
   DayCell,
   DayName,
   Day,
-  Border
+  Border,
+  MonthName
 } from './HorizontalCalendar.style'
 
 const getCalendarContent = (todayCellRef) => {
@@ -19,10 +20,10 @@ const getCalendarContent = (todayCellRef) => {
       <DayCell key={`${dateStart.year()}-${dateStart.month()}-${dateStart.date()}`} ref={isToday ? todayCellRef : null}>
         {
           dateStart.day() === 4 &&
-          <p style={{ marginBottom: '5px' }}>
+          <MonthName style={{ marginBottom: '5px' }}>
             {dateStart.format('MMM')}
             {dateStart.year() !== moment().year() && " '" + dateStart.format('YY')}
-          </p>
+          </MonthName>
         }
         <Day isToday={isToday}>
           <DayName>{dateStart.format('dd').charAt(0)}</DayName>
