@@ -15,6 +15,7 @@ export const Left = styled.div`
   min-width: 300px;
   height: 100%;
   border-right: 2px solid ${color.borderLight};
+  /* background: #fbfbfb; */
 `
 
 export const TopLeftContent = styled.div`

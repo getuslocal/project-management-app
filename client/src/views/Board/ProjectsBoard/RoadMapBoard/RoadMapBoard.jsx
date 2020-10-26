@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectEpicTickets } from '../../../../redux/tickets/tickets.selectors';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import {
   Container,
   Left,
@@ -31,6 +32,13 @@ const RoadMapBoard = ({ project, epics }) => {
     scrollContainerRef.current.scrollTo(todayCellPosX - offset, 0);
   }
 
+  const calculateBoardWidth = () => {
+    const dateStart = moment().subtract(1, 'years');
+    const dateEnd = moment().add(1, 'years');
+    const diff = dateEnd.diff(dateStart, 'days');
+    return diff * 50;
+  }
+
   return (
     <Fragment>
       <TopBar project={project} isEpicModal={true} />
@@ -48,7 +56,7 @@ const RoadMapBoard = ({ project, epics }) => {
           <HorizontalCalendar todayCellRef={todayCellRef} />
           <div>
             {
-              epics.map(epic => <EpicList key={epic._id} epic={epic} />)
+              epics.map(epic => <EpicList key={epic._id} epic={epic} boardWidth={calculateBoardWidth()} />)
             }
           </div>
         </Right>

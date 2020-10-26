@@ -2,12 +2,13 @@ import styled, { css } from 'styled-components'
 import { color } from '../../../../../shared/utils/styles'
 
 export const Row = styled.div`
-  width: 30000px;
-  margin-bottom: 50px;
+  height: 75px;
+  margin-bottom: 16px;
 `
 
 export const DraggableWrapper = styled.div`
   position: relative; 
+  top: 20px;
 `
 
 export const EpicContainer = styled.div`
@@ -22,39 +23,23 @@ export const Epic = styled.div`
   margin-left: 1px;
   margin-right: 1px;
   padding: 10px 15px; 
-  position: relative; 
-  z-index: 10;
-  top: 20px;
   font-weight: 500;
   font-size: 13.5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: ${color.white};
-
-  ${props => props.isChildIssuesVisible && css`
-    &::after{
-      content:"";
-      z-index: -1;
-      position: absolute;
-      width: 2px;
-      height: calc(98px);
-      top: 36px;
-      left: 23px;
-      background-color: ${props => props.progressColor};
-    }
-  `}
 `
 
 export const ResizeBar = styled.span`
   position: absolute; 
+  top: 0;
   display: inline-block;
   width: 10px;
   height: 36px;
   line-height: 36px;
   text-align: center;
   z-index: 100;
-  top: 20px;
   cursor: ew-resize;
 
   & > i {
@@ -89,34 +74,22 @@ export const Progress = styled.span`
 `
 
 export const ChildIssue = styled.div`
-  width: 298px;
-  max-width: 298px;
-  /* width: calc(100% - 50px); */
-  margin-top: 22px;
-  background-color: #ffdde4;
-  /* background-color: ${color.backgroundLightest}; */
-  border-left: 7px solid #fd7993;
+  min-width: 296px;
+  width: 296px;
+  max-width: 296px;
+  margin-right: 1px;
+  margin-left: 1px;
+  margin-top: 16px;
   border-radius: 5px;
-  left: 50px;
   padding: 2px 5px;
-  position: relative;
-  top: 20px;
+  position: sticky;
+  left: 8px;
   display: flex;
   align-items: center;
+  cursor: pointer;
   & > i {
     margin-right: 5px;
     vertical-align: middle;
-  }
-
-  &::before{
-    content:"";
-    position: absolute;
-    width: 25px;
-    height: 2px;
-    left: -32px;
-    /* top: 0; */
-    /* left: 25px; */
-    background-color: #fd7993;
   }
 `
 
@@ -153,6 +126,10 @@ export const TaskDetail = styled.div`
   /* border-bottom: 1px solid ${color.borderLight}; */
   border-radius: 7px;
   background-color: ${props => props.backgroundColor};
+
+  &:before{
+    padding-top: 100%;
+  }
 `
 export const EpicTitle = styled.p`
   cursor: pointer;
@@ -218,13 +195,13 @@ export const Bottom = styled.div`
 `
 
 export const ChildIssueDetail = styled.div`
-  padding: 12px 12px;
+  height: 50px;
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
   border-top: 1px solid rgba(0,0,0, .1);
-  font-size: 13.5px;
+  font-size: 12px;
   font-weight: 500;
+  padding: 0 10px;
 
   .square{
     color: rgba(0,0,0, .35);
@@ -240,4 +217,19 @@ export const ChildIssueTitle = styled.p`
     color: ${color.textDark};
     cursor: pointer;
   }
+`
+export const ChildIssueContainer = styled.div`
+  position: relative;
+  padding-top: 10px;
+`
+export const NoIssuesMessage = styled.p`
+  min-height: 50px;
+  height: 50px;
+  max-height: 50px;
+  line-height: 50px;
+  border-top: 1px solid rgba(0,0,0, .1);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  color: ${color.textDark};
 `

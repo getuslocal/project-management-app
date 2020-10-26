@@ -23,6 +23,7 @@ import {
   DraggableWrapper,
   Progress,
   Summary,
+  ChildIssueContainer,
   ChildIssue,
   ChildIssueSummary,
   Due,
@@ -32,10 +33,11 @@ import {
   ChildIssueTitle,
   Status,
   ResizeBar,
+  NoIssuesMessage
 } from './EpicList.style'
 
-const EpicList = ({ epic, childIssues, updateTicket, members, ...props }) => {
-  const { _id: epicId, dateRange, summary, key, createdAt, assigneeId } = epic;
+const EpicList = ({ epic, childIssues, updateTicket, members, boardWidth, ...props }) => {
+  const { _id: epicId, dateRange, summary, key: epicKey, createdAt, assigneeId } = epic;
   const epicColorProperty = IssueColors[epic.issueColor.toUpperCase()];
   const [dragProperties, setDragProperties] = useState({
     lastPosition: 0,
@@ -82,8 +84,9 @@ const EpicList = ({ epic, childIssues, updateTicket, members, ...props }) => {
   const onStop = (e, ui) => {
     const newPosition = ui.lastX;
     // Check if it is not dragged. If true, open issue detail modal.
-    if (dragProperties.lastPosition === newPosition) {
-      openIssueDetailModal()
+    // @todo: Figure out what deltaX is refering to.
+    if (dragProperties.lastPosition === newPosition && ui.deltaX === 0) {
+      openIssueDetailModal(epicKey)
       return;
     }
     // Get difference between new position and last position.
@@ -142,17 +145,25 @@ const EpicList = ({ epic, childIssues, updateTicket, members, ...props }) => {
     setResizeProperties({ ...resizeProperties, lastRightResizeX: newPosition });
   };
 
-  const openIssueDetailModal = () => {
+  const openIssueDetailModal = (key) => {
     const stringified = queryString.stringify({ selectedIssue: key });
     props.history.push(`${props.match.url}?${stringified}`)
   }
 
+  const calculateTaskDetailHeight = () => {
+    if (!isChildIssuesVisible) return 75;
+    const baseHeight = 75;
+    const childIssueHeight = (childIssues.length > 0 ? childIssues.length * 50 : 50);
+    return childIssueHeight + baseHeight;
+  }
+
   return (
-    <Row key={epic._id}>
+    <Row
+      key={epic._id}
+      style={{ height: `${calculateTaskDetailHeight()}px`, width: `${boardWidth}px` }}
+    >
       {/* Left part of the Row */}
-      <TaskDetail backgroundColor={epicColorProperty.bg} style={{
-        height: `${isChildIssuesVisible ? childIssues.length * 52 + 75 : '75'}px`
-      }}>
+      <TaskDetail backgroundColor={epicColorProperty.bg}>
         <Top>
           <Opener
             backgroundColor={epicColorProperty.border}
@@ -162,7 +173,7 @@ const EpicList = ({ epic, childIssues, updateTicket, members, ...props }) => {
             <Icon type="angle-down" size={14} isSolid={true} />
           </Opener>
           <div>
-            <EpicTitle onClick={openIssueDetailModal}>{epic.summary}</EpicTitle>
+            <EpicTitle onClick={() => openIssueDetailModal(epicKey)}>{epic.summary}</EpicTitle>
             <ProgressText>Overall Progress: <span>30%</span></ProgressText>
           </div>
         </Top>
@@ -170,16 +181,20 @@ const EpicList = ({ epic, childIssues, updateTicket, members, ...props }) => {
           isChildIssuesVisible && (
             <Bottom>
               {
-                childIssues.map(issue => {
-                  const assignee = members.find(member => member._id === issue.assigneeId)
-                  return (
-                    <ChildIssueDetail key={issue._id} >
-                      <Icon className="square" type="square" size={16} />
-                      <ChildIssueTitle >{issue.summary}</ChildIssueTitle>
-                      <Icon className="user-icon" type="user-icon" imageUrl={assignee && assignee.pictureUrl} size={24} top={2} />
-                    </ChildIssueDetail>
+                childIssues.length > 0 ? (
+                  childIssues.map(issue => {
+                    const assignee = members.find(member => member._id === issue.assigneeId)
+                    return (
+                      <ChildIssueDetail key={issue._id} >
+                        <Icon className="square" type="square" size={16} />
+                        <ChildIssueTitle onClick={() => openIssueDetailModal(issue.key)}>{issue.summary}</ChildIssueTitle>
+                        <Icon className="user-icon" type="user-icon" imageUrl={assignee && assignee.pictureUrl} size={24} top={2} />
+                      </ChildIssueDetail>
+                    )
+                  })
+                ) : (
+                    <NoIssuesMessage>No child issues added.</NoIssuesMessage>
                   )
-                })
               }
             </Bottom>
           )
@@ -197,7 +212,6 @@ const EpicList = ({ epic, childIssues, updateTicket, members, ...props }) => {
           onStop={onStop}
         >
           <EpicContainer epicWidth={epicWidth} >
-
             {/* Left Resize bar */}
             <Draggable
               axis="none"
@@ -248,12 +262,19 @@ const EpicList = ({ epic, childIssues, updateTicket, members, ...props }) => {
               </ResizeBar>
             </Draggable>
             {/* End of Right Resize Bar */}
-
-            {
-              isChildIssuesVisible && childIssues.map(issue => {
+          </EpicContainer>
+        </Draggable>
+        {
+          isChildIssuesVisible && (
+            <ChildIssueContainer
+              style={{
+                left: `calc(${dragProperties.currentPostion}px + 2px)`,
+                width: `calc(${epicWidth}px - 2px)`
+              }}>
+              {childIssues.map(issue => {
                 const asignee = members.find(member => member._id === issue.assigneeId)
                 return (
-                  <ChildIssue key={issue._id}>
+                  <ChildIssue key={issue._id} onClick={() => openIssueDetailModal(issue.key)} style={{ backgroundColor: epicColorProperty.bg }}>
                     <Icon type="user-icon" imageUrl={asignee && asignee.pictureUrl} size={27} top={2} />
                     <ChildIssueSummary>
                       {issue.summary}
@@ -262,10 +283,10 @@ const EpicList = ({ epic, childIssues, updateTicket, members, ...props }) => {
                     <Status>TO DO</Status>
                   </ChildIssue>
                 )
-              })
-            }
-          </EpicContainer>
-        </Draggable>
+              })}
+            </ChildIssueContainer>
+          )
+        }
       </DraggableWrapper>
       {/* End of right part of the Row */}
     </Row >
