@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Draggable from 'react-draggable'; // The default
 import PropTypes from 'prop-types'
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectChildIssues } from '../../../../../redux/tickets/tickets.selectors';
@@ -9,6 +11,7 @@ import { updateTicket } from '../../../../../redux/tickets/tickets.actions';
 import { IssueColors } from '../../../../../shared/constants/issues'
 import Icon from '../../../../../shared/components/Icon/Icon'
 import moment from 'moment'
+import queryString from 'query-string';
 import {
   TaskDetail,
   Row,
@@ -21,21 +24,20 @@ import {
   Progress,
   Summary,
   ChildIssue,
-  ChilsIssueSummary,
+  ChildIssueSummary,
   Due,
   Top,
   Bottom,
   ChildIssueDetail,
+  ChildIssueTitle,
   Status,
   ResizeBar,
 } from './EpicList.style'
 
-const EpicList = ({ epic, childIssues, updateTicket, members }) => {
+const EpicList = ({ epic, childIssues, updateTicket, members, ...props }) => {
   const { _id: epicId, dateRange, summary, key, createdAt, assigneeId } = epic;
   const epicColorProperty = IssueColors[epic.issueColor.toUpperCase()];
-  const [isChildIssuesVisible, setIsChildIssuesVisible] = useState(false);
   const [dragProperties, setDragProperties] = useState({
-    activeDrags: 0,
     lastPosition: 0,
     currentPostion: 0,
   });
@@ -43,18 +45,18 @@ const EpicList = ({ epic, childIssues, updateTicket, members }) => {
     lastLeftResizeX: 0,
     lastRightResizeX: 0,
   });
+  const [isChildIssuesVisible, setIsChildIssuesVisible] = useState(false);
   const [epicWidth, setEpicWidth] = useState(0);
   const draggableWrapperRef = useRef(null);
 
+  // Get default position of Epic Bar
   useEffect(() => {
-    // Get default position
     const momentedStartDate = moment(dateRange.startDate);
     const momentedEndDate = moment(dateRange.endDate);
-
     // Set epic bar width.
     const defaultEpicWidth = momentedEndDate.diff(momentedStartDate, 'days') * 50;
     setEpicWidth(defaultEpicWidth);
-
+    // Calculate position of the epic bar.
     const startDate = moment().set({
       'year': momentedStartDate.year(),
       'month': momentedStartDate.month(),
@@ -65,10 +67,6 @@ const EpicList = ({ epic, childIssues, updateTicket, members }) => {
     const firstXPostion = startDate.diff(firstDayOfCalendar, 'days') * 50;
     setDragProperties({ ...dragProperties, lastPosition: firstXPostion, currentPostion: firstXPostion })
   }, [])
-
-  const onStart = () => {
-    setDragProperties({ ...dragProperties, activeDrags: ++dragProperties.activeDrags });
-  };
 
   const handleDateChange = (difference) => {
     const newStartDate = moment(dateRange.startDate).add(difference, 'days');
@@ -83,13 +81,20 @@ const EpicList = ({ epic, childIssues, updateTicket, members }) => {
 
   const onStop = (e, ui) => {
     const newPosition = ui.lastX;
+    // Check if it is not dragged. If true, open issue detail modal.
+    if (dragProperties.lastPosition === newPosition) {
+      openIssueDetailModal()
+      return;
+    }
+    // Get difference between new position and last position.
     const difference = (newPosition - dragProperties.lastPosition) / 50;
+    // Update the epic start date and due date based on the diference.
     handleDateChange(difference);
+    // Update drag properties.
     setDragProperties({
       ...dragProperties,
-      activeDrags: --dragProperties.activeDrags,
       lastPosition: newPosition,
-      currentPostion: newPosition
+      currentPostion: newPosition,
     });
   };
 
@@ -110,9 +115,6 @@ const EpicList = ({ epic, childIssues, updateTicket, members }) => {
     const newPosition = ui.lastX;
     const difference = (newPosition - resizeProperties.lastLeftResizeX) / 50;
     const newStartDate = moment(dateRange.startDate).add(difference, 'days');
-    // console.log('new : ' + newPosition)
-    // console.log('prev : ' + resizeProperties.lastLeftResizeX)
-    // console.log(difference)
     const updateData = {
       field: 'dateRange',
       value: { ...dateRange, startDate: newStartDate }
@@ -122,14 +124,13 @@ const EpicList = ({ epic, childIssues, updateTicket, members }) => {
   };
 
   const onRightResizeDrag = (e, ui) => {
-    console.log('called')
     // When epic length is minimul length, skip this time.
     if (epicWidth <= 50 && ui.deltaX < 0) return;
     // Change width of the epic bar based on how much scrolled.
     setEpicWidth(lastEpicWidth => lastEpicWidth + ui.deltaX);
   };
 
-  const onResizeStop = (e, ui) => {
+  const onRightResizeStop = (e, ui) => {
     const newPosition = ui.lastX;
     const difference = (newPosition - resizeProperties.lastRightResizeX) / 50;
     const newEndDate = moment(dateRange.endDate).add(difference, 'days');
@@ -141,7 +142,10 @@ const EpicList = ({ epic, childIssues, updateTicket, members }) => {
     setResizeProperties({ ...resizeProperties, lastRightResizeX: newPosition });
   };
 
-  // console.log('render')
+  const openIssueDetailModal = () => {
+    const stringified = queryString.stringify({ selectedIssue: key });
+    props.history.push(`${props.match.url}?${stringified}`)
+  }
 
   return (
     <Row key={epic._id}>
@@ -158,7 +162,7 @@ const EpicList = ({ epic, childIssues, updateTicket, members }) => {
             <Icon type="angle-down" size={14} isSolid={true} />
           </Opener>
           <div>
-            <EpicTitle>{epic.summary}</EpicTitle>
+            <EpicTitle onClick={openIssueDetailModal}>{epic.summary}</EpicTitle>
             <ProgressText>Overall Progress: <span>30%</span></ProgressText>
           </div>
         </Top>
@@ -167,12 +171,12 @@ const EpicList = ({ epic, childIssues, updateTicket, members }) => {
             <Bottom>
               {
                 childIssues.map(issue => {
-                  const asignee = members.find(member => member._id === issue.assigneeId)
+                  const assignee = members.find(member => member._id === issue.assigneeId)
                   return (
                     <ChildIssueDetail key={issue._id} >
                       <Icon className="square" type="square" size={16} />
-                      {issue.summary}
-                      <Icon className="user-icon" type="user-icon" imageUrl={asignee && asignee.pictureUrl} size={24} top={2} />
+                      <ChildIssueTitle >{issue.summary}</ChildIssueTitle>
+                      <Icon className="user-icon" type="user-icon" imageUrl={assignee && assignee.pictureUrl} size={24} top={2} />
                     </ChildIssueDetail>
                   )
                 })
@@ -184,19 +188,17 @@ const EpicList = ({ epic, childIssues, updateTicket, members }) => {
       {/* End of left part of the Row */}
       {/* Right part of the Row */}
       <DraggableWrapper className="draggable-wrapper" ref={draggableWrapperRef}>
-
         <Draggable
           axis="x"
           handle=".epic"
           bounds="parent"
           grid={[50, 50]}
           position={{ x: dragProperties.currentPostion, y: 0 }}
-          onStart={onStart}
           onStop={onStop}
         >
           <EpicContainer epicWidth={epicWidth} >
 
-            {/* Left resize bar */}
+            {/* Left Resize bar */}
             <Draggable
               axis="none"
               handle=".left-resize-bar"
@@ -213,7 +215,7 @@ const EpicList = ({ epic, childIssues, updateTicket, members }) => {
                 <Icon type="grip-lines-vertical" size={10} isSolid={true} top={-1} />
               </ResizeBar>
             </Draggable>
-            {/* End of Left resize bar */}
+            {/* End of Left Resize bar */}
 
             {/* Epic Bar */}
             <Epic
@@ -230,13 +232,13 @@ const EpicList = ({ epic, childIssues, updateTicket, members }) => {
             </Epic>
             {/* End of Epic Bar */}
 
-            {/* Right resize bar */}
+            {/* Right Resize bar */}
             <Draggable
               axis="none"
               handle=".right-resize-bar"
               grid={[50, 50]}
               onDrag={onRightResizeDrag}
-              onStop={onResizeStop}
+              onStop={onRightResizeStop}
             >
               <ResizeBar
                 className="right-resize-bar"
@@ -245,7 +247,7 @@ const EpicList = ({ epic, childIssues, updateTicket, members }) => {
                 <Icon type="grip-lines-vertical" size={10} isSolid={true} top={-1} />
               </ResizeBar>
             </Draggable>
-            {/* right-resize-bar */}
+            {/* End of Right Resize Bar */}
 
             {
               isChildIssuesVisible && childIssues.map(issue => {
@@ -253,10 +255,10 @@ const EpicList = ({ epic, childIssues, updateTicket, members }) => {
                 return (
                   <ChildIssue key={issue._id}>
                     <Icon type="user-icon" imageUrl={asignee && asignee.pictureUrl} size={27} top={2} />
-                    <ChilsIssueSummary>
+                    <ChildIssueSummary>
                       {issue.summary}
                       <Due>Due Tomorrow</Due>
-                    </ChilsIssueSummary>
+                    </ChildIssueSummary>
                     <Status>TO DO</Status>
                   </ChildIssue>
                 )
@@ -264,7 +266,6 @@ const EpicList = ({ epic, childIssues, updateTicket, members }) => {
             }
           </EpicContainer>
         </Draggable>
-
       </DraggableWrapper>
       {/* End of right part of the Row */}
     </Row >
@@ -283,4 +284,7 @@ const mapStateToProps = (state, ownProps) => createStructuredSelector({
   members: selectMembers
 })
 
-export default connect(mapStateToProps, { updateTicket })(EpicList)
+export default compose(
+  withRouter,
+  connect(mapStateToProps, { updateTicket })
+)(EpicList);

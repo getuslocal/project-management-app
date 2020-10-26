@@ -30,7 +30,7 @@ export const IssueColors = {
   BLUE: {
     name: 'Blue',
     font: '#005e94',
-    bg: '#e2eeff',
+    bg: '#ddebff',
     border: '#598cff',
     light: '#a5c1ff',
   },

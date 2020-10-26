@@ -120,7 +120,7 @@ export const ChildIssue = styled.div`
   }
 `
 
-export const ChilsIssueSummary = styled.div`
+export const ChildIssueSummary = styled.div`
   font-size: 12px;
   font-weight: 500;
 `
@@ -232,5 +232,12 @@ export const ChildIssueDetail = styled.div`
   }
   .user-icon{
     margin-left: auto;
+  }
+`
+
+export const ChildIssueTitle = styled.p`
+  &:hover{
+    color: ${color.textDark};
+    cursor: pointer;
   }
 `
