@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment, useRef } from 'react';
+import React, { useState, useEffect, Fragment, useRef } from 'react';
 import TopBar from '../TopBar/TopBar';
 import HorizontalCalendar from './HorizontalCalendar/HorizontalCalendar'
 import EpicList from './EpicList/EpicList'
@@ -21,9 +21,12 @@ import {
 const RoadMapBoard = ({ project, epics }) => {
   const todayCellRef = useRef(null);
   const scrollContainerRef = useRef(null);
+  const containerRef = useRef(null);
+  const [boardHeight, setBoardHeight] = useState(0)
 
   useEffect(() => {
     scrollToToday()
+    setBoardHeight(containerRef.current.offsetHeight)
   }, [])
 
   const scrollToToday = () => {
@@ -42,7 +45,7 @@ const RoadMapBoard = ({ project, epics }) => {
   return (
     <Fragment>
       <TopBar project={project} isEpicModal={true} />
-      <Container>
+      <Container ref={containerRef}>
         <Left>
           <TopLeftContent>
             <ViewButton>
@@ -52,7 +55,7 @@ const RoadMapBoard = ({ project, epics }) => {
             <TodayButton onClick={scrollToToday}>Today</TodayButton>
           </TopLeftContent>
         </Left>
-        <Right ref={scrollContainerRef}>
+        <Right ref={scrollContainerRef} style={{ minHeight: `calc(${boardHeight}px - 4px)` }}>
           <HorizontalCalendar todayCellRef={todayCellRef} />
           <div>
             {

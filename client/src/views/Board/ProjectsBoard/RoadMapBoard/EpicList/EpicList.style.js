@@ -135,6 +135,10 @@ export const EpicTitle = styled.p`
   cursor: pointer;
   font-size: 14.5px;
   font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 200px;
   &:hover{
     color: ${color.textDark}
   }
@@ -189,6 +193,30 @@ export const Top = styled.div`
   height: 75px;
   padding-top: 10px;
   padding-bottom: 10px;
+
+  /* &:hover{
+    .new-child-issue-button {
+      display: block;
+    }
+  } */
+`
+export const NewChildIssueButton = styled.div`
+  margin-left: auto;
+  display: none;
+  & > i {
+    &:before {
+      cursor: pointer;
+      background-color: ${color.backgroundMedium};
+      height: 24px;
+      line-height: 24px;
+      width: 24px;
+      text-align: center;
+      display: inline-block;
+      border-radius: 5px;
+      color: ${color.textDark};
+      box-shadow: 0 1px 4px 1px rgba(0,0,0,.1);
+    }
+  }
 `
 
 export const Bottom = styled.div`

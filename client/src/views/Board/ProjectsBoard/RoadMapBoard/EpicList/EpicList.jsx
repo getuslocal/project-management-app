@@ -33,7 +33,8 @@ import {
   ChildIssueTitle,
   Status,
   ResizeBar,
-  NoIssuesMessage
+  NoIssuesMessage,
+  NewChildIssueButton
 } from './EpicList.style'
 
 const EpicList = ({ epic, childIssues, updateTicket, members, boardWidth, ...props }) => {
@@ -176,6 +177,9 @@ const EpicList = ({ epic, childIssues, updateTicket, members, boardWidth, ...pro
             <EpicTitle onClick={() => openIssueDetailModal(epicKey)}>{epic.summary}</EpicTitle>
             <ProgressText>Overall Progress: <span>30%</span></ProgressText>
           </div>
+          {/* <NewChildIssueButton className="new-child-issue-button">
+            <Icon type="plus" size={12} isSolid={true} />
+          </NewChildIssueButton> */}
         </Top>
         {
           isChildIssuesVisible && (
@@ -242,7 +246,6 @@ const EpicList = ({ epic, childIssues, updateTicket, members, boardWidth, ...pro
               }}
             >
               <Summary>{summary}</Summary>
-              {/* <Progress>30%</Progress> */}
             </Epic>
             {/* End of Epic Bar */}
 

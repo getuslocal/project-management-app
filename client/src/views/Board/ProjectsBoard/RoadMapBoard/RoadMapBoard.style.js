@@ -2,26 +2,41 @@ import styled, { css } from 'styled-components'
 import { color } from '../../../../shared/utils/styles'
 
 export const Container = styled.div`
-  height: 765px;
+  min-height: calc(100% - 200px);
   width: 100%;
   display: flex;
   position: relative;
   border: 2px solid ${color.borderLight};
   border-radius: 5px;
+
+  &:before{
+    content: "";
+    width: 2px;
+    height: 100%;
+    background-color:${color.borderLight};
+    position: absolute;
+    left: 298px;
+    display: inline-block;
+  }
 `
 
 export const Left = styled.div`
   width: 300px;
   min-width: 300px;
   height: 100%;
-  border-right: 2px solid ${color.borderLight};
-  /* background: #fbfbfb; */
+`
+
+export const Right = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
 `
 
 export const TopLeftContent = styled.div`
-  /* border-bottom: 2px solid ${color.borderLight}; */
   height: 50px;
-  padding: 0 10px;
+  padding-right: 12px;
+  padding-left: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -72,12 +87,4 @@ export const TodayButton = styled.button`
   &:hover{
     color: ${color.textLight};
   }
-`
-
-export const Right = styled.div`
-  width: 100%;
-  height: 100%;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  /* background: rgba(224, 224, 224, .1); */
 `
