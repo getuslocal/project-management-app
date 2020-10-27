@@ -4,29 +4,36 @@ import HorizontalCalendar from './HorizontalCalendar/HorizontalCalendar'
 import EpicList from './EpicList/EpicList'
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectEpicTickets } from '../../../../redux/tickets/tickets.selectors';
+import { selectFilteredEpics } from '../../../../redux/tickets/tickets.selectors';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import Icon from '../../../../shared/components/Icon/Icon';
+import IssueCreate from '../Modal/IssueCreate/IssueCreate';
+import { clearAllFilters } from '../../../../redux/tickets/tickets.actions';
 import {
   Container,
   Left,
   TopLeftContent,
-  TopText,
   Right,
   ViewButton,
   Option,
-  TodayButton
+  TodayButton,
+  ButtonWrapper,
+  NewEpicButton
 } from './RoadMapBoard.style'
 
-const RoadMapBoard = ({ project, epics }) => {
+const RoadMapBoard = ({ project, epics, clearAllFilters }) => {
   const todayCellRef = useRef(null);
   const scrollContainerRef = useRef(null);
   const containerRef = useRef(null);
-  const [boardHeight, setBoardHeight] = useState(0)
+  const [boardHeight, setBoardHeight] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     scrollToToday()
     setBoardHeight(containerRef.current.offsetHeight)
+    // Clean up filters before unmounting.
+    return () => { clearAllFilters() };
   }, [])
 
   const scrollToToday = () => {
@@ -61,9 +68,21 @@ const RoadMapBoard = ({ project, epics }) => {
             {
               epics.map(epic => <EpicList key={epic._id} epic={epic} boardWidth={calculateBoardWidth()} />)
             }
+            <ButtonWrapper
+              style={{ width: `${calculateBoardWidth()}px` }}
+              onClick={() => setIsModalOpen(true)}
+            >
+              <NewEpicButton><Icon type="plus" size={12} isSolid={true} />New Epic</NewEpicButton>
+            </ButtonWrapper>
           </div>
         </Right>
       </Container>
+      {isModalOpen && (
+        <IssueCreate
+          setIsModalOpen={setIsModalOpen}
+          isEpic={true}
+        />
+      )}
     </Fragment>
   )
 }
@@ -71,10 +90,11 @@ const RoadMapBoard = ({ project, epics }) => {
 RoadMapBoard.propTypes = {
   project: PropTypes.object.isRequired,
   epics: PropTypes.array.isRequired,
+  clearAllFilters: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  epics: selectEpicTickets,
+  epics: selectFilteredEpics,
 })
 
-export default connect(mapStateToProps, null)(RoadMapBoard)
+export default connect(mapStateToProps, { clearAllFilters })(RoadMapBoard)

@@ -8,7 +8,6 @@ import {
 const CalendarBoard = ({ project }) => {
   return (
     <Container>
-        <TopBar project={project} isEpicModal={true} />
         <Calendar />
     </Container>
   );

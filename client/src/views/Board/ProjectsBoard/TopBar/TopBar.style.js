@@ -53,17 +53,18 @@ border-right: 1px solid #dfe1e6;
 export const ModalButton = styled.button`
   border-radius: 3px;
   color:#fff;
-  padding: .6em;
   font-size: 14px;
   font-weight: 500;
-  margin-right: 1.5em;
-  
+  margin-right: 24px;
+  width: 105px;
+  height: 35px;
+
   &:hover{
     opacity: .9;
     cursor: pointer;
   }
 
-  background-color: ${({isEpicModal}) => isEpicModal  ? 'purple' : 'rgb(0, 82, 204)'} ;
+  background-color: ${({isEpicModal}) => isEpicModal  ? '#6554c0' : 'rgb(0, 82, 204)'} ;
 `
 export const Right = styled.div`
   display: flex;

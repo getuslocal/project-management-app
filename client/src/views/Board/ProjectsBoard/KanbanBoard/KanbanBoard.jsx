@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { updateOneColumnTicketsOrder, updateTwoColumnsTicketsOrder, updateColumnOrder } from '../../../../redux/projects/projects.actions';
 import { selectFilteredTickets } from '../../../../redux/tickets/tickets.selectors';
+import { clearAllFilters } from '../../../../redux/tickets/tickets.actions';
 import store from '../../../../redux/store';
 import Column from './Column/Column';
 import PropTypes from 'prop-types';
@@ -29,9 +30,14 @@ const InnerList = React.memo(props => {
   return <Column column={column} tickets={getTickets(ticketMap, column.taskIds)} index={index} />
 })
 
-const KanbanBoard = ({ project, tickets }) => {
+const KanbanBoard = ({ project, tickets, clearAllFilters }) => {
   const { columnOrder, columns, _id, name } = project;
   console.log('KanbanBoard render')
+
+  useEffect(() => {
+    // Clean up filters before unmounting.
+    return () => { clearAllFilters() };
+  }, [])
 
   const onDragEnd = result => {
     // console.log(result)
@@ -118,10 +124,11 @@ const KanbanBoard = ({ project, tickets }) => {
 
 KanbanBoard.propTypes = {
   tickets: PropTypes.array.isRequired,
+  clearAllFilters: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   tickets: selectFilteredTickets,
 });
 
-export default connect(mapStateToProps, null)(KanbanBoard);
+export default connect(mapStateToProps, { clearAllFilters })(KanbanBoard);

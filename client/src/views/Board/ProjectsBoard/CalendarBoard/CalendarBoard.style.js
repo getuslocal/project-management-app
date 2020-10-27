@@ -1,6 +1,7 @@
 import styled, {css} from 'styled-components';
 
 export const Container = styled.div`
+  padding-top: 20px;
 `
 
 export const MainContent = styled.div`

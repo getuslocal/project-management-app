@@ -31,6 +31,7 @@ export const Right = styled.div`
   height: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
+  /* padding-bottom: 30px; */
 `
 
 export const TopLeftContent = styled.div`
@@ -40,13 +41,6 @@ export const TopLeftContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
-
-export const TopText = styled.p`
-  line-height: 50px;
-  font-weight: 600;
-  color: ${color.textDark};
-  font-size: 14px;
 `
 
 export const ViewButton = styled.div`
@@ -86,5 +80,33 @@ export const TodayButton = styled.button`
 
   &:hover{
     color: ${color.textLight};
+  }
+`
+
+export const ButtonWrapper = styled.div`
+  height: 45px;
+  margin-bottom: 8px;
+`
+
+export const NewEpicButton = styled.button`
+  border-radius: 5px;
+  height: 45px;
+  width: 278px;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: left;
+  padding: 0 16px;
+  color: ${color.textMedium};
+  background-color: ${color.backgroundMedium};
+  position: absolute;
+  left: 10px;
+  top: auto;
+
+  & > i {
+    margin-right: 7px;
+  }
+
+  &:hover{
+    color:${color.textLight};
   }
 `

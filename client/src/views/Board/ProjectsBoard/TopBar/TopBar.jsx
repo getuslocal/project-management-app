@@ -7,7 +7,6 @@ import { selectMembers } from '../../../../redux/members/members.selectors';
 import { createStructuredSelector } from 'reselect';
 import { filterTicketsByUser, removeUserFilter, filterTicketsBySearch, clearAllFilters } from '../../../../redux/tickets/tickets.actions';
 import IssueCreate from '../Modal/IssueCreate/IssueCreate';
-
 import {
   Container,
   Breadcrumbs,
@@ -47,9 +46,13 @@ const TopBar = ({
           >Create {isEpicModal ? 'Epic' : 'Issue'}</ModalButton>
         </Left>
         <Right>
-          <InputContainer className="icon-search">
-            <Input placeholder="Filter issues..." value={searchFilter} onChange={(e) => filterTicketsBySearch(e.target.value)} />
-          </InputContainer>
+          {
+            !isEpicModal && (
+              <InputContainer className="icon-search">
+                <Input placeholder="Filter issues..." value={searchFilter} onChange={(e) => filterTicketsBySearch(e.target.value)} />
+              </InputContainer>
+            )
+          }
           <Members>
             <ul>
               {

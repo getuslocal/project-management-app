@@ -70,9 +70,7 @@ export const selectSearchFilter = createSelector(
 export const selectFilteredTickets = createSelector(
   [selectTickets, selectFilters],
   (tickets, filter) => {
-
     const { user, search } = filter;
-
     if (user.length > 0) {
       // Check if the ticket assignee is the same as the user in filter state.
       tickets = user.reduce((acc, userId) => {
@@ -80,14 +78,29 @@ export const selectFilteredTickets = createSelector(
         return acc;
       }, []);
     }
-
     if (search.length > 0) {
       // Check if the value matches any ticket's summary value. (Case insensitive)
       tickets = tickets.filter(ticket => ticket.summary.toLowerCase().includes(search.toLowerCase()))
     }
-
     // If the filter is empty, just return tickets.
     return tickets
+  }
+);
+
+export const selectFilteredEpics = createSelector(
+  [selectEpicTickets, selectFilters],
+  (epics, filter) => {
+    // Epics have only user filter.
+    const { user } = filter;
+    if (user.length > 0) {
+      // Check if the ticket assignee is the same as the user in filter state.
+      epics = user.reduce((acc, userId) => {
+        acc = [...acc, ...epics.filter(ticket => ticket.assigneeId === userId)]
+        return acc;
+      }, []);
+    }
+    // If the filter is empty, just return epics.
+    return epics
   }
 );
 
