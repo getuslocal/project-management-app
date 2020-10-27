@@ -17,7 +17,8 @@ export const Container = styled.div`
 
 export const TicketSummary = styled.p`
   margin-bottom: 8px;
-  font-size: 15px;
+  font-size: 13.5px;
+  font-weight: 500;
 `
 export const TicketStatus = styled.p`
   font-size: 12px;

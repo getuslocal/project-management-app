@@ -97,7 +97,7 @@ export const NewEpicButton = styled.button`
   text-align: left;
   padding: 0 16px;
   color: ${color.textMedium};
-  background-color: ${color.backgroundMedium};
+  background-color: ${color.backgroundLight};
   position: absolute;
   left: 10px;
   top: auto;

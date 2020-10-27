@@ -66,6 +66,7 @@ const KanbanBoard = ({ project, tickets, clearAllFilters }) => {
     const start = columns[source.droppableId];
     const finish = columns[destination.droppableId];
 
+    // Moving within the column.
     if (start === finish) {
       const newTicketsIds = Array.from(start.taskIds);
       newTicketsIds.splice(source.index, 1);

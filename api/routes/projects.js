@@ -143,17 +143,44 @@ router.post('/update/column_order/:project_id', verify, (req, res) => {
     })
 });
 
-// @route  POST projects/update/column/update_twocol_taskids/:project_id
-// @desc   Update the column taskIds array. 
-// @access Public 
-router.post('/update/column/update_twocol_taskids/:project_id', verify, async (req, res) => {
+// @route  POST projects/update/tickets_order/:project_id
+// @desc   Update ticket order within the column or between two columns. 
+// @access Private 
+router.post('/update/tickets_order/:project_id', verify, (req, res) => {
+  const projectId = req.params.project_id;
+  const { newColumn } = req.body;
+  Project.findById(projectId)
+    .then(project => {
+      if (newColumn.newStart !== undefined && newColumn.newFinish !== undefined) {
+        const { newStart, newFinish } = newColumn;
+        project.columns = {
+          ...project.columns,
+          [newStart.id]: newStart,
+          [newFinish.id]: newFinish
+        }
+      } else {
+        project.columns = {
+          ...project.columns,
+          [newColumn.id]: newColumn
+        }
+      }
+      project.save()
+        .then(() => res.json('project updated !'))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
+});
+
+// @route  POST projects/update/tickets_status/:project_id
+// @desc   Update tickets order when issue status of an existng ticket is changed.
+// @access Private 
+router.post('/update/ticket_status/:project_id', verify, async (req, res) => {
   const projectId = req.params.project_id;
   const { ticketId, columnMove } = req.body;
   const { beforeColumn, afterColumn } = columnMove;
   try {
     const project = await Project.findById(projectId);
     if (beforeColumn === afterColumn) {
-      res.json('Update Ticket !')
+      res.json('Update Ticket')
       return;
     }
     project.columns = {
@@ -174,10 +201,10 @@ router.post('/update/column/update_twocol_taskids/:project_id', verify, async (r
   }
 });
 
-// @route  POST projects/update/column/create_taskids/:project_id
+// @route  POST projects/update/taskids/:project_id
 // @desc   Create a new ticket and assign it to a proper location. 
 // @access Private 
-router.post('/update/column/create_taskids/:project_id', verify, async (req, res) => {
+router.post('/update/taskids/:project_id', verify, async (req, res) => {
   const projectId = req.params.project_id;
   const { ticketId, columnId } = req.body;
   try {
@@ -199,10 +226,10 @@ router.post('/update/column/create_taskids/:project_id', verify, async (req, res
   }
 });
 
-// @route  POST projects/update/column/delete_taskids/:project_id
+// @route  POST projects/delete/taskids/:project_id
 // @desc   Update the column taskIds array. 
 // @access Private 
-router.post('/update/column/delete_taskids/:project_id', verify, async (req, res) => {
+router.post('/delete/taskids/:project_id', verify, async (req, res) => {
   const projectId = req.params.project_id;
   const { columnId, ticketId } = req.body;
   try {
