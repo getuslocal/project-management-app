@@ -2,8 +2,8 @@ import styled, { keyframes } from 'styled-components'
 
 export const BarCont = styled.div`
   width: 100%;
-  height: 8px;
-  background-color: #dfe1e6;
+  height: ${props => props.height}px;
+  background-color: ${props => props.backgroundColor};
   border-radius: 10px;
 `;
 

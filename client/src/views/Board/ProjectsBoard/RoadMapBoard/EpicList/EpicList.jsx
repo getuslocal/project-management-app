@@ -6,38 +6,37 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectChildIssues } from '../../../../../redux/tickets/tickets.selectors';
+import { selectCurrentProject } from '../../../../../redux/projects/projects.selectors';
 import { selectMembers } from '../../../../../redux/members/members.selectors';
 import { updateTicket } from '../../../../../redux/tickets/tickets.actions';
 import { IssueColors } from '../../../../../shared/constants/issues'
 import Icon from '../../../../../shared/components/Icon/Icon'
 import moment from 'moment'
 import queryString from 'query-string';
+import EpicDetail from './EpicDetail/EpicDetail';
 import {
-  TaskDetail,
   Row,
-  Opener,
-  EpicTitle,
-  ProgressText,
   Epic,
   EpicContainer,
   DraggableWrapper,
-  Progress,
   Summary,
   ChildIssueContainer,
   ChildIssue,
   ChildIssueSummary,
   Due,
-  Top,
-  Bottom,
-  ChildIssueDetail,
-  ChildIssueTitle,
   Status,
   ResizeBar,
-  NoIssuesMessage,
-  NewChildIssueButton
 } from './EpicList.style'
 
-const EpicList = ({ epic, childIssues, updateTicket, members, boardWidth, ...props }) => {
+const EpicList = ({
+  epic,
+  childIssues,
+  updateTicket,
+  members,
+  boardWidth,
+  project: { columns, columnOrder },
+  ...props
+}) => {
   const { _id: epicId, dateRange, summary, key: epicKey, createdAt, assigneeId } = epic;
   const epicColorProperty = IssueColors[epic.issueColor.toUpperCase()];
   const [dragProperties, setDragProperties] = useState({
@@ -158,53 +157,35 @@ const EpicList = ({ epic, childIssues, updateTicket, members, boardWidth, ...pro
     return childIssueHeight + baseHeight;
   }
 
+  const updateChildIssuesWithStatus = (childIssues) => {
+    return childIssues.map(issue => {
+      const currentColumn = Object.values(columns).find(column => column.taskIds.includes(issue._id));
+      const isFirstColumn = (currentColumn && (currentColumn.id === columnOrder[0]));
+      const isDone = (currentColumn && (currentColumn.id === columnOrder[columnOrder.length - 1]));
+      return {
+        ...issue,
+        isFirstColumn: isFirstColumn,
+        isDone: isDone,
+        status: currentColumn.title
+      }
+    })
+  }
+
   return (
     <Row
       key={epic._id}
       style={{ height: `${calculateTaskDetailHeight()}px`, width: `${boardWidth}px` }}
     >
-      {/* Left part of the Row */}
-      <TaskDetail backgroundColor={epicColorProperty.bg}>
-        <Top>
-          <Opener
-            backgroundColor={epicColorProperty.border}
-            onClick={() => setIsChildIssuesVisible(!isChildIssuesVisible)}
-            isOpen={isChildIssuesVisible}
-          >
-            <Icon type="angle-down" size={14} isSolid={true} />
-          </Opener>
-          <div>
-            <EpicTitle onClick={() => openIssueDetailModal(epicKey)}>{epic.summary}</EpicTitle>
-            <ProgressText>Overall Progress: <span>30%</span></ProgressText>
-          </div>
-          {/* <NewChildIssueButton className="new-child-issue-button">
-            <Icon type="plus" size={12} isSolid={true} />
-          </NewChildIssueButton> */}
-        </Top>
-        {
-          isChildIssuesVisible && (
-            <Bottom>
-              {
-                childIssues.length > 0 ? (
-                  childIssues.map(issue => {
-                    const assignee = members.find(member => member._id === issue.assigneeId)
-                    return (
-                      <ChildIssueDetail key={issue._id} >
-                        <Icon className="square" type="square" size={16} />
-                        <ChildIssueTitle onClick={() => openIssueDetailModal(issue.key)}>{issue.summary}</ChildIssueTitle>
-                        <Icon className="user-icon" type="user-icon" imageUrl={assignee && assignee.pictureUrl} size={24} top={2} />
-                      </ChildIssueDetail>
-                    )
-                  })
-                ) : (
-                    <NoIssuesMessage>No child issues added.</NoIssuesMessage>
-                  )
-              }
-            </Bottom>
-          )
-        }
-      </TaskDetail >
-      {/* End of left part of the Row */}
+      {/* Left Part of the row */}
+      <EpicDetail
+        epicColorProperty={epicColorProperty}
+        isChildIssuesVisible={isChildIssuesVisible}
+        setIsChildIssuesVisible={setIsChildIssuesVisible}
+        openIssueDetailModal={openIssueDetailModal}
+        epic={epic}
+        childIssues={updateChildIssuesWithStatus(childIssues)}
+        members={members}
+      />
       {/* Right part of the Row */}
       <DraggableWrapper className="draggable-wrapper" ref={draggableWrapperRef}>
         <Draggable
@@ -216,7 +197,6 @@ const EpicList = ({ epic, childIssues, updateTicket, members, boardWidth, ...pro
           onStop={onStop}
         >
           <EpicContainer epicWidth={epicWidth} >
-            {/* Left Resize bar */}
             <Draggable
               axis="none"
               handle=".left-resize-bar"
@@ -233,9 +213,6 @@ const EpicList = ({ epic, childIssues, updateTicket, members, boardWidth, ...pro
                 <Icon type="grip-lines-vertical" size={10} isSolid={true} top={-1} />
               </ResizeBar>
             </Draggable>
-            {/* End of Left Resize bar */}
-
-            {/* Epic Bar */}
             <Epic
               className="epic"
               progressColor={epicColorProperty.border}
@@ -247,9 +224,6 @@ const EpicList = ({ epic, childIssues, updateTicket, members, boardWidth, ...pro
             >
               <Summary>{summary}</Summary>
             </Epic>
-            {/* End of Epic Bar */}
-
-            {/* Right Resize bar */}
             <Draggable
               axis="none"
               handle=".right-resize-bar"
@@ -264,7 +238,6 @@ const EpicList = ({ epic, childIssues, updateTicket, members, boardWidth, ...pro
                 <Icon type="grip-lines-vertical" size={10} isSolid={true} top={-1} />
               </ResizeBar>
             </Draggable>
-            {/* End of Right Resize Bar */}
           </EpicContainer>
         </Draggable>
         {
@@ -274,16 +247,18 @@ const EpicList = ({ epic, childIssues, updateTicket, members, boardWidth, ...pro
                 left: `calc(${dragProperties.currentPostion}px + 2px)`,
                 width: `calc(${epicWidth}px - 2px)`
               }}>
-              {childIssues.map(issue => {
-                const asignee = members.find(member => member._id === issue.assigneeId)
+              {updateChildIssuesWithStatus(childIssues).map(issue => {
+                const assignee = members.find(member => member._id === issue.assigneeId)
                 return (
                   <ChildIssue key={issue._id} onClick={() => openIssueDetailModal(issue.key)} style={{ backgroundColor: epicColorProperty.bg }}>
-                    <Icon type="user-icon" imageUrl={asignee && asignee.pictureUrl} size={27} top={2} />
+                    <Icon type="user-icon" imageUrl={assignee && assignee.pictureUrl} size={27} top={2} />
                     <ChildIssueSummary>
                       {issue.summary}
                       <Due>Due Tomorrow</Due>
                     </ChildIssueSummary>
-                    <Status>TO DO</Status>
+                    {
+                      issue.status && <Status isFirstColumn={issue.isFirstColumn} isDone={issue.isDone}>{issue.status}</Status>
+                    }
                   </ChildIssue>
                 )
               })}
@@ -291,7 +266,6 @@ const EpicList = ({ epic, childIssues, updateTicket, members, boardWidth, ...pro
           )
         }
       </DraggableWrapper>
-      {/* End of right part of the Row */}
     </Row >
   )
 }
@@ -301,11 +275,13 @@ EpicList.propTypes = {
   childIssues: PropTypes.array.isRequired,
   members: PropTypes.array.isRequired,
   updateTicket: PropTypes.func.isRequired,
+  project: PropTypes.object,
 }
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
   childIssues: selectChildIssues(ownProps.epic._id),
-  members: selectMembers
+  members: selectMembers,
+  project: selectCurrentProject
 })
 
 export default compose(

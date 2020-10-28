@@ -74,9 +74,9 @@ export const Progress = styled.span`
 `
 
 export const ChildIssue = styled.div`
-  min-width: 296px;
-  width: 296px;
-  max-width: 296px;
+  min-width: 346px;
+  width: 346px;
+  max-width: 346px;
   margin-right: 1px;
   margin-left: 1px;
   margin-top: 16px;
@@ -96,168 +96,38 @@ export const ChildIssue = styled.div`
 export const ChildIssueSummary = styled.div`
   font-size: 12px;
   font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 220px;
 `
 
 export const Due = styled.p`
   font-size: 10px;
   color: ${color.textMedium};
 `
+
 export const Status = styled.p`
   font-size: 10px;
   font-weight: 600;
-  color: ${color.textDark};
-  background-color: ${color.backgroundMedium};
+  color: rgb(7,71,166);
+  background-color: rgb(222,235,255);
   padding: 2px 5px;
   margin-left: auto;
   border-radius: 3px;
-`
 
-// 
+  ${props => props.isFirstColumn && css`
+    color: ${color.textDark};
+    background-color: ${color.backgroundMedium};
+  `}
 
-
-export const TaskDetail = styled.div`
-  min-height: 75px;
-  width: 278px;
-  user-select:none;
-  padding: 0 16px;
-  position: absolute; 
-  left: 10px; 
-  top: auto;
-  /* border-bottom: 1px solid ${color.borderLight}; */
-  border-radius: 7px;
-  background-color: ${props => props.backgroundColor};
-
-  &:before{
-    padding-top: 100%;
-  }
-`
-export const EpicTitle = styled.p`
-  cursor: pointer;
-  font-size: 14.5px;
-  font-weight: 500;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 200px;
-  &:hover{
-    color: ${color.textDark}
-  }
-`
-export const ProgressText = styled.p`
-  font-size: 11.5px;
-  font-weight: 500;
-  color: ${color.textLight};
-
-  & > span {
-    font-weight: 600;
-  }
-`
-
-export const Members = styled.div`
-  margin-left: auto;
-  & > span {
-    margin-left: -6px;
-    & > i::before {
-      border: 2px solid #fff;
-    }
-  }
-`
-
-export const Opener = styled.p`
-  margin-right: 10px;
-  cursor: pointer;
-  background-color: ${props => props.backgroundColor};
-  color: #fff;
-  height: 17px;
-  line-height: 17px;
-  min-width: 17px;
-  width: 17px;
-  text-align: center;
-  border-radius: 3px;
-  
-  ${props => props.isOpen && css`
-    & > i {
-      transition: all .3s;
-      transform:rotateX(180deg);
-      &:before{
-        position: relative;
-        top: 1px;
-      }
-    }
+  ${props => props.isDone && css`
+    color: ${color.success};
+    background-color: rgb(227,252,239);
   `}
 `
 
-export const Top = styled.div`
-  display: flex;
-  align-items: center;
-  height: 75px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-
-  /* &:hover{
-    .new-child-issue-button {
-      display: block;
-    }
-  } */
-`
-export const NewChildIssueButton = styled.div`
-  margin-left: auto;
-  display: none;
-  & > i {
-    &:before {
-      cursor: pointer;
-      background-color: ${color.backgroundMedium};
-      height: 24px;
-      line-height: 24px;
-      width: 24px;
-      text-align: center;
-      display: inline-block;
-      border-radius: 5px;
-      color: ${color.textDark};
-      box-shadow: 0 1px 4px 1px rgba(0,0,0,.1);
-    }
-  }
-`
-
-export const Bottom = styled.div`
-`
-
-export const ChildIssueDetail = styled.div`
-  height: 50px;
-  display: flex;
-  align-items: center;
-  border-top: 1px solid rgba(0,0,0, .1);
-  font-size: 12px;
-  font-weight: 500;
-  padding: 0 10px;
-
-  .square{
-    color: rgba(0,0,0, .35);
-    margin-right: 10px;
-  }
-  .user-icon{
-    margin-left: auto;
-  }
-`
-
-export const ChildIssueTitle = styled.p`
-  &:hover{
-    color: ${color.textDark};
-    cursor: pointer;
-  }
-`
 export const ChildIssueContainer = styled.div`
   position: relative;
   padding-top: 10px;
-`
-export const NoIssuesMessage = styled.p`
-  min-height: 50px;
-  height: 50px;
-  max-height: 50px;
-  line-height: 50px;
-  border-top: 1px solid rgba(0,0,0, .1);
-  font-size: 12px;
-  font-weight: 500;
-  text-align: center;
-  color: ${color.textDark};
 `

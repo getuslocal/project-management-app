@@ -30,13 +30,13 @@ const IssueDetailChildIssue = ({
 
   const addChildIssue = (ticket) => {
     setChildIssues([...childIssues, ticket._id])
-    updateTicket(ticket._id, { linkedEpic: epicId });
+    updateTicket(ticket._id, { field: 'linkedEpic', value: epicId });
   }
   const deleteChildIssue = (event, ticketId) => {
     // Prevent parent onClick firing.
     event.stopPropagation();
     setChildIssues(childIssues.filter(issue => issue !== ticketId))
-    updateTicket(ticketId, { linkedEpic: null });
+    updateTicket(ticketId, { field: 'linkedEpic', value: null });
   }
 
   return (

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import Icon from '../../../../../../shared/components/Icon/Icon';
+import {color} from '../../../../../../shared/utils/styles'
 
 export const Container = styled.div`
   background-color: rgb(255, 255, 255);
@@ -11,11 +12,13 @@ export const Container = styled.div`
   background-color: ${props => (props.isDragging ? 'rgb(222 ,235, 255)' : 'white')} ;
   &:hover{
     cursor: pointer;
-    background-color: rgb(244, 245, 247);
+    background-color: rgb(249, 249, 249);
   }
 `
 
 export const TicketSummary = styled.p`
+  overflow-wrap: break-word;
+  word-break: break-word;
   margin-bottom: 8px;
   font-size: 13.5px;
   font-weight: 500;
