@@ -26,7 +26,6 @@ const EpicDetail = ({
   members,
 }) => {
   const numberOfCompletedIssues = childIssues.filter(issue => issue.isDone).length;
-  console.log(childIssues.length)
   return (
     <Container backgroundColor={epicColorProperty.bg}>
       <Top>

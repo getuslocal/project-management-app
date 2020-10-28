@@ -102,7 +102,7 @@ const EpicList = ({
   };
 
   const onLeftResizeDrag = (e, ui) => {
-    // When epic length is minimul length, skip this time.
+    // When epic length is minimum length, skip.
     if (epicWidth <= 50 && ui.deltaX > 0) return;
     // Change width of the epic bar based on how much scrolled.
     setEpicWidth(lastEpicWidth => lastEpicWidth - ui.deltaX);
@@ -116,18 +116,28 @@ const EpicList = ({
 
   const onLeftResizeStop = (e, ui) => {
     const newPosition = ui.lastX;
+    const { startDate, endDate } = dateRange;
     const difference = (newPosition - resizeProperties.lastLeftResizeX) / 50;
-    const newStartDate = moment(dateRange.startDate).add(difference, 'days');
-    const updateData = {
-      field: 'dateRange',
-      value: { ...dateRange, startDate: newStartDate }
+    const newStartDate = moment(startDate).add(difference, 'days');
+    // If new start date is not before the end date, set the previous day of the end date.
+    if (!newStartDate.isBefore(moment(endDate), 'days')) {
+      const updateData = {
+        field: 'dateRange',
+        value: { ...dateRange, startDate: moment(endDate).subtract(1, 'days') }
+      }
+      updateTicket(epicId, updateData);
+    } else {
+      const updateData = {
+        field: 'dateRange',
+        value: { ...dateRange, startDate: newStartDate }
+      }
+      updateTicket(epicId, updateData);
     }
-    updateTicket(epicId, updateData);
     setResizeProperties({ ...resizeProperties, lastLeftResizeX: newPosition });
   };
 
   const onRightResizeDrag = (e, ui) => {
-    // When epic length is minimul length, skip this time.
+    // When epic length is minimum length, skip.
     if (epicWidth <= 50 && ui.deltaX < 0) return;
     // Change width of the epic bar based on how much scrolled.
     setEpicWidth(lastEpicWidth => lastEpicWidth + ui.deltaX);
@@ -135,13 +145,23 @@ const EpicList = ({
 
   const onRightResizeStop = (e, ui) => {
     const newPosition = ui.lastX;
+    const { startDate, endDate } = dateRange;
     const difference = (newPosition - resizeProperties.lastRightResizeX) / 50;
-    const newEndDate = moment(dateRange.endDate).add(difference, 'days');
-    const updateData = {
-      field: 'dateRange',
-      value: { ...dateRange, endDate: newEndDate }
+    const newEndDate = moment(endDate).add(difference, 'days');
+    // If new end date is not after the start date, set the next day of the start date.
+    if (!newEndDate.isAfter(moment(startDate), 'days')) {
+      const updateData = {
+        field: 'dateRange',
+        value: { ...dateRange, endDate: moment(startDate).add(1, 'days') }
+      }
+      updateTicket(epicId, updateData)
+    } else {
+      const updateData = {
+        field: 'dateRange',
+        value: { ...dateRange, endDate: newEndDate }
+      }
+      updateTicket(epicId, updateData)
     }
-    updateTicket(epicId, updateData)
     setResizeProperties({ ...resizeProperties, lastRightResizeX: newPosition });
   };
 
