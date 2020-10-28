@@ -2,18 +2,25 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect'
-import { selectNonEpicTickets } from '../../../../../../redux/tickets/tickets.selectors';
+import { selectNonEpicTickets, selectEpicTickets } from '../../../../../../redux/tickets/tickets.selectors';
 import SelectMenu from '../../../../../../shared/components/SelectMenu/SelectMenu';
 import Icon from '../../../../../../shared/components/Icon/Icon';
+import { IssueColors } from '../../../../../../shared/constants/issues'
 import {
   ListContainer,
   List,
   IconCont,
   Close,
   Key,
+  Summary,
   SectionTitle,
   SelectItem,
-  AddButton
+  AddButton,
+  LinkedEpic,
+  Left,
+  Right,
+  RightTop,
+  RightBottom,
 } from './ChildIssue.style';
 import {
   SectionContainer,
@@ -21,6 +28,7 @@ import {
 
 const IssueDetailChildIssue = ({
   epicId,
+  epics,
   updateTicket,
   tickets,
   childIssues,
@@ -56,7 +64,7 @@ const IssueDetailChildIssue = ({
                     <Icon type={thisIssue.issueType.toLowerCase()} isSolid={true} size={12} top={-1} />
                   </IconCont>
                   <Key>{thisIssue.key}</Key>
-                  {thisIssue.summary}
+                  <Summary>{thisIssue.summary}</Summary>
                 </List>
               )
             })
@@ -70,7 +78,7 @@ const IssueDetailChildIssue = ({
         setIsMenuOpen={setIsMenuOpen}
         onChange={(option) => addChildIssue(option.value)}
         options={issueOptions(tickets, childIssues)}
-        renderValue={({ value: ticket }) => renderOption(ticket)}
+        renderValue={({ value: ticket }) => renderOption(ticket, epics)}
       />
     </SectionContainer>
   )
@@ -83,12 +91,29 @@ const issueOptions = (tickets, childIssues) => (
   }))
 );
 
-const renderOption = (ticket) => {
+const renderOption = (ticket, epics) => {
+  const linkedEpic = epics.find(epic => epic._id === ticket.linkedEpic);
   return (
     <SelectItem>
-      <Icon type={ticket.issueType.toLowerCase()} isSolid={true} size={13} />
-      <Key style={{ fontWeight: 500 }}>{ticket.key}</Key>
-      {ticket.summary}
+      <Left>
+        <Icon type={ticket.issueType.toLowerCase()} isSolid={true} size={13} top={1}/>
+      </Left>
+      <Right>
+        <RightTop>
+          <Key>{ticket.key}:</Key>
+          {ticket.summary}
+        </RightTop>
+        <RightBottom>
+          {linkedEpic &&
+            <LinkedEpic
+              style={{
+                backgroundColor: IssueColors[linkedEpic.issueColor.toUpperCase()].bg,
+                color: IssueColors[linkedEpic.issueColor.toUpperCase()].font
+              }}
+            >{linkedEpic.summary}</LinkedEpic>
+          }
+        </RightBottom>
+      </Right>
     </SelectItem>
   )
 }
@@ -96,10 +121,12 @@ const renderOption = (ticket) => {
 IssueDetailChildIssue.propTypes = {
   tickets: PropTypes.array.isRequired,
   childIssues: PropTypes.array.isRequired,
+  epics: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   tickets: selectNonEpicTickets,
+  epics: selectEpicTickets
 });
 
 export default connect(mapStateToProps, null)(IssueDetailChildIssue);

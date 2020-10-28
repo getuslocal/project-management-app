@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Icon from '../../../../../../shared/components/Icon/Icon'
 import HorizontalProgressBar from '../../../../../../shared/components/HorizontalProgressBar/HorizontalProgressBar'
-import { color } from '../../../../../../shared/utils/styles'
 import {
   Container,
   OpenIcon,

@@ -34,8 +34,9 @@ export const Close = styled.span`
   margin-right: 8px;
   height: 14px;
   line-height: 14px;
-  text-align: center;
-  width: 14px;
+  min-width: 8px;
+  max-width: 8px;
+  width: 8px;
 
   &:hover{
     cursor: pointer;
@@ -50,6 +51,10 @@ export const Key = styled.span`
   color: rgb(137, 147, 164);
   margin-right: 5px;
   font-weight: 600;
+  white-space: nowrap;
+`
+
+export const Summary = styled.span`
 `
 
 export const SectionTitle = styled.div`
@@ -60,14 +65,41 @@ export const SectionTitle = styled.div`
 `
 
 export const SelectItem = styled.div`
-  font-size: 14px;
+  font-size: 12px;
+  width: 100%;
   color: #172b4d;
   font-style: normal;
   font-weight: 400;
   display: flex;
-  align-items: center;
 
   & > i{
     margin-right: 7px;
   }
+`
+
+export const LinkedEpic = styled.p`
+  border-radius: 3px;
+  display: inline-block;
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 2px 4px;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`
+
+export const Left = styled.div`
+  margin-right: 10px;
+`
+export const Right = styled.div`
+  width: 100%;
+`
+export const RightTop = styled.div`
+`
+
+export const RightBottom = styled.div`
+  margin-top: 4px;
 `
