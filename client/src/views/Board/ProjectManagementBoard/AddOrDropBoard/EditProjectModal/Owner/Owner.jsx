@@ -1,8 +1,8 @@
 import React, { useState, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import SelectMenu from '../../../../../shared/components/SelectMenu/SelectMenu';
-import Icon from '../../../../../shared/components/Icon/Icon';
-import { selectMembers } from '../../../../../redux/members/members.selectors';
+import SelectMenu from '../../../../../../shared/components/SelectMenu/SelectMenu';
+import Icon from '../../../../../../shared/components/Icon/Icon';
+import { selectMembers } from '../../../../../../redux/members/members.selectors';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {

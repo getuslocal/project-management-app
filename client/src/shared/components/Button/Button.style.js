@@ -12,12 +12,17 @@ const largeButtonStyle = css`
   padding: 10px 16px;
 `
 
+const smallButtonStyle = css`
+  font-size: 12px;
+  padding: 7px 6px;
+`
+
 export const StyledButton = styled.button`
   display: inline-block;
   font-weight: 500;
   font-size: 14px;
   border-radius: 3px;
-  padding: 8px 12px;
+  padding: 10px 12px;
   ${props => buttonVariants[props.variant]}
 `
 
@@ -48,6 +53,7 @@ const buttonVariants = {
   text: css`
     ${textButtonStyle}
   `,
+  small: smallButtonStyle,
 };
 
 // @todo : Organize the followings for LP.

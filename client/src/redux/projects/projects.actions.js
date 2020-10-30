@@ -2,6 +2,8 @@ import api from '../../shared/utils/api';
 import {
   GET_PROJECTS,
   UPDATE_PROJECT,
+  CREATE_PROJECT,
+  DELETE_PROJECT,
   UPDATE_ONE_COLUMN_TICKETS_ORDER,
   UPDATE_TWO_COLUMNS_TICKETS_ORDER,
   UPDATE_COLUMN_ORDER,
@@ -30,6 +32,20 @@ export const getProjectsOfUser = (orgId, userId) => async dispatch => {
   }
 };
 
+// Create a new project 
+export const createNewProject = (formData) => async dispatch => {
+  try {
+    const res = await api.post("/projects/create", formData);
+    console.log(res)
+    dispatch({
+      type: CREATE_PROJECT,
+      payload: res.data
+    });
+  } catch (err) {
+    console.log(err)
+  }
+};
+
 // Update project 
 export const updateProject = (projectId, formData) => async dispatch => {
   try {
@@ -45,6 +61,20 @@ export const updateProject = (projectId, formData) => async dispatch => {
     console.log(err)
   }
 };
+
+// Create a new project 
+export const deleteProject = (pid) => async dispatch => {
+  try {
+    await api.delete(`/projects/${pid}`);
+    dispatch({
+      type: DELETE_PROJECT,
+      payload: pid
+    });
+  } catch (err) {
+    console.log(err)
+  }
+};
+
 
 // Update ticket history when it is updated/created/deleted.
 export const updateHistory = (projectId, logData) => async dispatch => {

@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+import { color } from '../../utils/styles'
 
 export const FormContainer = styled.div`
   margin: 20px 0;
@@ -20,7 +21,7 @@ export const FormContent = styled.div`
 const CommonFormStyle = css`
   font-size: 14px;
   font-weight: 400;
-  color: #172b4d;
+  color: ${color.textDark};
   font-style: normal;
   line-height: 20px;
   padding: 5px 8px;
@@ -41,11 +42,25 @@ const CommonFormStyle = css`
     box-shadow: rgb(76,154,255) 0px 0px 0px 1px;
     background-color: #fff;
   }
+
+  ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: ${color.textLight};
+    opacity: 1; /* Firefox */
+  }
+
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: ${color.textLight};
+  }
+
+  ::-ms-input-placeholder { /* Microsoft Edge */
+    color: ${color.textLight};
+  }
 `
 
 export const Input = styled.input`
   ${CommonFormStyle}
   width: ${props => (props.width ? `${props.width}px` : '100%')};
+  height: ${props => (props.height ? `${props.height}px` : 'auto')};
 `
 
 export const TextArea = styled.textarea`
@@ -57,5 +72,17 @@ export const Description = styled.p`
   font-weight: 400;
   line-height: 20px;
   font-size: 11px;
-  color: #6c798f;
+  color: ${color.textLight};
+`
+
+export const Warning = styled.p`
+  font-weight: 500;
+  line-height: 20px;
+  font-size: 11px;
+  color: ${color.textLight};
+
+  & > span {
+    color: ${color.danger};
+    font-size: 13px;
+  }
 `

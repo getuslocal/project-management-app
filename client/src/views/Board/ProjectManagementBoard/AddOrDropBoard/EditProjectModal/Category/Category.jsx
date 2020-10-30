@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import SelectMenu from '../../../../../shared/components/SelectMenu/SelectMenu';
-import Icon from '../../../../../shared/components/Icon/Icon';
-import { projectCategories } from '../../../../../shared/constants/projects';
+import SelectMenu from '../../../../../../shared/components/SelectMenu/SelectMenu';
+import Icon from '../../../../../../shared/components/Icon/Icon';
+import { projectCategories } from '../../../../../../shared/constants/projects';
 import {
   SectionContainer,
   SectionTitle,
@@ -18,7 +18,7 @@ function IssueCreateTypeField({ currentCategory, onChange }) {
       <SectionTitle>Category</SectionTitle>
       <SectionContent onClick={() => setIsMenuOpen(true)}>
         <SelectItem>
-          {currentCategory}
+          {currentCategory ? currentCategory : <span className="placeholder">Choose a category</span>}
         </SelectItem>
         <AngleDownIcon>
           <Icon type="angle-down" isSolid={true} size={14} />

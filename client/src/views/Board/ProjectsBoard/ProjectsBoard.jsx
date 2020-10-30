@@ -7,7 +7,6 @@ import TopNavigationBar from '../../TopNavigationBar/TopNavigationBar';
 import KanbanBoard from './KanbanBoard/KanbanBoard';
 import CalendarBoard from './CalendarBoard/CalendarBoard';
 import RoadMapBoard from './RoadMapBoard/RoadMapBoard';
-import AboutBoard from './AboutBoard/AboutBoard';
 import { selectProjectById } from '../../../redux/projects/projects.selectors';
 import { selectIsTicketsLoaded } from '../../../redux/tickets/tickets.selectors';
 import { createStructuredSelector } from 'reselect';
@@ -69,11 +68,11 @@ const ProjectsBoard = ({
           path={`${projectUri}/calendar`}
           render={() => <CalendarBoard project={project} />}
         />
-        <Route
+        {/* <Route
           exact
           path={`${projectUri}/about`}
           render={() => <AboutBoard project={project} />}
-        />
+        /> */}
       </Switch>
       {(isModalOpen && !isLoading) && (
         <IssueDetail

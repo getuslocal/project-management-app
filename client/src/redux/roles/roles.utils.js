@@ -47,33 +47,19 @@ const roles = {
     ],
     dropDownMenu: null
   },
-  peopleManage: {
+  projectManagement: {
     id: 3,
-    component: 'People',
-    linkUrl: 'people-management',
-    linkVariable: '',
+    component: 'ProjectManagement',
+    linkUrl: 'project-management',
+    linkVariable: ':management?',
     title: 'Project Management',
     icon: 'icon-user',
-    tabs: []
-  },
-  projectMembers: {
-    id: 4,
-    component: 'People',
-    linkUrl: 'project-members',
-    linkVariable: '',
-    title: 'Project Members',
-    icon: 'icon-user',
-    tabs: [],
-    dropDownMenu: null
-  },
-  inbox: {
-    id: 5,
-    component: 'Inbox',
-    linkUrl: 'inbox',
-    linkVariable: '',
-    title: 'Inbox',
-    icon: 'icon-inbox',
-    tabs: []
+    tabs: [
+      {
+        label: 'Settings',
+        linkUrl: ''
+      },
+    ]
   },
   adminSetting: {
     id: 6,
@@ -93,7 +79,7 @@ export const getRolesOfUser = (role) => {
       return {
         dashboard: roles.dashboard,
         projects: roles.projects,
-        peopleManage: roles.peopleManage,
+        projectManagement: roles.projectManagement,
         adminSetting: roles.adminSetting,
       };
     case rolesList.PROJECTMANAGER:

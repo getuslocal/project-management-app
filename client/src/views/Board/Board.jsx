@@ -26,6 +26,8 @@ const Board = ({
     store.dispatch(getProjectsOfUser(organization._id, user._id));
   }, []);
 
+  console.log(loading)
+
   return (
     <Fragment>
       <Sidebar user={user} roles={roles} />

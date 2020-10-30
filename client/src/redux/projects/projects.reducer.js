@@ -1,12 +1,13 @@
 import {
   GET_PROJECTS,
   UPDATE_PROJECT,
+  CREATE_PROJECT,
   UPDATE_HISTORY,
   SET_CURRENT_PROJECT_ID,
   UPDATE_ONE_COLUMN_TICKETS_ORDER,
   UPDATE_TWO_COLUMNS_TICKETS_ORDER,
   UPDATE_COLUMN_ORDER,
-  DELETE_TICKET,
+  DELETE_PROJECT,
   UPDATE_TICKET_STATUS,
   UPDATE_COLUMN_WITH_NEW_TICKET,
   UPDATE_COLUMN_WITH_DELETED_TICKET,
@@ -28,6 +29,14 @@ const projectsReducer = (state = INITIAL_STATE, action) => {
         projects: convertArrayToObject(payload, '_id'),
         loading: false
       }
+    case CREATE_PROJECT:
+      return {
+        ...state,
+        projects: {
+          ...state.projects,
+          [payload._id]: payload
+        },
+      }
     case UPDATE_PROJECT:
       return {
         ...state,
@@ -36,6 +45,13 @@ const projectsReducer = (state = INITIAL_STATE, action) => {
           [payload.projectId]: payload.updatedProject
         },
       }
+    case DELETE_PROJECT: {
+      const { [payload]: undefined, ...restProjects } = state.projects
+      return {
+        ...state,
+        projects: restProjects ? restProjects : {}
+      }
+    }
     case UPDATE_HISTORY:
       return {
         ...state,

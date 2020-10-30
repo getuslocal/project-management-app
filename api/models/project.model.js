@@ -30,10 +30,33 @@ const projectSchema = new Schema({
   columns: {
     type: Object,
     required: true,
+    default: {
+      'column-1': {
+        id: 'column-1',
+        title: 'TO DO',
+        taskIds: [],
+      },
+      'column-2': {
+        id: 'column-2',
+        title: 'IN PROGRESS',
+        taskIds: [],
+      },
+      'column-3': {
+        id: 'column-3',
+        title: 'IN REVIEW',
+        taskIds: [],
+      },
+      'column-4': {
+        id: 'column-4',
+        title: 'DONE',
+        taskIds: [],
+      },
+    }
   },
   columnOrder: {
     type: Array,
     required: true,
+    default: ['column-1', 'column-2', 'column-3', 'column-4']
   },
   projectIconUrl: {
     type: String,

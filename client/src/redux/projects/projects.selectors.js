@@ -14,7 +14,7 @@ export const selectProjectsIds = createSelector(
 
 export const selectIsProjectsLoaded = createSelector(
   [projects],
-  projects => projects.loading
+  projects => (!projects.loading && Object.keys(projects.projects).length === 0 ? false : projects.loading)
 );
 
 export const selectCurrentProjectId = createSelector(

@@ -25,7 +25,7 @@ function Colors({ value, updateTicketField }) {
         value={value}
         isActive={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
-        onChange={(option) => updateTicketField({ issueColor: option.value })}
+        onChange={(option) => updateTicketField({ field: 'issueColor', value: option.value })}
         options={Object.values(IssueColors).filter(color => color.name !== value).map(option => ({
           key: option.name,
           value: option.name,

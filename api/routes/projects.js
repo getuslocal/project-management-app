@@ -14,52 +14,27 @@ router.get('/:org_id/:user_id', verify, (req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-// @route  POST projects/login
+// @route  POST projects/create
 // @desc   Create a new project. 
 // @access Private 
 router.post('/create', verify, async (req, res) => {
-  const { key, owner, name, members } = req.body;
-
-  const defaultColumns = {
-    'column-1': {
-      id: 'column-1',
-      title: 'TO DO',
-      taskIds: [],
-    },
-    'column-2': {
-      id: 'column-2',
-      title: 'IN PROGRESS',
-      taskIds: [],
-    },
-    'column-3': {
-      id: 'column-3',
-      title: 'IN REVIEW',
-      taskIds: [],
-    },
-    'column-4': {
-      id: 'column-4',
-      title: 'DONE',
-      taskIds: [],
-    },
-  }
-
-  const columnOrder = ['column-1', 'column-2', 'column-3', 'column-4'];
+  const { key, name, owner, orgId, description, category, members, projectIconUrl } = req.body;
 
   //Create a new project
   const newProject = new Project({
     key: key,
     owner: owner,
     name: name,
+    orgId: orgId,
+    description: description,
+    category: category,
     members: members,
-    columns: defaultColumns,
-    columnOrder: columnOrder,
-    projectIconUrl: '',
-    history: [],
+    projectIconUrl: projectIconUrl,
   });
 
   try {
-    await newProject.save();
-    res.json('Created a new project !')
+    const savedProject = await newProject.save();
+    res.json(savedProject);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -93,6 +68,19 @@ router.post('/update/:id', verify, async (req, res) => {
     res.status(400).send(err);
   }
 });
+
+// @route  POST projects/:id
+// @desc   Delete a project.
+// @access Private 
+router.delete('/:id', verify, async (req, res) => {
+  try {
+    const project = await Project.findByIdAndDelete(req.params.id);
+    res.json(project);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
 
 // @route  POST projects/update/tickets_order/:project_id
 // @desc   Update ticket order within the column 

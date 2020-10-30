@@ -20,9 +20,9 @@ import {
 } from './DashBoard.style';
 
 const DashBoard = ({ component, baseUrl, tickets, ...props }) => {
+  console.log(props)
   const { dashboard: dashboardParams } = props.match.params //  params: {board: 'projects', tab : 'roadmap'}.
   const currentRoute = dashboardParams ? dashboardParams : '';
-
   console.log(dashboardParams)
 
   return (

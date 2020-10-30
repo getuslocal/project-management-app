@@ -18,12 +18,7 @@ export const ProjectsList = ({ projects, members }) => {
       <ListContainer>
         {
           Object.values(projects).map(project => (
-            <>
-              <ProjectBlock key={project._id + '1'} project={project} members={members} />
-              <ProjectBlock key={project._id + '2'} project={project} members={members} />
-              <ProjectBlock key={project._id + '3'} project={project} members={members} />
-              <ProjectBlock key={project._id + '4'} project={project} members={members} />
-            </>
+              <ProjectBlock key={project._id } project={project} members={members} />
           ))
         }
       </ListContainer>

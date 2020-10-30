@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { color } from '../../../../../../shared/utils/styles'
 
 export const SectionContainer = styled.div`
   margin: 20px 0;
@@ -37,6 +38,10 @@ export const SelectItem = styled.div`
 
   & > i{
     margin-right: 7px;
+  }
+
+  .placeholder {
+    color: ${color.textLight};
   }
 `
 
