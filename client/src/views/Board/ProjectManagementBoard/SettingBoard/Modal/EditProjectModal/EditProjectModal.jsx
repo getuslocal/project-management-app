@@ -1,15 +1,12 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectUser } from '../../../../../redux/auth/auth.selectors';
-import { selectOrganization } from '../../../../../redux/organizations/organizations.selectors';
-import { createNewProject } from '../../../../../redux/projects/projects.actions';
-import TextArea from '../../../../../shared/components/Form/TextArea/TextArea';
-import store from '../../../../../redux/store'
-import Owner from './Owner/Owner';
-import Category from './Category/Category';
-import { updateProject } from '../../../../../redux/projects/projects.actions';
-import Button from '../../../../../shared/components/Button/Button';
+import { selectOrganization } from '../../../../../../redux/organizations/organizations.selectors';
+import TextArea from '../../../../../../shared/components/Form/TextArea/TextArea';
+import Category from '../Category/Category';
+import { updateProject, deleteProject } from '../../../../../../redux/projects/projects.actions';
+import Button from '../../../../../../shared/components/Button/Button';
+import Input from '../../../../../../shared/components/Form/Input/Input';
 import {
   Container,
   Content,
@@ -20,24 +17,25 @@ import {
   TextButton,
   InnerWrapper,
   ButtonsContainer,
-  CustomInput,
   ProjectIcon,
   Image
 } from './EditProjectModal.style';
+import { selectProjectById } from '../../../../../../redux/projects/projects.selectors';
 
 const EditProjectModal = ({
-  setIsModalOpen,
   project,
+  updateProject,
+  deleteProject,
+  ...props
 }) => {
   const [formValues, setFormValues] = useState({
     name: project.name,
     key: project.key,
-    owner: project.owner,
     description: project.description,
     category: project.category,
     projectIconUrl: project.projectIconUrl,
   });
-  const { name, key, owner, description, category, projectIconUrl } = formValues
+  const { name, key, description, category, projectIconUrl } = formValues
 
   const onChange = event => {
     const { value, name } = event.target;
@@ -46,21 +44,25 @@ const EditProjectModal = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsModalOpen(false);
-    store.dispatch(updateProject(project._id, formValues))
+    updateProject(project._id, formValues);
+    closeModal();
+  }
+
+  const closeModal = () => {
+    props.history.push(props.match.url)
   }
 
   return (
     <ModalContainer>
       <Container >
         <Content>
+          <Title>Edit Project</Title>
           <form onSubmit={handleSubmit}>
             <InnerWrapper>
-              <Title>Edit Project</Title>
               <Fieldset>
                 <ProjectIcon imageUrl={projectIconUrl} >
                   <Image src={projectIconUrl} />
-                  <Button text="Change icon" variant="secondary" />
+                  <Button text="Change icon" variant="secondary" type="button" />
                 </ProjectIcon>
                 <TextArea
                   label="Description"
@@ -73,26 +75,26 @@ const EditProjectModal = ({
                   value={description}
                   required
                 />
-                <CustomInput
-                  label="Name"
+                <Input
+                  label="Name*"
                   type="text"
                   name="name"
+                  width={350}
+                  height={36}
+                  maxLength={35}
                   value={name}
                   onChange={onChange}
                   required
                 />
-                <CustomInput
-                  label="Key"
+                <Input
+                  label="Key*"
                   type="text"
                   name="key"
-                  width={200}
+                  width={110}
+                  height={36}
                   value={key}
                   onChange={onChange}
                   required
-                />
-                <Owner
-                  owner={owner}
-                  onChange={(value) => setFormValues({ ...formValues, owner: value })}
                 />
                 <Category
                   currentCategory={category}
@@ -101,8 +103,20 @@ const EditProjectModal = ({
               </Fieldset>
             </InnerWrapper>
             <ButtonsContainer>
+              <Button
+                text="Delete"
+                type="button"
+                variant="danger"
+                onClick={() => {
+                  deleteProject(project._id);
+                  closeModal();
+                }}
+                style={{
+                  float: 'left'
+                }}
+              />
               <SubmitButton value="Update" type="submit" />
-              <TextButton onClick={() => setIsModalOpen(false)}>Cancel</TextButton>
+              <TextButton onClick={() => closeModal()}>Cancel</TextButton>
             </ButtonsContainer>
           </form>
         </Content>
@@ -115,9 +129,9 @@ EditProjectModal.propTypes = {
 
 };
 
-const mapStateToProps = createStructuredSelector({
+const mapStateToProps = (state, ownProps) => createStructuredSelector({
   organization: selectOrganization,
-  currentUser: selectUser
+  project: selectProjectById(ownProps.projectId)
 });
 
-export default connect(mapStateToProps, { createNewProject })(EditProjectModal);
+export default connect(mapStateToProps, { updateProject, deleteProject })(EditProjectModal);

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { color } from '../../../../../../shared/utils/styles'
 
 export const SectionContainer = styled.div`
   margin: 20px 0;
@@ -17,10 +18,10 @@ export const SectionContent = styled.div`
   display: flex;
   align-items: center;
   padding: 5px 10px;
-  border: 2px solid #dfe1e6;
+  border: 1px solid #dfe1e6;
   border-radius: 3px;
   background-color: rgb(250, 251, 252);
-  min-height: 35px;
+  min-height: 40px;
 
   &:hover {
     background-color: #091e420d;
@@ -37,6 +38,10 @@ export const SelectItem = styled.div`
 
   & > i{
     margin-right: 7px;
+  }
+
+  .placeholder {
+    color: ${color.textLight};
   }
 `
 

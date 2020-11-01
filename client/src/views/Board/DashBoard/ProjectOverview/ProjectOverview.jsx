@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { selectProjectById } from '../../../../redux/projects/projects.selectors'
@@ -7,8 +7,6 @@ import {
   Container,
   Top,
   NameCont,
-  ProjectLead,
-  ProjectLeadCont,
   Name,
   IconCont,
   Description,
@@ -41,13 +39,6 @@ export const ProjectOverview = ({ project, members }) => {
         </Description>
       </Top>
       <Bottom>
-        <ProjectLeadCont>
-          <BottomTitle>Project Lead : </BottomTitle>
-          <ProjectLead>
-            <Icon type="user-icon" imageUrl={projectLead && projectLead.pictureUrl} size={30} top={1} />
-            {projectLead && projectLead.name}
-          </ProjectLead>
-        </ProjectLeadCont>
         <Member>
           <BottomTitle>Team : </BottomTitle>
           <MemberList>

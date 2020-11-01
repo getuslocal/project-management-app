@@ -1,15 +1,11 @@
-import React, { Fragment, useEffect } from 'react';
-import { Route, Switch } from 'react-router-dom'
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { withRouter } from 'react-router-dom';
-import { createStructuredSelector } from 'reselect';
-import { getMembersOfOrganization } from '../../../redux/members/members.actions';
-import { selectProjects } from '../../../redux/projects/projects.selectors';
-import { selectMembers } from '../../../redux/members/members.selectors';
-import { selectOrganization } from '../../../redux/organizations/organizations.selectors';
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types'
+import { withRouter } from 'react-router-dom'
+import queryString from 'query-string';
 import TopNavigationBar from '../../TopNavigationBar/TopNavigationBar';
-import AddOrDropBoard from './AddOrDropBoard/AddOrDropBoard';
+import SettingBoard from './SettingBoard/SettingBoard';
+import EditProjectModal from './SettingBoard/Modal/EditProjectModal/EditProjectModal';
+import MemberModal from './SettingBoard/Modal/MemberModal/MemberModal';
 import {
   Container
 } from './ProjectManagementBoard.style'
@@ -17,47 +13,32 @@ import {
 const ProjectManagement = ({
   component,
   baseUrl,
-  tickets,
-  getMembersOfOrganization,
-  organization,
-  projectList,
-  memberList,
   ...props
 }) => {
-  const { management: currentTab } = props.match.params;
-  const currentRoute = currentTab ? currentTab : '';
-
-  useEffect(() => {
-    getMembersOfOrganization(organization._id);
-  }, [])
-
+  const renderModal = () => {
+    const parsedQueryString = queryString.parse(props.location.search);
+    if (parsedQueryString.type === 'project') {
+      return <EditProjectModal projectId={parsedQueryString.projectId} {...props} />
+    } else if (parsedQueryString.type === 'member') {
+      return <MemberModal projectId={parsedQueryString.projectId} {...props} />
+    } else {
+      return <></>
+    }
+  }
   return (
     <Fragment>
-      <TopNavigationBar title={component.title} tabs={component.tabs} baseUrl={baseUrl} currentRoute={currentRoute} />
+      <TopNavigationBar title={component.title} tabs={component.tabs} baseUrl={baseUrl} currentRoute='' />
       <Container>
-        <Switch>
-          <Route
-            exact
-            path={props.match.url}
-            render={() => <AddOrDropBoard  projectList={projectList} memberList={memberList} />}
-          />
-        </Switch>
+        <SettingBoard />
       </Container>
+      {renderModal()}
     </Fragment>
   )
 }
 
 ProjectManagement.propTypes = {
-
+  baseUrl: PropTypes.string.isRequired,
+  component: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-  organization: selectOrganization,
-  projectList: selectProjects,
-  memberList: selectMembers,
-});
-
-export default compose(
-  withRouter,
-  connect(mapStateToProps, { getMembersOfOrganization })
-)(ProjectManagement);
+export default withRouter(ProjectManagement)

@@ -82,11 +82,6 @@ const IssueCreateChildIssue = ({
   )
 }
 
-{/* {
-  isEpicTicket ?
-    <AddButton type="button" onClick={() => setIsSelectMenuOpen(name)}>+ Add child issue</AddButton>
-} */}
-
 const issueOptions = (tickets, childIssues) => (
   tickets.filter(ticket => !childIssues.includes(ticket._id)).map(ticket => ({
     key: ticket._id,

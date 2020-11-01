@@ -1,13 +1,12 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectUser } from '../../../../../redux/auth/auth.selectors';
-import { selectOrganization } from '../../../../../redux/organizations/organizations.selectors';
-import { createNewProject } from '../../../../../redux/projects/projects.actions';
-import TextArea from '../../../../../shared/components/Form/TextArea/TextArea';
-import Category from '../../../ProjectsBoard/AboutBoard/Category/Category';
-import Input from '../../../../../shared/components/Form/Input/Input';
-import ReadOnlyInput from '../../../../../shared/components/Form/Input/ReadOnlyInput'
+import { selectOrganization } from '../../../../../../redux/organizations/organizations.selectors';
+import { createNewProject } from '../../../../../../redux/projects/projects.actions';
+import TextArea from '../../../../../../shared/components/Form/TextArea/TextArea';
+import { projectCategories } from '../../../../../../shared/constants/projects';
+import Category from '../Category/Category';
+import Input from '../../../../../../shared/components/Form/Input/Input';
 import {
   Container,
   Content,
@@ -18,31 +17,27 @@ import {
   TextButton,
   InnerWrapper,
   ButtonsContainer,
-  CustomIcon,
 } from './NewProjectModal.style';
 
 const NewProjectModal = ({
   setIsModalOpen,
   organization: { _id: orgId },
-  currentUser,
   createNewProject,
 }) => {
   const [projectFormValues, setProjectFormValues] = useState({
     key: '',
     name: '',
     description: '',
-    category: '',
+    category: projectCategories.BUSINESS,
   });
 
-  const { key, name, description, category } = projectFormValues;
+  const { key, name, description, category, } = projectFormValues;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = {
       ...projectFormValues,
-      owner: currentUser._id,
       orgId: orgId,
-      members: [currentUser._id],
       projectIconUrl: 'https://cdn.pixabay.com/photo/2013/07/13/10/51/football-157930_960_720.png'
     }
     // console.log(formData)
@@ -54,18 +49,18 @@ const NewProjectModal = ({
     <ModalContainer>
       <Container >
         <Content>
+          <Title>Create Project</Title>
           <form onSubmit={handleSubmit}>
             <InnerWrapper>
-              <Title>Create Project</Title>
               <Fieldset>
                 <Input
                   label="Name*"
                   type="text"
                   name="name"
                   placeholder="Enter a project name"
-                  width={200}
+                  width={350}
                   height={36}
-                  maxLength={20}
+                  maxLength={35}
                   value={name}
                   onChange={(e) => setProjectFormValues({ ...projectFormValues, name: e.target.value })}
                   required
@@ -99,18 +94,6 @@ const NewProjectModal = ({
                   currentCategory={category}
                   onChange={(value) => setProjectFormValues({ ...projectFormValues, category: value })}
                 />
-                <ReadOnlyInput
-                  label="Lead"
-                  width={300}
-                  height={36}
-                  renderValue={() => (
-                    <Fragment>
-                      <CustomIcon type="user-icon" imageUrl={currentUser.pictureUrl} size={24} />
-                      {currentUser.name}
-                    </Fragment>
-                  )}
-                  // description="A creator of this project will be a project lead. You can change it anytime later."
-                />
               </Fieldset>
             </InnerWrapper>
             <ButtonsContainer>
@@ -130,7 +113,6 @@ NewProjectModal.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   organization: selectOrganization,
-  currentUser: selectUser
 });
 
 export default connect(mapStateToProps, { createNewProject })(NewProjectModal);

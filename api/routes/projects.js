@@ -18,27 +18,25 @@ router.get('/:org_id/:user_id', verify, (req, res) => {
 // @desc   Create a new project. 
 // @access Private 
 router.post('/create', verify, async (req, res) => {
-  const { key, name, owner, orgId, description, category, members, projectIconUrl } = req.body;
-
+  const { key, name,  orgId, description, category,  projectIconUrl } = req.body;
+  // Assign the current user to a member list.
+  const user = await User.findById(req.user._id).select('-password');
   //Create a new project
   const newProject = new Project({
     key: key,
-    owner: owner,
     name: name,
     orgId: orgId,
     description: description,
     category: category,
-    members: members,
+    members: [user._id],
     projectIconUrl: projectIconUrl,
   });
-
   try {
     const savedProject = await newProject.save();
     res.json(savedProject);
   } catch (err) {
     res.status(400).send(err);
   }
-
 });
 
 // @route  POST projects/update/tickets_order/:project_id
@@ -46,21 +44,11 @@ router.post('/create', verify, async (req, res) => {
 // @access Private 
 router.post('/update/:id', verify, async (req, res) => {
   const projectId = req.params.id;
-  const { key, owner, name, projectIconUrl, description, category } = req.body;
-
-  const updatedValue = {
-    key: key,
-    owner: owner,
-    name: name,
-    projectIconUrl: projectIconUrl,
-    description: description,
-    category: category,
-  };
-
+  const updatedValues= req.body;
   try {
     const updatedProject = await Project.findOneAndUpdate(
       { _id: projectId },
-      { $set: updatedValue },
+      { $set: updatedValues },
       { new: true, runValidator: true }
     );
     res.json(updatedProject)

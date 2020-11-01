@@ -1,7 +1,5 @@
 import styled, { css } from 'styled-components'
-import Icon from '../../../../../shared/components/Icon/Icon'
 
-// @todo: when on tablet, scroll bar appears ?
 export const ModalContainer = styled.div`
   height: 100%;
   width: 100%;
@@ -42,11 +40,12 @@ export const Fieldset = styled.fieldset`
 `
 
 export const Title = styled.p`
-  padding: 20px 0;
+  padding: 16px 30px;
   font-size: 19px;
+  line-height: 1.5;
   font-weight: 500;
-
 `
+
 export const InnerWrapper = styled.div`
   padding: 0 40px;
   margin: 0 auto;
@@ -96,7 +95,29 @@ export const TextButton = styled.p`
   }
 `
 
-export const CustomIcon = styled(Icon)`
-  vertical-align: middle;
-  margin-right: 7px;
+// FROM ABOUT BOARD
+export const Image = styled.img`
+  border-radius: 3px;
+  /* border: 1px solid #dfe1e6; */
+  width: 128px;
+  height: 128px;
+  margin: 0px auto;
+  background-image: ${(props) => props.imageUrl};
+  margin-bottom: 20px;
+`
+
+export const ProjectIcon = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 4px;
+
+  & > button {
+    width: 120px;
+    color: #5e6c84;
+    &:hover {
+      background-color: rgb(240 240 245);
+    }
+  }
 `

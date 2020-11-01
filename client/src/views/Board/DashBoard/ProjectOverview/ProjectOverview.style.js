@@ -53,24 +53,6 @@ export const CustomButton = styled(Button)`
   margin-left: auto;
 `;
 
-export const ProjectLeadCont = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-  margin-right: 50px;
-  display: flex;
-  align-items: center;
-`;
-export const ProjectLead = styled.p`
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    
-    & > i {
-    vertical-align: middle;
-    margin-right: 7px;
-  }
-`;
-
 export const Bottom = styled.div`
   border-top: 1px solid ${color.borderLightest};
   padding-top: 10px;

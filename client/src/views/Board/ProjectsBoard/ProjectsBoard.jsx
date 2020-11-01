@@ -68,11 +68,6 @@ const ProjectsBoard = ({
           path={`${projectUri}/calendar`}
           render={() => <CalendarBoard project={project} />}
         />
-        {/* <Route
-          exact
-          path={`${projectUri}/about`}
-          render={() => <AboutBoard project={project} />}
-        /> */}
       </Switch>
       {(isModalOpen && !isLoading) && (
         <IssueDetail

@@ -54,7 +54,7 @@ export const Day = styled.div`
 
 export const Border = styled.div`
   width: 2px;
-  height: 800px;
+  height: 7000px; // @todo: Add limit of number of epics which does not go beyond height.
   background-color: ${color.borderLightest};
   position: absolute;
   top: 25px;

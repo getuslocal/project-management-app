@@ -40,10 +40,6 @@ const roles = {
         label: 'Calendar',
         linkUrl: '/calendar'
       },
-      {
-        label: 'Setting',
-        linkUrl: '/about'
-      },
     ],
     dropDownMenu: null
   },

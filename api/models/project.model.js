@@ -7,11 +7,6 @@ const projectSchema = new Schema({
     required: true,
     trim: true,
   },
-  owner: {
-    type: String,
-    required: true,
-    trim: true,
-  },
   orgId: {
     type: Schema.Types.ObjectId,
     required: true,
