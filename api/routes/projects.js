@@ -26,7 +26,7 @@ router.post('/create', verify, async (req, res) => {
     orgId: orgId,
     description: description,
     category: category,
-    members: [user._id],
+    members: [String(user._id)],
     projectIconUrl: projectIconUrl,
   });
   try {

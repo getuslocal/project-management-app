@@ -67,10 +67,10 @@ const EditProjectModal = ({
                   label="Description"
                   placeholder="Enter project description"
                   type="text"
-                  name="key"
+                  name="description"
                   rows={5}
                   maxLength={250}
-                  onChange={(e) => setFormValues({ ...formValues, description: e.target.value })}
+                  onChange={onChange}
                   value={description}
                   required
                 />
@@ -92,7 +92,8 @@ const EditProjectModal = ({
                   width={110}
                   height={36}
                   value={key}
-                  onChange={onChange}
+                  onChange={(e) => setFormValues({ ...formValues, key: e.target.value.toUpperCase() })}
+                  style={{ textTransform: 'uppercase' }}
                   required
                 />
                 <Category

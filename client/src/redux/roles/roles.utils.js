@@ -18,7 +18,7 @@ const roles = {
         linkUrl: ''
       },
     ],
-    dropDownMenu: null
+    dropDownMenu: []
   },
   projects: {
     id: 2,
@@ -41,7 +41,7 @@ const roles = {
         linkUrl: '/calendar'
       },
     ],
-    dropDownMenu: null
+    dropDownMenu: []
   },
   projectManagement: {
     id: 3,
@@ -55,7 +55,8 @@ const roles = {
         label: 'Settings',
         linkUrl: ''
       },
-    ]
+    ],
+    dropDownMenu: []
   },
   adminSetting: {
     id: 6,
@@ -70,7 +71,7 @@ const roles = {
         linkUrl: ''
       },
     ],
-    dropDownMenu: null
+    dropDownMenu: []
   },
 };
 
@@ -102,6 +103,7 @@ export const getRolesOfUser = (role) => {
 export const getProjectLabelAndLinkMap = (projects) => {
   return projects.map(project => ({
     label: project.name,
-    linkUrl: '/' + project._id,
+    linkUrl: `/${project._id}`,
+    projectId: project._id
   }))
 }

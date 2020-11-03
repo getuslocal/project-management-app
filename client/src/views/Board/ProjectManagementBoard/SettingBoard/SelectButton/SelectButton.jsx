@@ -13,6 +13,7 @@ const SelectButton = ({ projectId, ...props }) => {
   const options = [
     { key: 'project', value: 'Edit project', data: projectId },
     { key: 'member', value: 'Manage members' },
+    // { key: 'delete', value: 'Delete Project' },
   ];
 
   // Open modal based on the chosen option with a query string.

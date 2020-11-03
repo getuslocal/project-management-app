@@ -45,10 +45,10 @@ const MemberTable = ({ memberList }) => {
                   {member.position}
                 </td>
                 <td>
-                  <Button text="Edit role" />
+                  <Button text="Edit role" variant="secondary"/>
                 </td>
                 <td>
-                  <Button text="Revoke site access" />
+                  <Button text="Revoke site access" variant="secondary"/>
                 </td>
               </tr>
             )
