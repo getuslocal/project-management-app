@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { selectUserFilter, selectSearchFilter, selectFilters } from '../../../../redux/tickets/tickets.selectors';
 import { selectUser } from '../../../../redux/auth/auth.selectors';
-import { selectMembers } from '../../../../redux/members/members.selectors';
+import { selectMembers, selectMembersOfProject } from '../../../../redux/members/members.selectors';
 import { createStructuredSelector } from 'reselect';
 import { filterTicketsByUser, removeUserFilter, filterTicketsBySearch, clearAllFilters } from '../../../../redux/tickets/tickets.actions';
 import IssueCreate from '../Modal/IssueCreate/IssueCreate';
@@ -36,7 +36,7 @@ const TopBar = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isFiltering = Object.keys(filters).some(key => filters[key].length > 0)
   return (
-    <>
+    <Fragment>
       <Container>
         <Left>
           <Breadcrumbs>Projects / {name}</Breadcrumbs>
@@ -91,7 +91,7 @@ const TopBar = ({
           isEpic={isEpicModal}
         />
       )}
-    </>
+    </Fragment>
   )
 }
 
@@ -111,7 +111,7 @@ const mapStateToProps = (state, ownProps) => createStructuredSelector({
   userFilter: selectUserFilter,
   searchFilter: selectSearchFilter,
   userProfile: selectUser,
-  members: selectMembers,
+  members: selectMembersOfProject(ownProps.project.members),
   filters: selectFilters,
 });
 

@@ -8,7 +8,7 @@ export const color = {
   secondary: '#F4F5F7', // light grey
   
   blue: 'rgb(0,82,204)',
-  lightBlue: '#8CD7F8', // light grey
+  lightBlue: '#8CD7F8',
   smokewhite: '#F5F5F5',
   purple: '#390099',
   white: '#fff',
@@ -28,11 +28,13 @@ export const color = {
   backgroundMedium: '#dfe1e6',
   backgroundLight: '#ebecf0',
   backgroundLightest: '#F4F5F7',
+  backgroundLightest2: 'rgb(250, 251, 252)',
   backgroundLightPrimary: '#D2E5FE',
   backgroundLightSuccess: '#E4FCEF',
 
-  borderLightest: 'rgba(211, 212, 213, .36)',
+  borderMedium: 'rgb(223, 225, 230)',
   borderLight: 'rgba(211, 212, 213, 1)',
+  borderLightest: 'rgba(211, 212, 213, .36)',
   borderInputFocus: '#4c9aff',
 
   hoverGray: '#091e420d',

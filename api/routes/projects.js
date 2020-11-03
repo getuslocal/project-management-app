@@ -1,6 +1,4 @@
 const router = require('express').Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const Project = require('../models/project.model');
 const User = require('../models/user.model');
 const verify = require('../middleware/auth');
@@ -10,7 +8,7 @@ const verify = require('../middleware/auth');
 // @access Private 
 router.get('/:org_id/:user_id', verify, (req, res) => {
   Project.find({ orgId: req.params.org_id, members: req.params.user_id })
-    .then(project => res.json(project))
+    .then(projects => res.json(projects))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 

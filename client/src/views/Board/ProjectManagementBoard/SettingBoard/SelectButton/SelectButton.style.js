@@ -17,6 +17,6 @@ export const Button = styled.button`
   }
 `
 export const SelectItem = styled.div`
-  font-size: 12px;
-  padding-left: 5px;
+  font-size: 13.5px;
+  padding: 5px;
 `

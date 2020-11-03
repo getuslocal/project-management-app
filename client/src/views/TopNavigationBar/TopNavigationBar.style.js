@@ -41,8 +41,7 @@ export const BoardTitleContainer = styled.div`
       align-items: center;
 `
 export const BoardTitle = styled.h1`
-        margin-right: 2rem;
-
+  margin-right: 2rem;
 `
 export const ArrowNavigation = styled.div`
         padding-right: 2em;

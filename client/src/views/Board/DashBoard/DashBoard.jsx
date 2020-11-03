@@ -1,5 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import React, { Fragment } from 'react';
 import TopNavigationBar from '../../TopNavigationBar/TopNavigationBar';
 import BarChart from './BarChart/BarChart';
 import DoughnutChart from './DoughnutChart/DoughnutChart';
@@ -10,7 +9,6 @@ import AssignedList from './AssignedList/AssignedList';
 import ProgressBar from './ProgressBar/ProgressBar';
 import IssueHistory from './IssueHistory/IssueHistory';
 import ProjectOverview from './ProjectOverview/ProjectOverview';
-import { Margin } from '../../../shared/utils/global'
 import {
   Container,
   Row,
@@ -20,14 +18,12 @@ import {
 } from './DashBoard.style';
 
 const DashBoard = ({ component, baseUrl, tickets, ...props }) => {
-  console.log(props)
-  const { dashboard: dashboardParams } = props.match.params //  params: {board: 'projects', tab : 'roadmap'}.
+  const { dashboard: dashboardParams } = props.match.params
   const currentRoute = dashboardParams ? dashboardParams : '';
-  console.log(dashboardParams)
 
   return (
     <Fragment>
-      <TopNavigationBar title={component.title} tabs={component.tabs} baseUrl={baseUrl} currentRoute={currentRoute} />
+      <TopNavigationBar title={component.title} tabs={component.tabs} baseUrl={baseUrl} currentTab={currentRoute} />
       <Container>
         <Row>
           {
@@ -104,4 +100,4 @@ const DashBoard = ({ component, baseUrl, tickets, ...props }) => {
   )
 }
 
-export default withRouter(DashBoard)
+export default DashBoard

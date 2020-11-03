@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectOrganization } from '../../../../../../redux/organizations/organizations.selectors';
 import TextArea from '../../../../../../shared/components/Form/TextArea/TextArea';
 import Category from '../Category/Category';
 import { updateProject, deleteProject } from '../../../../../../redux/projects/projects.actions';
@@ -130,7 +129,6 @@ EditProjectModal.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
-  organization: selectOrganization,
   project: selectProjectById(ownProps.projectId)
 });
 

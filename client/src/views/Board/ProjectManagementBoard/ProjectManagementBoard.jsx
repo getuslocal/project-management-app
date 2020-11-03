@@ -27,7 +27,7 @@ const ProjectManagement = ({
   }
   return (
     <Fragment>
-      <TopNavigationBar title={component.title} tabs={component.tabs} baseUrl={baseUrl} currentRoute='' />
+      <TopNavigationBar title={component.title} tabs={component.tabs} baseUrl={baseUrl} currentTab='' />
       <Container>
         <SettingBoard />
       </Container>

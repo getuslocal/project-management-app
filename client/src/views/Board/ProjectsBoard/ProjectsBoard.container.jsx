@@ -1,26 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ProjectsBoard from './ProjectsBoard';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
 import { withRouter } from 'react-router-dom'
-import { createStructuredSelector } from 'reselect';
-import { selectIsProjectsLoaded } from '../../../redux/projects/projects.selectors';
+import { createStructuredSelector } from 'reselect'
+import { getTicketsByProjectId } from '../../../redux/tickets/tickets.actions';
+import { setCurrentProjectId } from '../../../redux/projects/projects.actions';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { selectIsTicketsLoaded } from '../../../redux/tickets/tickets.selectors';
+import { selectProjectById } from '../../../redux/projects/projects.selectors';
 import Spinner from '../../../shared/components/WithSpinner/Spinner';
 
-const ProjectsBoardContainer = ({ isLoading, ...props }) => {
+const ProjectsBoardContainer = ({
+  project,
+  isLoading,
+  getTicketsByProjectId,
+  setCurrentProjectId,
+  ...props
+}) => {
+  useEffect(() => {
+    getTicketsByProjectId(project._id)
+    setCurrentProjectId(project._id)
+  }, []);
+
   return (
     isLoading ?
       <Spinner />
       :
-      <ProjectsBoard key={props.match.params.project} {...props} />
+      <ProjectsBoard key={props.match.params.tab} project={project} {...props} />
   )
 }
 
-const mapStateToProps = createStructuredSelector({
-  isLoading: selectIsProjectsLoaded,
+const mapStateToProps = (state, ownProps) => createStructuredSelector({
+  project: selectProjectById(ownProps.match.params.project),
+  isLoading: selectIsTicketsLoaded,
 });
 
-export default compose(
-  withRouter,
-  connect(mapStateToProps, null)
-)(ProjectsBoardContainer);
+export default connect(mapStateToProps, { getTicketsByProjectId, setCurrentProjectId })(ProjectsBoardContainer);

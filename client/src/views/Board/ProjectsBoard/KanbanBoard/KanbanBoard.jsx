@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { updateOneColumnTicketsOrder, updateTwoColumnsTicketsOrder, updateColumnOrder } from '../../../../redux/projects/projects.actions';
 import { selectFilteredTickets } from '../../../../redux/tickets/tickets.selectors';
@@ -31,7 +31,7 @@ const InnerList = React.memo(props => {
 })
 
 const KanbanBoard = ({ project, tickets, clearAllFilters }) => {
-  const { columnOrder, columns, _id, name } = project;
+  const { columnOrder, columns, _id } = project;
   console.log('KanbanBoard render')
 
   useEffect(() => {
@@ -99,9 +99,8 @@ const KanbanBoard = ({ project, tickets, clearAllFilters }) => {
     store.dispatch(updateTwoColumnsTicketsOrder(_id, { newStart, newFinish }));
   }
 
-  // @todo: change taskIds to ticketIds.
   return (
-    <>
+    <Fragment>
       <TopBar project={project} isEpicModal={false} />
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="all-columns" direction="horizontal" type="column">
@@ -118,7 +117,7 @@ const KanbanBoard = ({ project, tickets, clearAllFilters }) => {
           )}
         </Droppable>
       </DragDropContext>
-    </>
+    </Fragment>
   )
 }
 

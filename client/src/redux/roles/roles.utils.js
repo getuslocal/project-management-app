@@ -59,12 +59,17 @@ const roles = {
   },
   adminSetting: {
     id: 6,
-    component: 'Setting',
+    component: 'AdminSetting',
     linkUrl: 'admin-settings',
     linkVariable: '',
     title: 'Admin Settings',
     icon: 'icon-setting',
-    tabs: [],
+    tabs: [
+      {
+        label: 'Organization',
+        linkUrl: ''
+      },
+    ],
     dropDownMenu: null
   },
 };

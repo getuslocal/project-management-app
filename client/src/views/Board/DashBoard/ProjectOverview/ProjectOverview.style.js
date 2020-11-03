@@ -18,17 +18,19 @@ export const NameCont = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+  margin-bottom: 16px;
 `;
 
 export const Name = styled.p`
   font-size: 28px;
   font-weight: 600;
-  margin-bottom: 10px;
-  margin-right: 20px;
 `;
 
-export const IconCont = styled.p`
+export const IconCont = styled.span`
+  margin-right: 10px;
+  height: 45px;
   & > i {
+    height: 45px;
     &::before {
       border: 2px solid ${color.secondary};
     }

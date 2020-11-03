@@ -14,8 +14,8 @@ import {
   Tab,
 } from './TopNavigationBar.style'
 
-const TopNavigationBar = ({ title, tabs, baseUrl, currentRoute }) => {
-  // console.log(currentRoute)
+const TopNavigationBar = ({ title, tabs, baseUrl, currentTab }) => {
+  // console.log(currentTab)
   return (
     <Container>
       <TopNavigationSmallContent>
@@ -42,9 +42,9 @@ const TopNavigationBar = ({ title, tabs, baseUrl, currentRoute }) => {
       <TopNavigationTabs>
         {
           tabs.map((tab, index) => (
-            <Tab key={index} className={currentRoute === tab.linkUrl.replace('/', '') ? 'active' : ''} >
+            <Tab key={index} className={currentTab === tab.linkUrl.replace('/', '') ? 'active' : ''} >
               <Link to={`${baseUrl}${tab.linkUrl}`}>{tab.label}</Link>
-            </Tab> //@todo : how to add class 'active' ?
+            </Tab>
           ))
         }
       </TopNavigationTabs>

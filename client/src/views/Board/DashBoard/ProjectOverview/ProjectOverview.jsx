@@ -22,15 +22,14 @@ import { selectMembers } from '../../../../redux/members/members.selectors'
 
 export const ProjectOverview = ({ project, members }) => {
   const membersOfProject = members.filter(member => project.members.includes(member._id));
-  const projectLead = membersOfProject.find(member => member._id === project.owner)
   return (
     <Container> 
       <Top>
         <NameCont>
-          <Name>{project.name}</Name>
           <IconCont>
             <Icon type="project-icon" imageUrl={project.projectIconUrl} size={45}/>
           </IconCont>
+          <Name>{project.name}</Name>
         </NameCont>
         <Category>{project.category}</Category>
         <Description>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
@@ -40,7 +39,7 @@ export const ProjectOverview = ({ project, members }) => {
       </Top>
       <Bottom>
         <Member>
-          <BottomTitle>Team : </BottomTitle>
+          <BottomTitle>Member : </BottomTitle>
           <MemberList>
             {
               membersOfProject.map(member => {
