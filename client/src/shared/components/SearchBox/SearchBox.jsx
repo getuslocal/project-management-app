@@ -17,7 +17,7 @@ const SearchBox = ({ onChange, value, width, ...props }) => {
 
 SearchBox.propTypes = {
   onChange: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   width: PropTypes.number.isRequired,
 }
 

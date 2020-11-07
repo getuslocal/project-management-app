@@ -50,6 +50,7 @@ const fontIconCodes = {
   [`bug`]: '\f12a',
   [`story`]: '\f02e',
   [`epic`]: '\f0e7',
+  [`warning`]: '\f071',
 };
 
 const propTypes = {

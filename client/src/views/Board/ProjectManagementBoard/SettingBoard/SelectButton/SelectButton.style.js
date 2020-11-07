@@ -19,4 +19,11 @@ export const Button = styled.button`
 export const SelectItem = styled.div`
   font-size: 13.5px;
   padding: 5px;
+
+  &.delete {
+    color: ${color.danger};
+    & > i {
+      margin-right: 5px;
+    }
+  }
 `

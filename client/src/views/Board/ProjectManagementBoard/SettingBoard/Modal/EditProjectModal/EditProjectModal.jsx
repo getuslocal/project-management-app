@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import TextArea from '../../../../../../shared/components/Form/TextArea/TextArea';
+import { selectProjectById } from '../../../../../../redux/projects/projects.selectors';
 import Category from '../Category/Category';
-import { updateProject, deleteProject } from '../../../../../../redux/projects/projects.actions';
+import { updateProject } from '../../../../../../redux/projects/projects.actions';
 import Button from '../../../../../../shared/components/Button/Button';
 import Input from '../../../../../../shared/components/Form/Input/Input';
 import {
@@ -19,12 +21,10 @@ import {
   ProjectIcon,
   Image
 } from './EditProjectModal.style';
-import { selectProjectById } from '../../../../../../redux/projects/projects.selectors';
 
 const EditProjectModal = ({
   project,
   updateProject,
-  deleteProject,
   ...props
 }) => {
   const [formValues, setFormValues] = useState({
@@ -89,8 +89,9 @@ const EditProjectModal = ({
                   label="Key*"
                   type="text"
                   name="key"
-                  width={110}
+                  width={130}
                   height={36}
+                  maxLength={10}
                   value={key}
                   onChange={(e) => setFormValues({ ...formValues, key: e.target.value.toUpperCase() })}
                   style={{ textTransform: 'uppercase' }}
@@ -103,18 +104,6 @@ const EditProjectModal = ({
               </Fieldset>
             </InnerWrapper>
             <ButtonsContainer>
-              <Button
-                text="Delete"
-                type="button"
-                variant="danger"
-                onClick={() => {
-                  deleteProject(project._id);
-                  closeModal();
-                }}
-                style={{
-                  float: 'left'
-                }}
-              />
               <SubmitButton value="Update" type="submit" />
               <TextButton onClick={() => closeModal()}>Cancel</TextButton>
             </ButtonsContainer>
@@ -126,11 +115,12 @@ const EditProjectModal = ({
 }
 
 EditProjectModal.propTypes = {
-
+  project: PropTypes.object.isRequired,
+  updateProject: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
   project: selectProjectById(ownProps.projectId)
 });
 
-export default connect(mapStateToProps, { updateProject, deleteProject })(EditProjectModal);
+export default connect(mapStateToProps, { updateProject })(EditProjectModal);

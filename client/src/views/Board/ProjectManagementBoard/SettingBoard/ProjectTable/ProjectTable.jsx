@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import { selectProjects } from '../../../../../redux/projects/projects.selectors';
 import { selectMembers } from '../../../../../redux/members/members.selectors';
@@ -36,7 +37,7 @@ const ProjectTable = ({ projectList, memberList, searchFilter }) => {
                   <td>{project.key}</td>
                   <NameCell >
                     <Icon className="project-icon" type="project-icon" imageUrl={project.projectIconUrl} size={28} />
-                    <span>{project.name}</span>
+                    <Link to={`/app/projects/${project._id}`} >{project.name}</Link>
                   </NameCell>
                   <td>{project.category}</td>
                   <td>

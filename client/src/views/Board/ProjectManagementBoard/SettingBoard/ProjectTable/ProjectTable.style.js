@@ -11,12 +11,11 @@ export const NameCell = styled.td`
     }
   }
 
-  & > span {
+  & > a {
     color: ${color.blue};
 
     &:hover{
       text-decoration: underline;
-      cursor: pointer;
     }
   }
 `;

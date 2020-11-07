@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { createNewProject } from '../../../../../../redux/projects/projects.actions';
@@ -70,7 +71,7 @@ const NewProjectModal = ({
                   type="text"
                   name="key"
                   placeholder="TEST"
-                  width={110}
+                  width={130}
                   height={36}
                   value={key}
                   maxLength={10}
@@ -107,7 +108,9 @@ const NewProjectModal = ({
 }
 
 NewProjectModal.propTypes = {
-
+  organization: PropTypes.object.isRequired,
+  createNewProject: PropTypes.func.isRequired,
+  setIsModalOpen: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({

@@ -67,7 +67,8 @@ const MemberModal = ({ project, memberList, updateProject, ...props }) => {
           <Title>Project Members</Title>
           <Description>
             Add or remove project members. If you remove a member, the member will lose access to the project.<br />
-            <span>&#42;</span> A project must have at least one member.
+            <span>&#42;</span> A project must have at least one member.<br />
+            {/* <span>&#42;</span> Admin can access to every project even if removed as a project member. */}
           </Description>
           <InnerWrapper>
             <Table>

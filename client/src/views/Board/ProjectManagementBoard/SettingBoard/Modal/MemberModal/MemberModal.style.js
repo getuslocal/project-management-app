@@ -46,6 +46,7 @@ export const Description = styled.p`
   padding: 0 30px;
   font-size: 12px;
   margin-bottom: 16px;
+  line-height: 1.8;
   color:${color.textLight};
 
   & > span {
@@ -222,16 +223,15 @@ export const Position = styled.p`
 
 export const RemoveButton = styled.p`
   font-size: 12px;
-  color: ${color.textLight};
+  color: ${color.danger};
   width: 70px;
   text-align: center;
   height: 30px;
   line-height: 30px;
   border-radius: 3px;
-  background-color: ${color.backgroundLightest};
-
+  border: 1px solid ${color.danger};
   &:hover{
-    color: ${color.textVeryLight};
+    background: rgb(224, 64, 64, 0.1);
     cursor: pointer;
   }
 `
