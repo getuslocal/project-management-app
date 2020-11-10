@@ -4,7 +4,7 @@ import Icon from '../../../../shared/components/Icon/Icon';
 export const Container = styled.div`
   display: flex;
   align-items: center;
-  margin: 1em 0;
+  margin: 12px 0;
   min-height: 40px;
 `;
 

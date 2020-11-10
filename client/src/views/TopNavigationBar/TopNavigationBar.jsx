@@ -1,31 +1,20 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import { Link } from 'react-router-dom';
 import {
   Container,
-  TopNavigationSmallContent,
-  Organization,
-  QuestionButton,
-  TopNavigationMain,
+  Content,
   BoardTitleContainer,
   BoardTitle,
   ArrowNavigation,
   SearchBox,
-  TopNavigationTabs,
+  Tabs,
   Tab,
 } from './TopNavigationBar.style'
 
 const TopNavigationBar = ({ title, tabs, baseUrl, currentTab }) => {
-  // console.log(currentTab)
   return (
     <Container>
-      <TopNavigationSmallContent>
-        <Organization>
-          <p>Your organization is : <span><i className="far fa-building"></i> TakayaHoldings.Inc</span></p>
-        </Organization>
-        <QuestionButton><i className="fas fa-question-circle"></i></QuestionButton>
-      </TopNavigationSmallContent>
-
-      <TopNavigationMain>
+      <Content>
         <BoardTitleContainer>
           <BoardTitle>{title}</BoardTitle>
           <ArrowNavigation>
@@ -37,9 +26,8 @@ const TopNavigationBar = ({ title, tabs, baseUrl, currentTab }) => {
           <i className="fas fa-search" ></i>
           <input type="text" placeholder="Find something" />
         </SearchBox>
-      </TopNavigationMain>
-
-      <TopNavigationTabs>
+      </Content>
+      <Tabs>
         {
           tabs.map((tab, index) => (
             <Tab key={index} className={currentTab === tab.linkUrl.replace('/', '') ? 'active' : ''} >
@@ -47,7 +35,7 @@ const TopNavigationBar = ({ title, tabs, baseUrl, currentTab }) => {
             </Tab>
           ))
         }
-      </TopNavigationTabs>
+      </Tabs>
     </Container>
   );
 }

@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import moment from 'moment';
-import { IssueColors } from '../../../../../../../shared/constants/issues';
+import { IssueColors } from '../../../../../../shared/constants/issues';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect'
-import { selectEpicTickets } from '../../../../../../../redux/tickets/tickets.selectors';
+import { selectEpicTickets } from '../../../../../../redux/tickets/tickets.selectors';
 import queryString from 'query-string';
 import {
   Task,
@@ -26,7 +26,7 @@ const CalendarTask = ({
   
   return (
     <Container className="calendarTaskContainer">
-      {
+      {/* {
         epics.map((epic) => {
           const issueColor = IssueColors[epic.issueColor.toUpperCase()]
           const { startDate, endDate } = epic.dateRange;
@@ -71,7 +71,7 @@ const CalendarTask = ({
             )
           )
         })
-      }
+      } */}
     </Container>
   )
 }

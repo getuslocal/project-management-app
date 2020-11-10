@@ -1,64 +1,37 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
+  padding-top: 30px;
 `
-export const TopNavigationSmallContent = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-bottom: .5em;
-`
-export const Organization = styled.div`
-      color: #8993a4;
-      margin-right: 3em;
 
-      p {
-        font-size: .9em;
-
-        span {
-          margin-left: .25em;
-          font-size: 1rem;
-          color: #172b4d;
-          font-weight: 500;
-        }
-      }
-`
-export const QuestionButton = styled.div`
-      font-size: 1.2em;
-      color: #8CD7F8;
-
-      &:hover {
-        cursor: pointer;
-      }
-`
-export const TopNavigationMain = styled.div`
-    display: flex;
-    align-items: center;
-    margin-bottom: 2em;
+export const Content = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
 `
 export const BoardTitleContainer = styled.div`
-      display: flex;
-      align-items: center;
+  display: flex;
+  align-items: center;
 `
 export const BoardTitle = styled.h1`
   margin-right: 2rem;
 `
 export const ArrowNavigation = styled.div`
-        padding-right: 2em;
-        margin-right: 2em;
-        border-right: 1px solid #dfe1e6;
+  padding-right: 32px;
+  margin-right: 32px;
+  border-right: 1px solid #dfe1e6;
 
-        i {
-          font-size: 1.25em;
+  i {
+    font-size: 1.25em;
 
-          &:not(:last-child) {
-            margin-right: 1.5em;
-          }
+    &:not(:last-child) {
+      margin-right: 1.5em;
+    }
 
-          &:hover {
-            cursor: pointer;
-          }
-        }
+    &:hover {
+      cursor: pointer;
+    }
+  }
 `
 export const SearchBox = styled.div`
 
@@ -89,7 +62,7 @@ input {
 }
 `
 
-export const TopNavigationTabs = styled.ul`
+export const Tabs = styled.ul`
     &:after {
       z-index: -1;
       content: '';

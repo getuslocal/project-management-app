@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
-  min-height: 140px;
+  /* min-height: 140px; */
 `
 
 export const Task = styled.div`
