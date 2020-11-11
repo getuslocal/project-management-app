@@ -9,6 +9,7 @@ export const color = {
   
   blue: 'rgb(0,82,204)',
   lightBlue: '#8CD7F8',
+  lightBlue200: '#e0edff',
   smokewhite: '#F5F5F5',
   purple: '#390099',
   white: '#fff',

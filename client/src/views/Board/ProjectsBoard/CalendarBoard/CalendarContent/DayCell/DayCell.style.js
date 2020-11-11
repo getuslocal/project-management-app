@@ -1,31 +1,51 @@
 import styled, { css } from 'styled-components';
+import { color } from '../../../../../../shared/utils/styles';
 
 export const Container = styled.div`
-  width: 100%;
+  width: calc(100% / 7);
+  max-width: calc(100% / 7);
+  min-height: 190px;
   border-left: 2px solid rgba(166, 168, 179, 0.12);
   border-bottom: 2px solid rgba(166, 168, 179, 0.12);
-  color: rgba(0, 0, 0, 0.2);
-  font-size: 14px;
-  /* overflow-y: scroll; */
-
-  ${props => props.isViewed && css`
-    color: rgba(0, 0, 0, 0.7);
-    font-weight: 500;
-  `}
-
-  ${(props) => props.isToday && css`
-    color: #0052cc;
-    &::before{
-      content: '';
-      display: block;
-      border-top: 2px solid #0052cc;
-    }
-  `}
 
   &:nth-child(7n+1),
   &:nth-child(7n) {
-    background: rgba(0, 0, 0,.02);
+    background: rgba(0, 0, 0,.03);
   }
+`
+
+export const Content = styled.div`
+  height: 100%;
+  font-weight: 500;
+  position: relative;
+
+  ${(props) => props.isFirstDay && css`
+    ${Header}{
+      font-weight: 600;
+      padding-top: 6.5px;
+      padding-bottom: 6.5px;
+    }
+    &::before{
+      content: '';
+      display: block;
+      border-top: 3px solid ${color.textMedium};
+    }
+  `}
+
+  ${(props) => props.isToday && css`
+    color: ${color.blue};
+    ${Header}{
+      color: ${color.blue};
+      font-weight: 600;
+      padding-top: 6.5px;
+      padding-bottom: 6.5px;
+    }
+    &::before{
+      content: '';
+      display: block;
+      border-top: 3px solid ${color.blue};
+    }
+  `}
 
   &:hover {
     .quick-add-button{
@@ -35,27 +55,59 @@ export const Container = styled.div`
   }
 `
 
-export const Content = styled.div`
-  height: 100%;
-`
-
 export const Header = styled.div`
-  padding: 8px;
+  padding: 8px 10px;
   padding-top: ${(props) => props.isToday && '6px'};
   text-align: right;
+  font-size: 14px;
 `
 
 export const QuickAddButton = styled.span`
   float: left;
   display: none;
-
+  background-color: ${color.white};
   &.icon-plus{
     &:before{
-    font-size: 12px;
-    padding: 4px 5px;
-    box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 2px 4px;
-    color: #8993a4;
-    border-radius: 3px;
+      font-size: 12px;
+      padding: 4px 5px;
+      box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 2px 4px;
+      color: #8993a4;
+      border-radius: 3px;
     }
   }
+`
+export const MonthName = styled.span`
+  margin-right: 10px;
+`
+
+export const Task = styled.div`
+  border-radius: 2px;
+  margin: 0 3px;
+  padding: 1px 4px;
+  min-height: 32px;
+  height: 32px;
+  font-size: 14px;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px 0 rgba(21,27,38,.08);
+  border: 1px solid ${color.borderMedium};
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: ${color.textDarkest};
+  margin-bottom: 5px;
+  overflow: hidden;
+
+  & > i {
+    margin-right: 5px;
+  }
+
+  &:hover{
+    background-color:${color.lightBlue200};
+  }
+`
+
+export const Summary = styled.span`
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `

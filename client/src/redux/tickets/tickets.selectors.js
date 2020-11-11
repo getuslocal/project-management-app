@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import queryString from 'query-string';
+import moment from 'moment';
 
 const tickets = state => state.tickets;
 const selectFilter = state => state.tickets.filter;
@@ -44,6 +45,11 @@ export const selectTicketsLinkedWithEpic = search => createSelector(
 export const selectChildIssues = epicId => createSelector(
   [selectTickets],
   tickets => tickets.filter(ticket => ticket.linkedEpic === epicId)
+);
+
+export const selectIssuesOfDueDate = dueDate => createSelector(
+  [selectTickets],
+  tickets => tickets.filter(ticket => ticket.dueDate && moment(ticket.dueDate).isSame(dueDate, 'day'))
 );
 
 

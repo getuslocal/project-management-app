@@ -51,6 +51,8 @@ const fontIconCodes = {
   [`story`]: '\f02e',
   [`epic`]: '\f0e7',
   [`warning`]: '\f071',
+  [`angle-left`]: '\f104',
+  [`angle-right`]: '\f105',
 };
 
 const propTypes = {

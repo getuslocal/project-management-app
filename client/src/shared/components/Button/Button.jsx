@@ -18,6 +18,7 @@ const Button = ({
   text,
   handleClick,
   variant,
+  children,
   ...otherProps
 }) => {
   return (
@@ -26,7 +27,8 @@ const Button = ({
       variant={variant}
       {...otherProps}
     >
-      {text}
+      {text && text}
+      {children && children}
     </StyledButton>
   );
 }

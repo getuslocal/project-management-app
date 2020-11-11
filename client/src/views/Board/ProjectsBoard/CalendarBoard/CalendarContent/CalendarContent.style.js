@@ -11,9 +11,9 @@ export const Top = styled.div`
 `
 
 export const DayName = styled.div`
-  width: 14.28%;
-  max-width: 14.28%;
-  padding: 0 .5rem;
+  width: calc(100% / 7);
+  max-width: calc(100% / 7);
+  padding: 0 5px;
   text-align: right;
   color: #99a1a7;
   font-weight: 500;
@@ -30,5 +30,4 @@ export const Bottom = styled.div`
 export const Week = styled.div`
   display: flex;
   flex-wrap: nowrap;
-  height: 20%;
 `

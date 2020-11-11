@@ -75,6 +75,10 @@ const ticketSchema = new Schema({
   count: {
     type: Number,
   },
+  dueDate: {
+    type: Date,
+    required: true
+  },
 }, {
   timestamps: true,
   minimize: false

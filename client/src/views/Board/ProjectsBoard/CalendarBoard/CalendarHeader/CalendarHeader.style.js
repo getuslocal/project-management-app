@@ -18,37 +18,21 @@ export const Month = styled.span`
 `
 
 export const Right = styled.div`
-`
+  & > .angle-button {
+    padding: 0;
+    height: 36px;
+    line-height: 36px;
+    min-width: 36px;
+    width: 36px;
+    text-align: center;
+  }
 
-export const TodayButton = styled.button`
-  cursor: pointer;
-  border: 1px solid rgb(0, 82, 204);
-  border-radius: 3px;
-  padding: .65rem .9rem;
-  font-weight: 500;
-  margin-left: .75rem;
-  margin-right: .75rem;
-  font-size: 14px;
-  color: rgb(0, 82, 204);
-`
-
-export const MoveButton = styled.button`
-  padding: .65rem .9rem;
-  color: rgba(0, 0, 0, 0.7);
-`
-
-export const BottomContent = styled.div`
-  display: flex;
-  padding-bottom: 5px;
-  border-bottom: 2px solid rgba(166, 168, 179, 0.12);
-  padding-right: 13px;
-`
-export const DayCell = styled.div`
-  width: 14.28%;
-  max-width: 14.28%;
-  padding: 0 .5rem;
-  text-align: right;
-  color: #99a1a7;
-  font-weight: 500;
-  font-size: 14px;
+  & > .today-button {
+    padding: 0 20px;
+    margin: 0 2px;
+    height: 36px;
+    max-height: 36px;
+    font-size: 14px;
+    line-height: 36px;
+  }
 `

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types'
 import moment from 'moment';
 import DayCell from './DayCell/DayCell'
 import VisibilitySensor from 'react-visibility-sensor'
@@ -16,18 +17,25 @@ const getCalendarContent = () => {
   const dateStart = moment().subtract(12, 'months').startOf('month').day("Sunday");
   const dateEnd = moment().add(12, 'months').endOf('month').day("Saturday");
   while (dateEnd.diff(dateStart, 'weeks') >= 0 && dateStart.isSameOrBefore(dateEnd)) {
-    content.push(dateStart.clone())
-    dateStart.add(1, 'weeks')
+    content.push(dateStart.clone());
+    dateStart.add(1, 'weeks');
   }
   return content
 }
 
+// Use react memo for DayCell to prevent unnecessary renders.
+const DayCellMemo = React.memo(props => {
+  const { momentDate } = props;
+  return (
+    <DayCell momentDate={moment(momentDate)} />
+  )
+})
+
 const CalendarContent = ({
   containerRef,
   setLoading,
-  currentMonth,
   setCurrentMonth,
-  currentWeekRef
+  weekCellRef
 }) => {
   const [calendar, setCalendar] = useState([]);
 
@@ -49,8 +57,19 @@ const CalendarContent = ({
       setCurrentMonth(firstDayOfWeek)
     } else if (isFirstWeekOfNextMonth) {
       setCurrentMonth(moment(firstDayOfWeek).add(1, 'months'))
+    }
+  }
+
+  // Create multiple refs based on a week.
+  const getWeekCellRef = (momentDate, el) => {
+    const isFirstDayOfMonth = momentDate.isSame(moment(momentDate).startOf('month'), 'day');
+    const isFirstWeekOfNextMonth = momentDate.isSame(moment(momentDate).add(1, 'months').startOf('month'), 'week');
+    if (isFirstDayOfMonth) {
+      return weekCellRef.current[momentDate.format('YYYY-MM')] = el;
+    } else if (isFirstWeekOfNextMonth) {
+      return weekCellRef.current[moment(momentDate).add(1, 'months').format('YYYY-MM')] = el;
     } else {
-      return;
+      return null
     }
   }
 
@@ -65,22 +84,22 @@ const CalendarContent = ({
         <DayName>Fri</DayName>
         <DayName>Sat</DayName>
       </Top>
-      <Bottom ref={containerRef} >
+      <Bottom ref={containerRef}>
         {calendar.map(firstDayOfWeek => (
           <VisibilitySensor
             key={firstDayOfWeek.format('YYYY/MM/DD')}
             containment={containerRef.current}
-            offset={{ bottom: 200, top: -20 }}
+            offset={{ bottom: 100, top: -100 }}
             onChange={isVisible => onChange(isVisible, firstDayOfWeek)}
           >
-            <Week ref={firstDayOfWeek.isSame(moment().startOf('month'), 'week') ? currentWeekRef : null}>
-              <DayCell currentMonth={currentMonth} momentDate={firstDayOfWeek.clone()} />
-              <DayCell currentMonth={currentMonth} momentDate={firstDayOfWeek.clone().add(1, 'days')} />
-              <DayCell currentMonth={currentMonth} momentDate={firstDayOfWeek.clone().add(2, 'days')} />
-              <DayCell currentMonth={currentMonth} momentDate={firstDayOfWeek.clone().add(3, 'days')} />
-              <DayCell currentMonth={currentMonth} momentDate={firstDayOfWeek.clone().add(4, 'days')} />
-              <DayCell currentMonth={currentMonth} momentDate={firstDayOfWeek.clone().add(5, 'days')} />
-              <DayCell currentMonth={currentMonth} momentDate={firstDayOfWeek.clone().add(6, 'days')} />
+            <Week ref={el => getWeekCellRef(firstDayOfWeek, el)}>
+              <DayCellMemo momentDate={moment(firstDayOfWeek).format('LL')} />
+              <DayCellMemo momentDate={moment(firstDayOfWeek).add(1, 'days').format('LL')} />
+              <DayCellMemo momentDate={moment(firstDayOfWeek).add(2, 'days').format('LL')} />
+              <DayCellMemo momentDate={moment(firstDayOfWeek).add(3, 'days').format('LL')} />
+              <DayCellMemo momentDate={moment(firstDayOfWeek).add(4, 'days').format('LL')} />
+              <DayCellMemo momentDate={moment(firstDayOfWeek).add(5, 'days').format('LL')} />
+              <DayCellMemo momentDate={moment(firstDayOfWeek).add(6, 'days').format('LL')} />
             </Week>
           </VisibilitySensor>
         ))}
@@ -89,5 +108,11 @@ const CalendarContent = ({
   )
 }
 
+CalendarContent.propTypes = {
+  containerRef: PropTypes.object,
+  weekCellRef: PropTypes.object,
+  setLoading: PropTypes.func.isRequired,
+  setCurrentMonth: PropTypes.func.isRequired,
+}
 
 export default CalendarContent;

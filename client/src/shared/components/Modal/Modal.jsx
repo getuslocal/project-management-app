@@ -7,12 +7,13 @@ import {
   Wrapper,
 } from './Modal.style';
 
-const Modal = ({ closeModal }) => {
+const Modal = ({ closeModal, renderContent }) => {
   return (
     <ModalContainer>
       <Blanket onClick={closeModal} />
       <Container>
         <Wrapper>
+          {renderContent()}
         </Wrapper>
       </Container>
     </ModalContainer>
