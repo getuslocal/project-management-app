@@ -77,7 +77,6 @@ const ticketSchema = new Schema({
   },
   dueDate: {
     type: Date,
-    required: true
   },
 }, {
   timestamps: true,

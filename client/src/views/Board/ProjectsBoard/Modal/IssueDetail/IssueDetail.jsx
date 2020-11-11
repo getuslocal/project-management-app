@@ -1,5 +1,6 @@
 import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
@@ -8,7 +9,7 @@ import { selectProjectById } from '../../../../../redux/projects/projects.select
 import { updateTicket, deleteTicket, deleteEpicTicket } from '../../../../../redux/tickets/tickets.actions';
 import { updateHistory } from '../../../../../redux/projects/projects.actions';
 import { selectTicketByKey, selectTicketsLinkedWithEpic } from '../../../../../redux/tickets/tickets.selectors';
-import { IssueTypes } from '../../../../../shared/constants/issues'
+import { IssueTypes } from '../../../../../shared/constants/issues';
 import Header from './Header/Header';
 import Title from './Title/Title';
 import Description from './Description/Description';
@@ -18,6 +19,7 @@ import Reporter from './Reporter/Reporter';
 import Assignee from './Assignee/Assignee';
 import Status from './Status/Status';
 import Dates from './Dates/Dates';
+import SingleDatePicker from '../../../../../shared/components/SingleDatePicker/SingleDatePicker';
 import Colors from './Colors/Colors';
 import Complete from './Complete/Complete';
 import DatePicker from './DatePicker/DatePicker';
@@ -66,6 +68,7 @@ const IssueDetail = ({
     createdAt,
     updatedAt,
     linkedEpic,
+    dueDate
   } = ticket;
   console.log('IssueDetail render')
 
@@ -175,6 +178,15 @@ const IssueDetail = ({
                       />
                     </Fragment>
                   )}
+                {dueDate && (
+                  <SingleDatePicker
+                    momentedDate={moment(dueDate)}
+                    onDateChange={(date) => updateTicketField({ field: 'dueDate', value: date })}
+                    disableBefore={moment().subtract(12, 'months')}
+                    disableAfter={moment().add(12, 'months')}
+                    label="Due date"
+                  />
+                )}
                 <Assignee
                   value={assigneeId}
                   updateTicketField={updateTicketField}

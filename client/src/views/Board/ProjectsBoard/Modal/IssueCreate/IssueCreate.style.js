@@ -1,4 +1,6 @@
 import styled, { css } from 'styled-components'
+import SingleDatePicker from '../../../../../shared/components/SingleDatePicker/SingleDatePicker';
+import { color } from '../../../../../shared/utils/styles';
 
 export const Title = styled.p`
   padding: 20px 30px;
@@ -106,4 +108,22 @@ export const Description = styled.p`
   line-height: 20px;
   font-size: 11px;
   color: #6c798f;
+`
+
+export const CustomSingleDatePicker = styled(SingleDatePicker)`
+  margin: 20px 0;
+
+  .SingleDatePicker{
+    padding: 0.25em .5em;
+    border: 1px solid #dfe1e6;
+    border-radius: 3px;
+    background-color: ${color.backgroundLightest2};
+  }
+
+  .SingleDatePickerInput input.DateInput_input{
+    background-color: ${color.backgroundLightest2};
+    padding: 0;
+    font-size: 14px;
+    font-weight: 400;
+  }
 `

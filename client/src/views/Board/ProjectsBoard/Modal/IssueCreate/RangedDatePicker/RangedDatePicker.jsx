@@ -16,7 +16,7 @@ const RangedDatePicker = ({ dateRange, setDateRange }) => {
   return (
     <div>
       <Container>
-        <Label>Start and due date</Label>
+        <Label>Start and due date*</Label>
         <DateRangePicker
           startDate={startDate} // momentPropTypes.momentObj or null,
           startDateId="startDateMookh" // PropTypes.string.isRequired,

@@ -86,7 +86,8 @@ export const Task = styled.div`
   padding: 1px 4px;
   min-height: 32px;
   height: 32px;
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: 600;
   border-radius: 4px;
   box-shadow: 0 1px 4px 0 rgba(21,27,38,.08);
   border: 1px solid ${color.borderMedium};
@@ -94,6 +95,7 @@ export const Task = styled.div`
   align-items: center;
   cursor: pointer;
   color: ${color.textDarkest};
+  background-color: ${color.white};
   margin-bottom: 5px;
   overflow: hidden;
 
@@ -104,6 +106,18 @@ export const Task = styled.div`
   &:hover{
     background-color:${color.lightBlue200};
   }
+  
+  /* For EPIC */
+  ${({colorProps}) => colorProps && css`
+
+    color: ${colorProps.font};
+    background-color: ${colorProps.bg};
+
+    &:hover{
+      background-color: ${colorProps.bg};
+      opacity: 0.85;
+    }
+  `}
 `
 
 export const Summary = styled.span`

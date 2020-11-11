@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import queryString from 'query-string';
 import moment from 'moment';
+import { IssueTypes } from '../../shared/constants/issues';
 
 const tickets = state => state.tickets;
 const selectFilter = state => state.tickets.filter;
@@ -12,7 +13,7 @@ export const selectTickets = createSelector(
 
 export const selectNonEpicTickets = createSelector(
   [selectTickets],
-  tickets => tickets.filter(ticket => ticket.issueType !== 'Epic')
+  tickets => tickets.filter(ticket => ticket.issueType !== IssueTypes.EPIC)
 );
 
 // Select ticket by key name passed as query string.
@@ -28,7 +29,7 @@ export const selectTicketByKey = search => createSelector(
 
 export const selectEpicTickets = createSelector(
   [selectTickets], //@todo: what is dif btw selectTickets and tickets here ? changes a trigger of re-calling this ? 
-  tickets => tickets.filter(ticket => ticket.issueType === 'Epic')
+  tickets => tickets.filter(ticket => ticket.issueType === IssueTypes.EPIC)
 );
 
 // @todo: Organize this fucntion as selectChildIssues is very similar as this.
@@ -49,7 +50,15 @@ export const selectChildIssues = epicId => createSelector(
 
 export const selectIssuesOfDueDate = dueDate => createSelector(
   [selectTickets],
-  tickets => tickets.filter(ticket => ticket.dueDate && moment(ticket.dueDate).isSame(dueDate, 'day'))
+  tickets => tickets.filter(ticket => {
+    if (ticket.issueType !== IssueTypes.EPIC && ticket.dueDate) {
+      return moment(ticket.dueDate).isSame(dueDate, 'day')
+    } else if (ticket.issueType === IssueTypes.EPIC && ticket.dateRange) {
+      return moment(ticket.dateRange.endDate).isSame(dueDate, 'day')
+    } else {
+      return false
+    }
+  })
 );
 
 

@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { IssueTypes, IssuePriorities, IssueColors } from '../../../../../shared/constants/issues';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { selectCurrentProjectId, selectProjects } from '../../../../../redux/projects/projects.selectors';
 import { selectUser } from '../../../../../redux/auth/auth.selectors';
@@ -22,6 +23,7 @@ import {
   TextButton,
   InnerWrapper,
   ButtonsContainer,
+  CustomSingleDatePicker
 } from './IssueCreate.style';
 import {
   Container,
@@ -51,6 +53,8 @@ const IssueCreate = ({
     assigneeId: '',
     issuePriority: IssuePriorities.MEDIUM,
   });
+  // Regular task spesific state.
+  const [dueDate, setDueDate] = useState(null);
   // Epic spesific state.
   const [childIssues, setChildIssues] = useState([]);
   const [issueColor, setIssueColor] = useState(IssueColors.PURPLE.name);
@@ -65,13 +69,14 @@ const IssueCreate = ({
     e.preventDefault();
     console.log(issueFormValues)
     if (isEpic) {
+      issueFormValues.linkedEpic = null;
       // Add epic specific states.
       createNewEpicTicket({ ...issueFormValues, issueColor, dateRange }, childIssues)
     } else {
       // Set a linked epic null.
       issueFormValues.linkedEpic = null;
-      // Set a due date null.
-      issueFormValues.dueDate = null;
+      // Add dueDate property.
+      issueFormValues.dueDate = dueDate;
       // Create a new ticket with form values.
       // Get first column where a new ticket is added onto.
       const columnId = projects[currentProjectId].columnOrder[0];
@@ -106,9 +111,18 @@ const IssueCreate = ({
                   issuePriority={issuePriority}
                   handleSelectMenu={handleSelectMenu}
                 />
+                {!isEpic && (
+                  <CustomSingleDatePicker
+                    momentedDate={dueDate}
+                    onDateChange={date => setDueDate(date)}
+                    disableBefore={moment().subtract(12, 'months')}
+                    disableAfter={moment().add(12, 'months')}
+                    label="Due date"
+                  />
+                )}
                 <Diviser />
                 <Input
-                  label="Summary"
+                  label="Summary*"
                   type="text"
                   name="summary"
                   value={summary}

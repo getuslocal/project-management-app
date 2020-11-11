@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { SingleDatePicker } from 'react-dates';
-import './single_date_picker_overrides.css';
 import moment from 'moment';
 import {
   Container,

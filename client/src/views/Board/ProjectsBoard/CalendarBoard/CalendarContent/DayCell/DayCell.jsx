@@ -19,6 +19,7 @@ import {
 import { selectIssuesOfDueDate } from '../../../../../../redux/tickets/tickets.selectors';
 import { selectMembers } from '../../../../../../redux/members/members.selectors';
 import Icon from '../../../../../../shared/components/Icon/Icon';
+import { IssueColors, IssueTypes } from '../../../../../../shared/constants/issues';
 
 const DayCell = ({ momentDate, issues, members, ...props }) => {
   const [isContentActive, setIsContentActive] = useState(false);
@@ -28,7 +29,6 @@ const DayCell = ({ momentDate, issues, members, ...props }) => {
     const stringified = queryString.stringify({ selectedIssue: key });
     props.history.push(`${props.match.url}?${stringified}`)
   }
-
   return (
     <Container>
       <Content
@@ -47,8 +47,13 @@ const DayCell = ({ momentDate, issues, members, ...props }) => {
         {
           issues.map(issue => {
             const member = members.find(member => member._id === issue.assigneeId);
+            const isEpic = (issue.issueType === IssueTypes.EPIC);
             return (
-              <Task key={issue._id} onClick={() => openIssueDetailModal(issue.key)}>
+              <Task
+                key={issue._id}
+                onClick={() => openIssueDetailModal(issue.key)}
+                colorProps={isEpic && IssueColors[issue.issueColor.toUpperCase()]}
+              >
                 {(issue.assigneeId && member) && (
                   <Icon type="user-icon" imageUrl={member.pictureUrl} size={24} top={2} />
                 )}
