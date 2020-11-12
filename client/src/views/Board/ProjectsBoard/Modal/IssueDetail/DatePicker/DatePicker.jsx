@@ -40,7 +40,7 @@ export default function DatePicker({ dateRange, updateTicketField, isStartDate, 
             onFocusChange={({ focused }) => setFocused(focused)} // PropTypes.func.isRequired
             id="single_date_picker_start" // PropTypes.string.isRequired,
             required
-            isOutsideRange={day => (day.isAfter(momentedEndDate))}
+            isOutsideRange={day => (day.isSameOrAfter(momentedEndDate))}
           />
         }
         {
@@ -53,7 +53,7 @@ export default function DatePicker({ dateRange, updateTicketField, isStartDate, 
             onFocusChange={({ focused }) => setFocused(focused)} // PropTypes.func.isRequired
             id="single_date_picker_end" // PropTypes.string.isRequired,
             required
-            isOutsideRange={day => (day.isBefore(momentedStartDate))}
+            isOutsideRange={day => (day.isSameOrBefore(moment(momentedStartDate)))}
           />
         }
       </Container>

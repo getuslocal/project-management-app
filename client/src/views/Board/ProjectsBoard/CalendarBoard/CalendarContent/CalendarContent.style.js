@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { color } from '../../../../../shared/utils/styles';
 
 export const Container = styled.div`
 `
@@ -6,7 +7,7 @@ export const Container = styled.div`
 export const Top = styled.div`
   display: flex;
   padding-bottom: 7px;
-  border-bottom: 2px solid rgba(166, 168, 179, 0.12);
+  border-bottom: 2px solid ${color.borderLightest};
   padding-right: 13px;
 `
 

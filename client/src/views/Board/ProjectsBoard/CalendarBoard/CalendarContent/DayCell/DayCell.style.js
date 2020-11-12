@@ -5,8 +5,8 @@ export const Container = styled.div`
   width: calc(100% / 7);
   max-width: calc(100% / 7);
   min-height: 190px;
-  border-left: 2px solid rgba(166, 168, 179, 0.12);
-  border-bottom: 2px solid rgba(166, 168, 179, 0.12);
+  border-left: 2px solid ${color.borderLightest};
+  border-bottom: 2px solid ${color.borderLightest};
 
   &:nth-child(7n+1),
   &:nth-child(7n) {

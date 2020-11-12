@@ -69,9 +69,6 @@ const ticketSchema = new Schema({
   dateRange: {
     type: Object
   },
-  isEpicDone: {
-    type: Boolean
-  },
   count: {
     type: Number,
   },

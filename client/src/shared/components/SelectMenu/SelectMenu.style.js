@@ -1,4 +1,5 @@
 import styled, { css }  from 'styled-components'
+import { zIndexValues } from '../../utils/styles'
 
 export const Container = styled.div`
   margin-top: 5px;
@@ -7,7 +8,9 @@ export const Container = styled.div`
   background-color: #fff;
   border-radius: 3px;
   position: absolute;
-  z-index: 999;
+  z-index: ${zIndexValues.modal};
+  max-height: 350px;
+  overflow-y: scroll;
   width: ${props => props.width ? `${props.width}px` : '100%'};
   left: ${props => props.left ? `${props.left}px` : 'auto'};
   top: ${props => props.top ? `${props.top}px` : 'auto'};

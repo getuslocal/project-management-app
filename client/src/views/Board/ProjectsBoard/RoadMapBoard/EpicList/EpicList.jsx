@@ -50,6 +50,7 @@ const EpicList = ({
   const [isChildIssuesVisible, setIsChildIssuesVisible] = useState(false);
   const [epicWidth, setEpicWidth] = useState(0);
   const draggableWrapperRef = useRef(null);
+  console.log('Epic ls render')
 
   // Get default position of Epic Bar
   useEffect(() => {
@@ -68,7 +69,7 @@ const EpicList = ({
     // Get difference of days between start date and the beginning date of calendar.
     const firstXPostion = startDate.diff(firstDayOfCalendar, 'days') * 50;
     setDragProperties({ ...dragProperties, lastPosition: firstXPostion, currentPostion: firstXPostion })
-  }, [])
+  }, [dateRange])
 
   const handleDateChange = (difference) => {
     const newStartDate = moment(dateRange.startDate).add(difference, 'days');

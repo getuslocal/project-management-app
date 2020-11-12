@@ -28,9 +28,13 @@ const RangedDatePicker = ({ dateRange, setDateRange }) => {
           minimumNights={0}
           displayFormat="MMM DD YYYY"
           isOutsideRange={() => false} // Enable choosing dates before today.
+          minimumNights={1}
           required
         />
-        <Discription>Allows the planned start and due date for a piece of work to be set.</Discription>
+        <Discription>
+          Allows the planned start and due date for a piece of work to be set.<br/>
+          <span>&#42; An epic must be at least 2 days long. If it is a one day task, use calendar instead.</span>
+        </Discription>
       </Container>
     </div>
   )

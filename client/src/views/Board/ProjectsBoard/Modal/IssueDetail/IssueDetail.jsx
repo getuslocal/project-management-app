@@ -21,7 +21,6 @@ import Status from './Status/Status';
 import Dates from './Dates/Dates';
 import SingleDatePicker from '../../../../../shared/components/SingleDatePicker/SingleDatePicker';
 import Colors from './Colors/Colors';
-import Complete from './Complete/Complete';
 import DatePicker from './DatePicker/DatePicker';
 import ChildIssue from './ChildIssue/ChildIssue';
 import {
@@ -70,13 +69,14 @@ const IssueDetail = ({
     linkedEpic,
     dueDate
   } = ticket;
-  console.log('IssueDetail render')
+  // console.log('IssueDetail render')
 
   const isEpic = (ticket.issueType === IssueTypes.EPIC);
   const [childIssues, setChildIssues] = useState(linkedIssues);
 
   const updateTicketField = (updatedValue) => {
     // Update ticket.
+    console.log(updatedValue)
     updateTicket(ticket._id, updatedValue);
   }
 
@@ -159,11 +159,6 @@ const IssueDetail = ({
                     updateTicketHistory={updateTicketHistory}
                   />) : (
                     <Fragment>
-                      <Complete
-                        isEpicDone={ticket.isEpicDone}
-                        updateTicketField={updateTicketField}
-                        updateTicketHistory={updateTicketHistory}
-                      />
                       <DatePicker
                         dateRange={ticket.dateRange}
                         updateTicketField={updateTicketField}

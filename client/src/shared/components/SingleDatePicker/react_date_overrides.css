@@ -37,18 +37,8 @@
 
 .CalendarDay__today {
   box-shadow: inset 0 0 1px 1px rgb(0, 82, 204);
-  color: rgb(0, 82, 204);
-}
-
-.CalendarDay__today:hover {
-  color: rgb(0, 82, 204);
 }
 
 .CalendarDay__selected {
   box-shadow: none;
-  color: #484848;
-}
-
-.CalendarDay__selected:hover {
-  color: #fff;
 }
