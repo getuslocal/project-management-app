@@ -1,11 +1,18 @@
 import styled, { css } from 'styled-components'
-import { color } from '../../../../../shared/utils/styles'
+import { color } from '../../../../../../shared/utils/styles'
 
 export const Container = styled.div`
   box-shadow: 0 1px 4px 2px rgba(15, 53, 169, .1);
   border-radius: 5px;
   padding: 20px 20px 10px;
+  min-width: 24%;
   width: 24%;
+  margin-right: calc(4% / 3);
+  margin-top: 15px;
+
+  &:nth-child(4n) {
+    margin-right: 0;
+  }
 `;
 
 export const Top = styled.div`

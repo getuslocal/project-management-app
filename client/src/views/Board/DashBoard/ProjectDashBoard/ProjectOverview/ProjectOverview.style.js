@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
-import { color } from '../../../../shared/utils/styles'
-import Button from '../../../../shared/components/Button/Button'
+import { color } from '../../../../../shared/utils/styles'
+import Button from '../../../../../shared/components/Button/Button'
 
 export const Container = styled.div`
   padding: 20px 30px 10px;

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js';
-import HorizontalProgressbar from '../../../../shared/components/HorizontalProgressBar/HorizontalProgressBar';
+import HorizontalProgressbar from '../../../../../shared/components/HorizontalProgressBar/HorizontalProgressBar';
 import {
   Container,
   Left,

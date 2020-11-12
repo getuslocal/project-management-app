@@ -20,7 +20,11 @@ export const Row = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin: 20px 0 30px;
+  margin: 30px 0;
+
+  &:first-child{
+    margin: 20px 0 30px;
+  }
 `;
 
 export const SectionTitle = styled.p`

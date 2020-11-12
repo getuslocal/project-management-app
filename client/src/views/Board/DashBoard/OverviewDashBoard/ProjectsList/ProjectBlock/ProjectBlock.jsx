@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
-import ProgressProvider from "../../../../../shared/components/ProgressProvider/ProgressProvider";
-import Icon from '../../../../../shared/components/Icon/Icon'
+import ProgressProvider from "../../../../../../shared/components/ProgressProvider/ProgressProvider";
+import Icon from '../../../../../../shared/components/Icon/Icon'
 import {
   Container,
   Top,
@@ -61,7 +61,7 @@ const ProjectBlock = ({ project, members }) => {
           {
             members.map(member => {
               return (
-                <li>
+                <li key={member._id}>
                   <Icon type="user-icon" imageUrl={member.pictureUrl} size={27} top={1} />
                 </li>
               )

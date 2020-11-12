@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { color } from '../../../../shared/utils/styles'
+import { color } from '../../../../../shared/utils/styles'
 
 export const Block = styled.div`
   box-shadow: 0 1px 4px 2px rgba(15, 53, 169, .1);

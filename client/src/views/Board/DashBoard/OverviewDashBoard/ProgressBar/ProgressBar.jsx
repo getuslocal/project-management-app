@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import ProgressProvider from "../../../../shared/components/ProgressProvider/ProgressProvider";
+import ProgressProvider from "../../../../../shared/components/ProgressProvider/ProgressProvider";
 import {
   Container,
   Title,
@@ -14,7 +14,7 @@ import {
   Bottom
 } from './ProgressBar.style';
 
-export const ProgressBar = () => {
+export const ProgressBar = ({ tickets }) => {
   return (
     <Container>
       <Top>
@@ -44,7 +44,7 @@ export const ProgressBar = () => {
           }
         </ProgressProvider>
         <Bottom>
-          <span>We completed {66}% of 86 issues.</span>
+          <span>We completed {66}% of {tickets.length} issues.</span>
         </Bottom>
       </Content>
     </Container>
@@ -59,8 +59,4 @@ const mapStateToProps = (state) => ({
 
 })
 
-const mapDispatchToProps = {
-
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProgressBar)
+export default connect(mapStateToProps, null)(ProgressBar)

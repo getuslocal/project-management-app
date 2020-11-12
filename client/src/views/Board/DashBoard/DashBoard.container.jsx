@@ -19,7 +19,9 @@ const DashBoardContainer = ({
   useEffect(() => {
     // Get all tickets of organization.
     getTicketsOfOrganization(projectIds);
+    // console.log('dashboard useeffectc called')
   }, []);
+
   return (
     tickets.length > 0 ? (
       <DashBoard key={props.match.params.dashboard} tickets={tickets} {...props} />
@@ -30,7 +32,7 @@ const DashBoardContainer = ({
 }
 
 DashBoardContainer.propTypes = {
-  projectIds: PropTypes.object.isRequired,
+  projectIds: PropTypes.array.isRequired,
   getTicketsOfOrganization: PropTypes.func.isRequired,
 };
 

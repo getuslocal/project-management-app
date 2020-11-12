@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import Icon from '../../../../shared/components/Icon/Icon'
+import Icon from '../../../../../shared/components/Icon/Icon'
 import {
   Block,
   IconContainer,

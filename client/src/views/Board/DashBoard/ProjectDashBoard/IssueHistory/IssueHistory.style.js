@@ -1,8 +1,9 @@
 import styled, { css } from 'styled-components'
-import { color } from '../../../../shared/utils/styles'
+import { color } from '../../../../../shared/utils/styles'
 
 export const Container = styled.div`
-  max-height : 370px;
+  height: 100%;
+  max-height : 100%;
   overflow-y : scroll;
 
   /* The emerging W3C standard

@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect';
-import { selectMembers } from '../../../../redux/members/members.selectors';
-import { color } from '../../../../shared/utils/styles'
-import Icon from '../../../../shared/components/Icon/Icon';
+import { selectMembers } from '../../../../../redux/members/members.selectors';
+import { color } from '../../../../../shared/utils/styles'
+import Icon from '../../../../../shared/components/Icon/Icon';
 import moment from 'moment'
 import {
   Container,

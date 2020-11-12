@@ -1,8 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { selectProjectById } from '../../../../redux/projects/projects.selectors'
 import { createStructuredSelector } from 'reselect'
+import { connect } from 'react-redux'
+import { selectProjectById } from '../../../../../redux/projects/projects.selectors'
+import Icon from '../../../../../shared/components/Icon/Icon'
+import { selectMembers } from '../../../../../redux/members/members.selectors'
 import {
   Container,
   Top,
@@ -17,17 +19,15 @@ import {
   MemberList,
   CustomButton
 } from './ProjectOverview.style'
-import Icon from '../../../../shared/components/Icon/Icon'
-import { selectMembers } from '../../../../redux/members/members.selectors'
 
 export const ProjectOverview = ({ project, members }) => {
   const membersOfProject = members.filter(member => project.members.includes(member._id));
   return (
-    <Container> 
+    <Container>
       <Top>
         <NameCont>
           <IconCont>
-            <Icon type="project-icon" imageUrl={project.projectIconUrl} size={45}/>
+            <Icon type="project-icon" imageUrl={project.projectIconUrl} size={45} />
           </IconCont>
           <Name>{project.name}</Name>
         </NameCont>
@@ -44,7 +44,7 @@ export const ProjectOverview = ({ project, members }) => {
             {
               membersOfProject.map(member => {
                 return (
-                  <li>
+                  <li key={member._id}>
                     <Icon type="user-icon" imageUrl={member.pictureUrl} size={30} top={1} />
                   </li>
                 )

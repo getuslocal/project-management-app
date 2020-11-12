@@ -2,9 +2,9 @@ import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect'
-import { selectProjectHistory } from '../../../../redux/projects/projects.selectors';
-import { selectMembers } from '../../../../redux/members/members.selectors';
-import Icon from '../../../../shared/components/Icon/Icon';
+import { selectProjectHistory } from '../../../../../redux/projects/projects.selectors';
+import { selectMembers } from '../../../../../redux/members/members.selectors';
+import Icon from '../../../../../shared/components/Icon/Icon';
 import moment from 'moment'
 import {
   Container,

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { color } from '../../../../shared/utils/styles'
+import { color } from '../../../../../shared/utils/styles'
 
 export const Container = styled.div`
   height: calc( 100% - 52px );
