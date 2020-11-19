@@ -35,6 +35,7 @@ const QuickTicket = ({ setIsQuickTicketActive, projectId, user, createNewTicket,
   const handleSubmit = (e) => {
     e.preventDefault();
     issueFormValues.projectId = projectId;
+    issueFormValues.columnId = columnId;
     createNewTicket(issueFormValues, columnId);
     setIsQuickTicketActive(false);
   }

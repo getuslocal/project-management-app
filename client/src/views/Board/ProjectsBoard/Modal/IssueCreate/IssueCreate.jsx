@@ -77,9 +77,10 @@ const IssueCreate = ({
       issueFormValues.linkedEpic = null;
       // Add dueDate property.
       issueFormValues.dueDate = dueDate;
-      // Create a new ticket with form values.
       // Get first column where a new ticket is added onto.
       const columnId = projects[currentProjectId].columnOrder[0];
+      issueFormValues.columnId = columnId;
+      // Create a new ticket with the form values.
       createNewTicket(issueFormValues, columnId);
     }
     // Close this modal.

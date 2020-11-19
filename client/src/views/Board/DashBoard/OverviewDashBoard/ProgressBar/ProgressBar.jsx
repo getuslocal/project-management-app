@@ -14,14 +14,23 @@ import {
   Bottom
 } from './ProgressBar.style';
 
-export const ProgressBar = ({ tickets }) => {
+export const ProgressBar = ({ tickets, projects }) => {
+
+  const completedTickets = tickets.filter(ticket => {
+    const project = projects[ticket.projectId];
+    const lastColumnId = project.columnOrder[project.columnOrder.length - 1];
+    return (ticket.columnId === lastColumnId);
+  });
+
+  const completedPercent = Math.floor((completedTickets.length / tickets.length) * 100);
+
   return (
     <Container>
       <Top>
         <Title>Overall Progress</Title>
       </Top>
       <Content>
-        <ProgressProvider valueStart={0} valueEnd={66}>
+        <ProgressProvider valueStart={0} valueEnd={completedPercent}>
           {value => (
             <CircularProgressbarWithChildren
               value={value}
@@ -36,7 +45,7 @@ export const ProgressBar = ({ tickets }) => {
               })}
             >
               <InnerText style={{ fontSize: 12, marginTop: -5 }}>
-                <Percentage>66<span className="percent-mark">%</span></Percentage>
+                <Percentage>{completedPercent}<span className="percent-mark">%</span></Percentage>
                 <CompleteText>COMPLETED</CompleteText>
               </InnerText>
             </CircularProgressbarWithChildren>
@@ -44,7 +53,7 @@ export const ProgressBar = ({ tickets }) => {
           }
         </ProgressProvider>
         <Bottom>
-          <span>We completed {66}% of {tickets.length} issues.</span>
+          <span>Completed {completedPercent}% of {tickets.length} issues.</span>
         </Bottom>
       </Content>
     </Container>

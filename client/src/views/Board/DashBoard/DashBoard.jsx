@@ -18,7 +18,7 @@ const DashBoard = ({ component, baseUrl, tickets, ...props }) => {
           !dashboardParams ? (
             <OverviewDashBoard tickets={tickets} />
           ) : (
-              <ProjectDashBoard dashboardParams={dashboardParams} tickets={tickets} />
+              <ProjectDashBoard dashboardParams={dashboardParams} tickets={tickets.filter(ticket => ticket.projectId === dashboardParams)} />
             )
         }
       </Container>

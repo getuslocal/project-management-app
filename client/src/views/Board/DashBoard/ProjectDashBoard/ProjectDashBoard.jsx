@@ -20,7 +20,7 @@ const ProjectDashBoard = ({ dashboardParams, tickets }) => {
           <ProjectOverview projectId={dashboardParams} />
         </SectionContainer>
         <SectionContainer width="43%" noBoxShadow={true} >
-          <IssueTypes />
+          <IssueTypes tickets={tickets}/>
         </SectionContainer>
       </Row>
       <Row>

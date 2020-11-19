@@ -6,7 +6,6 @@ import {
   UPDATE_TICKET,
   ADD_COMMENT,
   DELETE_COMMENT,
-  EDIT_COMMENT,
   FILTER_TICKETS_BY_USERID,
   REMOVE_USER_FILTER,
   FILTER_TICKETS_BY_SEARCH,
@@ -208,5 +207,3 @@ export const clearAllFilters = () => async dispatch => {
     type: CLEAR_ALL_FILTERS,
   })
 };
-
-

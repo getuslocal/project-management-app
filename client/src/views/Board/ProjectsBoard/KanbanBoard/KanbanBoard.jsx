@@ -2,8 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { updateOneColumnTicketsOrder, updateTwoColumnsTicketsOrder, updateColumnOrder } from '../../../../redux/projects/projects.actions';
 import { selectFilteredTickets } from '../../../../redux/tickets/tickets.selectors';
-import { clearAllFilters } from '../../../../redux/tickets/tickets.actions';
-import store from '../../../../redux/store';
+import { clearAllFilters, updateTicket } from '../../../../redux/tickets/tickets.actions';
 import Column from './Column/Column';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
@@ -30,7 +29,15 @@ const InnerList = React.memo(props => {
   return <Column column={column} tickets={getTickets(ticketMap, column.taskIds)} index={index} />
 })
 
-const KanbanBoard = ({ project, tickets, clearAllFilters }) => {
+const KanbanBoard = ({
+  project,
+  tickets,
+  clearAllFilters,
+  updateColumnOrder,
+  updateOneColumnTicketsOrder,
+  updateTwoColumnsTicketsOrder,
+  updateTicket,
+}) => {
   const { columnOrder, columns, _id } = project;
   console.log('KanbanBoard render')
 
@@ -56,10 +63,11 @@ const KanbanBoard = ({ project, tickets, clearAllFilters }) => {
 
     // If the type of dnd is column order change.
     if (type === 'column') {
-      const newColumnOrder = Array.from(project.columnOrder);
+      const newColumnOrder = Array.from(columnOrder);
       newColumnOrder.splice(source.index, 1);
       newColumnOrder.splice(destination.index, 0, draggableId);
-      store.dispatch(updateColumnOrder(_id, newColumnOrder));
+      // Update columnOrder field.
+      updateColumnOrder(_id, newColumnOrder);
       return;
     }
 
@@ -76,8 +84,8 @@ const KanbanBoard = ({ project, tickets, clearAllFilters }) => {
         ...start,
         taskIds: newTicketsIds,
       };
-
-      store.dispatch(updateOneColumnTicketsOrder(_id, newColumn));
+      // Update column taskIds field.
+      updateOneColumnTicketsOrder(_id, newColumn);
       return;
     }
 
@@ -95,8 +103,19 @@ const KanbanBoard = ({ project, tickets, clearAllFilters }) => {
       ...finish,
       taskIds: finishTicketsId,
     };
+    // Update columnId field of the ticket.
+    updateTicket(draggableId, { field: 'columnId', value: destination.droppableId });
+    // Update the two columns taskIds fields.
+    updateTwoColumnsTicketsOrder(_id, { newStart, newFinish });
 
-    store.dispatch(updateTwoColumnsTicketsOrder(_id, { newStart, newFinish }));
+    // If move to the last column, add completed time.
+    if (destination.droppableId === columnOrder[columnOrder.length - 1]) {
+      updateTicket(draggableId, { field: 'completedAt', value: new Date() });
+    }
+    // If move from the last column to another, unset the completed time. 
+    else if (source.droppableId === columnOrder[columnOrder.length - 1]) {
+      updateTicket(draggableId, { field: 'completedAt', value: null });
+    };
   }
 
   return (
@@ -121,14 +140,26 @@ const KanbanBoard = ({ project, tickets, clearAllFilters }) => {
   )
 }
 
-
 KanbanBoard.propTypes = {
   tickets: PropTypes.array.isRequired,
+  project: PropTypes.object.isRequired,
   clearAllFilters: PropTypes.func.isRequired,
+  updateColumnOrder: PropTypes.func.isRequired,
+  updateOneColumnTicketsOrder: PropTypes.func.isRequired,
+  updateTwoColumnsTicketsOrder: PropTypes.func.isRequired,
+  updateTicket: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   tickets: selectFilteredTickets,
 });
 
-export default connect(mapStateToProps, { clearAllFilters })(KanbanBoard);
+const mapDispatchToProps = dispatch => ({
+  clearAllFilters: () => dispatch(clearAllFilters()),
+  updateColumnOrder: (projectId, newColumnOrder) => dispatch(updateColumnOrder(projectId, newColumnOrder)),
+  updateOneColumnTicketsOrder: (projectId, newColumn) => dispatch(updateOneColumnTicketsOrder(projectId, newColumn)),
+  updateTwoColumnsTicketsOrder: (projectId, newColumn) => dispatch(updateTwoColumnsTicketsOrder(projectId, newColumn)),
+  updateTicket: (ticketId, newColumn) => dispatch(updateTicket(ticketId, newColumn)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(KanbanBoard);

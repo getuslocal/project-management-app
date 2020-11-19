@@ -4,7 +4,7 @@ import Button from '../../../../../shared/components/Button/Button'
 
 export const Container = styled.div`
   padding: 20px 30px 10px;
-  min-height: 370px;
+  height:100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

@@ -75,6 +75,12 @@ const ticketSchema = new Schema({
   dueDate: {
     type: Date,
   },
+  columnId: {
+    type: String,
+  },
+  completedAt: {
+    type: Date,
+  },
 }, {
   timestamps: true,
   minimize: false
