@@ -1,7 +1,5 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { createStructuredSelector } from 'reselect';
-import { selectMembers } from '../../../../../redux/members/members.selectors';
+import PropTypes from 'prop-types'
 import { color } from '../../../../../shared/utils/styles'
 import Icon from '../../../../../shared/components/Icon/Icon';
 import moment from 'moment'
@@ -14,20 +12,25 @@ import {
   TableData,
   BodyTableRow,
   FlexContainer,
-  Count
 } from './MembersList.style';
 
-export const MembersList = ({ members }) => {
+export const MembersList = ({ members, projects }) => {
+
+  const getProjectLabels = (member) => {
+    const assignedProjects = Object.values(projects).filter(project => project.members.includes(member));
+    const labels = assignedProjects.length > 0 ? assignedProjects.map(project => project.name) : [];
+    return labels.join(', ');
+  }
+
   return (
     <Container>
       <Table>
         <Head>
           <tr>
-            <TableHeader width="">Name</TableHeader>
-            <TableHeader width="">Position</TableHeader>
-            <TableHeader width="">Team</TableHeader>
-            <TableHeader width="">Assigned Issues</TableHeader>
-            <TableHeader width="">Member Since</TableHeader>
+            <TableHeader>Name</TableHeader>
+            <TableHeader>Position</TableHeader>
+            <TableHeader>Projects</TableHeader>
+            <TableHeader>Member Since</TableHeader>
           </tr>
         </Head>
         <Body>
@@ -35,17 +38,15 @@ export const MembersList = ({ members }) => {
             members.map(member => {
               return (
                 <BodyTableRow key={member._id}>
-                  <TableData width="" >
+                  <TableData >
                     <FlexContainer>
                       <Icon type="user-icon" imageUrl={member.pictureUrl} size={30} top={1} />
                       <span style={{ color: color.black }}>{member.name}</span>
                     </FlexContainer>
                   </TableData>
-                  <TableData width="">{member.position}</TableData>
-                  <TableData width="">CoinX</TableData>
-                  <TableData width="">
-                    <span style={{ fontWeight: 700, }}>16</span> issues left</TableData>
-                  <TableData width="">
+                  <TableData>{member.position}</TableData>
+                  <TableData>{getProjectLabels(member._id)}</TableData>
+                  <TableData>
                     <Icon type="calendar" size={16} top={1} />
                     {moment(member.createdAt).format('MMM DD, YYYY')}
                   </TableData>
@@ -55,13 +56,13 @@ export const MembersList = ({ members }) => {
           }
         </Body>
       </Table>
-        <Count>Show all {members.length} members</Count>
     </Container>
   )
 }
 
-const mapStateToProps = createStructuredSelector({
-  members: selectMembers
-})
+MembersList.propTypes = {
+  projects: PropTypes.object.isRequired,
+  members: PropTypes.array.isRequired,
+}
 
-export default connect(mapStateToProps, null)(MembersList)
+export default MembersList;

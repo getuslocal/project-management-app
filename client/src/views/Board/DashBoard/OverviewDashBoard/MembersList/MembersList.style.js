@@ -1,32 +1,25 @@
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { color } from '../../../../../shared/utils/styles'
 
 export const Container = styled.div`
   position:relative;
-  height: 100%;
-  padding: 0 5px 5px;
+  padding: 0 10px 10px;
 `;
 
 export const Table = styled.table`
-background-color: #fff;
-/* border-collapse: collapse; */
-margin: 0;
-word-wrap: break-word;
+  background-color: #fff;
+  margin: 0;
+  word-wrap: break-word;
 `;
 
 export const Head = styled.thead`
   color: #6c798f;
   display:table;
-  table-layout:fixed;/* even columns width , fix width of table too*/
-  /* @todo: Figure out how to add this when has scroll bar. */
-  width: calc( 100% - 1em ); 
+  table-layout:fixed;
   width: 100%;
 `;
 
 export const Body = styled.tbody`
-  /* max-height: 280px; */
-  /* overflow:auto; */
-  /* display: block; */
 `;
 
 export const BodyTableRow = styled.tr`
@@ -34,7 +27,6 @@ export const BodyTableRow = styled.tr`
     border-bottom: 1px solid rgba(211, 212, 213, .36);
   }
   width: 100%;
-  /* padding: 5px; */
   display:table;
   table-layout:fixed;
 `;
@@ -63,6 +55,7 @@ export const TableData = styled.td`
     margin-right: 10px;
   }
 `;
+
 export const FlexContainer = styled.div`
   display: flex;
   align-items: center;
@@ -70,12 +63,4 @@ export const FlexContainer = styled.div`
   & > i {
     margin-right: 10px;
   }
-`;
-export const Count = styled.p`
-  font-size: 13.5px;
-  font-weight: 500;
-  color: ${color.textMedium};
-  position: absolute;
-  bottom: 0;
-  right: 0;
 `;

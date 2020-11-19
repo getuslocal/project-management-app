@@ -31,13 +31,11 @@ const OverviewDashBoard = ({ tickets, projects, members }) => {
           <ProgressBar tickets={nonEpicTickets} projects={projects} />
         </SectionContainer>
       </Row>
-      <ProjectsList />
+      <ProjectsList tickets={nonEpicTickets} projects={projects} members={members}/>
       <Row>
         <SectionContainer width="100%">
           <SectionTitle>Members</SectionTitle>
-          <SectionContent height="400px">
-            <MembersList />
-          </SectionContent>
+            <MembersList projects={projects} members={members} />
         </SectionContainer>
       </Row>
     </Fragment>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import ProgressProvider from "../../../../../shared/components/ProgressProvider/ProgressProvider";
@@ -60,12 +60,9 @@ export const ProgressBar = ({ tickets, projects }) => {
   )
 }
 
-// ProgressBar.propTypes = {
-//   prop: PropTypes
-// }
+ProgressBar.propTypes = {
+  tickets: PropTypes.array.isRequired,
+  projects: PropTypes.object.isRequired
+}
 
-const mapStateToProps = (state) => ({
-
-})
-
-export default connect(mapStateToProps, null)(ProgressBar)
+export default ProgressBar

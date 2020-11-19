@@ -20,20 +20,24 @@ export const Top = styled.div`
   margin-bottom: 20px;
 `;
 
-export const TopLeft = styled.div`
-`;
-
 export const TopRight = styled.div`
   margin-left: auto;
 `;
 
-export const NameText = styled.div`
+export const NameText = styled.p`
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 7px;
+
+  & > a {
+    &:hover {
+      text-decoration:underline;
+      cursor: pointer;
+    }
+  }
 `;
 
-export const CategoryText = styled.div`
+export const CategoryText = styled.p`
   font-size: 14px;
   font-weight: 500;
   color: ${color.textMedium};
@@ -85,17 +89,5 @@ export const MemberList = styled.ul`
   & > li {
     margin-right: 4px;
     display: inline-block;
-  }
-`;
-
-export const Link = styled.div`
-  margin-left: auto;
-  color: ${color.textVeryLight};
-
-  & > i {
-    &:hover{
-      color: ${color.primary};
-      cursor: pointer;
-    }
   }
 `;

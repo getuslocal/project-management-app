@@ -8,7 +8,6 @@ import {
   Top,
   Center,
   Bottom,
-  TopLeft,
   NameText,
   CategoryText,
   TopRight,
@@ -17,21 +16,24 @@ import {
   MemberList,
   ImageWithProgressBar,
   ProgressBarInner,
-  Link
 } from './ProjectBlock.style';
+import { Link } from 'react-router-dom';
 
-const ProjectBlock = ({ project, members }) => {
-  console.log(members)
+const ProjectBlock = ({ project, members, tickets }) => {
+
+  const completedTicketsNumber = tickets.filter(ticket => ticket.columnId === project.columnOrder[project.columnOrder.length - 1]).length;
+  const completeness = (tickets.length === 0 ? 0 : Math.floor((completedTicketsNumber / tickets.length) * 100));
+
   return (
     <Container>
       <Top>
-        <TopLeft>
-          <NameText>{project.name}</NameText>
+        <div>
+          <NameText><Link to={`/app/projects/${project._id}`}>{project.name}</Link></NameText>
           <CategoryText>{project.category}</CategoryText>
-        </TopLeft>
+        </div>
         <TopRight>
           <ImageWithProgressBar>
-            <ProgressProvider valueStart={0} valueEnd={66}>
+            <ProgressProvider valueStart={0} valueEnd={completeness}>
               {value => (
                 <CircularProgressbarWithChildren
                   value={value}
@@ -59,25 +61,27 @@ const ProjectBlock = ({ project, members }) => {
         <BottomLeftText>Team: </BottomLeftText>
         <MemberList>
           {
-            members.map(member => {
+            project.members.map(memberId => {
+              const memberData = members.find(member => member._id === memberId);
               return (
-                <li key={member._id}>
-                  <Icon type="user-icon" imageUrl={member.pictureUrl} size={27} top={1} />
-                </li>
+                memberData && (
+                  <li key={memberData._id}>
+                    <Icon type="user-icon" imageUrl={memberData.pictureUrl} size={27} top={1} />
+                  </li>
+                )
               )
             })
           }
         </MemberList>
-        <Link>
-          <Icon type="link" isSolid={true} size={14} />
-        </Link>
       </Bottom>
     </Container>
   )
 }
 
 ProjectBlock.propTypes = {
-  project: PropTypes.object.isRequired
+  project: PropTypes.object.isRequired,
+  members: PropTypes.array.isRequired,
+  tickets: PropTypes.array.isRequired,
 }
 
 export default ProjectBlock;
