@@ -8,12 +8,15 @@ import { createStructuredSelector } from 'reselect';
 import { selectChildIssues } from '../../../../../redux/tickets/tickets.selectors';
 import { selectCurrentProject } from '../../../../../redux/projects/projects.selectors';
 import { selectMembers } from '../../../../../redux/members/members.selectors';
+import { updateHistory } from '../../../../../redux/projects/projects.actions';
 import { updateTicket } from '../../../../../redux/tickets/tickets.actions';
-import { IssueColors } from '../../../../../shared/constants/issues'
+import { IssueColors, IssueHistoryTypes, IssueTypes } from '../../../../../shared/constants/issues'
 import Icon from '../../../../../shared/components/Icon/Icon'
 import moment from 'moment'
 import queryString from 'query-string';
 import EpicDetail from './EpicDetail/EpicDetail';
+import RightResizableBar from './RightResizableBar/RightResizableBar';
+import LeftResizableBar from './LeftResizableBar/LeftResizableBar';
 import {
   Row,
   Epic,
@@ -32,25 +35,29 @@ const EpicList = ({
   epic,
   childIssues,
   updateTicket,
+  updateHistory,
   members,
   boardWidth,
-  project: { columns, columnOrder },
+  project: { columns, columnOrder, _id: projectId },
   ...props
 }) => {
-  const { _id: epicId, dateRange, summary, key: epicKey, createdAt, assigneeId } = epic;
+  const { _id: epicId, dateRange, summary, key: epicKey } = epic;
+
   const epicColorProperty = IssueColors[epic.issueColor.toUpperCase()];
+
   const [dragProperties, setDragProperties] = useState({
     lastPosition: 0,
     currentPostion: 0,
   });
+
   const [resizeProperties, setResizeProperties] = useState({
     lastLeftResizeX: 0,
     lastRightResizeX: 0,
   });
+
   const [isChildIssuesVisible, setIsChildIssuesVisible] = useState(false);
   const [epicWidth, setEpicWidth] = useState(0);
   const draggableWrapperRef = useRef(null);
-  console.log('Epic ls render')
 
   // Get default position of Epic Bar
   useEffect(() => {
@@ -79,13 +86,24 @@ const EpicList = ({
       value: { endDate: newEndDate, startDate: newStartDate }
     }
     updateTicket(epicId, updateData)
-    // @todo: Handles history updates after the above.
+    // Handles history updates.
+    const logData = {
+      ticket: {
+        id: epicId,
+        displayValue: `${epicKey} - ${summary}`,
+        type: IssueTypes.EPIC,
+      },
+      type: IssueHistoryTypes.UPDATE,
+      field: 'Due date',
+      before: moment(dateRange.endDate).format('LL'),
+      after: newEndDate.format('LL'),
+    }
+    updateHistory(projectId, logData);
   }
 
   const onStop = (e, ui) => {
     const newPosition = ui.lastX;
     // Check if it is not dragged. If true, open issue detail modal.
-    // @todo: Figure out what deltaX is refering to.
     if (dragProperties.lastPosition === newPosition && ui.deltaX === 0) {
       openIssueDetailModal(epicKey)
       return;
@@ -100,70 +118,6 @@ const EpicList = ({
       lastPosition: newPosition,
       currentPostion: newPosition,
     });
-  };
-
-  const onLeftResizeDrag = (e, ui) => {
-    // When epic length is minimum length, skip.
-    if (epicWidth <= 50 && ui.deltaX > 0) return;
-    // Change width of the epic bar based on how much scrolled.
-    setEpicWidth(lastEpicWidth => lastEpicWidth - ui.deltaX);
-    // Adjust the positoin of the epic bar.
-    setDragProperties(prevState => ({
-      ...prevState,
-      lastPosition: prevState.currentPostion + ui.deltaX,
-      currentPostion: prevState.currentPostion + ui.deltaX,
-    }));
-  };
-
-  const onLeftResizeStop = (e, ui) => {
-    const newPosition = ui.lastX;
-    const { startDate, endDate } = dateRange;
-    const difference = (newPosition - resizeProperties.lastLeftResizeX) / 50;
-    const newStartDate = moment(startDate).add(difference, 'days');
-    // If new start date is not before the end date, set the previous day of the end date.
-    if (!newStartDate.isBefore(moment(endDate), 'days')) {
-      const updateData = {
-        field: 'dateRange',
-        value: { ...dateRange, startDate: moment(endDate).subtract(1, 'days') }
-      }
-      updateTicket(epicId, updateData);
-    } else {
-      const updateData = {
-        field: 'dateRange',
-        value: { ...dateRange, startDate: newStartDate }
-      }
-      updateTicket(epicId, updateData);
-    }
-    setResizeProperties({ ...resizeProperties, lastLeftResizeX: newPosition });
-  };
-
-  const onRightResizeDrag = (e, ui) => {
-    // When epic length is minimum length, skip.
-    if (epicWidth <= 50 && ui.deltaX < 0) return;
-    // Change width of the epic bar based on how much scrolled.
-    setEpicWidth(lastEpicWidth => lastEpicWidth + ui.deltaX);
-  };
-
-  const onRightResizeStop = (e, ui) => {
-    const newPosition = ui.lastX;
-    const { startDate, endDate } = dateRange;
-    const difference = (newPosition - resizeProperties.lastRightResizeX) / 50;
-    const newEndDate = moment(endDate).add(difference, 'days');
-    // If new end date is not after the start date, set the next day of the start date.
-    if (!newEndDate.isAfter(moment(startDate), 'days')) {
-      const updateData = {
-        field: 'dateRange',
-        value: { ...dateRange, endDate: moment(startDate).add(1, 'days') }
-      }
-      updateTicket(epicId, updateData)
-    } else {
-      const updateData = {
-        field: 'dateRange',
-        value: { ...dateRange, endDate: newEndDate }
-      }
-      updateTicket(epicId, updateData)
-    }
-    setResizeProperties({ ...resizeProperties, lastRightResizeX: newPosition });
   };
 
   const openIssueDetailModal = (key) => {
@@ -218,22 +172,20 @@ const EpicList = ({
           onStop={onStop}
         >
           <EpicContainer epicWidth={epicWidth} >
-            <Draggable
-              axis="none"
-              handle=".left-resize-bar"
-              grid={[50, 50]}
-              onDrag={onLeftResizeDrag}
-              onStop={onLeftResizeStop}
-              // Set offsetParent tp DraggableWrapper to prevent bugs.
-              offsetParent={draggableWrapperRef.current}
-            >
-              <ResizeBar
-                className="left-resize-bar"
-                style={{ backgroundColor: epicColorProperty.light }}
-              >
-                <Icon type="grip-lines-vertical" size={10} isSolid={true} top={-1} />
-              </ResizeBar>
-            </Draggable>
+            <LeftResizableBar
+              epic={epic}
+              projectId={projectId}
+              epicWidth={epicWidth}
+              setDragProperties={setDragProperties}
+              setEpicWidth={setEpicWidth}
+              dateRange={dateRange}
+              resizeProperties={resizeProperties}
+              setResizeProperties={setResizeProperties}
+              updateTicket={updateTicket}
+              updateHistory={updateHistory}
+              epicColorProperty={epicColorProperty}
+              draggableWrapperRef={draggableWrapperRef}
+            />
             <Epic
               className="epic"
               progressColor={epicColorProperty.border}
@@ -245,20 +197,18 @@ const EpicList = ({
             >
               <Summary>{summary}</Summary>
             </Epic>
-            <Draggable
-              axis="none"
-              handle=".right-resize-bar"
-              grid={[50, 50]}
-              onDrag={onRightResizeDrag}
-              onStop={onRightResizeStop}
-            >
-              <ResizeBar
-                className="right-resize-bar"
-                style={{ backgroundColor: epicColorProperty.light }}
-              >
-                <Icon type="grip-lines-vertical" size={10} isSolid={true} top={-1} />
-              </ResizeBar>
-            </Draggable>
+            <RightResizableBar
+              epic={epic}
+              projectId={projectId}
+              epicWidth={epicWidth}
+              setEpicWidth={setEpicWidth}
+              dateRange={dateRange}
+              resizeProperties={resizeProperties}
+              setResizeProperties={setResizeProperties}
+              updateTicket={updateTicket}
+              updateHistory={updateHistory}
+              epicColorProperty={epicColorProperty}
+            />
           </EpicContainer>
         </Draggable>
         {
@@ -307,5 +257,5 @@ const mapStateToProps = (state, ownProps) => createStructuredSelector({
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { updateTicket })
+  connect(mapStateToProps, { updateTicket, updateHistory })
 )(EpicList);
