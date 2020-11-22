@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { addComment, deleteComment } from '../../../../../../redux/tickets/tickets.actions';
 import Button from '../../../../../../shared/components/Button/Button'
-import Comment from './Comment/Comment'
+import Comment from './Comment/Comment';
+import { IssueHistoryTypes } from '../../../../../../shared/constants/issues';
 import {
   Container,
   Title,
@@ -19,6 +20,7 @@ import {
 import {
   IconCont
 } from '../IssueDetail.style';
+
 const Comments = ({ currentUser, comments, ticketId, addComment, deleteComment, updateTicketHistory }) => {
   const [text, setText] = useState('');
   const [isOpen, setIsOpen] = useState(false);
@@ -50,7 +52,7 @@ const Comments = ({ currentUser, comments, ticketId, addComment, deleteComment, 
                   addComment(ticketId, { text })
                   setText('')
                   setIsOpen(false)
-                  updateTicketHistory(null, null, null, 'Comment')
+                  updateTicketHistory(null, null, null, IssueHistoryTypes.COMMENT)
                 }}
                 type="button"
               />

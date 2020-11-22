@@ -46,3 +46,10 @@ export const IssueColors = {
 export const IssueStyles = {
   EPIC: 'Epic',
 };
+
+export const IssueHistoryTypes = {
+  CREATE: 'Create',
+  DELETE: 'Delete',
+  UPDATE: 'Update',
+  COMMENT: 'Comment'
+};

@@ -75,10 +75,10 @@ router.post('/update/history/:id', verify, async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select('-password');
     const post = await Project.findById(req.params.id);
-    const { ticketId, type, field, before, after } = req.body;
+    const { ticket, type, field, before, after } = req.body;
 
     const newHistory = {
-      ticketId: ticketId,
+      ticket: ticket,
       type: type,
       editor: user._id,
       field: field,
@@ -88,7 +88,7 @@ router.post('/update/history/:id', verify, async (req, res) => {
 
     // If the history length is equal or greater than 30,
     // remove the last history item.
-    if (post.history.length >= 50) {
+    if (post.history.length >= 30) {
       post.history.pop()
     }
 

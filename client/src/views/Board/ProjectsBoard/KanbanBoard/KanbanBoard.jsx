@@ -1,12 +1,13 @@
 import React, { Fragment, useEffect } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { updateOneColumnTicketsOrder, updateTwoColumnsTicketsOrder, updateColumnOrder } from '../../../../redux/projects/projects.actions';
+import { updateOneColumnTicketsOrder, updateTwoColumnsTicketsOrder, updateColumnOrder, updateHistory } from '../../../../redux/projects/projects.actions';
 import { selectFilteredTickets } from '../../../../redux/tickets/tickets.selectors';
 import { clearAllFilters, updateTicket } from '../../../../redux/tickets/tickets.actions';
 import Column from './Column/Column';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
+import { IssueHistoryTypes } from '../../../../shared/constants/issues';
 import {
   Container,
 } from './KanbanBoard.style';
@@ -37,17 +38,34 @@ const KanbanBoard = ({
   updateOneColumnTicketsOrder,
   updateTwoColumnsTicketsOrder,
   updateTicket,
+  updateHistory
 }) => {
-  const { columnOrder, columns, _id } = project;
-  console.log('KanbanBoard render')
+  const { columnOrder, columns, _id: projectId } = project;
+  // console.log('KanbanBoard render')
 
   useEffect(() => {
     // Clean up filters before unmounting.
     return () => { clearAllFilters() };
   }, [])
 
+  // Update history of the project.
+  const updateHistoryOfProject = (ticketId, beforeColumnId, afterColumnId) => {
+    const ticketData  = tickets.find(ticket => ticket._id === ticketId);
+    const logData = {
+      ticket: {
+        id: ticketId,
+        displayValue: `${ticketData.key} - ${ticketData.summary}`,
+        type: ticketData.issueType,
+      },
+      type: IssueHistoryTypes.UPDATE,
+      field: 'Status',
+      before: columns[beforeColumnId].title,
+      after: columns[afterColumnId].title,
+    }
+    updateHistory(projectId, logData)
+  }
+
   const onDragEnd = result => {
-    // console.log(result)
     const { destination, source, draggableId, type } = result;
 
     if (!destination) {
@@ -67,7 +85,7 @@ const KanbanBoard = ({
       newColumnOrder.splice(source.index, 1);
       newColumnOrder.splice(destination.index, 0, draggableId);
       // Update columnOrder field.
-      updateColumnOrder(_id, newColumnOrder);
+      updateColumnOrder(projectId, newColumnOrder);
       return;
     }
 
@@ -85,7 +103,7 @@ const KanbanBoard = ({
         taskIds: newTicketsIds,
       };
       // Update column taskIds field.
-      updateOneColumnTicketsOrder(_id, newColumn);
+      updateOneColumnTicketsOrder(projectId, newColumn);
       return;
     }
 
@@ -106,7 +124,7 @@ const KanbanBoard = ({
     // Update columnId field of the ticket.
     updateTicket(draggableId, { field: 'columnId', value: destination.droppableId });
     // Update the two columns taskIds fields.
-    updateTwoColumnsTicketsOrder(_id, { newStart, newFinish });
+    updateTwoColumnsTicketsOrder(projectId, { newStart, newFinish });
 
     // If move to the last column, add completed time.
     if (destination.droppableId === columnOrder[columnOrder.length - 1]) {
@@ -116,6 +134,8 @@ const KanbanBoard = ({
     else if (source.droppableId === columnOrder[columnOrder.length - 1]) {
       updateTicket(draggableId, { field: 'completedAt', value: null });
     };
+
+    updateHistoryOfProject(draggableId, source.droppableId, destination.droppableId);
   }
 
   return (
@@ -148,6 +168,7 @@ KanbanBoard.propTypes = {
   updateOneColumnTicketsOrder: PropTypes.func.isRequired,
   updateTwoColumnsTicketsOrder: PropTypes.func.isRequired,
   updateTicket: PropTypes.func.isRequired,
+  updateHistory: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -160,6 +181,7 @@ const mapDispatchToProps = dispatch => ({
   updateOneColumnTicketsOrder: (projectId, newColumn) => dispatch(updateOneColumnTicketsOrder(projectId, newColumn)),
   updateTwoColumnsTicketsOrder: (projectId, newColumn) => dispatch(updateTwoColumnsTicketsOrder(projectId, newColumn)),
   updateTicket: (ticketId, newColumn) => dispatch(updateTicket(ticketId, newColumn)),
+  updateHistory: (projectId, logData) => dispatch(updateHistory(projectId, logData)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(KanbanBoard);

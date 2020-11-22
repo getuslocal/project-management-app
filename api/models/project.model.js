@@ -67,9 +67,19 @@ const projectSchema = new Schema({
   },
   history: [
     {
-      ticketId: {
-        type: Schema.Types.ObjectId,
-        required: true
+      ticket: {
+        id: {
+          type: String,
+          required: true
+        },
+        displayValue: {
+          type: String,
+          required: true
+        },
+        type: {
+          type: String,
+          required: true
+        },
       },
       type: {
         type: String,

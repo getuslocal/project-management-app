@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom'
 import { createStructuredSelector } from 'reselect'
 import { getTicketsByProjectId } from '../../../redux/tickets/tickets.actions';
 import { setCurrentProjectId } from '../../../redux/projects/projects.actions';
-import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { selectIsTicketsLoaded } from '../../../redux/tickets/tickets.selectors';
 import { selectProjectById } from '../../../redux/projects/projects.selectors';

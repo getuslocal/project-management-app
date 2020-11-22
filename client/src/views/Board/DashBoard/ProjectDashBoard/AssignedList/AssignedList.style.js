@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+import { color } from '../../../../../shared/utils/styles';
 
 export const Container = styled.div`
   position:relative;
@@ -6,10 +7,9 @@ export const Container = styled.div`
 `;
 
 export const Table = styled.table`
-background-color: #fff;
-/* border-collapse: collapse; */
-margin: 0;
-word-wrap: break-word;
+  background-color: #fff;
+  margin: 0;
+  word-wrap: break-word;
 `;
 
 export const Head = styled.thead`
@@ -23,7 +23,7 @@ export const Head = styled.thead`
 `;
 
 export const Body = styled.tbody`
-  max-height: 280px;
+  max-height: 340px;
   overflow:auto;
   display: block;
 `;
@@ -32,6 +32,22 @@ export const BodyTableRow = styled.tr`
   width: 100%;
   display:table;
   table-layout:fixed;
+
+  &.no-results-row {
+    border-bottom: none;
+
+    & > td {
+      text-align: center;
+      display: block;
+    }
+  }
+  
+  &:not(.no-results-row) {
+    &:hover{
+      background-color: ${color.backgroundLightest};
+      cursor: pointer;
+    }
+  }
 `;
 
 export const TableHeader = styled.th`
@@ -49,13 +65,6 @@ export const TableHeader = styled.th`
 export const TableData = styled.td`
   padding: 10px 7px;
   width: ${(props) => props.width ? `${props.width}px` : 'auto'};
-  font-size: 14px;
-`;
-export const ResultCounter = styled.p`
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  font-size: 12px;
+  font-size: 13.5px;
   font-weight: 500;
-  color: #5e6c84;
 `;

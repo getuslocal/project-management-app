@@ -12,6 +12,7 @@ import {
   CLEAR_ALL_FILTERS,
 } from './tickets.types';
 import { updateColumnWithNewTicket, updateColumnWithDeletedTicket, updateHistory } from '../projects/projects.actions';
+import { IssueHistoryTypes } from '../../shared/constants/issues';
 
 // Get tickets of the project.
 export const getTicketsByProjectId = (projectId) => async dispatch => {
@@ -55,13 +56,18 @@ export const createNewTicket = (formData, columnId) => async dispatch => {
       }
     });
     // Update a certain column with a new ticket created.
-    const projectId = res.data.projectId;
-    const ticketId = res.data._id;
+    const newTicket = res.data;
+    const projectId = newTicket.projectId;
+    const ticketId = newTicket._id;
     dispatch(updateColumnWithNewTicket(projectId, ticketId, columnId));
     // Update history of project.
     const logData = {
-      ticketId: ticketId,
-      type: 'New',
+      ticket: {
+        id: ticketId,
+        displayValue: `${newTicket.key} - ${newTicket.summary}`,
+        type: newTicket.issueType,
+      },
+      type: IssueHistoryTypes.CREATE,
       field: null,
       before: null,
       after: null,
@@ -83,10 +89,24 @@ export const createNewEpicTicket = (formData, childIssues) => async dispatch => 
       }
     });
     // Link child issues with the epic.
-    const epicId = res.data._id
+    const epicId = res.data._id;
     childIssues.forEach(childIssueId => {
       dispatch(updateTicket(childIssueId, { linkedEpic: epicId }))
     })
+    // Update history of project.
+    const newEpic = res.data;
+    const logData = {
+      ticket: {
+        id: epicId,
+        displayValue: `${newEpic.key} - ${newEpic.summary}`,
+        type: newEpic.issueType,
+      },
+      type: IssueHistoryTypes.CREATE,
+      field: null,
+      before: null,
+      after: null,
+    }
+    dispatch(updateHistory(newEpic.projectId, logData));
   } catch (err) {
     console.log(err)
   }
@@ -119,8 +139,22 @@ export const deleteTicket = (ticketId, columnId) => async dispatch => {
       }
     });
     // Update column of the ticket after it's deleted.
-    const projectId = res.data.projectId;
+    const deletedTicket = res.data;
+    const projectId = deletedTicket.projectId;
     dispatch(updateColumnWithDeletedTicket(projectId, ticketId, columnId));
+    // Update history logs of the project.
+    const logData = {
+      ticket: {
+        id: ticketId,
+        displayValue: `${deletedTicket.key} - ${deletedTicket.summary}`,
+        type: deletedTicket.issueType,
+      },
+      type: IssueHistoryTypes.DELETE,
+      field: null,
+      before: null,
+      after: null,
+    }
+    dispatch(updateHistory(projectId, logData));
   } catch (err) {
     console.log(err)
   }
@@ -140,6 +174,21 @@ export const deleteEpicTicket = (ticketId, childIssues) => async dispatch => {
     childIssues.forEach(childIssueId => {
       dispatch(updateTicket(childIssueId, { linkedEpic: null }))
     })
+    // Update history logs of the project.
+    const deletedEpic = res.data;
+    const projectId = deletedEpic.projectId;
+    const logData = {
+      ticket: {
+        id: ticketId,
+        displayValue: `${deletedEpic.key} - ${deletedEpic.summary}`,
+        type: deletedEpic.issueType,
+      },
+      type: IssueHistoryTypes.DELETE,
+      field: null,
+      before: null,
+      after: null,
+    }
+    dispatch(updateHistory(projectId, logData));
   } catch (err) {
     console.log(err)
   }

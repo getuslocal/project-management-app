@@ -16,9 +16,9 @@ export default function DatePicker({ dateRange, updateTicketField, isStartDate, 
   const handleDateChange = (updatedDateRange) => {
     updateTicketField({ field: 'dateRange', value: updatedDateRange })
     if (isStartDate) {
-      updateTicketHistory('Start Date', momentedStartDate, updatedDateRange.startDate)
+      updateTicketHistory('Start Date', momentedStartDate.format('LL'), updatedDateRange.startDate.format('LL'))
     } else if (isEndDate) {
-      updateTicketHistory('Due Date', momentedEndDate, updatedDateRange.endDate)
+      updateTicketHistory('Due Date', momentedEndDate.format('LL'), updatedDateRange.endDate.format('LL'))
     }
   };
 

@@ -11,7 +11,6 @@ import {
 } from './IssueTypes.style';
 
 export const IssueTypesBlock = ({ tickets }) => {
-  console.log(tickets)
   return (
     <Fragment>
       <Row>

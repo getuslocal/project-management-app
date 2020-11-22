@@ -10,6 +10,7 @@ import {
   SectionContainer,
   SectionTitle,
   SectionContent,
+  TitleDescription
 } from '../DashBoard.style';
 
 const ProjectDashBoard = ({ dashboardParams, tickets }) => {
@@ -31,14 +32,14 @@ const ProjectDashBoard = ({ dashboardParams, tickets }) => {
         <SectionContainer width="49%">
           <SectionTitle>Assigned to me</SectionTitle>
           <SectionContent height="400px">
-            <AssignedList />
+            <AssignedList projectId={dashboardParams} tickets={tickets}/>
           </SectionContent>
         </SectionContainer>
       </Row>
       <Row>
         <SectionContainer width="100%" >
-          <SectionTitle>Tickets History</SectionTitle>
-          <SectionContent height="450px" style={{ padding: ' 0 ', position: 'relative' }}>
+          <SectionTitle>Project History<TitleDescription>Display the latest 30 histories.</TitleDescription></SectionTitle>
+          <SectionContent height="450px" >
             <IssueHistory projectId={dashboardParams} tickets={tickets} />
           </SectionContent>
         </SectionContainer>

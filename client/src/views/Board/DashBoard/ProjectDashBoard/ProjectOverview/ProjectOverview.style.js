@@ -53,6 +53,12 @@ export const Description = styled.p`
 
 export const CustomButton = styled(Button)`
   margin-left: auto;
+  padding: 0;
+
+  & > a {
+    display: inline-block;
+    padding: 10px 18px;
+  }
 `;
 
 export const Bottom = styled.div`

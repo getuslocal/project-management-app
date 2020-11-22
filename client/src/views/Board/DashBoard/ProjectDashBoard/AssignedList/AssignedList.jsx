@@ -1,7 +1,9 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { selectTickets } from '../../../../../redux/tickets/tickets.selectors';
+import { selectUser } from '../../../../../redux/auth/auth.selectors';
 import Icon from '../../../../../shared/components/Icon/Icon';
 import {
   Container,
@@ -11,10 +13,10 @@ import {
   TableHeader,
   TableData,
   BodyTableRow,
-  ResultCounter
 } from './AssignedList.style';
 
-export const AssignedList = ({ tickets }) => {
+export const AssignedList = ({ projectId, tickets, currentUser, ...props }) => {
+  const assignedTickets = tickets.filter(ticket => ticket.assigneeId === currentUser._id);
   return (
     <Container>
       <Table>
@@ -28,26 +30,36 @@ export const AssignedList = ({ tickets }) => {
         </Head>
         <Body>
           {
-            tickets.map(ticket => {
-              return (
-                <BodyTableRow key={ticket._id}>
-                  <TableData width="30px" ><Icon type={ticket.issueType.toLowerCase()} size={13} top={-2} /></TableData>
-                  <TableData width="120px" style={{ color: '#5e6c84', fontWeight: 500 }}>{ticket.key}</TableData>
-                  <TableData width="">{ticket.summary}</TableData>
-                  <TableData width="30px"><Icon type={`priority-${ticket.issuePriority.toLowerCase()}`} isSolid={true} size={13} /></TableData>
+            assignedTickets.length > 0 ? (
+              assignedTickets.map(ticket => {
+                return (
+                  <BodyTableRow key={ticket._id} onClick={() => props.history.push(`/app/projects/${projectId}/?selectedIssue=${ticket.key}`)}>
+                    <TableData width="30px"><Icon type={ticket.issueType.toLowerCase()} size={13} top={-2} /></TableData>
+                    <TableData width="120px" style={{ color: '#5e6c84', fontWeight: 500 }}>{ticket.key}</TableData>
+                    <TableData width="">{ticket.summary}</TableData>
+                    <TableData width="30px"><Icon type={`priority-${ticket.issuePriority.toLowerCase()}`} isSolid={true} size={13} /></TableData>
+                  </BodyTableRow>
+                )
+              })
+            ) : (
+                <BodyTableRow className="no-results-row">
+                  <TableData>
+                    No issues assigned to you.
+                </TableData>
                 </BodyTableRow>
               )
-            })
           }
         </Body>
       </Table>
-        <ResultCounter>Display {tickets.length} results</ResultCounter>
     </Container>
   )
 }
 
 const mapStateToProps = createStructuredSelector({
-  tickets: selectTickets
+  currentUser: selectUser
 })
 
-export default connect(mapStateToProps, null)(AssignedList)
+export default compose(
+  withRouter,
+  connect(mapStateToProps, null)
+)(AssignedList)

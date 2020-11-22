@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect'
 import { selectProjectHistory } from '../../../../../redux/projects/projects.selectors';
 import { selectMembers } from '../../../../../redux/members/members.selectors';
+import { IssueHistoryTypes, IssueTypes } from '../../../../../shared/constants/issues';
+import { Link } from 'react-router-dom';
 import Icon from '../../../../../shared/components/Icon/Icon';
 import moment from 'moment'
 import {
@@ -15,102 +17,63 @@ import {
   EditorName,
   Bold,
   Date,
-  Top,
-  Bottom,
-  Comment,
+  TicketName,
   Left,
   Right,
   CircleMark,
-  Result
+  NoResultText
 } from './IssueHistory.style';
 
-/*
-Logs : {
-  ticketId: ""
-  type: "New"/"Update"
-  editor: ""
-  field: "Status"/"Summary"/"Description"/"Ticket"
-  before: "TODO"
-  after: "IN REVIEW"
-  timestamp
-}
-
-User Pic: WHO updates [FIELD] [from PREV] [to CHANGE] on TICKET
-          [TEXT] -> may implement later
-          WHEN
-User Pic: WHO created TICKET.
-          WHEN
-User Pic: WHO commented on TICKET.
-          [TEXT]
-          WHEN
-User Pic: WHO mark complete on TICKET.
-          [TEXT]
-          WHEN
-TICKET: New Ticket/Summary/Description is created by WHO, WHEN
-s*/
-
-export const IssueHistory = ({ historyList, members, tickets }) => {
+export const IssueHistory = ({ projectId, historyList, members, tickets }) => {
   return (
     <Fragment>
       <Container>
-        <ListContainer>
-          {historyList.map(history => {
-            const { editor, field, ticketId, before, after, date, type } = history;
-            const editorData = members.find(member => member._id === editor);
-            const ticket = tickets.find(ticket => ticket._id === ticketId)
-            return (
-              <List key={history._id}>
-                <Left>
-                  <Date>{moment(date).fromNow()}</Date>
-                  <CircleMark />
-                </Left>
-                <Right>
-                  <IconCont>
-                    <Icon type="user-icon" imageUrl={editorData && editorData.pictureUrl} size={30} />
-                  </IconCont>
-                  <MainContent>
-                    <Top>
-                      <EditorName>{editorData && editorData.name}</EditorName>
-                      {type === "Update" &&
-                        <span> updated <Bold>{field && field}</Bold>
-                          {before && (
-                            <Fragment>
-                              {' '}from{' '}
-                              <Bold>{before}</Bold>
-                            </Fragment>
-                          )}
-                          {after && (
-                            <Fragment>
-                              {' '}to{' '}
-                              <Bold>{after}</Bold>
-                            </Fragment>
-                          )}
-                        </span>
-                      }
-                      {type === "New" &&
-                        <span> created a new ticket </span>
-                      }
-                      {type === "Complete" &&
-                        <span> maked complete on </span>
-                      }
-                      {type === "Comment" &&
-                        <span> commented on </span>
-                      }
-                    </Top>
-                    <Bottom>
-                      <Icon type={ticket && ticket.issueType.toLowerCase()} isSolid={true} size={12} top={-1} />
-                      <Comment>{ticket && ticket.key} - {ticket && ticket.summary}</Comment>
-                    </Bottom>
-                  </MainContent>
-                </Right>
-              </List>
-            )
-          })}
-        </ListContainer>
+        {historyList.length > 0 ? (
+          <ListContainer>
+            {
+              historyList.map(history => {
+                const { editor, field, ticket, before, after, date, type } = history;
+                const editorData = members.find(member => member._id === editor);
+                return (
+                  <List key={history._id}>
+                    <Left>
+                      <Date>{moment(date).fromNow()}</Date>
+                      <CircleMark />
+                    </Left>
+                    <Right>
+                      <IconCont>
+                        <Icon type="user-icon" imageUrl={editorData && editorData.pictureUrl} size={30} top={2} />
+                      </IconCont>
+                      <MainContent>
+                        <EditorName>{editorData && editorData.name}</EditorName>
+                        {type === IssueHistoryTypes.UPDATE && (
+                          <span> updated <Bold>{field && field}</Bold>
+                            {before && <Fragment>{' '}from{' '}<Bold>{before}</Bold></Fragment>}
+                            {after && <Fragment>{' '}to{' '}<Bold>{after}</Bold></Fragment>}
+                            {' '}on
+                          </span>
+                        )}
+                        {type === IssueHistoryTypes.CREATE && `created an ${ticket.type !== IssueTypes.EPIC ? 'issue' : 'epic'}:`}
+                        {type === IssueHistoryTypes.DELETE && `deleted an ${ticket.type !== IssueTypes.EPIC ? 'issue' : 'epic'}:`}
+                        {type === IssueHistoryTypes.COMMENT && "commented on"}
+                        <TicketName>
+                          <Icon type={ticket.type.toLowerCase()} isSolid={true} size={13.5} top={-1} />
+                          {/* @TODO: Ennable ticket link after fixing ticket key issue. */}
+                          {/* <Link to={`/app/projects/${projectId}/?selectedIssue=${'DEMO3-174'}`}>{ticket.displayValue}</Link> */}
+                          {ticket.displayValue}
+                        </TicketName>
+                      </MainContent>
+                    </Right>
+                  </List>
+                )
+              })
+            }
+          </ListContainer>
+        ) : (
+            <NoResultText>This project has no history.</NoResultText>
+          )
+        }
       </Container>
-      <Result>
-        Display the latest 20 updates
-      </Result>
     </Fragment>
   )
 }

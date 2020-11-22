@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+import { color } from '../../../shared/utils/styles';
 
 export const Container = styled.div`
 `;
@@ -31,4 +32,11 @@ export const SectionTitle = styled.p`
   font-weight: 600;
   font-size: 16px;
   padding: 20px 20px 10px;
+`;
+
+export const TitleDescription = styled.span`
+  font-size: 12px;
+  color: ${color.textMedium};
+  font-weight: 500;
+  float: right;
 `;

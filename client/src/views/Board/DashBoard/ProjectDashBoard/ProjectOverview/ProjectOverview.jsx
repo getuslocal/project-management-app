@@ -19,6 +19,7 @@ import {
   MemberList,
   CustomButton
 } from './ProjectOverview.style'
+import { Link } from 'react-router-dom'
 
 export const ProjectOverview = ({ project, members }) => {
   const membersOfProject = members.filter(member => project.members.includes(member._id));
@@ -49,7 +50,9 @@ export const ProjectOverview = ({ project, members }) => {
             }
           </MemberList>
         </Member>
-        <CustomButton text="View Board" variant="primary" />
+        <CustomButton variant="primary" >
+          <Link to={`/app/projects/${project._id}`}>View Board</Link>
+        </CustomButton>
       </Bottom>
     </Container>
   )

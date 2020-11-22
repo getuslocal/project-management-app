@@ -9,7 +9,7 @@ import { selectProjectById } from '../../../../../redux/projects/projects.select
 import { updateTicket, deleteTicket, deleteEpicTicket } from '../../../../../redux/tickets/tickets.actions';
 import { updateHistory } from '../../../../../redux/projects/projects.actions';
 import { selectTicketByKey, selectTicketsLinkedWithEpic } from '../../../../../redux/tickets/tickets.selectors';
-import { IssueTypes } from '../../../../../shared/constants/issues';
+import { IssueHistoryTypes, IssueTypes } from '../../../../../shared/constants/issues';
 import Header from './Header/Header';
 import Title from './Title/Title';
 import Description from './Description/Description';
@@ -81,15 +81,18 @@ const IssueDetail = ({
   }
 
   // Update history of project.
-  const updateTicketHistory = (field, beforeValue, afterValue, type = "Update") => {
+  const updateTicketHistory = (field, beforeValue, afterValue, type = IssueHistoryTypes.UPDATE) => {
     const logData = {
-      ticketId: ticket._id,
+      ticket: {
+        id: ticket._id,
+        displayValue: `${ticket.key} - ${ticket.summary}`,
+        type: ticket.issueType,
+      },
       type: type,
       field: field,
       before: beforeValue,
       after: afterValue,
     }
-    console.log(logData)
     updateHistory(projectInfo._id, logData)
   }
 
