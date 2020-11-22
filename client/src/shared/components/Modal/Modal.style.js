@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { zIndexValues } from '../../utils/styles'
 
 export const ModalContainer = styled.div`
   height: 100%;
@@ -33,10 +34,10 @@ export const Container = styled.div`
 `
 
 export const Title = styled.p`
+  padding: 20px 30px;
   font-size: 19px;
   line-height: 1.5;
   font-weight: 500;
-  margin-bottom: 1.5em;
 `
 
 export const Wrapper = styled.div`
@@ -44,9 +45,9 @@ export const Wrapper = styled.div`
   display: inline-block;
   background-color: #fff;
   position: relative;
-  z-index: 200;
-  min-width: 600px;
+  z-index: ${zIndexValues.modal};
+  /* min-width: 600px;
   width: 100%;
-  max-width: 1040px;
+  max-width: 1040px; */
   border-radius: 3px;
 `

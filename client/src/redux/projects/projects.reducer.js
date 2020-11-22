@@ -46,7 +46,7 @@ const projectsReducer = (state = INITIAL_STATE, action) => {
         },
       }
     case DELETE_PROJECT: {
-      const { [payload]: undefined, ...restProjects } = state.projects
+      const { [payload]: removed, ...restProjects } = state.projects
       return {
         ...state,
         projects: restProjects ? restProjects : {}

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { zIndexValues } from '../../shared/utils/styles';
 
 export const SidebarContainer = styled.div`
   background-color: #0f35a9;
@@ -9,6 +10,7 @@ export const SidebarContainer = styled.div`
   position: fixed;
   left: 0;
   top: 0;
+  z-index: ${zIndexValues.navLeft};
   `;
 
 export const LogoContainer = styled.p`

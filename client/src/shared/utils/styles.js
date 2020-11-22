@@ -16,6 +16,8 @@ export const color = {
   black: '#172b4d',
   orange: '#ff7a59',
   darkGreen: '#425b76',
+  gray: 'rgb(94, 108, 132)',
+  lightGray: 'rgb(244, 245, 247)',
 
   textDarkest: '#172b4d',
   textDark: '#42526E',

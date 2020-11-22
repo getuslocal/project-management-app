@@ -1,17 +1,20 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { updateOneColumnTicketsOrder, updateTwoColumnsTicketsOrder, updateColumnOrder, updateHistory } from '../../../../redux/projects/projects.actions';
 import { selectFilteredTickets } from '../../../../redux/tickets/tickets.selectors';
 import { clearAllFilters, updateTicket } from '../../../../redux/tickets/tickets.actions';
 import Column from './Column/Column';
+import ColumnCreate from './Column/ColumnCreate'
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { IssueHistoryTypes } from '../../../../shared/constants/issues';
 import {
   Container,
+  NewColumnButton
 } from './KanbanBoard.style';
 import TopBar from '../TopBar/TopBar';
+import Icon from '../../../../shared/components/Icon/Icon';
 
 const getTickets = (ticketMap, taskIds) => {
   let selectedTickets = [];
@@ -26,8 +29,8 @@ const getTickets = (ticketMap, taskIds) => {
 }
 
 const InnerList = React.memo(props => {
-  const { column, ticketMap, index } = props;
-  return <Column column={column} tickets={getTickets(ticketMap, column.taskIds)} index={index} />
+  const { column, ticketMap, ...restProps } = props;
+  return <Column column={column} tickets={getTickets(ticketMap, column.taskIds)} {...restProps} />
 })
 
 const KanbanBoard = ({
@@ -38,10 +41,11 @@ const KanbanBoard = ({
   updateOneColumnTicketsOrder,
   updateTwoColumnsTicketsOrder,
   updateTicket,
-  updateHistory
+  updateHistory,
 }) => {
   const { columnOrder, columns, _id: projectId } = project;
   // console.log('KanbanBoard render')
+  const [addColumnActive, setAddColumnActive] = useState(false);
 
   useEffect(() => {
     // Clean up filters before unmounting.
@@ -50,7 +54,7 @@ const KanbanBoard = ({
 
   // Update history of the project.
   const updateHistoryOfProject = (ticketId, beforeColumnId, afterColumnId) => {
-    const ticketData  = tickets.find(ticket => ticket._id === ticketId);
+    const ticketData = tickets.find(ticket => ticket._id === ticketId);
     const logData = {
       ticket: {
         id: ticketId,
@@ -148,10 +152,25 @@ const KanbanBoard = ({
               {
                 columnOrder.map((columnId, index) => {
                   const thisColumn = columns[columnId];
-                  return <InnerList key={thisColumn.id} column={thisColumn} ticketMap={tickets} index={index} />
+                  return (
+                    <InnerList
+                      key={thisColumn.id}
+                      project={project}
+                      column={thisColumn}
+                      ticketMap={tickets}
+                      index={index}
+                    />
+                  )
                 })
               }
               {provided.placeholder}
+              {
+                addColumnActive ? (
+                  <ColumnCreate closeColumn={() => setAddColumnActive(false)} project={project} />
+                ) : (
+                    <NewColumnButton onClick={() => setAddColumnActive(true)}><Icon type="plus" size={16} isSolid={true} /></NewColumnButton>
+                  )
+              }
             </Container>
           )}
         </Droppable>

@@ -1,61 +1,147 @@
-import React, { useState } from 'react';
+import React, { Fragment, useRef, useState } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import PropTypes from 'prop-types'
 import Ticket from './Ticket/Ticket';
 import QuickTicket from './QuickTicket/QuickTicket';
 import {
   Container,
   Content,
   Title,
+  TitleInput,
+  TitleText,
   TicketsList,
   CreateTicketButton,
-  Counter
+  Counter,
+  Options,
+  Option,
 } from './Column.style'
+import useOutsideClick from '../../../../../shared/hooks/useOutsideClick';
+import Icon from '../../../../../shared/components/Icon/Icon';
+import { updateProject } from '../../../../../redux/projects/projects.actions';
+import store from '../../../../../redux/store';
+import ColumnDeleteModal from './ColumnDeleteModal/ColumnDeleteModal';
 
 const InnerList = React.memo(props => {
   return (
     props.tickets.map((ticket, index) =>
       <Ticket key={ticket._id} ticket={ticket} index={index} />)
   )
-})
+});
 
-const Column = ({ column, tickets, index }) => {
+const Column = ({
+  column,
+  project: { _id: projectId, columns, columnOrder },
+  tickets,
+  index,
+}) => {
   const [isQuickTicketActive, setIsQuickTicketActive] = useState(false);
+  const [editTitleActive, setEditTitleActive] = useState(false);
+  const [warningModalActive, setWarningModalActive] = useState(false);
+  const [title, setTitle] = useState(column.title);
+  const titleInputRef = useRef();
   const ticketsCounter = tickets.length;
+
+  useOutsideClick(titleInputRef, () => {
+    if (!editTitleActive) return;
+    setEditTitleActive(false);
+  });
+
+  const updateTitle = (targetColumnId) => {
+    const trimmedTitle = title.trim();
+    // Check the new title is the same or the title has no charactors.
+    if (trimmedTitle === column.title || trimmedTitle.length === 0) return;
+    // Update title of the column on db.
+    const formValue = {
+      columns: {
+        ...columns,
+        [targetColumnId]: {
+          ...columns[targetColumnId],
+          title: trimmedTitle
+        }
+      }
+    }
+    store.dispatch(updateProject(projectId, formValue));
+  }
+
   return (
-    <Draggable draggableId={column.id} index={index}>
-      {(provided, snapshot) => (
-        <Container
-          {...provided.draggableProps}
-          ref={provided.innerRef}
-          isDragging={snapshot.isDragging}
-        >
-          <Title {...provided.dragHandleProps}>{column.title}<Counter>{ticketsCounter}</Counter></Title>
-          <Content>
-            <Droppable droppableId={column.id} type="task">
-              {provided => (
-                <TicketsList ref={provided.innerRef} {...provided.droppableProps}>
-                  <InnerList tickets={tickets} />
-                  {
-                    isQuickTicketActive ?
-                      <QuickTicket
-                        setIsQuickTicketActive={setIsQuickTicketActive}
-                        columnId={column.id}
+    <Fragment>
+      <Draggable draggableId={column.id} index={index}>
+        {(provided, snapshot) => (
+          <Container
+            {...provided.draggableProps}
+            ref={provided.innerRef}
+            isDragging={snapshot.isDragging}
+          >
+            <Title {...provided.dragHandleProps}>
+              {
+                !editTitleActive ? (
+                  <Fragment>
+                    <TitleText onClick={() => setEditTitleActive(true)}>{column.title}</TitleText>
+                    <Counter>{ticketsCounter}</Counter>
+                    <Icon onClick={() => setWarningModalActive(true)} className="delete-column-btn" type="close" size={13} isSolid={true} />
+                  </Fragment>
+                ) : (
+                    <Fragment>
+                      <TitleInput
+                        type="text"
+                        maxLength="30"
+                        ref={titleInputRef}
+                        autoFocus
+                        placeholder="Column name"
+                        value={title}
+                        onChange={e => setTitle(e.target.value)}
                       />
-                      :
-                      <CreateTicketButton
-                        isFirstColumn={(index === 0)}
-                        onClick={() => setIsQuickTicketActive(true)}
-                      >+ Create ticket</CreateTicketButton>
-                  }
-                  {provided.placeholder}
-                </TicketsList>
-              )}
-            </Droppable>
-          </Content>
-        </Container>
+                      <Options>
+                        <Option onClick={() => updateTitle(column.id)}><Icon type="check" size={12} isSolid={true} /></Option>
+                        <Option onClick={() => setTitle(column.title)}><Icon type="close" size={12} isSolid={true} /></Option>
+                      </Options>
+                    </Fragment>
+                  )
+              }
+            </Title>
+            <Content>
+              <Droppable droppableId={column.id} type="task">
+                {provided => (
+                  <TicketsList ref={provided.innerRef} {...provided.droppableProps}>
+                    <InnerList tickets={tickets} />
+                    {
+                      isQuickTicketActive ?
+                        <QuickTicket
+                          setIsQuickTicketActive={setIsQuickTicketActive}
+                          columnId={column.id}
+                        />
+                        :
+                        <CreateTicketButton
+                          isFirstColumn={(index === 0)}
+                          onClick={() => setIsQuickTicketActive(true)}
+                        >+ Create ticket</CreateTicketButton>
+                    }
+                    {provided.placeholder}
+                  </TicketsList>
+                )}
+              </Droppable>
+            </Content>
+          </Container>
+        )}
+      </Draggable>
+      {warningModalActive && (
+        <ColumnDeleteModal
+          projectId={projectId}
+          targetColumnId={column.id}
+          columns={columns}
+          columnOrder={columnOrder}
+          closeModal={() => setWarningModalActive(false)}
+        />
       )}
-    </Draggable>
+    </Fragment>
   )
+};
+
+Column.propTypes = {
+  project: PropTypes.object.isRequired,
+  column: PropTypes.object.isRequired,
+  tickets: PropTypes.array.isRequired,
+  index: PropTypes.number.isRequired,
 }
 
 export default Column;

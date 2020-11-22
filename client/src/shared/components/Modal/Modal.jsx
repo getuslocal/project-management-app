@@ -7,13 +7,13 @@ import {
   Wrapper,
 } from './Modal.style';
 
-const Modal = ({ closeModal, renderContent }) => {
+const Modal = ({ closeModal, children }) => {
   return (
     <ModalContainer>
       <Blanket onClick={closeModal} />
       <Container>
         <Wrapper>
-          {renderContent()}
+          {children}
         </Wrapper>
       </Container>
     </ModalContainer>
@@ -21,7 +21,7 @@ const Modal = ({ closeModal, renderContent }) => {
 }
 
 Modal.propTypes = {
-
+  closeModal: PropTypes.func,
 }
 
 export default Modal
