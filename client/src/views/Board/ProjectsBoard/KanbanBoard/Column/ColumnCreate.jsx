@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import short from 'short-uuid';
 import {
   Container,
   Content,
@@ -38,8 +39,8 @@ const ColumnCreate = ({
     closeColumn();
 
     if (trimmedTitle.length === 0) return;
-
-    const newColumnId = `column-${Object.keys(columns).length + 1}`;
+    // Generate a short uuid for a new column id.
+    const newColumnId = short.generate();
     const formValue = {
       columns: {
         ...columns,
