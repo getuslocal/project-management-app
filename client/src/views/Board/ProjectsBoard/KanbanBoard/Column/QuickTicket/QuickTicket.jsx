@@ -52,6 +52,7 @@ const QuickTicket = ({ setIsQuickTicketActive, projectId, user, createNewTicket,
           placeholder="What needs to be done?"
           name="summary"
           value={summary}
+          autoFocus
           onChange={handleChange}
           required
         />

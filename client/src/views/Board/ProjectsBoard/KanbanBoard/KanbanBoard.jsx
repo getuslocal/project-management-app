@@ -11,7 +11,9 @@ import { connect } from 'react-redux';
 import { IssueHistoryTypes } from '../../../../shared/constants/issues';
 import {
   Container,
-  NewColumnButton
+  BoardContainer,
+  NewColumnButton,
+  NewColumnWrapper
 } from './KanbanBoard.style';
 import TopBar from '../TopBar/TopBar';
 import Icon from '../../../../shared/components/Icon/Icon';
@@ -145,36 +147,42 @@ const KanbanBoard = ({
   return (
     <Fragment>
       <TopBar project={project} isEpicModal={false} />
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="all-columns" direction="horizontal" type="column">
-          {provided => (
-            <Container ref={provided.innerRef} {...provided.droppableProps} >
-              {
-                columnOrder.map((columnId, index) => {
-                  const thisColumn = columns[columnId];
-                  return (
-                    <InnerList
-                      key={thisColumn.id}
-                      project={project}
-                      column={thisColumn}
-                      ticketMap={tickets}
-                      index={index}
-                    />
-                  )
-                })
-              }
-              {provided.placeholder}
-              {
-                addColumnActive ? (
-                  <ColumnCreate closeColumn={() => setAddColumnActive(false)} project={project} />
-                ) : (
-                    <NewColumnButton onClick={() => setAddColumnActive(true)}><Icon type="plus" size={16} isSolid={true} /></NewColumnButton>
-                  )
-              }
-            </Container>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <Container>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="all-columns" direction="horizontal" type="column">
+            {provided => (
+              <BoardContainer ref={provided.innerRef} {...provided.droppableProps} >
+                {
+                  columnOrder.map((columnId, index) => {
+                    const thisColumn = columns[columnId];
+                    return (
+                      <InnerList
+                        key={thisColumn.id}
+                        project={project}
+                        column={thisColumn}
+                        ticketMap={tickets}
+                        index={index}
+                      />
+                    )
+                  })
+                }
+                {provided.placeholder}
+                {
+                  addColumnActive ? (
+                    <ColumnCreate closeColumn={() => setAddColumnActive(false)} project={project} />
+                  ) : (
+                      <NewColumnWrapper>
+                        <NewColumnButton onClick={() => setAddColumnActive(true)}>
+                          <Icon type="plus" size={16} isSolid={true} />
+                        </NewColumnButton>
+                      </NewColumnWrapper>
+                    )
+                }
+              </BoardContainer>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </Container>
     </Fragment>
   )
 }

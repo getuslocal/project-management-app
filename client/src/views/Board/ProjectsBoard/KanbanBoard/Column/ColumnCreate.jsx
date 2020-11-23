@@ -1,9 +1,11 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import {
   Container,
   Content,
-  Title,
+  Top,
+  TopContent,
   TitleInput,
   Options,
   Option,
@@ -24,13 +26,17 @@ const ColumnCreate = ({
     // Close create column field.
     closeColumn()
   });
-  
+
+  useEffect(() => {
+    containerRef.current.scrollIntoView();
+  }, [])
+
   const createNewColumn = () => {
     const trimmedTitle = title.trim();
 
     // Close create column field.
     closeColumn();
-    
+
     if (trimmedTitle.length === 0) return;
 
     const newColumnId = `column-${Object.keys(columns).length + 1}`;
@@ -49,26 +55,35 @@ const ColumnCreate = ({
   }
 
   return (
-    <Container ref={containerRef}>
-      <Title>
-        <TitleInput
-          type="text"
-          autoFocus
-          maxLength="30"
-          placeholder="Column name"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-        />
-        <Options>
-          <Option onClick={createNewColumn}><Icon type="check" size={12} isSolid={true} /></Option>
-          <Option onClick={closeColumn}><Icon type="close" size={12} isSolid={true} /></Option>
-        </Options>
-      </Title>
-      <Content>
-      </Content>
-    </Container>
+    <OuterContainer>
+      <Container ref={containerRef}>
+        <Top>
+          <TopContent>
+            <TitleInput
+              type="text"
+              autoFocus
+              maxLength="30"
+              placeholder="Column name"
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+            />
+            <Options>
+              <Option onClick={createNewColumn}><Icon type="check" size={12} isSolid={true} /></Option>
+              <Option onClick={closeColumn}><Icon type="close" size={12} isSolid={true} /></Option>
+            </Options>
+          </TopContent>
+        </Top>
+        <Content>
+        </Content>
+      </Container>
+    </OuterContainer>
   )
 }
+
+const OuterContainer = styled.div`
+  display: flex;
+  padding-right: 5px;
+`
 
 ColumnCreate.propTypes = {
   project: PropTypes.object.isRequired,

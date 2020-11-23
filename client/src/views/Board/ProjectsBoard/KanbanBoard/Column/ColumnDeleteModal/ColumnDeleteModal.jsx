@@ -61,6 +61,7 @@ const ColumnDeleteModal = ({
         <SelectMenu
           isActive={isMenuOpen}
           setIsMenuOpen={setIsMenuOpen}
+          width={350}
           onChange={({ value }) => { setInheritColumn(value.id) }}
           options={Object.values(columns).filter(column => column.id !== targetColumnId && column.id !== inheritColumn).map(column => ({
             value: column,

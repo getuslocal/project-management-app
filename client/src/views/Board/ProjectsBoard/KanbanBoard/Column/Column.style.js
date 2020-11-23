@@ -2,9 +2,10 @@ import styled, { css } from 'styled-components'
 import { color } from '../../../../../shared/utils/styles'
 
 export const CreateTicketButton = styled.div`
-  padding: .75em;
+  padding: 12px;
   border-radius: 3px;
   font-size: 14px;
+  font-weight: 500;
   color: transparent;
 
   &:hover{
@@ -15,7 +16,7 @@ export const CreateTicketButton = styled.div`
   /* If it is a first column, display the button by default. */
   ${({ isFirstColumn }) => isFirstColumn && css`
     display: block;
-    color: inherit;
+    color: ${color.textDark};
   `}
 `
 
@@ -23,37 +24,48 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0px 5px;
-  min-height: 400px;
   min-width: 282px;
   max-width: 282px;
-  border-radius: 6px;
-  background: ${color.backgroundLightest};
   box-shadow: ${props => (props.isDragging ? 'rgba(0, 0, 0, 0.2) 0 3px 3px 0' : 'none')};
-
+  position: relative;
+  
   &:hover{
     ${CreateTicketButton} {
       display: block;
-      color: inherit;
+      color: ${color.textDark};
     }
   }
-
 `
 
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0 5px;
+  background: ${color.backgroundLightest};
+  padding: 0 5px 5px;
+  height: 100%;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
 `
 
-export const Title = styled.div`
-  padding: 4px;
-  font-size: 14px;
-  font-weight: 500;
+export const Top = styled.div`
   width: 100%;
+  background-color: ${color.white};
+  position: sticky;
+  top: 0px;
+  /* border-bottom: 1px solid ${color.borderLight}; */
+`
+
+export const TopContent = styled.div`
+  padding: 6px;
+  font-size: 14px;
+  width: 100%;
+  font-weight: 500;
   color: ${color.gray};
   display: flex;
   align-items: center;
-  position: relative;
+  background: ${color.backgroundLightest};
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
 
   &:hover {
     .delete-column-btn {
@@ -64,20 +76,18 @@ export const Title = styled.div`
   .delete-column-btn {
     display: inline-block;
     display: none;
-    background-color: ${color.backgroundLightest2};
-    height: 20px;
-    line-height: 20px;
-    min-width: 20px;
-    width: 20px;
+    height: 22px;
+    line-height: 22px;
+    min-width: 22px;
+    width: 22px;
     text-align: center;
     border-radius: 3px;
-    border: 1px solid ${color.borderLight};
     color: ${color.textMedium};
     margin-left: auto;
     cursor: pointer;
 
     &:hover {
-      background-color: ${color.backgroundLightest};
+      background-color: ${color.hoverGray};
     }
   }
 `
@@ -131,7 +141,7 @@ export const TitleInput = styled.input`
 
 export const TicketsList = styled.div`
   flex-grow: 1;
-  min-height: 100px;
+  min-height: 300px;
 `
 
 export const Options = styled.div`

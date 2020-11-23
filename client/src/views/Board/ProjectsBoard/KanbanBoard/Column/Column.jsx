@@ -6,7 +6,8 @@ import QuickTicket from './QuickTicket/QuickTicket';
 import {
   Container,
   Content,
-  Title,
+  Top,
+  TopContent,
   TitleInput,
   TitleText,
   TicketsList,
@@ -72,33 +73,35 @@ const Column = ({
             ref={provided.innerRef}
             isDragging={snapshot.isDragging}
           >
-            <Title {...provided.dragHandleProps}>
-              {
-                !editTitleActive ? (
-                  <Fragment>
-                    <TitleText onClick={() => setEditTitleActive(true)}>{column.title}</TitleText>
-                    <Counter>{ticketsCounter}</Counter>
-                    <Icon onClick={() => setWarningModalActive(true)} className="delete-column-btn" type="close" size={13} isSolid={true} />
-                  </Fragment>
-                ) : (
+            <Top {...provided.dragHandleProps}>
+              <TopContent>
+                {
+                  !editTitleActive ? (
                     <Fragment>
-                      <TitleInput
-                        type="text"
-                        maxLength="30"
-                        ref={titleInputRef}
-                        autoFocus
-                        placeholder="Column name"
-                        value={title}
-                        onChange={e => setTitle(e.target.value)}
-                      />
-                      <Options>
-                        <Option onClick={() => updateTitle(column.id)}><Icon type="check" size={12} isSolid={true} /></Option>
-                        <Option onClick={() => setTitle(column.title)}><Icon type="close" size={12} isSolid={true} /></Option>
-                      </Options>
+                      <TitleText onClick={() => setEditTitleActive(true)}>{column.title}</TitleText>
+                      <Counter>{ticketsCounter}</Counter>
+                      <Icon onClick={() => setWarningModalActive(true)} className="delete-column-btn" type="trash" size={15} />
                     </Fragment>
-                  )
-              }
-            </Title>
+                  ) : (
+                      <Fragment>
+                        <TitleInput
+                          type="text"
+                          maxLength="30"
+                          ref={titleInputRef}
+                          autoFocus
+                          placeholder="Column name"
+                          value={title}
+                          onChange={e => setTitle(e.target.value)}
+                        />
+                        <Options>
+                          <Option onClick={() => updateTitle(column.id)}><Icon type="check" size={12} isSolid={true} /></Option>
+                          <Option onClick={() => setTitle(column.title)}><Icon type="close" size={12} isSolid={true} /></Option>
+                        </Options>
+                      </Fragment>
+                    )
+                }
+              </TopContent>
+            </Top>
             <Content>
               <Droppable droppableId={column.id} type="task">
                 {provided => (
