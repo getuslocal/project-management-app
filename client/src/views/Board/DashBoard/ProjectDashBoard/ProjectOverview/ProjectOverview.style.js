@@ -47,7 +47,6 @@ export const Category = styled.p`
 export const Description = styled.p`
   font-size: 14px;
   line-height: 2;
-  padding-right: 5%;
   color: ${color.textDark};
 `;
 

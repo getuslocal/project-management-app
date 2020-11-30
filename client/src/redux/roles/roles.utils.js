@@ -6,12 +6,12 @@ const rolesList = {
 
 const roles = {
   dashboard: {
-    id: 1,
+    id: 'dashboard',
     component: 'Dashboard',
     linkUrl: 'dashboard',
     linkVariable: ':dashboard?',
     title: 'Dashboard',
-    icon: 'icon-dashboard',
+    icon: 'dashboard',
     tabs: [
       {
         label: 'Overview',
@@ -21,12 +21,12 @@ const roles = {
     dropDownMenu: []
   },
   projects: {
-    id: 2,
+    id: 'projects',
     component: 'Projects',
     linkUrl: 'projects',
     linkVariable: ':project/:tab?',
     title: 'Projects',
-    icon: 'icon-project',
+    icon: 'project',
     tabs: [
       {
         label: 'Board',
@@ -44,12 +44,12 @@ const roles = {
     dropDownMenu: []
   },
   projectManagement: {
-    id: 3,
+    id: 'project-management',
     component: 'ProjectManagement',
     linkUrl: 'project-management',
     linkVariable: ':management?',
     title: 'Project Management',
-    icon: 'icon-user',
+    icon: 'user-cog',
     tabs: [
       {
         label: 'Settings',
@@ -59,12 +59,12 @@ const roles = {
     dropDownMenu: []
   },
   adminSetting: {
-    id: 6,
+    id: 'admin-settings',
     component: 'AdminSetting',
     linkUrl: 'admin-settings',
     linkVariable: '',
     title: 'Admin Settings',
-    icon: 'icon-setting',
+    icon: 'setting',
     tabs: [
       {
         label: 'Organization',

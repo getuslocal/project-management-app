@@ -5,21 +5,22 @@ export const Container = styled.div`
   height: calc( 100% - 52px );
   display: flex;
   align-items: center;
-  justify-content:space-around;
-  padding: 0 20px;
+  justify-content:space-between;
+  padding: 0 10px 10px;
 `;
 
 export const Left = styled.div`
-  width: 280px;
-  height: 280px;
+  width: 60%;
+  height: 300px;
   position: relative;
 `;
 
 export const Right = styled.div`
-  width: 45%;
-  padding: 0 20px 0 40px;
-  position: relative;
+  width: 40%;
+  padding-left: 16px;
   top: -8px;
+  max-height: 390px;
+  overflow-y: auto;
 `;
 
 export const InnerText = styled.div`
@@ -29,12 +30,12 @@ export const InnerText = styled.div`
   transform: translateY(-50%) translateX(-50%);
   text-align: center;
   font-weight: 500;
-  font-size: 20px;
+  font-size: 18px;
   color: ${color.textDark};
 `;
 
 export const IssueCount = styled.div`
-  font-size: 36px;
+  font-size: 34px;
   color: ${color.textDarkest};
   font-weight: 600;
   margin-bottom: 10px;
@@ -42,7 +43,7 @@ export const IssueCount = styled.div`
 
 export const Detail = styled.div`
   &:not(:last-child){
-    margin-bottom: 40px;
+    margin-bottom: 24px;
   }
 `;
 
@@ -51,16 +52,21 @@ export const DetailTop = styled.div`
   font-size: 14px;
   color: ${color.textDarkest};
   font-weight: 600;
+  display: flex;
 `;
 
-export const Status = styled.span`
-  float: right;
-  color: ${color.textMedium};
+export const ColorBox = styled.span`
+  height: 14px;
+  min-width: 14px;
+  width: 14px;
+  display: block;
+  margin-right: 5px;
+`;
+
+export const CompletionText = styled.p`
   font-size: 14px;
   font-weight: 500;
-
-  & > span {
-  font-weight: 600;
-  color: ${color.textDarkest};
-  }
-`;
+  text-align: center;
+  margin-top: 14px;
+  color: ${color.textMedium};
+`

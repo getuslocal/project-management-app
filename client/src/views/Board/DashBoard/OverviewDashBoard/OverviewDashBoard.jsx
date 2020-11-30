@@ -35,7 +35,7 @@ const OverviewDashBoard = ({ tickets, projects, members }) => {
       <Row>
         <SectionContainer width="100%">
           <SectionTitle>Members</SectionTitle>
-            <MembersList projects={projects} members={members} />
+            <MembersList members={members} />
         </SectionContainer>
       </Row>
     </Fragment>

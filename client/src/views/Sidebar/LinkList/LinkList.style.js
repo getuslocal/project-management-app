@@ -1,78 +1,98 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { color } from '../../../shared/utils/styles';
 
 export const SidebarList = styled.li`
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      font-size: 13px;
-      font-weight: 600;
-      position: relative;
-      &:last-of-type {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      }
-      &:hover,
-      &.active {
-        color: #8CD7F8;
-        border-left: solid 4px #8CD7F8;
-        cursor: pointer;
-        a, span {
-          &:before {
-            color: #8CD7F8;
-          }
-        }
-      }
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  position: relative;
+  /* margin-bottom: 14px; */
 
-      &.open-sub-list{
-        span {
-          &:after{
-            transform: rotate(180deg);
-            position: relative;
-            top: 2px;
-          }
-        }
-      }
-      
-      a, span {
-        display: inline-block;
-        border-left: solid 4px transparent;
-        padding: 1.25rem 1rem;
-        padding-left: calc(1rem - 4px);
-        width: 100%;
-        &:before {
-          margin-right: 1em;
-          color: rgba(255, 255, 255, 0.4);
-        }
-        &:after{
-          float: right;
-          position: relative;
-          top: -2px;
-        }
-      }
-  `;
+  &:last-of-type {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  & > a, 
+  & > span {
+    font-size: 13.5px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    padding: 23px 16px;
+    padding-left: calc(16px - 4px);
+    width: 100%;
+    border-left: solid 4px transparent;
 
-  export const SidebarSubList = styled.ul`
-    padding: 0;
+    & > i {
+      margin-right: 10px;
+      /* color: rgba(255, 255, 255, 0.6); */
+
+      &.sort-down{
+        float: right;
+        margin-left: auto;
+        color: ${color.white};
+      }
+    }
+    
+    &:hover,
+    &.active {
+      color: ${color.lightBlue};
+      & > i  {
+        color: ${color.lightBlue};
+      }
+    }
+
+    &.active {
+      border-left-color: ${color.lightBlue};
+    }
+  }
+
+  ${props => props.isOpen && css`
+    .sort-down {
+      transform: rotate(180deg);
+      &::before{
+        position: relative;
+        top: -3px;
+      }
+    }
+  `};
+`;
+
+export const SidebarSubList = styled.ul`
+  padding: 0;
+  border: none;
+  max-height: 0;
+  opacity: 0;
+  transition: all .3s;
+
+  &.is-open{
+    max-height: 1000px;
+    opacity: 1;
+  }
+
+  li {
     border: none;
-    max-height: 0;
-    opacity: 0;
-    transition: all .3s;
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+    
+    a {
+      padding: 20px 16px;
+      display: flex;
+      align-items: center;
 
-    &.visible{
-      max-height: 200px;
-      opacity: 1;
+      & > i {
+        margin-right: 10px;
 
-      li{
-        &:hover{
-          color: #8CD7F8;
+        &.project-icon {
+          &:before{
+            border: 1px solid ${color.white};
+          }
         }
       }
     }
 
-    li {
-      border: none;
-      font-size: 11px;
-      color: #fff;
-
-      a{
-        padding: 1.25rem 2rem;
-      }
+    &:hover{
+      color: #8CD7F8;
     }
-  `
+  }
+`

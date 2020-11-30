@@ -1,9 +1,10 @@
-import React, { Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Sidebar from '../Sidebar/Sidebar';
 import NotFound from '../NotFound/NotFound';
 import {
+  LayoutContainer,
   Container
 } from './Board.style';
 import * as Components from './components';
@@ -11,13 +12,13 @@ import * as Components from './components';
 const Board = ({
   user,
   roles,
-  organization,
-  ...props
 }) => {
+  const [secondaryView, setSecondaryView] = useState(false);
+
   return (
-    <Fragment>
-      <Sidebar user={user} roles={roles} />
-      <Container>
+    <LayoutContainer>
+      <Sidebar user={user} roles={roles} secondaryView={secondaryView} setSecondaryView={() => setSecondaryView(!secondaryView)} />
+      <Container secondaryView={secondaryView}>
         <Switch>
           {Object.values(roles).map(role => {
             const Component = Components[role.component];
@@ -32,7 +33,7 @@ const Board = ({
           <Route component={NotFound} />
         </Switch>
       </Container>
-    </Fragment>
+    </LayoutContainer>
   );
 }
 

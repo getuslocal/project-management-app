@@ -55,6 +55,7 @@ export const CircleMark = styled.span`
 
 export const Right = styled.div`
   display: flex;
+  align-items: center; 
 `;
 
 export const IconCont = styled.p`
@@ -63,8 +64,6 @@ export const IconCont = styled.p`
 
 export const MainContent = styled.p`
   font-size: 13.5px;
-  display: flex;
-  align-items: center;
   font-weight: 500;
 `;
 

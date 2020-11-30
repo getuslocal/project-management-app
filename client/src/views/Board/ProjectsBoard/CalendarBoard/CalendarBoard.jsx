@@ -8,10 +8,10 @@ import { withRouter } from 'react-router-dom'
 const CalendarBoard = () => {
   const [currentMonth, setCurrentMonth] = useState(moment())
   const [loading, setLoading] = useState(true);
-  const containerRef = useRef(null);
   const weekCellRef = useRef([]);
 
   useEffect(() => {
+    // Check if loading (rendering calendar content) is done.
     if (!loading) {
       scrollToToday()
     }
@@ -47,7 +47,6 @@ const CalendarBoard = () => {
         scrollToNextMonth={scrollToNextMonth}
       />
       <CalendarContent
-        containerRef={containerRef}
         weekCellRef={weekCellRef}
         setLoading={setLoading}
         currentMonth={currentMonth}

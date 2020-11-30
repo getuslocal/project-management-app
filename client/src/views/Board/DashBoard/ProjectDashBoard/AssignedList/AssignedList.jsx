@@ -22,10 +22,10 @@ export const AssignedList = ({ projectId, tickets, currentUser, ...props }) => {
       <Table>
         <Head>
           <tr>
-            <TableHeader width="30px">T</TableHeader>
-            <TableHeader width="120px">Key</TableHeader>
+            <TableHeader width="30">T</TableHeader>
+            <TableHeader width="120">Key</TableHeader>
             <TableHeader width="">Summary</TableHeader>
-            <TableHeader width="30px">P</TableHeader>
+            <TableHeader width="30">P</TableHeader>
           </tr>
         </Head>
         <Body>
@@ -34,10 +34,10 @@ export const AssignedList = ({ projectId, tickets, currentUser, ...props }) => {
               assignedTickets.map(ticket => {
                 return (
                   <BodyTableRow key={ticket._id} onClick={() => props.history.push(`/app/projects/${projectId}/?selectedIssue=${ticket.key}`)}>
-                    <TableData width="30px"><Icon type={ticket.issueType.toLowerCase()} size={13} top={-2} /></TableData>
-                    <TableData width="120px" style={{ color: '#5e6c84', fontWeight: 500 }}>{ticket.key}</TableData>
+                    <TableData width="30"><Icon type={ticket.issueType.toLowerCase()} size={13} top={-2} /></TableData>
+                    <TableData width="120" style={{ color: '#5e6c84', fontWeight: 500 }}>{ticket.key}</TableData>
                     <TableData width="">{ticket.summary}</TableData>
-                    <TableData width="30px"><Icon type={`priority-${ticket.issuePriority.toLowerCase()}`} isSolid={true} size={13} /></TableData>
+                    <TableData width="30"><Icon type={`priority-${ticket.issuePriority.toLowerCase()}`} isSolid={true} size={13} /></TableData>
                   </BodyTableRow>
                 )
               })

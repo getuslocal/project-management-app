@@ -6,6 +6,7 @@ import {
 
 const fontIconCodes = {
   [`user`]: '\f007',
+  [`user-cog`]: '\f4fe',
   [`times`]: '\f00d',
   [`plus`]: '\f067',
   [`grip-lines-vertical`]: '\f7a5',
@@ -32,6 +33,7 @@ const fontIconCodes = {
   [`project`]: '\f0ae',
   [`setting`]: '\f013',
   [`sort-down`]: '\f0dd',
+  [`sort-up`]: '\f0de',
   [`angle-down`]: '\f107',
   [`plus`]: '\f067',
   [`task`]: '\f00c',
@@ -53,6 +55,11 @@ const fontIconCodes = {
   [`warning`]: '\f071',
   [`angle-left`]: '\f104',
   [`angle-right`]: '\f105',
+  [`circle-left`]: '\f137',
+  [`circle-right`]: '\f138',
+  [`github`]: '\f09b',
+  [`pen`]: '\f304',
+  [`cube`]: '\f1b2',
 };
 
 const propTypes = {

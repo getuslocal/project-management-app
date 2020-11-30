@@ -27,7 +27,7 @@ const ProjectDashBoard = ({ dashboardParams, tickets }) => {
       <Row>
         <SectionContainer width="49%">
           <SectionTitle>Issue Status</SectionTitle>
-          <DoughnutChart />
+          <DoughnutChart projectId={dashboardParams}/>
         </SectionContainer>
         <SectionContainer width="49%">
           <SectionTitle>Assigned to me</SectionTitle>

@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+import { media } from '../../../../../../shared/utils/global';
 import { color } from '../../../../../../shared/utils/styles'
 
 export const Container = styled.div`
@@ -13,6 +14,16 @@ export const Container = styled.div`
   &:nth-child(4n) {
     margin-right: 0;
   }
+
+  ${media.large`
+    min-width: 32%;
+    width: 32%;
+    margin-right: calc(4% / 2);
+
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  `};
 `;
 
 export const Top = styled.div`

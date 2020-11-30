@@ -1,11 +1,10 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import Icon from '../../shared/components/Icon/Icon';
 import {
   Container,
   Content,
-  BoardTitleContainer,
   BoardTitle,
-  ArrowNavigation,
   SearchBox,
   Tabs,
   Tab,
@@ -15,16 +14,10 @@ const TopNavigationBar = ({ title, tabs, baseUrl, currentTab }) => {
   return (
     <Container>
       <Content>
-        <BoardTitleContainer>
-          <BoardTitle>{title}</BoardTitle>
-          <ArrowNavigation>
-            <i className="fas fa-chevron-left"></i>
-            <i className="fas fa-chevron-right"></i>
-          </ArrowNavigation>
-        </BoardTitleContainer>
+        <BoardTitle>{title}</BoardTitle>
         <SearchBox>
-          <i className="fas fa-search" ></i>
-          <input type="text" placeholder="Find something" />
+          <Icon type="search" size={14} isSolid={true} />
+          <input type="text" placeholder="Search issues" />
         </SearchBox>
       </Content>
       <Tabs>

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, Fragment } from 'react';
 import PropTypes from 'prop-types'
 import moment from 'moment';
 import DayCell from './DayCell/DayCell'
 import VisibilitySensor from 'react-visibility-sensor'
 import {
-  Container,
   Top,
   DayName,
   Bottom,
@@ -32,18 +31,21 @@ const DayCellMemo = React.memo(props => {
 })
 
 const CalendarContent = ({
-  containerRef,
   setLoading,
   setCurrentMonth,
   weekCellRef
 }) => {
   const [calendar, setCalendar] = useState([]);
+  const [scrollbarWidth, setScrollbarWidth] = useState(0);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     // Get calendar content data.
     setCalendar(getCalendarContent());
     // After render calendar content.
     setLoading(false);
+    // Set scroll bar width for the container element.
+    setScrollbarWidth(containerRef.current.offsetWidth - containerRef.current.clientWidth)
   }, []);
 
   const onChange = (isVisible, firstDayOfWeek) => {
@@ -72,10 +74,10 @@ const CalendarContent = ({
       return null
     }
   }
-
+  //   const calculateScrollbarWidth = (containerRef) => {
   return (
-    <Container>
-      <Top>
+    <Fragment>
+      <Top style={{paddingRight: scrollbarWidth}}>
         <DayName>Sun</DayName>
         <DayName>Mon</DayName>
         <DayName>Tue</DayName>
@@ -104,7 +106,8 @@ const CalendarContent = ({
           </VisibilitySensor>
         ))}
       </Bottom>
-    </Container>
+    </Fragment>
+
   )
 }
 

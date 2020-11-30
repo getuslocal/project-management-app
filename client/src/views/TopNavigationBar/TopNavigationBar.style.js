@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { color } from '../../shared/utils/styles'
 
 export const Container = styled.div`
   padding-top: 30px;
@@ -9,87 +10,83 @@ export const Content = styled.div`
   align-items: center;
   margin-bottom: 32px;
 `
-export const BoardTitleContainer = styled.div`
-  display: flex;
-  align-items: center;
-`
+
 export const BoardTitle = styled.h1`
-  margin-right: 2rem;
 `
-export const ArrowNavigation = styled.div`
-  padding-right: 32px;
-  margin-right: 32px;
-  border-right: 1px solid #dfe1e6;
 
-  i {
-    font-size: 1.25em;
-
-    &:not(:last-child) {
-      margin-right: 1.5em;
-    }
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
-`
 export const SearchBox = styled.div`
+  margin-left: auto;
+  position: relative;
 
-i {
-  font-size: 1.1em;
-  vertical-align: middle;
-  margin-right: 10px;
-}
-
-input {
-  border: none;
-  min-width: 400px;
-  background-color: transparent;
-
-  &::-webkit-input-placeholder {
-    /* Edge */
-    color: #8993a4;
+  & > i {
+    color: ${color.textDark};
+    position: absolute;
+    left: 14px;
+    top: 12px;
   }
 
-  &:-ms-input-placeholder {
-    /* Internet Explorer 10-11 */
-    color: #8993a4;
-  }
+  input {
+    border: none;
+    border: 1px solid rgba(0, 0, 0, .15);
+    padding: 10px 10px 10px 36px;
+    border-radius: 20px;
+    color: ${color.textDarkest};
+    font-size: 14px;
+    width: 350px;
+    background-color: transparent;
+    transition: all .2s;
 
-  &::placeholder {
-    color: #8993a4;
+    &::-webkit-input-placeholder {
+      /* Edge */
+      color: ${color.textMedium};
+    }
+
+    &:-ms-input-placeholder {
+      /* Internet Explorer 10-11 */
+      color: ${color.textMedium};
+    }
+
+    &::placeholder {
+      color: ${color.textMedium};
+    }
+
+    &:focus{
+      outline: none;
+      border-color: ${color.borderInputFocus};
+      box-shadow: ${color.borderInputFocus} 0px 0px 0px 1px;
+      width: 450px;
+    }
   }
-}
 `
 
 export const Tabs = styled.ul`
-    &:after {
-      z-index: -1;
-      content: '';
-      display: block;
-      border-bottom: 2px solid #f0f0f0;
-      position: relative;
-      top: -1px;
-    }
+  &:after {
+    z-index: -1;
+    content: '';
+    display: block;
+    border-bottom: 2px solid #f0f0f0;
+    position: relative;
+    top: -1px;
+  }
 `
 
 export const Tab = styled.li`
-      border-bottom: 3px solid transparent;
-      display: inline-block;
+  border-bottom: 3px solid transparent;
+  display: inline-block;
 
-      &:not(:last-child) {
-        margin-right: 3em;
-      }
+  &:not(:last-child) {
+    margin-right: 3em;
+  }
 
-      &:hover,
-      &.active {
-        border-bottom-color: #0f35a9;
-        cursor: pointer;
-      }
+  &:hover,
+  &.active {
+    border-bottom-color: #0f35a9;
+    cursor: pointer;
+  }
 
-      a{
-        padding-bottom: 1em;
-        display: inline-block;
-      }
+  a{
+    padding-bottom: 1em;
+    display: inline-block;
+  }
 `
 

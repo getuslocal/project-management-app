@@ -1,14 +1,10 @@
 import styled from 'styled-components';
 import { color } from '../../../../../shared/utils/styles';
 
-export const Container = styled.div`
-`
-
 export const Top = styled.div`
   display: flex;
   padding-bottom: 7px;
   border-bottom: 2px solid ${color.borderLightest};
-  padding-right: 13px;
 `
 
 export const DayName = styled.div`
@@ -22,9 +18,10 @@ export const DayName = styled.div`
 `
 
 export const Bottom = styled.div`
-  height: calc(100vh - 230px);
-  max-height: calc(100vh - 230px);
+  height: 100%;
+  max-height: 100%;
   overflow-y: scroll;
+  overflow-x: hidden;
   position: relative;
 `
 

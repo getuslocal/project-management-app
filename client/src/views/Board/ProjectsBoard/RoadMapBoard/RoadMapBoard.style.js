@@ -2,7 +2,8 @@ import styled, { css } from 'styled-components'
 import { color } from '../../../../shared/utils/styles'
 
 export const Container = styled.div`
-  min-height: calc(100% - 210px);
+  height: 100%;
+  max-height: 100%;
   width: 100%;
   display: flex;
   position: relative;
