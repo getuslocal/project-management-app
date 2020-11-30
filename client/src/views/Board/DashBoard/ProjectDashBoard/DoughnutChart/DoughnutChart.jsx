@@ -119,7 +119,7 @@ const DoughnutChart = ({ project: { columns, columnOrder } }) => {
       <Right>
         {
           Object.values(columns).map((column, index) => (
-            <Detail>
+            <Detail key={column.id}>
               <DetailTop>
                 <ColorBox style={{ backgroundColor: colors[index] }}></ColorBox>
                 {column.title}

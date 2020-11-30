@@ -17,9 +17,6 @@ import { logout } from '../../redux/auth/auth.actions';
 import LinkList from './LinkList/LinkList';
 import Icon from '../../shared/components/Icon/Icon';
 import { Fragment } from 'react';
-import { useMediaQuery } from 'react-responsive'
-
-const QUERY_LARGE = "(max-width:1250px)"
 
 const Sidebar = ({
   user: { name, role, pictureUrl },
@@ -27,17 +24,6 @@ const Sidebar = ({
   secondaryView,
   setSecondaryView
 }) => {
-
-  const isSmallView = useMediaQuery({ query: QUERY_LARGE });
-
-  // If small view and secondary sidebar, disable scrolling 
-  // while a modal is active.
-  if (isSmallView && secondaryView) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.removeProperty('overflow');
-  }
-
   return (
     <Fragment>
       <Blanket onClick={setSecondaryView} className="side-bar-blanket" isActive={secondaryView} ></Blanket>
@@ -72,7 +58,7 @@ const Sidebar = ({
                     key={component.id}
                     {...component}
                     closeModal={() => {
-                      if (isSmallView && secondaryView) {
+                      if (secondaryView) {
                         setSecondaryView()
                       }
                     }}

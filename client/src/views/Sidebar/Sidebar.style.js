@@ -65,7 +65,7 @@ export const Blanket = styled.div`
   background-color: rgba(23, 43, 77, .5);
   height: 100%;
   width: 100vw;
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   z-index: 50;
