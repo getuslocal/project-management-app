@@ -40,6 +40,7 @@ export const getTicketsOfOrganization = (projectIds) => async dispatch => {
       type: GET_TICKETS,
       payload: ticketsList
     });
+    // console.log('dispatch')
   } catch (err) {
     console.log(err)
   }

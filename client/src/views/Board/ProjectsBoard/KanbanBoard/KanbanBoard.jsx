@@ -132,12 +132,13 @@ const KanbanBoard = ({
     // Update the two columns taskIds fields.
     updateTwoColumnsTicketsOrder(projectId, { newStart, newFinish });
 
-    // If move to the last column, add completed time.
-    if (destination.droppableId === columnOrder[columnOrder.length - 1]) {
+    // If move to the DONE column, add completed time.
+    if (columns[destination.droppableId].isDoneColumn) {
       updateTicket(draggableId, { field: 'completedAt', value: new Date() });
     }
-    // If move from the last column to another, unset the completed time. 
-    else if (source.droppableId === columnOrder[columnOrder.length - 1]) {
+    // If move from the DONE column to another, unset the completed time. 
+    // @TODO: Fixes update ticket api to allow multiple fields update.
+    else if (columns[source.droppableId].isDoneColumn) {
       updateTicket(draggableId, { field: 'completedAt', value: null });
     };
 

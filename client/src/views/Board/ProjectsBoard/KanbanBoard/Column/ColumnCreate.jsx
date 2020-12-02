@@ -47,6 +47,7 @@ const ColumnCreate = ({
         [newColumnId]: {
           id: newColumnId,
           title: trimmedTitle,
+          isDoneColumn: false,
           taskIds: []
         }
       },

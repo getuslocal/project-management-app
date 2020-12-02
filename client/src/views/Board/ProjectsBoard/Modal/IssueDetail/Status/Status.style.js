@@ -27,7 +27,7 @@ export const Button = styled.button`
     margin-left: 20px;
   }
   ${({ isFirstColumn }) => isFirstColumn && firstColumnStyle}
-  ${({ isLastColumn }) => isLastColumn && lastColumnStyle}
+  ${({ isDoneColumn }) => isDoneColumn && lastColumnStyle}
 `
 
 export const StyledText = styled.span`
@@ -38,5 +38,5 @@ export const StyledText = styled.span`
   background-color: rgb(222, 235, 255);
   font-size: 12px;
   ${({ isFirstColumn }) => isFirstColumn && firstColumnStyle}
-  ${({ isLastColumn }) => isLastColumn && lastColumnStyle}
+  ${({ isDoneColumn }) => isDoneColumn && lastColumnStyle}
 `

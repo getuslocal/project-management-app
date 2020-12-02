@@ -14,6 +14,7 @@ import SelectMenu from '../../../../../../shared/components/SelectMenu/SelectMen
 import Icon from '../../../../../../shared/components/Icon/Icon'
 import { updateProject } from '../../../../../../redux/projects/projects.actions'
 import store from '../../../../../../redux/store'
+import { updateTicket } from '../../../../../../redux/tickets/tickets.actions'
 
 const ColumnDeleteModal = ({
   projectId,
@@ -21,10 +22,16 @@ const ColumnDeleteModal = ({
   columns,
   columnOrder,
   closeModal,
+  tickets
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const targetColumnIndex = columnOrder.indexOf(targetColumnId);
-  const [inheritColumn, setInheritColumn] = useState(columnOrder[targetColumnIndex - 1]);
+  const [inheritColumn, setInheritColumn] = useState(() => {
+    if (targetColumnIndex === 0) {
+      return columnOrder[1];
+    }
+    return columnOrder[targetColumnIndex - 1];
+  });
 
   const deleteColumn = () => {
     // Remove target column property from columns immutably.
@@ -40,8 +47,30 @@ const ColumnDeleteModal = ({
       },
       columnOrder: columnOrder.filter(columnId => columnId !== targetColumnId)
     };
-    // console.log(formValue);
+
     store.dispatch(updateProject(projectId, formValue));
+
+    // If inherit column is DONE, update tickets with completed date.
+    if (columns[inheritColumn].isDoneColumn) {
+      tickets.forEach(ticket => {
+        store.dispatch(updateTicket(ticket._id, { field: 'completedAt', value: new Date() }));
+      });
+    }
+  }
+
+  // If it is a DONE column, not allow deleting it.
+  if (columns[targetColumnId].isDoneColumn) {
+    return (
+      <Modal>
+        <Container>
+          <Title><Icon type="warning" size={16} isSolid={true} top={-1} />Oops, this column cannot be deleted.</Title>
+          <Description>Your board must have this column to mark issues completed.</Description>
+          <Options>
+            <Button text="Back" variant="secondary" onClick={closeModal} />
+          </Options>
+        </Container>
+      </Modal>
+    )
   }
 
   return (
@@ -51,7 +80,7 @@ const ColumnDeleteModal = ({
         <Description>Where would you like to move the issues in this column?</Description>
         <CustomButton
           isFirstColumn={(inheritColumn === columnOrder[0])}
-          isLastColumn={(inheritColumn === columnOrder[columnOrder.length - 1])}
+          isDoneColumn={(columns[inheritColumn].isDoneColumn)}
           type="button"
           className="icon-angle-down"
           onClick={() => setIsMenuOpen(true)}
@@ -70,7 +99,7 @@ const ColumnDeleteModal = ({
           renderValue={({ value: column }) => (
             <StyledText
               isFirstColumn={(column.id === columnOrder[0])}
-              isLastColumn={(column.id === columnOrder[columnOrder.length - 1])}
+              isDoneColumn={(columns[column.id].isDoneColumn)}
             >
               {column.title}
             </StyledText>

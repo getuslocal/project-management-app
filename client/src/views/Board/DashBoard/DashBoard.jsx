@@ -9,7 +9,6 @@ import {
 const DashBoard = ({ component, baseUrl, tickets, ...props }) => {
   const { dashboard: dashboardParams } = props.match.params
   const currentRoute = dashboardParams ? dashboardParams : '';
-
   return (
     <Fragment>
       <TopNavigationBar title={component.title} tabs={component.tabs} baseUrl={baseUrl} currentTab={currentRoute} />

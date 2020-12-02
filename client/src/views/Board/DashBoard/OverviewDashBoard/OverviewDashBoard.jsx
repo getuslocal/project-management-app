@@ -18,6 +18,7 @@ import {
 
 const OverviewDashBoard = ({ tickets, projects, members }) => {
   const nonEpicTickets = tickets.filter(ticket => ticket.issueType !== IssueTypes.EPIC);
+
   return (
     <Fragment>
       <Row>

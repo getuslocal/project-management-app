@@ -4,63 +4,77 @@ import {
   Button,
   StyledText
 } from './Status.style';
-import store from '../../../../../../redux/store'
 import { updateTicketStatus } from '../../../../../../redux/projects/projects.actions';
 import SelectMenu from '../../../../../../shared/components/SelectMenu/SelectMenu';
-
-const getColumnIdOfTicket = (columns, ticketId) => {
-  const foundColumn = Object.values(columns).find(column => column.taskIds.includes(ticketId));
-  if (foundColumn) return foundColumn.id;
-  else return null
-}
+import { updateTicket } from '../../../../../../redux/tickets/tickets.actions';
+import { connect } from 'react-redux';
 
 const IssueStatusMenu = ({
   columns,
   columnOrder,
   projectId,
-  ticketId,
-  updateTicketHistory
+  ticket,
+  updateTicketHistory,
+  updateTicketStatus,
+  updateTicket
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const beforeColumn = getColumnIdOfTicket(columns, ticketId);
-  const currentColumnTitle = columns[beforeColumn].title;
 
-  const handleStatusChange = (afterColumn) => {
+  const { _id: ticketId, columnId: currentColumnId } = ticket;
+
+  const currentColumnData = columns[currentColumnId];
+
+  const handleStatusChange = (newColumnId) => {
     const columnMove = {
-      beforeColumn: beforeColumn,
-      afterColumn: afterColumn
+      beforeColumn: currentColumnId,
+      afterColumn: newColumnId
     }
-    store.dispatch(updateTicketStatus(columnMove, ticketId, projectId))
+
+    updateTicketStatus(columnMove, ticketId, projectId);
+
+    // Update columnId field of the ticket.
+    updateTicket(ticketId, { field: 'columnId', value: newColumnId });
+
+    // If a new column is DONE, update completed date.
+    if (columns[newColumnId].isDoneColumn) {
+      updateTicket(ticketId, { field: 'completedAt', value: new Date() });
+    }
+    // If a current column is DONE, initiate completed date.
+    else if (currentColumnData.isDoneColumn) {
+      updateTicket(ticketId, { field: 'completedAt', value: null });
+    }
   };
+
   return (
     <Container>
       <Button
-        isFirstColumn={(beforeColumn === columnOrder[0])}
-        isLastColumn={(beforeColumn === columnOrder[columnOrder.length - 1])}
+        isFirstColumn={(currentColumnId === columnOrder[0])}
+        isDoneColumn={(currentColumnData.isDoneColumn)}
         type="button"
         className="icon-angle-down"
         onClick={() => setIsMenuOpen(true)}
       >
-        {beforeColumn && currentColumnTitle}
+        {currentColumnId && currentColumnData.title}
       </Button>
       <SelectMenu
-        value={beforeColumn}
+        value={currentColumnId}
         isActive={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
         onChange={(updatedColumn) => {
-          handleStatusChange(updatedColumn.id)
-          updateTicketHistory('Status', currentColumnTitle, updatedColumn.value)
+          handleStatusChange(updatedColumn.id);
+          // Update project history.
+          updateTicketHistory('Status', currentColumnData.title, updatedColumn.value);
         }}
-        options={Object.values(columns).filter(column => column.id !== beforeColumn).map(column => ({
+        options={Object.values(columns).filter(column => column.id !== currentColumnId).map(column => ({
           value: column.title,
           id: column.id,
           key: column.id,
         }))}
         renderValue={({ value, id }) => {
           const isFirstColumn = (id === columnOrder[0]);
-          const isLastColumn = (id === columnOrder[columnOrder.length - 1]);
+          const isDoneColumn = ((columns[id].isDoneColumn));
           return (
-            <StyledText isFirstColumn={isFirstColumn} isLastColumn={isLastColumn} >
+            <StyledText isFirstColumn={isFirstColumn} isDoneColumn={isDoneColumn} >
               {value}
             </StyledText>
           )
@@ -70,4 +84,4 @@ const IssueStatusMenu = ({
   )
 }
 
-export default IssueStatusMenu;
+export default connect(null, { updateTicketStatus, updateTicket })(IssueStatusMenu);

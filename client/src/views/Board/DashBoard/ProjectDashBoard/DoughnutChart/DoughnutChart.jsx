@@ -47,6 +47,9 @@ const doughnutChartOption = {
       font: {
         size: '16',
         weight: '600'
+      },
+      display: function (context) {
+        return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
       }
     },
   }
@@ -54,10 +57,9 @@ const doughnutChartOption = {
 
 const colors = ['#0f35a9', '#8CD7F8', 'rgba(101,186,67, .6)', 'rgba(101, 84, 192)', '#CAF0F8', 'rgba(228, 77, 66, .8)', 'rgba(253, 180, 77,.8)', 'rgb(89, 140, 255)'];
 
-const DoughnutChart = ({ project: { columns, columnOrder } }) => {
+const DoughnutChart = ({ project: { columns }, tickets }) => {
   const canvasRef = useRef(null);
-  const [numberOfIssues, setNumberOfIssues] = useState(0);
-  const [completeness, setCompleteness] = useState(0);
+  const [completePercent, setCompletePercent] = useState(0);
 
   useEffect(() => {
     const myChartRef = canvasRef.current.getContext("2d");
@@ -78,30 +80,17 @@ const DoughnutChart = ({ project: { columns, columnOrder } }) => {
       },
       options: doughnutChartOption
     });
-
-    let sum = 0;
-
-    Object.values(columns).forEach(column => {
-      sum = sum + column.taskIds.length;
-    });
-
-    setNumberOfIssues(getNumberOfIssues(columns))
-    setCompleteness(getCompleteness(columns, columnOrder))
+    // Set percentage of completed issues.
+    setCompletePercent(getCompletedPercentage(columns, tickets));
   }, []);
 
-  const getNumberOfIssues = (columns) => {
-    let sum = 0;
+  const getCompletedPercentage = (columns, tickets) => {
+    const doneColumn = Object.values(columns).find(column => column.isDoneColumn);
+    const doneIssues = doneColumn.taskIds.length;
 
-    Object.values(columns).forEach(column => {
-      sum = sum + column.taskIds.length;
-    });
+    if (doneIssues === 0) return 0;
 
-    return sum;
-  }
-
-  const getCompleteness = (columns, columnOrder) => {
-    const lastColumn = Object.values(columns).find(column => column.id === columnOrder[columnOrder.length - 1]);
-    return ((lastColumn.taskIds.length / getNumberOfIssues(columns)) * 100).toFixed(0);
+    return Math.floor((doneIssues / tickets.length) * 100);
   }
 
   return (
@@ -109,11 +98,11 @@ const DoughnutChart = ({ project: { columns, columnOrder } }) => {
       <Left>
         <canvas ref={canvasRef} />
         <InnerText>
-          <IssueCount>{numberOfIssues}</IssueCount>
+          <IssueCount>{tickets.length}</IssueCount>
           issues
         </InnerText>
         <CompletionText>
-          <span>Completed {completeness}% of {numberOfIssues} issues.</span>
+          <span>Completed {completePercent}% of {tickets.length} issues.</span>
         </CompletionText>
       </Left>
       <Right>

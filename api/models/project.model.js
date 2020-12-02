@@ -29,21 +29,25 @@ const projectSchema = new Schema({
       'column-1': {
         id: 'column-1',
         title: 'TO DO',
+        isDoneColumn: false,
         taskIds: [],
       },
       'column-2': {
         id: 'column-2',
         title: 'IN PROGRESS',
+        isDoneColumn: false,
         taskIds: [],
       },
       'column-3': {
         id: 'column-3',
         title: 'IN REVIEW',
+        isDoneColumn: false,
         taskIds: [],
       },
       'column-4': {
         id: 'column-4',
         title: 'DONE',
+        isDoneColumn: true,
         taskIds: [],
       },
     }

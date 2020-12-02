@@ -132,16 +132,16 @@ const EpicList = ({
     return childIssueHeight + baseHeight;
   }
 
-  const updateChildIssuesWithStatus = (childIssues) => {
+  const updateChildIssuesWithStatus = (columns, childIssues) => {
     return childIssues.map(issue => {
-      const currentColumn = Object.values(columns).find(column => column.taskIds.includes(issue._id));
-      const isFirstColumn = (currentColumn && (currentColumn.id === columnOrder[0]));
-      const isDone = (currentColumn && (currentColumn.id === columnOrder[columnOrder.length - 1]));
+      const columnData = columns[issue.columnId];
+      const isFirstColumn = (columnData && (columnData.id === columnOrder[0]));
+      const isDone = (columnData && (columnData.isDoneColumn));
       return {
         ...issue,
         isFirstColumn: isFirstColumn,
         isDone: isDone,
-        status: currentColumn.title
+        status: columnData.title
       }
     })
   }
@@ -158,7 +158,7 @@ const EpicList = ({
         setIsChildIssuesVisible={setIsChildIssuesVisible}
         openIssueDetailModal={openIssueDetailModal}
         epic={epic}
-        childIssues={updateChildIssuesWithStatus(childIssues)}
+        childIssues={updateChildIssuesWithStatus(columns, childIssues)}
         members={members}
       />
       {/* Right part of the Row */}
@@ -218,7 +218,7 @@ const EpicList = ({
                 left: `calc(${dragProperties.currentPostion}px + 2px)`,
                 width: `calc(${epicWidth}px - 2px)`
               }}>
-              {updateChildIssuesWithStatus(childIssues).map(issue => {
+              {updateChildIssuesWithStatus(columns, childIssues).map(issue => {
                 const assignee = members.find(member => member._id === issue.assigneeId)
                 return (
                   <ChildIssue key={issue._id} onClick={() => openIssueDetailModal(issue.key)} style={{ backgroundColor: epicColorProperty.bg }}>

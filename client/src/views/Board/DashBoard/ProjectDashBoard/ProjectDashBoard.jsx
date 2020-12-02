@@ -1,10 +1,11 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import DoughnutChart from './DoughnutChart/DoughnutChart';
-import IssueTypes from './IssueTypes/IssueTypes';
 import AssignedList from './AssignedList/AssignedList';
 import IssueHistory from './IssueHistory/IssueHistory';
 import ProjectOverview from './ProjectOverview/ProjectOverview';
+import IssueTypeBlocks from './IssueTypes/IssueTypes';
+import { IssueTypes } from '../../../../shared/constants/issues';
 import {
   Row,
   SectionContainer,
@@ -21,13 +22,13 @@ const ProjectDashBoard = ({ dashboardParams, tickets }) => {
           <ProjectOverview projectId={dashboardParams} />
         </SectionContainer>
         <SectionContainer width="43%" noBoxShadow={true} >
-          <IssueTypes tickets={tickets}/>
+          <IssueTypeBlocks tickets={tickets}/>
         </SectionContainer>
       </Row>
       <Row>
         <SectionContainer width="49%">
           <SectionTitle>Issue Status</SectionTitle>
-          <DoughnutChart projectId={dashboardParams}/>
+          <DoughnutChart projectId={dashboardParams} tickets={tickets.filter(ticket => ticket.issueType !== IssueTypes.EPIC)} />
         </SectionContainer>
         <SectionContainer width="49%">
           <SectionTitle>Assigned to me</SectionTitle>

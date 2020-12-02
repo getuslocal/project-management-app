@@ -66,6 +66,7 @@ const IssueDetail = ({
     key,
     createdAt,
     updatedAt,
+    completedAt,
     linkedEpic,
     dueDate
   } = ticket;
@@ -158,7 +159,7 @@ const IssueDetail = ({
                     columns={projectInfo.columns}
                     columnOrder={projectInfo.columnOrder}
                     projectId={projectInfo._id}
-                    ticketId={ticketId}
+                    ticket={ticket}
                     updateTicketHistory={updateTicketHistory}
                   />) : (
                     <Fragment>
@@ -207,7 +208,7 @@ const IssueDetail = ({
                     updateTicketField={updateTicketField}
                   />)}
                 <Diviser />
-                <Dates createAt={createdAt} updatedAt={updatedAt} />
+                <Dates createAt={createdAt} updatedAt={updatedAt} completedAt={completedAt}/>
               </Fieldset>
             </Right>
           </Content>

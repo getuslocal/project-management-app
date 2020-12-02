@@ -37,7 +37,7 @@ const firstColumnStyle = css`
   background-color: rgb(223, 225, 230) !important;
 `
 
-const lastColumnStyle = css`
+const doneColumnStyle = css`
   background-color: rgb(227, 252, 239) !important;
   color: rgb(0, 102, 68) !important;
 `
@@ -59,7 +59,7 @@ export const CustomButton = styled.button`
   }
 
   ${({ isFirstColumn }) => isFirstColumn && firstColumnStyle};
-  ${({ isLastColumn }) => isLastColumn && lastColumnStyle};
+  ${({ isDoneColumn }) => isDoneColumn && doneColumnStyle};
 `
 
 export const StyledText = styled.span`
@@ -71,5 +71,5 @@ export const StyledText = styled.span`
   font-size: 12px;
   
   ${({ isFirstColumn }) => isFirstColumn && firstColumnStyle};
-  ${({ isLastColumn }) => isLastColumn && lastColumnStyle};
+  ${({ isDoneColumn }) => isDoneColumn && doneColumnStyle};
 `

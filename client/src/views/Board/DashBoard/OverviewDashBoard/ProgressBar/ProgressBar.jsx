@@ -13,16 +13,29 @@ import {
   CompleteText,
   Bottom
 } from './ProgressBar.style';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 export const ProgressBar = ({ tickets, projects }) => {
+  const [completedPercentage, setCompletedPercentage] = useState(0);
 
-  const completedTickets = tickets.filter(ticket => {
-    const project = projects[ticket.projectId];
-    const lastColumnId = project.columnOrder[project.columnOrder.length - 1];
-    return (ticket.columnId === lastColumnId);
-  });
+  useEffect(() => {
+    const completedPercentage = getCompletedPercentage(projects, tickets);
+    setCompletedPercentage(completedPercentage);
+  }, [])
 
-  const completedPercent = Math.floor((completedTickets.length / tickets.length) * 100);
+  const getCompletedPercentage = (projects, tickets) => {
+    let doneIssues = 0;
+
+    Object.values(projects).forEach(project => {
+      const doneColumn = Object.values(project.columns).find(column => column.isDoneColumn);
+      doneIssues = doneIssues + doneColumn.taskIds.length;
+    });
+
+    if (doneIssues === 0) return 0;
+
+    return Math.floor((doneIssues / tickets.length) * 100);
+  }
 
   return (
     <Container>
@@ -30,7 +43,7 @@ export const ProgressBar = ({ tickets, projects }) => {
         <Title>Overall Progress</Title>
       </Top>
       <Content>
-        <ProgressProvider valueStart={0} valueEnd={completedPercent}>
+        <ProgressProvider valueStart={0} valueEnd={completedPercentage}>
           {value => (
             <CircularProgressbarWithChildren
               value={value}
@@ -45,7 +58,7 @@ export const ProgressBar = ({ tickets, projects }) => {
               })}
             >
               <InnerText style={{ fontSize: 12, marginTop: -5 }}>
-                <Percentage>{completedPercent}<span className="percent-mark">%</span></Percentage>
+                <Percentage>{completedPercentage}<span className="percent-mark">%</span></Percentage>
                 <CompleteText>COMPLETED</CompleteText>
               </InnerText>
             </CircularProgressbarWithChildren>
@@ -53,7 +66,7 @@ export const ProgressBar = ({ tickets, projects }) => {
           }
         </ProgressProvider>
         <Bottom>
-          <span>Completed {completedPercent}% of {tickets.length} issues.</span>
+          <span>Completed {completedPercentage}% of {tickets.length} issues.</span>
         </Bottom>
       </Content>
     </Container>

@@ -10,7 +10,7 @@ export const Container = styled.div`
   position: absolute;
   z-index: ${zIndexValues.modal};
   max-height: 350px;
-  overflow-y: scroll;
+  overflow-y: auto;
   width: ${props => props.width ? `${props.width}px` : '100%'};
   left: ${props => props.left ? `${props.left}px` : 'auto'};
   top: ${props => props.top ? `${props.top}px` : 'auto'};

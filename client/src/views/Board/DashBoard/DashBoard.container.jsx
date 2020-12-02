@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import DashBoard from './DashBoard';
 import PropTypes from 'prop-types';
@@ -14,19 +14,23 @@ const DashBoardContainer = ({
   getTicketsOfOrganization,
   ...props
 }) => {
+  const [isLoading, setIsLoading] = useState(true)
 
   // Handles featching necessary data before rendering DashBoard component.
   useEffect(() => {
-    // Get all tickets of organization.
-    getTicketsOfOrganization(projectIds);
-    // console.log('dashboard useeffectc called')
+    const fetchAllTickets = async () => {
+      // Get all tickets of organization.
+      await getTicketsOfOrganization(projectIds);
+      setIsLoading(false);
+    };
+    fetchAllTickets();
   }, []);
 
   return (
-    tickets.length > 0 ? (
-      <DashBoard key={props.match.params.dashboard} tickets={tickets} {...props} />
+    isLoading ? (
+      <Spinner />
     ) : (
-        <Spinner />
+        <DashBoard key={props.match.params.dashboard} tickets={tickets} {...props} />
       )
   )
 }

@@ -79,7 +79,13 @@ const Column = ({
                   !editTitleActive ? (
                     <Fragment>
                       <TitleText onClick={() => setEditTitleActive(true)}>{column.title}</TitleText>
-                      <Counter>{ticketsCounter}</Counter>
+                      {
+                        column.isDoneColumn ? (
+                          <Icon className="check-icon" type="check" size={11} isSolid={true} />
+                        ) : (
+                            <Counter>{ticketsCounter}</Counter>
+                          )
+                      }
                       <Icon onClick={() => setWarningModalActive(true)} className="delete-column-btn" type="trash" size={15} />
                     </Fragment>
                   ) : (
@@ -108,16 +114,18 @@ const Column = ({
                   <TicketsList ref={provided.innerRef} {...provided.droppableProps}>
                     <InnerList tickets={tickets} />
                     {
-                      isQuickTicketActive ?
-                        <QuickTicket
-                          setIsQuickTicketActive={setIsQuickTicketActive}
-                          columnId={column.id}
-                        />
-                        :
-                        <CreateTicketButton
-                          isFirstColumn={(index === 0)}
-                          onClick={() => setIsQuickTicketActive(true)}
-                        >+ Create ticket</CreateTicketButton>
+                      !column.isDoneColumn && (
+                        isQuickTicketActive ?
+                          <QuickTicket
+                            setIsQuickTicketActive={setIsQuickTicketActive}
+                            columnId={column.id}
+                          />
+                          :
+                          <CreateTicketButton
+                            isFirstColumn={(index === 0)}
+                            onClick={() => setIsQuickTicketActive(true)}
+                          >+ Create ticket</CreateTicketButton>
+                      )
                     }
                     {provided.placeholder}
                   </TicketsList>
@@ -134,6 +142,7 @@ const Column = ({
           columns={columns}
           columnOrder={columnOrder}
           closeModal={() => setWarningModalActive(false)}
+          tickets={tickets}
         />
       )}
     </Fragment>

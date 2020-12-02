@@ -90,6 +90,10 @@ export const TopContent = styled.div`
       background-color: ${color.hoverGray};
     }
   }
+
+  .check-icon {
+    color: ${color.success};
+  }
 `
 
 export const TitleText = styled.p`

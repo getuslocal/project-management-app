@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
 import ProgressProvider from "../../../../../../shared/components/ProgressProvider/ProgressProvider";
@@ -20,9 +20,21 @@ import {
 import { Link } from 'react-router-dom';
 
 const ProjectBlock = ({ project, members, tickets }) => {
+  const [completedPercentage, setCompletedPercentage] = useState(0);
 
-  const completedTicketsNumber = tickets.filter(ticket => ticket.columnId === project.columnOrder[project.columnOrder.length - 1]).length;
-  const completeness = (tickets.length === 0 ? 0 : Math.floor((completedTicketsNumber / tickets.length) * 100));
+  useEffect(() => {
+    const completedPercentage = getCompletedPercentage(project, tickets);
+    setCompletedPercentage(completedPercentage);
+  }, [])
+
+  const getCompletedPercentage = (project, tickets) => {
+    const doneColumn = Object.values(project.columns).find(column => column.isDoneColumn);
+    const doneIssues = doneColumn.taskIds.length;
+
+    if (doneIssues === 0) return 0;
+
+    return Math.floor((doneIssues / tickets.length) * 100);
+  }
 
   return (
     <Container>
@@ -33,7 +45,7 @@ const ProjectBlock = ({ project, members, tickets }) => {
         </div>
         <TopRight>
           <ImageWithProgressBar>
-            <ProgressProvider valueStart={0} valueEnd={completeness}>
+            <ProgressProvider valueStart={0} valueEnd={completedPercentage}>
               {value => (
                 <CircularProgressbarWithChildren
                   value={value}
