@@ -36,6 +36,7 @@ import {
   Fieldset,
   Diviser
 } from '../Modal.style';
+import { setAlert } from '../../../../../redux/alert/alert.actions';
 
 const getColumnIdOfTicket = (columns, ticketId) => {
   const foundColumn = Object.values(columns).find(column => column.taskIds.includes(ticketId));
@@ -51,6 +52,7 @@ const IssueDetail = ({
   updateTicket,
   linkedIssues,
   updateHistory,
+  setAlert,
   ...props
 }) => {
 
@@ -100,12 +102,13 @@ const IssueDetail = ({
   // Delete Ticket
   const handleDeleteTicket = () => {
     if (isEpic) {
-      deleteEpicTicket(ticketId, childIssues)
+      deleteEpicTicket(ticketId, childIssues);
     } else {
       const columnId = getColumnIdOfTicket(projectInfo.columns, ticketId);
       deleteTicket(ticketId, columnId)
     }
-    props.history.push(props.match.url)
+    props.history.push(props.match.url);
+    setAlert(`${ticket.key} is deleted successfully.`, 'success');
   }
 
   // Close modal by removing query string of selectedIssue.
@@ -208,7 +211,7 @@ const IssueDetail = ({
                     updateTicketField={updateTicketField}
                   />)}
                 <Diviser />
-                <Dates createAt={createdAt} updatedAt={updatedAt} completedAt={completedAt}/>
+                <Dates createAt={createdAt} updatedAt={updatedAt} completedAt={completedAt} />
               </Fieldset>
             </Right>
           </Content>
@@ -226,6 +229,7 @@ IssueDetail.propTypes = {
   deleteTicket: PropTypes.func.isRequired,
   deleteEpicTicket: PropTypes.func.isRequired,
   updateHistory: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
 };
 
 IssueDetail.defaultProps = {
@@ -241,5 +245,5 @@ const mapStateToProps = (state, ownProps) => createStructuredSelector({
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { updateTicket, deleteTicket, deleteEpicTicket, updateHistory })
+  connect(mapStateToProps, { updateTicket, deleteTicket, deleteEpicTicket, updateHistory, setAlert })
 )(IssueDetail);

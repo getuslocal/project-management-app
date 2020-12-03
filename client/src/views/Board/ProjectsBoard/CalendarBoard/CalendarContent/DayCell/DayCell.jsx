@@ -29,6 +29,7 @@ const DayCell = ({ momentDate, issues, members, ...props }) => {
     const stringified = queryString.stringify({ selectedIssue: key });
     props.history.push(`${props.match.url}?${stringified}`)
   }
+  
   return (
     <Container>
       <Content

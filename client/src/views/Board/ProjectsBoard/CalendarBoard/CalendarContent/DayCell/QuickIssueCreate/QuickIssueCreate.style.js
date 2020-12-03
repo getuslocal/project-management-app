@@ -5,7 +5,7 @@ export const Container = styled.div`
   padding: 12px 12px 0;
   border-radius: 10px;
   position: absolute;
-  top: -30px;
+  top: ${props => props.isFirstWeekOfCalendar ? '0px' : '-30px'};
   left: calc(100% + 17px);
   width: 280px;
   background-color:${color.lightBlue200};

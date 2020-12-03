@@ -21,6 +21,7 @@ import Icon from '../../../../../shared/components/Icon/Icon';
 import { updateProject } from '../../../../../redux/projects/projects.actions';
 import store from '../../../../../redux/store';
 import ColumnDeleteModal from './ColumnDeleteModal/ColumnDeleteModal';
+import { setAlert } from '../../../../../redux/alert/alert.actions';
 
 const InnerList = React.memo(props => {
   return (
@@ -86,7 +87,18 @@ const Column = ({
                             <Counter>{ticketsCounter}</Counter>
                           )
                       }
-                      <Icon onClick={() => setWarningModalActive(true)} className="delete-column-btn" type="trash" size={15} />
+                      <Icon
+                        onClick={() => {
+                          if (Object.keys(columns).length <= 2) {
+                            store.dispatch(setAlert('A project must have at least 2 columns.', 'error'));
+                          } else {
+                            setWarningModalActive(true)
+                          }
+                        }}
+                        className="delete-column-btn"
+                        type="trash"
+                        size={15}
+                      />
                     </Fragment>
                   ) : (
                       <Fragment>

@@ -32,6 +32,7 @@ import {
   Diviser,
   ModalContainer
 } from '../Modal.style';
+import { setAlert } from '../../../../../redux/alert/alert.actions';
 
 const IssueCreate = ({
   setIsModalOpen,
@@ -41,7 +42,8 @@ const IssueCreate = ({
   createNewTicket,
   createNewEpicTicket,
   isEpic,
-  defaultStartDate
+  defaultStartDate,
+  setAlert
 }) => {
   const [isSelectMenuOpen, setIsSelectMenuOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
@@ -71,7 +73,8 @@ const IssueCreate = ({
     if (isEpic) {
       issueFormValues.linkedEpic = null;
       // Add epic specific states.
-      createNewEpicTicket({ ...issueFormValues, issueColor, dateRange }, childIssues)
+      createNewEpicTicket({ ...issueFormValues, issueColor, dateRange }, childIssues);
+      setAlert('A new epic is created !', 'success');
     } else {
       // Set a linked epic null.
       issueFormValues.linkedEpic = null;
@@ -82,6 +85,7 @@ const IssueCreate = ({
       issueFormValues.columnId = columnId;
       // Create a new ticket with the form values.
       createNewTicket(issueFormValues, columnId);
+      setAlert('A new issue is created !', 'success');
     }
     // Close this modal.
     setIsModalOpen(false);
@@ -167,6 +171,7 @@ IssueCreate.propTypes = {
   projects: PropTypes.object.isRequired,
   currentProjectId: PropTypes.string.isRequired,
   createNewTicket: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -175,4 +180,4 @@ const mapStateToProps = createStructuredSelector({
   currentProjectId: selectCurrentProjectId
 });
 
-export default connect(mapStateToProps, { createNewTicket, createNewEpicTicket })(IssueCreate);
+export default connect(mapStateToProps, { createNewTicket, createNewEpicTicket, setAlert })(IssueCreate);

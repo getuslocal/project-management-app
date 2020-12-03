@@ -1,10 +1,11 @@
-import React, { useState, Fragment, useRef } from 'react';
+import React, { useState, Fragment, useRef, useEffect } from 'react';
 import { IssueTypes, IssuePriorities } from '../../../../../../../shared/constants/issues';
 import Icon from '../../../../../../../shared/components/Icon/Icon';
 import SelectMenu from '../../../../../../../shared/components/SelectMenu/SelectMenu';
 import { selectUser } from '../../../../../../../redux/auth/auth.selectors';
 import { selectCurrentProject } from '../../../../../../../redux/projects/projects.selectors';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { createNewTicket } from '../../../../../../../redux/tickets/tickets.actions';
@@ -20,6 +21,7 @@ import {
   AngleDownIcon,
   Bottom
 } from './QuickIssueCreate.style'
+import { setAlert } from '../../../../../../../redux/alert/alert.actions';
 
 const QuickIssueCreate = ({
   momentDate,
@@ -27,6 +29,7 @@ const QuickIssueCreate = ({
   project,
   user,
   createNewTicket,
+  setAlert,
 }) => {
   const [isActive, setIsActive] = useState(false);
   const contentRef = useRef();
@@ -44,15 +47,34 @@ const QuickIssueCreate = ({
     setIsContentActive(false)
   });
 
+  useEffect(() => {
+    scrollIntoViewIfNeeded(contentRef.current);
+  }, []);
+
+  function scrollIntoViewIfNeeded(target) {
+    // @TODO: Figure out a better way of handling this.
+    const targetTop = 230;
+    if (target.getBoundingClientRect().top < targetTop) {
+      target.scrollIntoView();
+    }  
+    
+    if (target.getBoundingClientRect().bottom > window.innerHeight) {
+      target.scrollIntoView(false);
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    const columnId = project.columnOrder[0];
+
     issueFormValues.projectId = project._id;
     issueFormValues.dueDate = momentDate;
+    issueFormValues.columnId = columnId;
     // Add an issue to the first column of the board.
-    const columnId = project.columnOrder[0]
     createNewTicket(issueFormValues, columnId);
     // Close the content.
     setIsContentActive(false);
+    setAlert('A new issue is created !', 'success');
   }
 
   const handleChange = event => {
@@ -60,8 +82,13 @@ const QuickIssueCreate = ({
     setIssueFormValues({ ...issueFormValues, [name]: value });
   };
 
+  const checkIsFirstWeekOfCalendar = (momentDate) => {
+    const dateStart = moment().subtract(12, 'months').startOf('month').day("Sunday");
+    return moment(momentDate).isSame(dateStart, 'week');
+  }
+
   return (
-    <Container ref={contentRef} isLeftPosition={(momentDate.day() >= 4)} >
+    <Container ref={contentRef} isLeftPosition={(momentDate.day() >= 4)} isFirstWeekOfCalendar={checkIsFirstWeekOfCalendar(momentDate)}>
       <form onSubmit={handleSubmit}>
         <TextArea
           placeholder="What needs to be done?"
@@ -116,6 +143,7 @@ const renderOption = (issueType) => (
 QuickIssueCreate.propTypes = {
   user: PropTypes.object.isRequired,
   createNewTicket: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -123,4 +151,4 @@ const mapStateToProps = createStructuredSelector({
   project: selectCurrentProject,
 });
 
-export default connect(mapStateToProps, { createNewTicket })(QuickIssueCreate);
+export default connect(mapStateToProps, { createNewTicket, setAlert })(QuickIssueCreate);

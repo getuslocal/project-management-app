@@ -15,6 +15,7 @@ import useOutsideClick from '../../../../../shared/hooks/useOutsideClick';
 import Icon from '../../../../../shared/components/Icon/Icon';
 import { updateProject } from '../../../../../redux/projects/projects.actions';
 import store from '../../../../../redux/store';
+import { setAlert } from '../../../../../redux/alert/alert.actions';
 
 const ColumnCreate = ({
   closeColumn,
@@ -54,6 +55,7 @@ const ColumnCreate = ({
       columnOrder: [...columnOrder, newColumnId]
     };
     store.dispatch(updateProject(projectId, formValue));
+    store.dispatch(setAlert('A new column is created !', 'success'));
   }
 
   return (

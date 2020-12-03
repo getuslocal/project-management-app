@@ -15,6 +15,7 @@ export const Container = styled.div`
   width: ${props => `calc(100% - ${props.secondaryView ? '40px' : '220px'})`};
   padding: 0 40px;
   margin-left: auto;
+  position: relative;
 
   ${media.large`
     padding: 0 20px;

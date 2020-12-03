@@ -13,8 +13,9 @@ import Button from '../../../../../../shared/components/Button/Button'
 import SelectMenu from '../../../../../../shared/components/SelectMenu/SelectMenu'
 import Icon from '../../../../../../shared/components/Icon/Icon'
 import { updateProject } from '../../../../../../redux/projects/projects.actions'
-import store from '../../../../../../redux/store'
 import { updateTicket } from '../../../../../../redux/tickets/tickets.actions'
+import { setAlert } from '../../../../../../redux/alert/alert.actions'
+import { connect } from 'react-redux'
 
 const ColumnDeleteModal = ({
   projectId,
@@ -22,7 +23,10 @@ const ColumnDeleteModal = ({
   columns,
   columnOrder,
   closeModal,
-  tickets
+  tickets,
+  updateProject,
+  updateTicket,
+  setAlert,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const targetColumnIndex = columnOrder.indexOf(targetColumnId);
@@ -48,14 +52,16 @@ const ColumnDeleteModal = ({
       columnOrder: columnOrder.filter(columnId => columnId !== targetColumnId)
     };
 
-    store.dispatch(updateProject(projectId, formValue));
+    updateProject(projectId, formValue);
 
     // If inherit column is DONE, update tickets with completed date.
     if (columns[inheritColumn].isDoneColumn) {
       tickets.forEach(ticket => {
-        store.dispatch(updateTicket(ticket._id, { field: 'completedAt', value: new Date() }));
+        updateTicket(ticket._id, { field: 'completedAt', value: new Date() });
       });
     }
+
+    setAlert(`"${removedColumn.title}" column is deleted !`, 'success');
   }
 
   // If it is a DONE column, not allow deleting it.
@@ -122,4 +128,4 @@ ColumnDeleteModal.propTypes = {
   closeModal: PropTypes.func.isRequired,
 }
 
-export default ColumnDeleteModal
+export default connect(null, { updateProject, updateTicket, setAlert })(ColumnDeleteModal);

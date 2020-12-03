@@ -17,6 +17,7 @@ import {
 } from './KanbanBoard.style';
 import TopBar from '../TopBar/TopBar';
 import Icon from '../../../../shared/components/Icon/Icon';
+import { setAlert } from '../../../../redux/alert/alert.actions';
 
 const getTickets = (ticketMap, taskIds) => {
   let selectedTickets = [];
@@ -44,6 +45,7 @@ const KanbanBoard = ({
   updateTwoColumnsTicketsOrder,
   updateTicket,
   updateHistory,
+  setAlert
 }) => {
   const { columnOrder, columns, _id: projectId } = project;
   // console.log('KanbanBoard render')
@@ -173,7 +175,13 @@ const KanbanBoard = ({
                     <ColumnCreate closeColumn={() => setAddColumnActive(false)} project={project} />
                   ) : (
                       <NewColumnWrapper>
-                        <NewColumnButton onClick={() => setAddColumnActive(true)}>
+                        <NewColumnButton onClick={() => {
+                          if (Object.keys(columns).length >= 8) {
+                            setAlert('You cannot create more than 8 columns.', 'error')
+                          } else {
+                            setAddColumnActive(true)
+                          }
+                        }}>
                           <Icon type="plus" size={16} isSolid={true} />
                         </NewColumnButton>
                       </NewColumnWrapper>
@@ -197,6 +205,7 @@ KanbanBoard.propTypes = {
   updateTwoColumnsTicketsOrder: PropTypes.func.isRequired,
   updateTicket: PropTypes.func.isRequired,
   updateHistory: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -210,6 +219,7 @@ const mapDispatchToProps = dispatch => ({
   updateTwoColumnsTicketsOrder: (projectId, newColumn) => dispatch(updateTwoColumnsTicketsOrder(projectId, newColumn)),
   updateTicket: (ticketId, newColumn) => dispatch(updateTicket(ticketId, newColumn)),
   updateHistory: (projectId, logData) => dispatch(updateHistory(projectId, logData)),
+  setAlert: (msg, type) => dispatch(setAlert(msg, type)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(KanbanBoard);
