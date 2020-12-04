@@ -31,7 +31,7 @@ const TopNavigationBar = ({ title, tabs, baseUrl, currentTab }) => {
         <SearchBox ref={searchBoxRef} onClick={() => setIsSearchActive(true)}>
           <Icon type="search" size={14} isSolid={true} />
           <input type="text" placeholder="Search issues" value={search} onChange={e => setSearch(e.target.value)} />
-          <SearchResults search={search} isSearchActive={isSearchActive} />
+          <SearchResults search={search} isSearchActive={isSearchActive} setIsSearchActive={setIsSearchActive} />
         </SearchBox>
       </Content>
       <Tabs>

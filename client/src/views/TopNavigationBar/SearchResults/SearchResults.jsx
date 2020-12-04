@@ -15,7 +15,7 @@ import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import api from '../../../shared/utils/api';
 
-const SearchResults = ({ search, projects, isSearchActive, ticketsList, ...props }) => {
+const SearchResults = ({ search, projects, isSearchActive, ticketsList, setIsSearchActive, ...props }) => {
   const [tickets, setTickets] = useState([]);
 
   // @TODO: Figure out this way vs fetching all the tickets at a higher level.
@@ -41,7 +41,7 @@ const SearchResults = ({ search, projects, isSearchActive, ticketsList, ...props
     const formattedSearch = search.toLowerCase();
     return tickets.filter(ticket =>
       (ticket.summary.toLowerCase().includes(formattedSearch) ||
-        ticket.key.toLowerCase().includes(formattedSearch)) ||
+        projects[ticket.projectId].key.toLowerCase().includes(formattedSearch)) ||
       projects[ticket.projectId].name.toLowerCase().includes(formattedSearch))
   }
 
@@ -55,10 +55,15 @@ const SearchResults = ({ search, projects, isSearchActive, ticketsList, ...props
               <List><p>loading...</p></List>
             ) : (
                 filterTickets(tickets, search).map(ticket => (
-                  <List key={ticket._id} onClick={() => props.history.push(`/app/projects/${ticket.projectId}?selectedIssue=${ticket.key}`)}>
+                  <List key={ticket._id} onClick={(e) => {
+                    // Prevent parent onClick firing.
+                    e.stopPropagation();
+                    setIsSearchActive(false);
+                    props.history.push(`/app/projects/${ticket.projectId}?selectedIssue=${ticket.key}`);
+                  }}>
                     <Icon type={ticket.issueType.toLowerCase()} size={18} />
                     <div>
-                      <Summary><span>{ticket.key}</span>{ticket.summary}</Summary>
+                      <Summary><span>{projects[ticket.projectId].key}-{ticket.key}</span>{ticket.summary}</Summary>
                       <ProjectName>{projects[ticket.projectId].name}</ProjectName>
                     </div>
                   </List>
