@@ -90,7 +90,7 @@ const EpicList = ({
     const logData = {
       ticket: {
         id: epicId,
-        displayValue: `${epicKey} - ${summary}`,
+        displayValue: `${epicKey}: ${summary}`,
         type: IssueTypes.EPIC,
       },
       type: IssueHistoryTypes.UPDATE,

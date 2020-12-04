@@ -72,7 +72,6 @@ const IssueDetail = ({
     linkedEpic,
     dueDate
   } = ticket;
-  // console.log('IssueDetail render')
 
   const isEpic = (ticket.issueType === IssueTypes.EPIC);
   const [childIssues, setChildIssues] = useState(linkedIssues);
@@ -88,7 +87,7 @@ const IssueDetail = ({
     const logData = {
       ticket: {
         id: ticket._id,
-        displayValue: `${ticket.key} - ${ticket.summary}`,
+        displayValue: `${ticket.key}: ${ticket.summary}`,
         type: ticket.issueType,
       },
       type: type,
@@ -105,10 +104,10 @@ const IssueDetail = ({
       deleteEpicTicket(ticketId, childIssues);
     } else {
       const columnId = getColumnIdOfTicket(projectInfo.columns, ticketId);
-      deleteTicket(ticketId, columnId)
+      deleteTicket(ticketId, columnId);
     }
     props.history.push(props.match.url);
-    setAlert(`${ticket.key} is deleted successfully.`, 'success');
+    setAlert(`${projectInfo.key}-${ticket.key} is deleted successfully.`, 'success');
   }
 
   // Close modal by removing query string of selectedIssue.
@@ -124,6 +123,7 @@ const IssueDetail = ({
           <Header
             linkedEpic={linkedEpic}
             ticketKey={key}
+            projectKey={projectInfo.key}
             issueType={issueType}
             handleDeleteTicket={handleDeleteTicket}
             closeModal={closeModal}

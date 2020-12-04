@@ -19,7 +19,7 @@ import { selectEpicById } from '../../../../../../redux/tickets/tickets.selector
 import { createStructuredSelector } from 'reselect';
 import { IssueColors } from '../../.././../../../shared/constants/issues'
 
-const Ticket = ({ ticket, index, linkedEpic, members, ...props }) => {
+const Ticket = ({ ticket, index, linkedEpic, members, projectKey, ...props }) => {
   const { issueType, _id: ticketId, key, assigneeId } = ticket;
 
   // Open this ticket detail modal when clicked.
@@ -55,7 +55,7 @@ const Ticket = ({ ticket, index, linkedEpic, members, ...props }) => {
             }
             <Bottom>
               <TicketStatus className={`icon-issue-${issueType.toLowerCase()}`}>
-                {key}
+                {projectKey}-{key}
               </TicketStatus>
               {assignee && (
                 <CustomIcon

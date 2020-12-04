@@ -121,6 +121,11 @@ const projectSchema = new Schema({
       }
     }
   ],
+  seq: {
+    type: Number,
+    required: true,
+    default: 0
+  },
 }, {
   timestamps: true
 });

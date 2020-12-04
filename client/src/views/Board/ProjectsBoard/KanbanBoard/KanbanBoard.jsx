@@ -62,7 +62,7 @@ const KanbanBoard = ({
     const logData = {
       ticket: {
         id: ticketId,
-        displayValue: `${ticketData.key} - ${ticketData.summary}`,
+        displayValue: `${ticketData.key}: ${ticketData.summary}`,
         type: ticketData.issueType,
       },
       type: IssueHistoryTypes.UPDATE,

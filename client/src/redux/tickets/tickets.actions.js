@@ -65,7 +65,7 @@ export const createNewTicket = (formData, columnId) => async dispatch => {
     const logData = {
       ticket: {
         id: ticketId,
-        displayValue: `${newTicket.key} - ${newTicket.summary}`,
+        displayValue: `${newTicket.key}: ${newTicket.summary}`,
         type: newTicket.issueType,
       },
       type: IssueHistoryTypes.CREATE,
@@ -99,7 +99,7 @@ export const createNewEpicTicket = (formData, childIssues) => async dispatch => 
     const logData = {
       ticket: {
         id: epicId,
-        displayValue: `${newEpic.key} - ${newEpic.summary}`,
+        displayValue: `${newEpic.key}: ${newEpic.summary}`,
         type: newEpic.issueType,
       },
       type: IssueHistoryTypes.CREATE,
@@ -147,7 +147,7 @@ export const deleteTicket = (ticketId, columnId) => async dispatch => {
     const logData = {
       ticket: {
         id: ticketId,
-        displayValue: `${deletedTicket.key} - ${deletedTicket.summary}`,
+        displayValue: `${deletedTicket.key}: ${deletedTicket.summary}`,
         type: deletedTicket.issueType,
       },
       type: IssueHistoryTypes.DELETE,
@@ -181,7 +181,7 @@ export const deleteEpicTicket = (ticketId, childIssues) => async dispatch => {
     const logData = {
       ticket: {
         id: ticketId,
-        displayValue: `${deletedEpic.key} - ${deletedEpic.summary}`,
+        displayValue: `${deletedEpic.key}: ${deletedEpic.summary}`,
         type: deletedEpic.issueType,
       },
       type: IssueHistoryTypes.DELETE,

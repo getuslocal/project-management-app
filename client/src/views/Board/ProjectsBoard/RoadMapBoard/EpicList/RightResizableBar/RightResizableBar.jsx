@@ -58,7 +58,7 @@ const RightResizableBar = ({
       const logData = {
         ticket: {
           id: epic._id,
-          displayValue: `${epic.key} - ${epic.summary}`,
+          displayValue: `${epic.key}: ${epic.summary}`,
           type: IssueTypes.EPIC,
         },
         type: IssueHistoryTypes.UPDATE,

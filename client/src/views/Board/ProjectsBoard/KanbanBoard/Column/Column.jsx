@@ -26,13 +26,13 @@ import { setAlert } from '../../../../../redux/alert/alert.actions';
 const InnerList = React.memo(props => {
   return (
     props.tickets.map((ticket, index) =>
-      <Ticket key={ticket._id} ticket={ticket} index={index} />)
+      <Ticket key={ticket._id} ticket={ticket} index={index} projectKey={props.projectKey}/>)
   )
 });
 
 const Column = ({
   column,
-  project: { _id: projectId, columns, columnOrder },
+  project: { _id: projectId, columns, columnOrder, key: projectKey},
   tickets,
   index,
 }) => {
@@ -124,7 +124,7 @@ const Column = ({
               <Droppable droppableId={column.id} type="task">
                 {provided => (
                   <TicketsList ref={provided.innerRef} {...provided.droppableProps}>
-                    <InnerList tickets={tickets} />
+                    <InnerList tickets={tickets} projectKey={projectKey} />
                     {
                       !column.isDoneColumn && (
                         isQuickTicketActive ?

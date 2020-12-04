@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
 const Schema = mongoose.Schema;
 
 const ticketSchema = new Schema({
@@ -9,8 +8,9 @@ const ticketSchema = new Schema({
     trim: true,
   },
   key: {
-    type: String,
-    trim: true,
+    type: Number,
+    required: true,
+    default: 0
   },
   issueType: {
     type: String,
@@ -69,9 +69,6 @@ const ticketSchema = new Schema({
   dateRange: {
     type: Object
   },
-  count: {
-    type: Number,
-  },
   dueDate: {
     type: Date,
   },
@@ -86,7 +83,6 @@ const ticketSchema = new Schema({
   minimize: false
 });
 
-ticketSchema.plugin(AutoIncrement, { id: 'count_seq', inc_field: 'count' });
 const Ticket = mongoose.model('Ticket', ticketSchema);
 
 module.exports = Ticket;

@@ -15,7 +15,7 @@ import {
   BodyTableRow,
 } from './AssignedList.style';
 
-export const AssignedList = ({ projectId, tickets, currentUser, ...props }) => {
+export const AssignedList = ({ projectId, tickets, currentUser, projectKey, ...props }) => {
   const assignedTickets = tickets.filter(ticket => ticket.assigneeId === currentUser._id);
   return (
     <Container>
@@ -35,7 +35,7 @@ export const AssignedList = ({ projectId, tickets, currentUser, ...props }) => {
                 return (
                   <BodyTableRow key={ticket._id} onClick={() => props.history.push(`/app/projects/${projectId}/?selectedIssue=${ticket.key}`)}>
                     <TableData width="30"><Icon type={ticket.issueType.toLowerCase()} size={13} top={-2} /></TableData>
-                    <TableData width="120" style={{ color: '#5e6c84', fontWeight: 500 }}>{ticket.key}</TableData>
+                    <TableData width="120" style={{ color: '#5e6c84', fontWeight: 500 }}>{projectKey}-{ticket.key}</TableData>
                     <TableData width="">{ticket.summary}</TableData>
                     <TableData width="30"><Icon type={`priority-${ticket.issuePriority.toLowerCase()}`} isSolid={true} size={13} /></TableData>
                   </BodyTableRow>

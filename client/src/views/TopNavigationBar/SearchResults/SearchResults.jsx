@@ -15,7 +15,7 @@ import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import api from '../../../shared/utils/api';
 
-const SearchResults = ({ search, projects, isSearchActive, ...props }) => {
+const SearchResults = ({ search, projects, isSearchActive, ticketsList, ...props }) => {
   const [tickets, setTickets] = useState([]);
 
   // @TODO: Figure out this way vs fetching all the tickets at a higher level.
@@ -34,7 +34,7 @@ const SearchResults = ({ search, projects, isSearchActive, ...props }) => {
       }
     };
     fetchAllTickets();
-  }, []);
+  }, [ticketsList]);
 
   // Filter tickets by summary, key, or project name.
   const filterTickets = (tickets, search) => {
@@ -72,13 +72,13 @@ const SearchResults = ({ search, projects, isSearchActive, ...props }) => {
 }
 
 SearchResults.propTypes = {
-  tickets: PropTypes.array.isRequired,
+  ticketsList: PropTypes.array.isRequired,
   projects: PropTypes.object.isRequired,
   search: PropTypes.string.isRequired,
 }
 
 const mapStateToProps = createStructuredSelector({
-  tickets: selectTickets,
+  ticketsList: selectTickets,
   projects: selectProjects,
 });
 

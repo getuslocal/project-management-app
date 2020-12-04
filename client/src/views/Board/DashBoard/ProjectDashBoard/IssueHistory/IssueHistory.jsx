@@ -24,18 +24,20 @@ import {
   NoResultText
 } from './IssueHistory.style';
 
-export const IssueHistory = ({ projectId, historyList, members, tickets }) => {
+export const IssueHistory = ({ project: { _id: projectId, history, key }, members, tickets }) => {
   return (
     <Fragment>
       <Container>
-        {historyList.length > 0 ? (
+        {history.length > 0 ? (
           <ListContainer>
             {
-              historyList.map(history => {
-                const { editor, field, ticket, before, after, date, type } = history;
+              history.map(historyData => {
+                const { editor, field, ticket, before, after, date, type } = historyData;
                 const editorData = members.find(member => member._id === editor);
+                const ticketData = tickets.find(ticketData => ticketData._id === ticket.id);
+
                 return (
-                  <List key={history._id}>
+                  <List key={historyData._id}>
                     <Left>
                       <Date>{moment(date).fromNow()}</Date>
                       <CircleMark />
@@ -47,7 +49,7 @@ export const IssueHistory = ({ projectId, historyList, members, tickets }) => {
                       <MainContent>
                         <EditorName>{editorData && editorData.name}</EditorName>
                         {type === IssueHistoryTypes.UPDATE && (
-                          <span> updated <Bold>{field && field}</Bold>
+                          <span>updated <Bold>{field && field}</Bold>
                             {before && <Fragment>{' '}from{' '}<Bold>{before}</Bold></Fragment>}
                             {after && <Fragment>{' '}to{' '}<Bold>{after}</Bold></Fragment>}
                             {' '}on
@@ -58,9 +60,13 @@ export const IssueHistory = ({ projectId, historyList, members, tickets }) => {
                         {type === IssueHistoryTypes.COMMENT && "commented on"}
                         <TicketName>
                           <Icon type={ticket.type.toLowerCase()} isSolid={true} size={13.5} top={-1} />
-                          {/* @TODO: Ennable ticket link after fixing ticket key issue. */}
-                          {/* <Link to={`/app/projects/${projectId}/?selectedIssue=${'DEMO3-174'}`}>{ticket.displayValue}</Link> */}
-                          {ticket.displayValue}
+                          {
+                            ticketData ? (
+                              <Link to={`/app/projects/${projectId}/?selectedIssue=${ticketData.key}`}>{key}-{ticket.displayValue}</Link>
+                            ) : (
+                              <Fragment>{key}-{ticket.displayValue} <span className="deleted-text">(deleted)</span></Fragment>
+                            )
+                          }
                         </TicketName>
                       </MainContent>
                     </Right>
@@ -79,12 +85,11 @@ export const IssueHistory = ({ projectId, historyList, members, tickets }) => {
 }
 
 IssueHistory.propTypes = {
-  historyList: PropTypes.array.isRequired,
+  project: PropTypes.object.isRequired,
   members: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (stae, ownProps) => createStructuredSelector({
-  historyList: selectProjectHistory(ownProps.projectId),
   members: selectMembers,
 })
 

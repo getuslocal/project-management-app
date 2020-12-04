@@ -17,21 +17,23 @@ router.get('/:projectId', verify, (req, res) => {
 // @desc   Create a new ticket of the project.
 // @access Private
 router.post('/create', verify, async (req, res) => {
-  const formData = req.body;
   try {
-    //Create a new ticket
+    const formData = req.body;
+    const { projectId } = formData;
+    const project = await Project.findById(projectId);
+    const updatedSeq = ++project.seq;
+    // Update a sequence value of the project.
+    project.seq = updatedSeq;
+    // Assign a key of the ticket.
+    formData.key = updatedSeq;
+    //Create a new ticket.
     const newTicket = new Ticket(formData);
+    
+    // Save on db.
     const savedNewTicket = await newTicket.save();
-    // Get a project key name which is a base of ticket key. ex: DEMO-001.
-    const project = await Project.findById(savedNewTicket.projectId);
-    const keyBase = project.key;
-    // Create a key for the ticket based on project key name and global count number.
-    const savedNewTicketWithKey = await Ticket.findOneAndUpdate(
-      { _id: savedNewTicket._id },
-      { $set: { key: `${keyBase}-${savedNewTicket.count}` } },
-      { new: true, runValidator: true }
-    )
-    res.json(savedNewTicketWithKey)
+    await project.save();
+
+    res.json(savedNewTicket);
   } catch (err) {
     res.status(400).send(err);
   }

@@ -88,8 +88,13 @@ export const TicketName = styled.span`
 
   & > a {
     &:hover {
-    text-decoration: underline;
+      text-decoration: underline;
+      text-decoration-color: #3b73af;
     }
+  }
+
+  .deleted-text {
+    color: ${color.textDark};
   }
 `;
 

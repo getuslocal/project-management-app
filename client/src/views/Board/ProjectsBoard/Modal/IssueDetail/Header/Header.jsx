@@ -17,7 +17,8 @@ const IssueDetailHeader = ({
   ticketKey,
   issueType,
   handleDeleteTicket,
-  closeModal
+  closeModal,
+  projectKey
 }) => {
   return (
     <Container>
@@ -28,7 +29,7 @@ const IssueDetailHeader = ({
             <Slash style={{ margin: '0 6px' }}>/</Slash>
           </Fragment>
         )}
-        <Key className={`icon-issue-${issueType.toLowerCase()}`}>{ticketKey}</Key>
+        <Key className={`icon-issue-${issueType.toLowerCase()}`}>{projectKey}-{ticketKey}</Key>
       </Left>
       <Right>
         <Icon type="trash" onClick={handleDeleteTicket} size={20} />
@@ -40,10 +41,11 @@ const IssueDetailHeader = ({
 
 IssueDetailHeader.propTypes = {
   epic: PropTypes.object,
-  ticketKey: PropTypes.string.isRequired,
+  ticketKey: PropTypes.number.isRequired,
   issueType: PropTypes.string.isRequired,
   handleDeleteTicket: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  projectKey: PropTypes.string.isRequired,
 }
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({

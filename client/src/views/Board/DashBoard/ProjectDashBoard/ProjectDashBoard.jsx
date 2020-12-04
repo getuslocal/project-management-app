@@ -13,13 +13,16 @@ import {
   SectionContent,
   TitleDescription
 } from '../DashBoard.style';
+import { selectProjectById } from '../../../../redux/projects/projects.selectors';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
-const ProjectDashBoard = ({ dashboardParams, tickets }) => {
+const ProjectDashBoard = ({ projectId, tickets, project }) => {
   return (
     <Fragment>
       <Row>
         <SectionContainer width="55%">
-          <ProjectOverview projectId={dashboardParams} />
+          <ProjectOverview projectId={projectId} />
         </SectionContainer>
         <SectionContainer width="43%" noBoxShadow={true} >
           <IssueTypeBlocks tickets={tickets}/>
@@ -28,12 +31,12 @@ const ProjectDashBoard = ({ dashboardParams, tickets }) => {
       <Row>
         <SectionContainer width="49%">
           <SectionTitle>Issue Status</SectionTitle>
-          <DoughnutChart projectId={dashboardParams} tickets={tickets.filter(ticket => ticket.issueType !== IssueTypes.EPIC)} />
+          <DoughnutChart projectId={projectId} tickets={tickets.filter(ticket => ticket.issueType !== IssueTypes.EPIC)} />
         </SectionContainer>
         <SectionContainer width="49%">
           <SectionTitle>Assigned to me</SectionTitle>
           <SectionContent height="400px">
-            <AssignedList projectId={dashboardParams} tickets={tickets}/>
+            <AssignedList projectId={projectId} tickets={tickets} projectKey={project.key}/>
           </SectionContent>
         </SectionContainer>
       </Row>
@@ -41,7 +44,7 @@ const ProjectDashBoard = ({ dashboardParams, tickets }) => {
         <SectionContainer width="100%" >
           <SectionTitle>Project History<TitleDescription>Display the latest 30 histories.</TitleDescription></SectionTitle>
           <SectionContent height="450px" >
-            <IssueHistory projectId={dashboardParams} tickets={tickets} />
+            <IssueHistory project={project} tickets={tickets} />
           </SectionContent>
         </SectionContainer>
       </Row>
@@ -53,4 +56,8 @@ ProjectDashBoard.propTypes = {
 
 }
 
-export default ProjectDashBoard
+const mapStateToProps = (state, ownProps) => createStructuredSelector({
+  project: selectProjectById(ownProps.projectId),
+})
+
+export default connect(mapStateToProps, null)(ProjectDashBoard)
