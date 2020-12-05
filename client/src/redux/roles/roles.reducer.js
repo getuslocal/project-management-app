@@ -1,5 +1,6 @@
 import {
   UPDATE_WITH_PROJECT_INFO,
+  UPDATE_WITH_UPDATED_PROJECT_INFO,
   UPDATE_WITH_REMOVED_PROJECT,
   GET_ROLES
 } from './roles.types';
@@ -29,6 +30,28 @@ const rolesReducer = (state = null, action) => {
             ...state.projects.dropDownMenu,
             ...getProjectLabelAndLinkMap(payload)
           ]
+        }
+      }
+    case UPDATE_WITH_UPDATED_PROJECT_INFO:
+      return {
+        ...state,
+        dashboard: {
+          ...state.dashboard,
+          tabs: state.dashboard.tabs.map(tab => {
+            if (tab.projectId === payload.projectId) {
+              return getProjectLabelAndLinkMap(payload.updatedProject)[0]
+            }
+            return tab
+          })
+        },
+        projects: {
+          ...state.projects,
+          dropDownMenu: state.projects.dropDownMenu.map(menu => {
+            if (menu.projectId === payload.projectId) {
+              return getProjectLabelAndLinkMap(payload.updatedProject)[0]
+            }
+            return menu
+          })
         }
       }
     case UPDATE_WITH_REMOVED_PROJECT:

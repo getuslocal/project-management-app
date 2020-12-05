@@ -2,6 +2,7 @@ import { getRolesOfUser } from './roles.utils';
 import {
   GET_ROLES,
   UPDATE_WITH_PROJECT_INFO,
+  UPDATE_WITH_UPDATED_PROJECT_INFO,
   UPDATE_WITH_REMOVED_PROJECT
 } from './roles.types';
 
@@ -13,11 +14,19 @@ export const getRoles = (role) => dispatch => {
   });
 };
 
-// Update dashboard tabs and project drop down menus with projects data.
+// Update dashboard tabs and project drop down menus with project's data.
 export const updateRolesWithProjects = (data) => {
   return {
     type: UPDATE_WITH_PROJECT_INFO,
     payload: data
+  }
+}
+
+// Update dashboard tabs and project drop down menus with updated project's data.
+export const updateRolesWithUpdatedProject = (projectId, updatedProject) => {
+  return {
+    type: UPDATE_WITH_UPDATED_PROJECT_INFO,
+    payload: { projectId, updatedProject }
   }
 }
 

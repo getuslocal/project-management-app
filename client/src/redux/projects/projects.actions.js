@@ -15,7 +15,7 @@ import {
   SET_CURRENT_PROJECT_ID,
   UPDATE_HISTORY
 } from './projects.types';
-import { updateRolesWithProjects, updateRolesWithRemovedProject } from '../roles/roles.actions';
+import { updateRolesWithProjects, updateRolesWithRemovedProject, updateRolesWithUpdatedProject } from '../roles/roles.actions';
 
 // Get projects of the user who is in a certain organization.
 export const getProjectsOfUser = (orgId, userId) => async dispatch => {
@@ -59,6 +59,8 @@ export const updateProject = (projectId, formData) => async dispatch => {
         projectId
       }
     });
+    // Update roles state with project info.
+    dispatch(updateRolesWithUpdatedProject(projectId, [res.data]));
   } catch (err) {
     console.log(err)
   }
