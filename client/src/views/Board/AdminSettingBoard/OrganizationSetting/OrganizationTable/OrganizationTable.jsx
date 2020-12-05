@@ -27,7 +27,7 @@ const OrganizationTable = ({ organization, memberCount, projectCount }) => {
           </td>
           <td>Free</td>
           <td>{memberCount}</td>
-          <td>{projectCount} / 4</td>
+          <td>{projectCount} / 5</td>
           <td>
             <Button text="Delete organization" variant="danger"/>
           </td>
