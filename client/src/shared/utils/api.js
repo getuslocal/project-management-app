@@ -32,7 +32,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   res => res,
   err => {
-    console.log(err.response.data)
+    // console.log(err.response.data)
     if (err.response.data === 'Invalid Token' && err.response.status === 403) {
       store.dispatch(logout());
     }

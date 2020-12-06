@@ -62,6 +62,7 @@ const fontIconCodes = {
   [`cube`]: '\f1b2',
   [`error`]: '\f057',
   [`success`]: '\f058',
+  [`upload`]: '\f093',
 };
 
 const propTypes = {

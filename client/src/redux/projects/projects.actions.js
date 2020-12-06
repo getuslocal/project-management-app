@@ -16,6 +16,7 @@ import {
   UPDATE_HISTORY
 } from './projects.types';
 import { updateRolesWithProjects, updateRolesWithRemovedProject, updateRolesWithUpdatedProject } from '../roles/roles.actions';
+import { setAlert } from '../alert/alert.actions';
 
 // Get projects of the user who is in a certain organization.
 export const getProjectsOfUser = (orgId, userId) => async dispatch => {
@@ -52,6 +53,8 @@ export const createNewProject = (formData) => async dispatch => {
 export const updateProject = (projectId, formData) => async dispatch => {
   try {
     const res = await api.post(`/projects/update/${projectId}`, formData);
+    const projectName = res.data.name;
+
     dispatch({
       type: UPDATE_PROJECT,
       payload: {
@@ -59,10 +62,14 @@ export const updateProject = (projectId, formData) => async dispatch => {
         projectId
       }
     });
+    
     // Update roles state with project info.
     dispatch(updateRolesWithUpdatedProject(projectId, [res.data]));
+
+    // Attach an alert.
+    dispatch(setAlert(`${projectName} has been updated!`, 'success'));
   } catch (err) {
-    console.log(err)
+    dispatch(setAlert(err.response.data, 'error'));
   }
 };
 

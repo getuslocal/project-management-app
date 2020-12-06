@@ -1,13 +1,14 @@
 import {
   REGISTER_SUCCESS,
   USER_LOADED,
+  USER_UPDATED,
   LOGIN_SUCCESS,
   AUTH_ERROR,
   REGISTER_FAIL,
   LOGIN_FAIL,
   LOGOUT,
   REFRESH_ERROR_MESSAGE,
-  REMOVE_TOKEN
+  REMOVE_TOKEN,
 } from './auth.types';
 
 const INITIAL_STATE = {
@@ -27,6 +28,11 @@ const authReducer = (state = INITIAL_STATE, action) => {
         ...state,
         isAuthenticated: true,
         checkUserCredentials: true,
+        user: payload
+      };
+    case USER_UPDATED:
+      return {
+        ...state,
         user: payload
       };
     case REGISTER_SUCCESS:

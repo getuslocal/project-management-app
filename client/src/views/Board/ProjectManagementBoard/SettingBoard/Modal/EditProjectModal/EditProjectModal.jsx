@@ -21,6 +21,7 @@ import {
   ProjectIcon,
   Image
 } from './EditProjectModal.style';
+import ImageFileUpload from '../../../../../../shared/components/Form/ImageFileUpload/ImageFileUpload';
 
 const EditProjectModal = ({
   project,
@@ -43,6 +44,7 @@ const EditProjectModal = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Update project.
     updateProject(project._id, formValues);
     closeModal();
   }
@@ -60,8 +62,15 @@ const EditProjectModal = ({
             <InnerWrapper>
               <Fieldset>
                 <ProjectIcon imageUrl={projectIconUrl} >
-                  <Image src={projectIconUrl} />
-                  <Button text="Change icon" variant="secondary" type="button" />
+                  <Image src={projectIconUrl} alt="project icon" />
+                  <ImageFileUpload
+                    id="project_image"
+                    text="Change project icon"
+                    accept="image/png,image/jpeg"
+                    name="project_image"
+                    description="* File format: png or jpeg."
+                    onChange={fileUrl => setFormValues({ ...formValues, projectIconUrl: fileUrl })}
+                  />
                 </ProjectIcon>
                 <TextArea
                   label="Description"

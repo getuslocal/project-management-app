@@ -2,7 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
-const { registerValidation, loginValidation } = require('../validation');
+const { registerValidation, loginValidation, updateValidation } = require('../validation');
 const verify = require('../middleware/auth');
 
 // @route  GET users/authenticate
@@ -22,6 +22,40 @@ router.get('/:userId', verify, (req, res) => {
   User.findById(req.params.userId).select('-password')
     .then(user => res.json(user))
     .catch(err => res.status(400).json('Error: ' + err));
+})
+
+// @route  POST users/:userId
+// @desc   Update user.
+// @access Private 
+router.post('/update/:id', verify, async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const formData = req.body;
+
+    const updatedValues = {
+      name: formData.name,
+      email: formData.email,
+      position: formData.position,
+      pictureUrl: formData.pictureUrl,
+    };
+
+    // Validate username and email.
+    const { error } = updateValidation(updatedValues);
+
+    if (error) return res.status(400).send(error.details[0].message);
+
+    // Return response without password.
+    const returnFields = "_id role position name email pictureUrl orgId createdAt updatedAt";
+
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId },
+      { $set: updatedValues },
+      { new: true, runValidator: true, fields: returnFields }
+    );
+    res.json(updatedUser)
+  } catch (err) {
+    res.status(400).send(err);
+  }
 })
 
 // @route  GET users/org/:org_id

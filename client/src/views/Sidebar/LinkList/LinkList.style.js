@@ -63,6 +63,7 @@ export const SidebarSubList = styled.ul`
   max-height: 0;
   opacity: 0;
   transition: all .3s;
+  overflow: hidden;
 
   &.is-open{
     max-height: 1000px;

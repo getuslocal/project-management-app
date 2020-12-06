@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Logo,
   ResizeButton,
@@ -17,6 +17,7 @@ import { logout } from '../../redux/auth/auth.actions';
 import LinkList from './LinkList/LinkList';
 import Icon from '../../shared/components/Icon/Icon';
 import { Fragment } from 'react';
+import EditProfileModal from './EditProfileModal/EditProfileModal';
 
 const Sidebar = ({
   user: { name, role, pictureUrl },
@@ -24,6 +25,7 @@ const Sidebar = ({
   secondaryView,
   setSecondaryView
 }) => {
+  const [profileModal, setProfileModal] = useState(false);
   return (
     <Fragment>
       <Blanket onClick={setSecondaryView} className="side-bar-blanket" isActive={secondaryView} ></Blanket>
@@ -39,11 +41,11 @@ const Sidebar = ({
         </Top>
         <MainContent className="side-bar-main">
           <UserProfile>
-            <EditButton>
+            <EditButton onClick={() => setProfileModal(true)}>
               <Icon type="pen" size={11} isSolid={true} />
             </EditButton>
             <UserIcon>
-              <Icon type="user-icon" imageUrl={pictureUrl} size={47} />
+              <Icon onClick={() => setProfileModal(true)} type="user-icon" imageUrl={pictureUrl} size={47} />
             </UserIcon>
             <UserProfileOverview>
               <p className="profile-name">{name}</p>
@@ -76,6 +78,7 @@ const Sidebar = ({
           <span>Logout</span>
         </LogoutButton>
       </Container>
+      {profileModal && <EditProfileModal closeModal={() => setProfileModal(false)} />}
     </Fragment>
   )
 }

@@ -1,6 +1,7 @@
 import api from '../../shared/utils/api';
 import {
   GET_MEMBERS,
+  UPDATE_MEMBER,
 } from './members.types';
 
 export const getMembersOfProject = (members) => async dispatch => {
@@ -30,4 +31,12 @@ export const getMembersOfOrganization = (orgId) => async dispatch => {
   } catch (err) {
     console.log(err)
   }
+};
+
+// Update member
+export const updateMember = (memberId, updatedData) => dispatch => {
+  dispatch({
+    type: UPDATE_MEMBER,
+    payload: { memberId, updatedData }
+  });
 };

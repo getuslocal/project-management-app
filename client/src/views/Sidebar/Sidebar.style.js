@@ -150,6 +150,8 @@ export const UserIcon = styled.div`
   margin-bottom: 5px;
 
   & > i {
+    cursor: pointer;
+    
     &:before{
       border: 2px solid rgba(255, 255, 255, 0.9);
     }

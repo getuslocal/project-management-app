@@ -1,4 +1,6 @@
 import api from '../../shared/utils/api';
+import { setAlert } from '../alert/alert.actions';
+import { updateMember } from '../members/members.actions';
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -9,6 +11,7 @@ import {
   LOGOUT,
   REMOVE_TOKEN,
   REFRESH_ERROR_MESSAGE,
+  USER_UPDATED,
 } from './auth.types';
 
 // Load User
@@ -69,3 +72,20 @@ export const removeToken = () => ({ type: REMOVE_TOKEN });
 
 // Refresh error message
 export const refreshErrorMessage = () => ({ type: REFRESH_ERROR_MESSAGE });
+
+// Update User
+export const updateUser = (userId, formData) => async dispatch => {
+  try {
+    const res = await api.post(`/users/update/${userId}`, formData);
+
+    dispatch({ type: USER_UPDATED, payload: res.data });
+
+    // Update the user in member state.
+    dispatch(updateMember(userId, res.data));
+
+    // Attach an alert.
+    dispatch(setAlert('Your profile has been updated!', 'success'));
+  } catch (err) {
+    dispatch(setAlert(err.response.data, 'error'));
+  }
+};
