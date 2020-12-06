@@ -17,6 +17,7 @@ import api from '../../../shared/utils/api';
 
 const SearchResults = ({ search, projects, isSearchActive, ticketsList, setIsSearchActive, ...props }) => {
   const [tickets, setTickets] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // @TODO: Figure out this way vs fetching all the tickets at a higher level.
   useEffect(() => {
@@ -29,6 +30,7 @@ const SearchResults = ({ search, projects, isSearchActive, ticketsList, setIsSea
           ticketsList = [...ticketsList, ...res.data]
         };
         setTickets(ticketsList);
+        setIsLoading(false);
       } catch (err) {
         console.log(err)
       }
@@ -47,12 +49,13 @@ const SearchResults = ({ search, projects, isSearchActive, ticketsList, setIsSea
 
   return (
     isSearchActive &&
+    Object.keys(projects).length > 0 &&
     search.length > 0 && (
       <Container>
         <ul>
           {
-            !tickets.length > 0 ? (
-              <List><p>loading...</p></List>
+            tickets.length === 0 ? (
+            <List><p>{isLoading ? 'loading...' : 'No tickets found.'}</p></List>
             ) : (
                 filterTickets(tickets, search).map(ticket => (
                   <List key={ticket._id} onClick={(e) => {

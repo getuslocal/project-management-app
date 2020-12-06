@@ -19,3 +19,14 @@ export const NameCell = styled.td`
     }
   }
 `;
+
+export const NoProjectsContent = styled.div`
+  text-align: center;
+  padding: 20px 0;
+
+  p {
+    font-size: 16px;
+    font-weight: 500;
+    color: ${color.textMedium};
+  }
+`

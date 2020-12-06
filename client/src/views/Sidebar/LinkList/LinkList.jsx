@@ -11,10 +11,22 @@ import {
   SidebarSubList
 } from './LinkList.style';
 
-const LinkList = ({ id, linkUrl, icon, title, dropDownMenu, match, projects, closeModal}) => {
+const LinkList = ({ id, linkUrl, icon, title, dropDownMenu, match, projects, closeModal }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { board } = match.params;
   const hasDropDownMenu = (dropDownMenu.length > 0);
+  const isProjectLink = (id === 'projects');
+
+  if (isProjectLink && Object.keys(projects).length === 0) {
+    return (
+      <SidebarList key={id}  >
+        <span className={(board === linkUrl) ? 'active' : ''}>
+          <Icon type={icon} size={16} isSolid={true} />
+          Projects
+        </span>
+      </SidebarList>
+    )
+  }
 
   return (
     <SidebarList
@@ -45,7 +57,7 @@ const LinkList = ({ id, linkUrl, icon, title, dropDownMenu, match, projects, clo
           {dropDownMenu.map((menu, index) => (
             <li key={index}>
               <Link to={`/app/${linkUrl}${menu.linkUrl}`} onClick={closeModal}>
-                {id === 'projects' && (
+                {isProjectLink && (
                   <Icon
                     type="project-icon"
                     className='project-icon'

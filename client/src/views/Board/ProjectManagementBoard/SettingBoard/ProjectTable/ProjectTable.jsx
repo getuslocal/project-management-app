@@ -9,10 +9,20 @@ import Table from '../../../../../shared/components/Table/Table'
 import Icon from '../../../../../shared/components/Icon/Icon';
 import SelectButton from '../SelectButton/SelectButton';
 import {
-  NameCell
+  NameCell,
+  NoProjectsContent
 } from './ProjectTable.style';
 
 const ProjectTable = ({ projectList, memberList, searchFilter }) => {
+
+  if(Object.keys(projectList).length === 0) {
+    return (
+      <NoProjectsContent>
+        <p>No projects created</p>
+      </NoProjectsContent>
+    )
+  }
+
   return (
     <Table>
       <Table.Head>
