@@ -33,31 +33,27 @@ import {
   RemoveButton,
   SelectItem
 } from './MemberModal.style';
+import { setAlert } from '../../../../../../redux/alert/alert.actions';
 
-const MemberModal = ({ project, memberList, updateProject, ...props }) => {
+const MemberModal = ({ project, memberList, updateProject, setAlert, ...props }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { _id: projectId, members: projectMembers, owner: projectLead } = project;
+  const { _id: projectId, members: projectMembers, owner: projectLead, name: projectName } = project;
   const isMinimumLength = (projectMembers.length === 1);
 
-  const addMember = (memberId) => {
-    const updatedMemberList = [...projectMembers, memberId];
-    updateMembers(updatedMemberList)
+  const addMember = (newMemberId, newMemberName) => {
+    const updatedMemberList = [...projectMembers, newMemberId];
+    // Update project with a new member.
+    updateProject(projectId, { members: updatedMemberList });
+    // Set a success alert message.
+    setAlert(`${newMemberName} has been added to ${projectName}!`, 'success');
   }
 
-  const removeMember = (memberId) => {
-    const updatedMemberList = projectMembers.filter(id => id !== memberId);
-    updateMembers(updatedMemberList)
-  }
-
-  const updateMembers = (updatedMemberList) => {
-    const formValue = {
-      members: updatedMemberList
-    }
-    updateProject(projectId, formValue)
-  }
-
-  const closeModal = () => {
-    props.history.push(props.match.url)
+  const removeMember = (removedMemberId, removedMemberName) => {
+    const updatedMemberList = projectMembers.filter(id => id !== removedMemberId);
+    // Update project with a new member.
+    updateProject(projectId, { members: updatedMemberList });
+    // Set a success alert message.
+    setAlert(`${removedMemberName} has been removed from ${projectName}!`, 'success');
   }
 
   return (
@@ -68,7 +64,6 @@ const MemberModal = ({ project, memberList, updateProject, ...props }) => {
           <Description>
             Add or remove project members. If you remove a member, the member will lose access to the project.<br />
             <span>&#42;</span> A project must have at least one member.<br />
-            {/* <span>&#42;</span> Admin can access to every project even if removed as a project member. */}
           </Description>
           <InnerWrapper>
             <Table>
@@ -106,7 +101,7 @@ const MemberModal = ({ project, memberList, updateProject, ...props }) => {
                           </TableData>
                           <TableData>
                             {
-                              !isMinimumLength && <RemoveButton onClick={() => removeMember(projectMember)}>Remove</RemoveButton>
+                              !isMinimumLength && <RemoveButton onClick={() => removeMember(projectMember, memberData.name)}>Remove</RemoveButton>
                             }
                           </TableData>
                         </BodyRow>
@@ -116,19 +111,19 @@ const MemberModal = ({ project, memberList, updateProject, ...props }) => {
                 }
               </tbody>
             </Table>
-            <Margin top={16} bottom={16} style={{position: 'relative'}}>
-              <NewUserButton text="+ Add user" onClick={() => setIsMenuOpen(true)} />
+            <Margin top={16} bottom={16} style={{ position: 'relative' }}>
+              <Button text="+ Add user" variant="primary" onClick={() => setIsMenuOpen(true)} />
               <SelectMenu
                 isActive={isMenuOpen}
                 setIsMenuOpen={setIsMenuOpen}
-                onChange={(option) => addMember(option.key)}
+                onChange={({ value: member }) => addMember(member._id, member.name)}
                 options={memberOptions(projectMembers, memberList, projectLead)}
                 renderValue={({ value: member }) => renderValue(member)}
               />
             </Margin>
           </InnerWrapper>
           <ButtonsContainer>
-            <TextButton onClick={closeModal}>Back</TextButton>
+            <TextButton onClick={() => props.history.push(props.match.url)}>Back</TextButton>
           </ButtonsContainer>
         </Content>
       </Container>
@@ -162,4 +157,4 @@ const mapStateToProps = (state, ownProps) => createStructuredSelector({
   memberList: selectMembers
 });
 
-export default connect(mapStateToProps, { updateProject })(MemberModal);
+export default connect(mapStateToProps, { updateProject, setAlert })(MemberModal);

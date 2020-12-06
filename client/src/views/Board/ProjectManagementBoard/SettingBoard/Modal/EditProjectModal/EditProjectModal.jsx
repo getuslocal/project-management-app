@@ -5,8 +5,7 @@ import { createStructuredSelector } from 'reselect';
 import TextArea from '../../../../../../shared/components/Form/TextArea/TextArea';
 import { selectProjectById } from '../../../../../../redux/projects/projects.selectors';
 import Category from '../Category/Category';
-import { updateProject } from '../../../../../../redux/projects/projects.actions';
-import Button from '../../../../../../shared/components/Button/Button';
+import { updateProjectAndRoles } from '../../../../../../redux/projects/projects.actions';
 import Input from '../../../../../../shared/components/Form/Input/Input';
 import {
   Container,
@@ -22,10 +21,12 @@ import {
   Image
 } from './EditProjectModal.style';
 import ImageFileUpload from '../../../../../../shared/components/Form/ImageFileUpload/ImageFileUpload';
+import { setAlert } from '../../../../../../redux/alert/alert.actions';
 
 const EditProjectModal = ({
   project,
-  updateProject,
+  updateProjectAndRoles,
+  setAlert,
   ...props
 }) => {
   const [formValues, setFormValues] = useState({
@@ -44,9 +45,12 @@ const EditProjectModal = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Update project.
-    updateProject(project._id, formValues);
+    // Update project and roles state.
+    updateProjectAndRoles(project._id, formValues);
+    // Close modal.
     closeModal();
+    // Attach an alert.
+    setAlert(`${project.name} has been updated!`, 'success');
   }
 
   const closeModal = () => {
@@ -125,11 +129,11 @@ const EditProjectModal = ({
 
 EditProjectModal.propTypes = {
   project: PropTypes.object.isRequired,
-  updateProject: PropTypes.func.isRequired,
+  updateProjectAndRoles: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
   project: selectProjectById(ownProps.projectId)
 });
 
-export default connect(mapStateToProps, { updateProject })(EditProjectModal);
+export default connect(mapStateToProps, { updateProjectAndRoles, setAlert })(EditProjectModal);

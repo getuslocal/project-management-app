@@ -58,8 +58,6 @@ export const createNewProject = (formData) => async dispatch => {
 export const updateProject = (projectId, formData) => async dispatch => {
   try {
     const res = await api.post(`/projects/update/${projectId}`, formData);
-    const projectName = res.data.name;
-
     dispatch({
       type: UPDATE_PROJECT,
       payload: {
@@ -67,12 +65,24 @@ export const updateProject = (projectId, formData) => async dispatch => {
         projectId
       }
     });
+  } catch (err) {
+    dispatch(setAlert(err.response.data, 'error'));
+  }
+};
 
+// Update project and update roles.
+export const updateProjectAndRoles = (projectId, formData) => async dispatch => {
+  try {
+    const res = await api.post(`/projects/update/${projectId}`, formData);
+    dispatch({
+      type: UPDATE_PROJECT,
+      payload: {
+        updatedProject: res.data,
+        projectId
+      }
+    });
     // Update roles state with project info.
     dispatch(updateRolesWithUpdatedProject(projectId, [res.data]));
-
-    // Attach an alert.
-    dispatch(setAlert(`${projectName} has been updated!`, 'success'));
   } catch (err) {
     dispatch(setAlert(err.response.data, 'error'));
   }
