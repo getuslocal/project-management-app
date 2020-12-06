@@ -21,6 +21,7 @@ const ProjectsBoard = ({
   // Get a value from a current url query string.
   const parsed = queryString.parse(props.location.search);
   const { selectedIssue } = parsed;
+
   return (
     <Fragment>
       <TopNavigationBar title={name} tabs={tabs} baseUrl={projectUri} currentTab={currentTab} />

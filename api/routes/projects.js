@@ -3,11 +3,11 @@ const Project = require('../models/project.model');
 const User = require('../models/user.model');
 const verify = require('../middleware/auth');
 
-// @route  GET projects/:org_id/:user_id
-// @desc   Get projects of the user who is in a certain organization.
+// @route  GET projects/:org_id/
+// @desc   Get projects of the organization.
 // @access Private 
-router.get('/:org_id/:user_id', verify, (req, res) => {
-  Project.find({ orgId: req.params.org_id, members: req.params.user_id })
+router.get('/:org_id/', verify, (req, res) => {
+  Project.find({ orgId: req.params.org_id })
     .then(projects => res.json(projects))
     .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -16,7 +16,7 @@ router.get('/:org_id/:user_id', verify, (req, res) => {
 // @desc   Create a new project. 
 // @access Private 
 router.post('/create', verify, async (req, res) => {
-  const { key, name,  orgId, description, category,  projectIconUrl } = req.body;
+  const { key, name, orgId, description, category, projectIconUrl } = req.body;
   // Assign the current user to a member list.
   const user = await User.findById(req.user._id).select('-password');
   //Create a new project
@@ -42,7 +42,7 @@ router.post('/create', verify, async (req, res) => {
 // @access Private 
 router.post('/update/:id', verify, async (req, res) => {
   const projectId = req.params.id;
-  const updatedValues= req.body;
+  const updatedValues = req.body;
   try {
     const updatedProject = await Project.findOneAndUpdate(
       { _id: projectId },

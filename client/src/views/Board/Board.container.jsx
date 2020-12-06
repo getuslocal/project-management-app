@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getOrganization } from '../../redux/organizations/organizations.actions';
 import { getRoles } from '../../redux/roles/roles.actions';
-import { getProjectsOfUser } from '../../redux/projects/projects.actions';
+import { getProjects } from '../../redux/projects/projects.actions';
 import { getMembersOfOrganization } from '../../redux/members/members.actions';
 import Board from './Board';
 import PropTypes from 'prop-types';
@@ -15,7 +15,7 @@ const BoardContainer = ({
   user,
   getRoles,
   getOrganization,
-  getProjectsOfUser,
+  getProjects,
   getMembersOfOrganization,
   ...props
 }) => {
@@ -28,8 +28,8 @@ const BoardContainer = ({
       await getRoles(user.role);
       // Get organization data of the user.
       await getOrganization(user.orgId);
-      // Get projects of the user in the organization.
-      await getProjectsOfUser(user.orgId, user._id);
+      // Get all the projects of the organization.
+      await getProjects(user.orgId);
       // Get all the members of the organization.
       await getMembersOfOrganization(user.orgId);
 
@@ -57,8 +57,8 @@ BoardContainer.propTypes = {
   roles: PropTypes.object,
   user: PropTypes.object.isRequired,
   getRoles: PropTypes.func.isRequired,
+  getProjects: PropTypes.func.isRequired,
   getOrganization: PropTypes.func.isRequired,
-  getProjectsOfUser: PropTypes.func.isRequired,
   getMembersOfOrganization: PropTypes.func.isRequired,
 };
 
@@ -70,7 +70,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = dispatch => ({
   getRoles: (userRole) => dispatch(getRoles(userRole)),
   getOrganization: (userId) => dispatch(getOrganization(userId)),
-  getProjectsOfUser: (orgId, userId) => dispatch(getProjectsOfUser(orgId, userId)),
+  getProjects: (orgId) => dispatch(getProjects(orgId)),
   getMembersOfOrganization: (orgId) => dispatch(getMembersOfOrganization(orgId)),
 });
 

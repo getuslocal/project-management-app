@@ -49,6 +49,9 @@ const buttonVariants = {
   danger: colored,
   secondary: css`
     background: ${color.secondary};
+    &:hover {
+      background: ${color.backgroundLight};
+    }
   `,
   text: css`
     ${textButtonStyle}

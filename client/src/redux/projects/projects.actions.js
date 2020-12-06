@@ -15,13 +15,18 @@ import {
   SET_CURRENT_PROJECT_ID,
   UPDATE_HISTORY
 } from './projects.types';
-import { updateRolesWithProjects, updateRolesWithRemovedProject, updateRolesWithUpdatedProject } from '../roles/roles.actions';
+import {
+  updateRolesWithProjects,
+  updateRolesWithRemovedProject,
+  updateRolesWithUpdatedProject
+} from '../roles/roles.actions';
 import { setAlert } from '../alert/alert.actions';
 
-// Get projects of the user who is in a certain organization.
-export const getProjectsOfUser = (orgId, userId) => async dispatch => {
+
+// Get projects.
+export const getProjects = (orgId) => async dispatch => {
   try {
-    const res = await api.get(`/projects/${orgId}/${userId}`);
+    const res = await api.get(`/projects/${orgId}`);
     dispatch({
       type: GET_PROJECTS,
       payload: res.data
@@ -62,7 +67,7 @@ export const updateProject = (projectId, formData) => async dispatch => {
         projectId
       }
     });
-    
+
     // Update roles state with project info.
     dispatch(updateRolesWithUpdatedProject(projectId, [res.data]));
 
