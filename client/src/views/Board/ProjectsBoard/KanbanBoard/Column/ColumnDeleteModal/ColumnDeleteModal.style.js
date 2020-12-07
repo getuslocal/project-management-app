@@ -1,11 +1,6 @@
 import styled, { css } from 'styled-components'
 import { color } from '../../../../../../shared/utils/styles'
 
-export const Container = styled.div`
-  padding: 20px 30px;
-  min-width: 500px;
-  width: 500px;
-`
 export const Title = styled.p`
   font-size: 19px;
   line-height: 1.5;
@@ -24,14 +19,6 @@ export const Description = styled.p`
   margin-bottom: 10px;
 `
 
-export const Options = styled.div`
-  text-align: right;
-  & > button {
-    &:first-child{
-      margin-right: 10px;
-    }
-  }
-`
 const firstColumnStyle = css`
   color: rgb(66, 82, 110) !important;
   background-color: rgb(223, 225, 230) !important;

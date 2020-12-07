@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
-import Modal from '../../../shared/components/Modal/Modal';
+import FormModal from '../../../shared/components/Modal/FormModal/FormModal';
 import {
-  Container,
-  Title,
-  Options,
   UserIcon,
 } from './EditProfileModal.style';
 import Icon from '../../../shared/components/Icon/Icon';
@@ -40,64 +37,63 @@ const EditProfileModal = ({ closeModal, currentUser, updateUser }) => {
   }
 
   return (
-    <Modal>
-      <Container>
-        <Title>Edit profile</Title>
-        <form onSubmit={handleSubmit}>
-          <UserIcon>
-            <Icon type="user-icon" imageUrl={pictureUrl} size={100} />
-            <ImageFileUpload
-              id="profile_image"
-              text="Change profile photo"
-              accept="image/png,image/jpeg"
-              name="profile_image"
-              description="* File format: png or jpeg."
-              onChange={fileUrl => setFormValues({ ...formValues, pictureUrl: fileUrl })}
-            />
-          </UserIcon>
-          <Input
-            label="Name*"
-            type="text"
-            name="name"
-            height={36}
-            maxLength={30}
-            value={name}
-            onChange={onChange}
-            required
-          />
-          <Input
-            label="Email*"
-            type="text"
-            name="email"
-            height={36}
-            maxLength={40}
-            value={email}
-            onChange={onChange}
-            required
-          />
-          <Input
-            label="Position*"
-            type="text"
-            name="position"
-            height={36}
-            maxLength={40}
-            value={position}
-            onChange={onChange}
-            required
-          />
-          <Options>
-            <Button text="Save changes" variant="primary" type="submit" />
-            <Button text="Cancel" variant="secondary" type="button" onClick={closeModal} />
-          </Options>
-        </form>
-      </Container>
-    </Modal>
+    <FormModal
+      title="Edit profile"
+      modalWidth={500}
+      renderOptions={() => renderOptions(handleSubmit, closeModal)}
+      handleSubmit={handleSubmit}
+    >
+      <UserIcon>
+        <Icon type="user-icon" imageUrl={pictureUrl} size={100} />
+        <ImageFileUpload
+          id="profile_image"
+          text="Change profile photo"
+          accept="image/png,image/jpeg"
+          name="profile_image"
+          description="* File format: png or jpeg."
+          onChange={fileUrl => setFormValues({ ...formValues, pictureUrl: fileUrl })}
+        />
+      </UserIcon>
+      <Input
+        label="Name*"
+        type="text"
+        name="name"
+        height={36}
+        maxLength={30}
+        value={name}
+        onChange={onChange}
+        required
+      />
+      <Input
+        label="Email*"
+        type="text"
+        name="email"
+        height={36}
+        maxLength={40}
+        value={email}
+        onChange={onChange}
+        required
+      />
+      <Input
+        label="Position*"
+        type="text"
+        name="position"
+        height={36}
+        maxLength={40}
+        value={position}
+        onChange={onChange}
+        required
+      />
+    </FormModal>
   )
 }
 
-EditProfileModal.propTypes = {
-
-}
+const renderOptions = (closeModal) => (
+  <Fragment>
+    <Button text="Save changes" variant="primary" type="submit" />
+    <Button text="Cancel" variant="secondary" type="button" onClick={closeModal} />
+  </Fragment>
+);
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectUser

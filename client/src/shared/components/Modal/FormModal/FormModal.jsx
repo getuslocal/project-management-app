@@ -8,9 +8,9 @@ import {
   Content,
   Title,
   Options,
-} from './Modal.style';
+} from '../Modal.style';
 
-const Modal = ({ title, modalWidth, children, renderOptions }) => {
+const FormModal = ({ title, modalWidth, handleSubmit, children, renderOptions }) => {
   return (
     <ModalContainer>
       <Blanket />
@@ -18,10 +18,12 @@ const Modal = ({ title, modalWidth, children, renderOptions }) => {
         <Wrapper>
           <Content modalWidth={modalWidth} >
             {title && <Title>{title}</Title>}
-            {children}
-            <Options>
-              {renderOptions()}
-            </Options>
+            <form onSubmit={handleSubmit}>
+              {children}
+              <Options>
+                {renderOptions()}
+              </Options>
+            </form>
           </Content>
         </Wrapper>
       </Container>
@@ -29,11 +31,8 @@ const Modal = ({ title, modalWidth, children, renderOptions }) => {
   )
 }
 
-Modal.propTypes = {
-  title: PropTypes.string,
-  modalWidth: PropTypes.number,
-  children: PropTypes.array.isRequired,
-  renderOptions: PropTypes.func.isRequired,
+FormModal.propTypes = {
+  closeModal: PropTypes.func,
 }
 
-export default Modal
+export default FormModal

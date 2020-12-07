@@ -1,8 +1,4 @@
-const rolesList = {
-  ADMIN: 'Admin',
-  PROJECTMANAGER: 'Project Manager',
-  DEVELOPER: 'Developer',
-}
+import {roleNames} from '../../shared/constants/roles';
 
 const roles = {
   dashboard: {
@@ -77,20 +73,20 @@ const roles = {
 
 export const getRolesOfUser = (role) => {
   switch (role) {
-    case rolesList.ADMIN:
+    case roleNames.ADMIN:
       return {
         dashboard: roles.dashboard,
         projects: roles.projects,
         projectManagement: roles.projectManagement,
         adminSetting: roles.adminSetting,
       };
-    case rolesList.PROJECTMANAGER:
+    case roleNames.PROJECTMANAGER:
       return {
         dashboard: roles.dashboard,
         projects: roles.projects,
         projectMembers: roles.projectMembers,
       };
-    case rolesList.DEVELOPER:
+    case roleNames.MEMBER:
       return {
         dashboard: roles.dashboard,
         projects: roles.projects,

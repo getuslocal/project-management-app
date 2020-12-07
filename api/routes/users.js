@@ -76,7 +76,8 @@ router.post('/register', async (req, res) => {
   const { error } = registerValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const role = "Developer"
+  // @TODO: Remove this line later. Just temp code.
+  const role = "Member"
   const { name, email, password } = req.body;
 
   //Check if the user already exists
