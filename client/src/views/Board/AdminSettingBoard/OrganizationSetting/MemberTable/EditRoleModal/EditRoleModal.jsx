@@ -5,17 +5,37 @@ import Button from '../../../../../../shared/components/Button/Button'
 import { Fragment } from 'react'
 import DropDownMemu from '../../../../../../shared/components/DropDownMenu/DropDownMenu'
 import { roleNames } from '../../../../../../shared/constants/roles'
-import { updateUser } from '../../../../../../redux/auth/auth.actions'
+import { updateUserRole, updateCurrentUserRole } from '../../../../../../redux/auth/auth.actions'
 import store from '../../../../../../redux/store'
 import { Description } from './EditRoleModal.style'
 import RolesExplanation from './RolesExplanation/RolesExplanation'
+import { createStructuredSelector } from 'reselect'
+import { connect } from 'react-redux'
+import { selectUser } from '../../../../../../redux/auth/auth.selectors'
+import { compose } from 'redux'
+import { withRouter } from 'react-router-dom'
 
-const EditRoleModal = ({ member, closeModal }) => {
+const EditRoleModal = ({ member, closeModal, currentUser: { _id: currentUserId }, ...props }) => {
   const [role, setRole] = useState(member.role);
 
   const handleSubmit = () => {
+
+    // If there's no changes, close and return;
+    if (role === member.role) {
+      closeModal();
+      return
+    }
+
+    if (member._id === currentUserId) {
+      // Update user with a new role.
+      store.dispatch(updateCurrentUserRole(member._id, role));
+      // Go back home.
+      props.history.push('/app/dashboard');
+      return
+    }
+
     // Update user with a new role.
-    // store.dispatch(updateUser(member._id, { role: role }));
+    store.dispatch(updateUserRole(member._id, role));
     // Close modal.
     closeModal();
   }
@@ -55,7 +75,14 @@ const getOptions = (currentItem) => (
 );
 
 EditRoleModal.propTypes = {
-
+  currentUser: PropTypes.object.isRequired,
 }
 
-export default EditRoleModal
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectUser
+})
+
+export default compose(
+  withRouter,
+  connect(mapStateToProps, null)
+)(EditRoleModal);

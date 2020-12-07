@@ -40,7 +40,7 @@ const EditProfileModal = ({ closeModal, currentUser, updateUser }) => {
     <FormModal
       title="Edit profile"
       modalWidth={500}
-      renderOptions={() => renderOptions(handleSubmit, closeModal)}
+      renderOptions={() => renderOptions(closeModal)}
       handleSubmit={handleSubmit}
     >
       <UserIcon>

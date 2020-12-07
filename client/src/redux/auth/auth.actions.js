@@ -1,6 +1,7 @@
 import api from '../../shared/utils/api';
 import { setAlert } from '../alert/alert.actions';
 import { updateMember } from '../members/members.actions';
+import { updateRolesWithNewRole } from '../roles/roles.actions';
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -85,6 +86,45 @@ export const updateUser = (userId, formData) => async dispatch => {
 
     // Attach an alert.
     dispatch(setAlert('Your profile has been updated!', 'success'));
+  } catch (err) {
+    dispatch(setAlert(err.response.data, 'error'));
+  }
+};
+
+// Update User role.
+export const updateUserRole = (userId, newRole) => async dispatch => {
+  try {
+    const res = await api.post(`/users/update/role/${userId}`, { role: newRole });
+
+    // Update the user in member state.
+    dispatch(updateMember(userId, res.data));
+
+    const userName = res.data.name;
+
+    // Attach an alert.
+    dispatch(setAlert(`${userName}'s role has been updated to ${newRole}`, 'success'));
+  } catch (err) {
+    dispatch(setAlert(err.response.data, 'error'));
+  }
+};
+
+// Update User role.
+export const updateCurrentUserRole = (userId, newRole) => async dispatch => {
+  try {
+    const res = await api.post(`/users/update/role/${userId}`, { role: newRole });
+    const userName = res.data.name;
+
+    // Update the user in auth state.
+    dispatch({ type: USER_UPDATED, payload: res.data });
+
+    // Update the user in member state.
+    dispatch(updateMember(userId, res.data));
+
+    // Update the roles.
+    dispatch(updateRolesWithNewRole(newRole));
+
+    // Attach an alert.
+    dispatch(setAlert(`${userName}'s role has been updated to ${newRole}`, 'success'));
   } catch (err) {
     dispatch(setAlert(err.response.data, 'error'));
   }

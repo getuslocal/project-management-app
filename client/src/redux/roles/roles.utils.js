@@ -84,7 +84,7 @@ export const getRolesOfUser = (role) => {
       return {
         dashboard: roles.dashboard,
         projects: roles.projects,
-        projectMembers: roles.projectMembers,
+        projectManagement: roles.projectManagement,
       };
     case roleNames.MEMBER:
       return {

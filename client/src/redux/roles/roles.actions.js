@@ -1,6 +1,7 @@
 import { getRolesOfUser } from './roles.utils';
 import {
   GET_ROLES,
+  UPDATE_ROLES,
   UPDATE_WITH_PROJECT_INFO,
   UPDATE_WITH_UPDATED_PROJECT_INFO,
   UPDATE_WITH_REMOVED_PROJECT
@@ -37,3 +38,10 @@ export const updateRolesWithRemovedProject = (projectId) => {
     payload: projectId
   }
 }
+
+export const updateRolesWithNewRole = (newRole) => dispatch => {
+  dispatch({
+    type: UPDATE_ROLES,
+    payload: newRole
+  });
+};

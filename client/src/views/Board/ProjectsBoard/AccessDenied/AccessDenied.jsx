@@ -11,7 +11,6 @@ import {
 import Button from '../../../../shared/components/Button/Button';
 
 const AccessDenied = ({ ...props }) => {
-  console.log(props)
   return (
     <Container>
       <InnerContainer>

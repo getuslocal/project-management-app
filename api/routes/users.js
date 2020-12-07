@@ -24,7 +24,7 @@ router.get('/:userId', verify, (req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 })
 
-// @route  POST users/:userId
+// @route  POST users/update/:userId
 // @desc   Update user.
 // @access Private 
 router.post('/update/:id', verify, async (req, res) => {
@@ -53,6 +53,28 @@ router.post('/update/:id', verify, async (req, res) => {
       { new: true, runValidator: true, fields: returnFields }
     );
     res.json(updatedUser)
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+// @route  POST users/update/role/:userId
+// @desc   Update user role.
+// @access Private 
+router.post('/update/role/:id', verify, async (req, res) => {
+  try {
+    const roles = ['Admin', 'Project Manager', 'Member'];
+    const newRole = req.body.role;
+    // If a new role is not one of the valid roles, return error.
+    if (!roles.includes(newRole)) return res.status(400).send('Not valid role');
+
+    const user = await User.findById(req.params.id).select('-password');
+
+    user.role = newRole;
+
+    const savedUser = await user.save();
+
+    res.json(savedUser);
   } catch (err) {
     res.status(400).send(err);
   }
