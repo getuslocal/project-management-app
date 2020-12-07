@@ -16,8 +16,15 @@ import {
 import { selectProjectById } from '../../../../redux/projects/projects.selectors';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { Redirect } from 'react-router-dom';
 
 const ProjectDashBoard = ({ projectId, tickets, project }) => {
+
+  // If the project does not exist, redirect back.
+  if(project === null) {
+    return <Redirect to="/app/dashboard"/>
+  }
+
   return (
     <Fragment>
       <Row>

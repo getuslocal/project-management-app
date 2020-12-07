@@ -44,8 +44,8 @@ export const Wrapper = styled.div`
 
 export const Content = styled.div`
   padding: 20px 30px;
-  min-width: ${props => props.modalWidth ? props.modalWidth : '500'}px;
-  width: ${props => props.modalWidth ? props.modalWidth : '500'}px;
+  min-width: ${props => props.modalWidth}px;
+  width: ${props => props.modalWidth}px;
 `
 
 export const Title = styled.p`

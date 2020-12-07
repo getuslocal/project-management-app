@@ -8,6 +8,7 @@ import { selectProjectById } from '../../../redux/projects/projects.selectors';
 import Spinner from '../../../shared/components/WithSpinner/Spinner';
 import { selectUser } from '../../../redux/auth/auth.selectors';
 import AccessDenied from './AccessDenied/AccessDenied';
+import NotFound from '../../NotFound/NotFound';
 
 const ProjectsBoardContainer = ({
   project,
@@ -18,10 +19,12 @@ const ProjectsBoardContainer = ({
 }) => {
   const [isLoading, setIsLoading] = useState(true);
 
-  // Check if the current user is a member of the project.
-  const isMember = project.members.includes(currentUserId);
+  // Check if the project is loaded. Returns false if it's been deleted by someone.
+  const isProjectLoaded = (project !== null);
 
   useEffect(() => {
+    if(!isProjectLoaded) return;
+
     const fetchTickets = async () => {
       await getTicketsByProjectId(project._id);
       await setCurrentProjectId(project._id);
@@ -29,6 +32,13 @@ const ProjectsBoardContainer = ({
     }
     fetchTickets();
   }, []);
+
+  if (!isProjectLoaded) {
+    return <NotFound />
+  }
+
+  // Check if the current user is a member of the project.
+  const isMember = project.members.includes(currentUserId);
 
   if (!isMember) {
     return <AccessDenied {...props} />

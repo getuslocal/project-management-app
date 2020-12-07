@@ -37,6 +37,8 @@ import {
   Diviser
 } from '../Modal.style';
 import { setAlert } from '../../../../../redux/alert/alert.actions';
+import Modal from '../../../../../shared/components/Modal/Modal';
+import Button from '../../../../../shared/components/Button/Button';
 
 const getColumnIdOfTicket = (columns, ticketId) => {
   const foundColumn = Object.values(columns).find(column => column.taskIds.includes(ticketId));
@@ -55,6 +57,21 @@ const IssueDetail = ({
   setAlert,
   ...props
 }) => {
+
+  // Close modal by removing query string of selectedIssue.
+  const closeModal = () => {
+    props.history.push(props.match.url)
+  }
+
+  // Check if the issue does not exist.
+  if (ticket === null) {
+    return (
+      <Modal
+        title="This issue does not exist."
+        renderOptions={() => <Button text="Back" variant="primary" onClick={closeModal} />}
+      />
+    )
+  }
 
   const {
     issueType,
@@ -106,13 +123,10 @@ const IssueDetail = ({
       const columnId = getColumnIdOfTicket(projectInfo.columns, ticketId);
       deleteTicket(ticketId, columnId);
     }
-    props.history.push(props.match.url);
+    // Close Modal.
+    closeModal();
+    // Attach a success alert.
     setAlert(`${projectInfo.key}-${ticket.key} is deleted successfully.`, 'success');
-  }
-
-  // Close modal by removing query string of selectedIssue.
-  const closeModal = () => {
-    props.history.push(props.match.url)
   }
 
   return (
@@ -222,7 +236,7 @@ const IssueDetail = ({
 }
 
 IssueDetail.propTypes = {
-  ticket: PropTypes.object.isRequired,
+  ticket: PropTypes.object,
   projectInfo: PropTypes.object.isRequired,
   linkedIssues: PropTypes.array.isRequired,
   updateTicket: PropTypes.func.isRequired,
@@ -230,11 +244,6 @@ IssueDetail.propTypes = {
   deleteEpicTicket: PropTypes.func.isRequired,
   updateHistory: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired,
-};
-
-IssueDetail.defaultProps = {
-  ticket: {},
-  projectInfo: {},
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({

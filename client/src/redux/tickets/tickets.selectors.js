@@ -22,7 +22,8 @@ export const selectTicketByKey = search => createSelector(
   tickets => {
     // Parse query string passed to get ticket key.
     const parsed = queryString.parse(search);
-    return tickets.find(ticket => ticket.key === Number(parsed.selectedIssue))
+    const foundTicket = tickets.find(ticket => ticket.key === Number(parsed.selectedIssue));
+    return foundTicket ? foundTicket : null
   }
 );
 
@@ -38,6 +39,9 @@ export const selectTicketsLinkedWithEpic = search => createSelector(
   tickets => {
     const parsed = queryString.parse(search);
     const foundEpic = tickets.find(ticket => ticket.key === Number(parsed.selectedIssue));
+
+    if(!foundEpic) return [];
+    
     return tickets.filter(ticket => ticket.linkedEpic === foundEpic._id).map(ticket => ticket._id)
   }
 );

@@ -30,7 +30,7 @@ export const selectCurrentProject = createSelector(
 
 export const selectProjectById = id => createSelector(
   [selectProjects],
-  projects => projects[id]
+  projects => Object.keys(projects).includes(id) ? projects[id] : null
 );
 
 export const selectProjectHistory = id => createSelector(

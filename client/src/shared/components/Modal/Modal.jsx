@@ -29,6 +29,13 @@ const Modal = ({ title, modalWidth, children, renderOptions }) => {
   )
 }
 
+Modal.defaultProps = {
+  title: undefined,
+  modalWidth: 500,
+  renderOptions: () => {},
+  children: [],
+}
+
 Modal.propTypes = {
   title: PropTypes.string,
   modalWidth: PropTypes.number,
