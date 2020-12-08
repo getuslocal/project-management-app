@@ -86,6 +86,8 @@ export const Tab = styled.li`
 
   a{
     padding-bottom: 1em;
+    min-width: 50px;
+    text-align: center;
     display: inline-block;
   }
 `

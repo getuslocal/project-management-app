@@ -49,6 +49,8 @@ export const createNewProject = (formData) => async dispatch => {
     });
     // Update roles state with project info.
     dispatch(updateRolesWithProjects([res.data]));
+    // Attach a success alert.
+    dispatch(setAlert('New project has been created !', 'success'));
   } catch (err) {
     console.log(err)
   }
@@ -98,6 +100,8 @@ export const deleteProject = (pid) => async dispatch => {
     });
     // Update roles with the removed project.
     dispatch(updateRolesWithRemovedProject(pid));
+    // Attach a success alert.
+    dispatch(setAlert(`Selected project has been deleted.`, 'success'));
   } catch (err) {
     console.log(err)
   }

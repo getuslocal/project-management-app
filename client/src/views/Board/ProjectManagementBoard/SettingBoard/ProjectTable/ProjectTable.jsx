@@ -1,10 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { createStructuredSelector } from 'reselect';
-import { selectProjects } from '../../../../../redux/projects/projects.selectors';
-import { selectMembers } from '../../../../../redux/members/members.selectors';
 import Table from '../../../../../shared/components/Table/Table'
 import Icon from '../../../../../shared/components/Icon/Icon';
 import SelectButton from '../SelectButton/SelectButton';
@@ -71,14 +66,4 @@ const ProjectTable = ({ projectList, memberList, searchFilter }) => {
   )
 }
 
-ProjectTable.propTypes = {
-  projectList: PropTypes.object.isRequired,
-  memberList: PropTypes.array.isRequired,
-}
-
-const mapStateToProps = createStructuredSelector({
-  projectList: selectProjects,
-  memberList: selectMembers,
-});
-
-export default connect(mapStateToProps, null)(ProjectTable);
+export default ProjectTable;

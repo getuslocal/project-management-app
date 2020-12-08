@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { createNewProject } from '../../../../../../redux/projects/projects.actions';
 import TextArea from '../../../../../../shared/components/Form/TextArea/TextArea';
-import { projectCategories } from '../../../../../../shared/constants/projects';
+import { getRandomProjectIcon, projectCategories } from '../../../../../../shared/constants/projects';
 import Category from '../Category/Category';
 import Input from '../../../../../../shared/components/Form/Input/Input';
 import {
@@ -18,11 +18,14 @@ import {
   InnerWrapper,
   ButtonsContainer,
 } from './NewProjectModal.style';
+import { setAlert } from '../../../../../../redux/alert/alert.actions';
 
 const NewProjectModal = ({
   setIsModalOpen,
   organization: { _id: orgId },
   createNewProject,
+  projectList,
+  setAlert,
 }) => {
   const [projectFormValues, setProjectFormValues] = useState({
     key: '',
@@ -33,12 +36,27 @@ const NewProjectModal = ({
 
   const { key, name, description, category, } = projectFormValues;
 
+  // Check if the key is duplicated.
+  const validateKey = (key, projects) => {
+    const duplicatedKey = Object.values(projects).find(project => project.key === key);
+    return duplicatedKey ? false : true;
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const isValid = validateKey(key, projectList);
+
+    if (!isValid) {
+      // Set an error alerm.
+      setAlert('The key already exists. Please enter different key.', 'error');
+      return;
+    }
+
     const formData = {
       ...projectFormValues,
       orgId: orgId,
-      projectIconUrl: 'https://cdn.pixabay.com/photo/2013/07/13/10/51/football-157930_960_720.png'
+      projectIconUrl: getRandomProjectIcon()  // default project icon.
     }
     // console.log(formData)
     createNewProject(formData)
@@ -80,7 +98,7 @@ const NewProjectModal = ({
                   required
                 />
                 <TextArea
-                  label="Description"
+                  label="Description*"
                   placeholder="Enter project description"
                   type="text"
                   name="key"
@@ -111,10 +129,11 @@ NewProjectModal.propTypes = {
   organization: PropTypes.object.isRequired,
   createNewProject: PropTypes.func.isRequired,
   setIsModalOpen: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   organization: state => state.organization,
 });
 
-export default connect(mapStateToProps, { createNewProject })(NewProjectModal);
+export default connect(mapStateToProps, { createNewProject, setAlert })(NewProjectModal);

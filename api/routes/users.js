@@ -99,7 +99,7 @@ router.post('/register', async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   // @TODO: Remove this line later. Just temp code.
-  const role = "Member"
+  const role = "Admin"
   const { name, email, password } = req.body;
 
   //Check if the user already exists
@@ -116,7 +116,7 @@ router.post('/register', async (req, res) => {
     name: name,
     email: email,
     password: hashedPassword,
-    pictureUrl: ''
+    pictureUrl: "https://i.ibb.co/k6c1RR5/default-profile.png" // default user pic.
   });
 
   try {

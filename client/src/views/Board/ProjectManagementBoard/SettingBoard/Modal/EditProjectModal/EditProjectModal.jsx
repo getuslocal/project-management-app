@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import TextArea from '../../../../../../shared/components/Form/TextArea/TextArea';
-import { selectProjectById } from '../../../../../../redux/projects/projects.selectors';
+import { selectProjectById, selectProjects } from '../../../../../../redux/projects/projects.selectors';
 import Category from '../Category/Category';
 import { updateProjectAndRoles } from '../../../../../../redux/projects/projects.actions';
 import Input from '../../../../../../shared/components/Form/Input/Input';
@@ -27,6 +27,7 @@ const EditProjectModal = ({
   project,
   updateProjectAndRoles,
   setAlert,
+  projectList,
   ...props
 }) => {
   const [formValues, setFormValues] = useState({
@@ -43,8 +44,23 @@ const EditProjectModal = ({
     setFormValues({ ...formValues, [name]: value });
   };
 
+  // Check if the key is duplicated.
+  const validateKey = (key, projects) => {
+    const duplicatedKey = Object.values(projects).find(project => project.key === key);
+    return duplicatedKey ? false : true;
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const isValid = validateKey(key, projectList);
+
+    if (!isValid) {
+      // Set an error alerm.
+      setAlert('The key already exists. Please enter different key.', 'error');
+      return;
+    }
+
     // Update project and roles state.
     updateProjectAndRoles(project._id, formValues);
     // Close modal.
@@ -129,11 +145,13 @@ const EditProjectModal = ({
 
 EditProjectModal.propTypes = {
   project: PropTypes.object.isRequired,
+  projectList: PropTypes.object.isRequired,
   updateProjectAndRoles: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
-  project: selectProjectById(ownProps.projectId)
+  project: selectProjectById(ownProps.projectId),
+  projectList: selectProjects
 });
 
 export default connect(mapStateToProps, { updateProjectAndRoles, setAlert })(EditProjectModal);

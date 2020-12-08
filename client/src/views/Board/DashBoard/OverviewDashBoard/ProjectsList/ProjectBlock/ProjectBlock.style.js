@@ -60,11 +60,10 @@ export const ImageWithProgressBar = styled.div`
 `;
 
 export const ProgressBarInner = styled.div`
-  background-image: url("https://st2.depositphotos.com/4328131/6387/v/450/depositphotos_63870593-stock-illustration-graphic-silver-b-letter-symbol.jpg");
+  background-image: url(${props => props.imageUrl});
   background-size: cover;
   background-position: center;
   border-radius: 50%;
-  /* background: red; */
   height: 37px;
   max-height: 37px;
   width: 37px;
