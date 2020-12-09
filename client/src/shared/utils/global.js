@@ -80,8 +80,13 @@ export const media = {
     ${css(...args)}
   }
 `,
+  medium2: (...args) => css`
+  @media (max-width: 920px) {
+    ${css(...args)}
+  }
+`,
   medium: (...args) => css`
-  @media (max-width: 768) {
+  @media (max-width: 768px) {
     ${css(...args)}
   }
 `,

@@ -32,7 +32,7 @@ const Sidebar = ({
       <Container className={secondaryView ? 'secondary-side-bar' : 'default-side-bar'}>
         <Top className="side-bar-top">
           <Logo className="side-bar-logo">
-            <Icon type="cube" imageUrl={pictureUrl} size={30} isSolid={true} />
+            <Icon type="cube" size={30} isSolid={true} />
             <span>Simplanner</span>
           </Logo>
           <ResizeButton className="resize-button">

@@ -1,5 +1,3 @@
-import { css } from 'styled-components';
-
 export const color = {
   primary: '#0f35a9', // Blue
   success: '#0B875B', // green

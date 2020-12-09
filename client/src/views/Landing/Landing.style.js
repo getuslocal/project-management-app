@@ -1,66 +1,119 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { color, fontSize, padding } from '../../shared/utils/styles';
-import LandingBg from './assets/landing-bg.png'
+import { color, padding } from '../../shared/utils/styles';
+import LandingBg from './assets/landing-bg.svg'
+import { media } from '../../shared/utils/global';
 
-export const LandingContainer = styled.div`
+export const Container = styled.div`
   width: 100%;
   height: 100%;
-  min-height: 950px;
   display: flex;
+  min-height: 800px;
+
+  ${media.medium2`
+    min-height: auto;
+  `}
 `;
 
-export const LandingLeftContent = styled.div`
-  width: 45%;
-  text-align:center;
-  padding-top: 5em;
-  position: relative;
+export const Left = styled.div`
+  width: 50%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  ${media.medium2`
+  width: 100%;
+  `}
 `;
 
-export const LandingRightContent = styled.div`
-  width: 55%;
+export const Right= styled.div`
+  width: 50%;
   height: 100%;
-  background-image: 
-  linear-gradient(
-    rgba(0,0,0, .2),
-    rgba(0,0,0, .2)
-  ),
-  url(${LandingBg});
+  border-left: 2px solid ${color.borderLightest};
+  display: flex;
+  flex-direction: column;
+
+  ${media.medium2`
+    display: none;
+  `}
+`;
+
+export const FormContainer = styled.div`
+  margin-bottom: 20px;
+`;
+
+export const Logo = styled.p`
+  margin-top: 60px;
+  margin-bottom: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > i {
+    margin-right: 7px;
+    color: ${color.primary};
+  }
+
+  & > span {
+    font-weight: 700;
+    font-size: 22px;
+    color: ${color.primary};
+  }
+
+  ${media.medium2`
+    margin-top: 30px;
+    margin-bottom:45px;
+  `}
+`;
+
+export const Options = styled.div`
+  width: 100%;
+  border-bottom: 1px solid transparent;
+  border-top: 2px solid ${color.smokewhite};
+`
+
+export const Image = styled.div`
+  height: 70%;
+  background-image:  url(${LandingBg});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+`
+
+export const Bottom = styled.div`
+  height: 30%;
   display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 5em 5em 0;
-    color: ${color.white};
-  `;
-
-export const LogoContainer = styled.p`
-    margin-bottom:6em;
-  `;
-
-export const OptionLink = styled(Link)`
-  padding: 10px 15px;
-  cursor: pointer;
-  `;
-
-export const LandingMainHeading = styled.h1`
-font-size: 3em;
-font-weight: 500;
+  justify-content: center;
+  align-items: center;
 `
 
-export const LandingSubHeading = styled.h2`
-font-size: 2em;
-font-weight: 500;
+export const Headings = styled.div`
+  max-width: 620px; 
+  text-align: center;
+  padding: 0px 20px;
 `
-export const OptionsContainer = styled.div`
-position: absolute;
-bottom: 0;
-width: 100%;
-border-bottom: 1px solid transparent;
-border-top: 2px solid ${color.smokewhite};
- `
+
+export const MainHeading = styled.p`
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: ${color.textDarkest};
+  margin-bottom: 14px;
+
+  @media (max-width: 1100px) {
+    font-size: 28px;
+  }
+`
+
+export const SubHeading = styled.p`
+  font-size: 18px;
+  font-weight: 500;
+  color: ${color.textLight};
+
+  @media (max-width: 1100px) {
+    font-size: 16px;
+  }
+`
 
 export const SubmitButton = styled.input`
   display: inline-block;
@@ -74,7 +127,7 @@ export const SubmitButton = styled.input`
   color: ${color.white};
   border-radius: 5px;
   width: 100%;
-  box-shadow: 0 5px blue;
+  box-shadow: 0 5px #00279e;
   top: 0;
 
   &:active {

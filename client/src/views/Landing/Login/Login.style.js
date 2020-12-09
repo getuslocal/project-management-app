@@ -11,7 +11,7 @@ export const LoginContainer = styled.div`
 export const FormTitle = styled.h2`
   margin-bottom: 2.5em;
   font-weight:600;
-  font-size:18px;
+  font-size:24px;
 `;
 
 export const GrayText = styled.span`

@@ -71,16 +71,10 @@ const LoginForm = ({ login, isAuthenticated, errorMessage }) => {
             required
           />
         </Margin>
-        <Margin bottom={40} >
-          <CheckBox
-            name='checkbox'
-            type='checkbox'
-          />
-        </Margin>
         <Margin bottom={30} >
           <SubmitButton name='button' type='submit' value='Login now' />
         </Margin>
-        <FormSmallText>Try a demo version ? <LinkText to="/">Use guest login</LinkText></FormSmallText>
+        {/* <FormSmallText>Try a demo version ? <LinkText to="/">Use guest login</LinkText></FormSmallText> */}
       </form>
     </LoginContainer>
   );

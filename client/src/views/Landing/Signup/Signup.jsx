@@ -101,16 +101,10 @@ const SignupForm = ({ register, isAuthenticated, errorMessage }) => {
             required
           />
         </Margin>
-        <Margin bottom={40} >
-          <CheckBox
-            name='checkbox'
-            type='checkbox'
-          />
-        </Margin>
         <Margin bottom={30} >
           <SubmitButton name='button' type='submit' value='Sign up now' />
         </Margin>
-        <FormSmallText>Try right now ? <LinkText to="/">Use guest login</LinkText></FormSmallText>
+        {/* <FormSmallText>Try right now ? <LinkText to="/">Use guest login</LinkText></FormSmallText> */}
       </form>
     </LoginContainer>
   );
