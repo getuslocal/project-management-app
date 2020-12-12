@@ -62,10 +62,14 @@ export const IssueHistory = ({ project: { _id: projectId, history, key }, member
                           <Icon type={ticket.type.toLowerCase()} isSolid={true} size={13.5} top={-1} />
                           {
                             ticketData ? (
-                              <Link to={`/app/projects/${projectId}/?selectedIssue=${ticketData.key}`}>{key}-{ticket.displayValue}</Link>
+                              ticketData.issueType === IssueTypes.EPIC ? (
+                                <Link to={`/app/projects/${projectId}/roadmap?selectedIssue=${ticketData.key}`}>{key}-{ticket.displayValue}</Link>
+                              ) : (
+                                  <Link to={`/app/projects/${projectId}/?selectedIssue=${ticketData.key}`}>{key}-{ticket.displayValue}</Link>
+                                )
                             ) : (
-                              <Fragment>{key}-{ticket.displayValue} <span className="deleted-text">(deleted)</span></Fragment>
-                            )
+                                <Fragment>{key}-{ticket.displayValue} <span className="deleted-text">(deleted)</span></Fragment>
+                              )
                           }
                         </TicketName>
                       </MainContent>

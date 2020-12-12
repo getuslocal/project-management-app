@@ -17,10 +17,9 @@ const UnassignText = styled.p`
   color: rgb(137, 147, 164);
   font-size: 14px;
 `
-
 function Assignee({ value, updateTicketField, members, updateTicketHistory }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const currentMember = members.find(member => member._id === value)
+  const currentMember = members.find(member => member._id === value);
   return (
     <SectionContainer>
       <SectionTitle>Assignee</SectionTitle>
@@ -45,7 +44,8 @@ function Assignee({ value, updateTicketField, members, updateTicketHistory }) {
         setIsMenuOpen={setIsMenuOpen}
         onChange={({ value: member }) => {
           updateTicketField({ field: 'assigneeId', value: member._id });
-          updateTicketHistory('Assignee', currentMember.name, member.name);
+          const prevMember =  currentMember ? currentMember.name : 'Unassigned';
+          updateTicketHistory('Assignee', prevMember, member.name);
         }}
         options={members.filter(member => member._id !== value).map(member => ({
           key: member._id,

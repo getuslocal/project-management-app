@@ -92,19 +92,19 @@ const customIcons = {
     ${userIcon}
   `,
   [`issue-purple`]: css`
-    background-color:${IssueColors['PURPLE'].font};
+    background-color:${IssueColors['PURPLE'].border};
     ${issueColor}
   `,
   [`issue-yellow`]: css`
-    background-color:${IssueColors['YELLOW'].font};
+    background-color:${IssueColors['YELLOW'].border};
     ${issueColor}
   `,
   [`issue-blue`]: css`
-    background-color:${IssueColors['BLUE'].font};
+    background-color:${IssueColors['BLUE'].border};
     ${issueColor}
   `,
   [`issue-red`]: css`
-    background-color:${IssueColors['RED'].font};
+    background-color:${IssueColors['RED'].border};
     ${issueColor}
   `,
 };

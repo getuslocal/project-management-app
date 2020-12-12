@@ -14,6 +14,7 @@ import {
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import api from '../../../shared/utils/api';
+import { IssueTypes } from '../../../shared/constants/issues';
 
 const SearchResults = ({ search, projects, isSearchActive, ticketsList, setIsSearchActive, ...props }) => {
   const [tickets, setTickets] = useState([]);
@@ -55,14 +56,20 @@ const SearchResults = ({ search, projects, isSearchActive, ticketsList, setIsSea
         <ul>
           {
             tickets.length === 0 ? (
-            <List><p>{isLoading ? 'loading...' : 'No tickets found.'}</p></List>
+              <List><p>{isLoading ? 'loading...' : 'No tickets found.'}</p></List>
             ) : (
                 filterTickets(tickets, search).map(ticket => (
                   <List key={ticket._id} onClick={(e) => {
                     // Prevent parent onClick firing.
                     e.stopPropagation();
                     setIsSearchActive(false);
-                    props.history.push(`/app/projects/${ticket.projectId}?selectedIssue=${ticket.key}`);
+                    const isEpic = (ticket.issueType === IssueTypes.EPIC);
+
+                    if (isEpic) {
+                      props.history.push(`/app/projects/${ticket.projectId}/roadmap?selectedIssue=${ticket.key}`);
+                    } else {
+                      props.history.push(`/app/projects/${ticket.projectId}?selectedIssue=${ticket.key}`);
+                    }
                   }}>
                     <Icon type={ticket.issueType.toLowerCase()} size={18} />
                     <div>

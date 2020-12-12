@@ -12,11 +12,27 @@ import {
   Description
 } from '../IssueCreate.style';
 
-function IssueCreateTypeField({ issueType, handleSelectMenu }) {
+function IssueCreateTypeField({ issueType, handleSelectMenu, isEpic }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  if (isEpic) {
+    return (
+      <SectionContainer>
+        <SectionTitle>Issue type*</SectionTitle>
+        <SectionContent>
+          <SelectItem>
+            <Icon type={issueType.toLowerCase()} size={13} />
+            {issueType}
+          </SelectItem>
+        </SectionContent>
+        <Description>Some issue types are unavailable due to incompatible field configuration and/or workflow associations.</Description>
+      </SectionContainer>
+    )
+  }
+
   return (
     <SectionContainer>
-      <SectionTitle>Issue type</SectionTitle>
+      <SectionTitle>Issue type*</SectionTitle>
       <SectionContent onClick={() => setIsMenuOpen(true)}>
         <SelectItem>
           <Icon type={issueType.toLowerCase()} size={13} />
@@ -30,7 +46,7 @@ function IssueCreateTypeField({ issueType, handleSelectMenu }) {
         isActive={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
         onChange={(option) => handleSelectMenu('issueType', option.value)}
-        options={Object.values(IssueTypes).filter(type => type !== issueType).map(option => ({
+        options={Object.values(IssueTypes).filter(type => (type !== issueType || type != IssueTypes.EPIC)).map(option => ({
           key: option,
           value: option,
         }))}
@@ -44,7 +60,7 @@ function IssueCreateTypeField({ issueType, handleSelectMenu }) {
 const renderOption = (issueType) => {
   return (
     <SelectItem>
-      <Icon type={issueType.toLowerCase()}  size={13} />
+      <Icon type={issueType.toLowerCase()} size={13} />
       {issueType}
     </SelectItem>
   )

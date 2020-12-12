@@ -25,12 +25,14 @@ import {
   SectionTitle,
   Description
 } from '../IssueCreate.style';
+import { selectCurrentProject } from '../../../../../../redux/projects/projects.selectors';
 
 const IssueCreateChildIssue = ({
   childIssues,
   setChildIssues,
   tickets,
-  epics
+  epics,
+  project: { key: projectKey }
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const addChildIssue = (ticket) => {
@@ -58,7 +60,7 @@ const IssueCreateChildIssue = ({
                   <IconCont>
                     <Icon type={thisIssue.issueType.toLowerCase()} isSolid={true} size={12} top={-1} />
                   </IconCont>
-                  <Key>{thisIssue.key}</Key>
+                  <Key>{projectKey}-{thisIssue.key}:</Key>
                   <Summary>{thisIssue.summary}</Summary>
                 </List>
               )
@@ -75,7 +77,7 @@ const IssueCreateChildIssue = ({
         setIsMenuOpen={setIsMenuOpen}
         onChange={(option) => addChildIssue(option.value)}
         options={issueOptions(tickets, childIssues)}
-        renderValue={({ value: ticket }) => renderOption(ticket, epics)}
+        renderValue={({ value: ticket }) => renderOption(ticket, epics, projectKey)}
       />
       <Description>Click to search for issues to link. If you leave it blank, no link will be made.</Description>
     </SectionContainer>
@@ -89,7 +91,7 @@ const issueOptions = (tickets, childIssues) => (
   }))
 );
 
-const renderOption = (ticket,epics) => {
+const renderOption = (ticket, epics, projectKey) => {
   const linkedEpic = epics.find(epic => epic._id === ticket.linkedEpic);
   return (
     <SelectItem>
@@ -98,7 +100,7 @@ const renderOption = (ticket,epics) => {
       </Left>
       <Right>
         <RightTop>
-          <Key>{ticket.key}:</Key>
+          <Key>{projectKey}-{ticket.key}:</Key>
           {ticket.summary}
         </RightTop>
         <RightBottom>
@@ -121,11 +123,13 @@ IssueCreateChildIssue.propTypes = {
   setChildIssues: PropTypes.func.isRequired,
   tickets: PropTypes.array.isRequired,
   epics: PropTypes.array.isRequired,
+  project: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   tickets: selectNonEpicTickets,
-  epics: selectEpicTickets
+  epics: selectEpicTickets,
+  project: selectCurrentProject
 });
 
 export default connect(mapStateToProps, null)(IssueCreateChildIssue);

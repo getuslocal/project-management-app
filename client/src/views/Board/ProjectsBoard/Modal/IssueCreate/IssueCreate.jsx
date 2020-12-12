@@ -11,7 +11,6 @@ import { createNewTicket, createNewEpicTicket } from '../../../../../redux/ticke
 import Description from './Description/Description';
 import ChildIssue from './ChildIssue/ChildIssue';
 import RangedDatePicker from './RangedDatePicker/RangedDatePicker';
-import Project from './Project/Project';
 import Type from './Type/Type';
 import Priority from './Priority/Priority';
 import Assignee from './Assignee/Assignee';
@@ -65,11 +64,11 @@ const IssueCreate = ({
     endDate: null
   });
 
-  const { projectId, issueType, summary, description, reporterId, assigneeId, issuePriority } = issueFormValues;
+  const { issueType, summary, description, reporterId, assigneeId, issuePriority } = issueFormValues;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(issueFormValues)
+    // console.log(issueFormValues)
     if (isEpic) {
       issueFormValues.linkedEpic = null;
       // Add epic specific states.
@@ -100,15 +99,11 @@ const IssueCreate = ({
       <Container onClick={() => { if (isSelectMenuOpen) setIsSelectMenuOpen(false); }}>
         <Content>
           <form onSubmit={handleSubmit}>
-            <Title>Create issue</Title>
+            <Title>Create {isEpic ? 'epic' : 'issue'} for <em>{projects[currentProjectId].name}</em></Title>
             <InnerWrapper>
               <Fieldset>
-                <Project
-                  currentProject={projects[projectId]}
-                  projects={projects}
-                  handleSelectMenu={handleSelectMenu}
-                />
                 <Type
+                  isEpic={isEpic}
                   issueType={issueType}
                   handleSelectMenu={handleSelectMenu}
                 />
@@ -132,6 +127,7 @@ const IssueCreate = ({
                   name="summary"
                   value={summary}
                   onChange={(e) => setIssueFormValues({ ...issueFormValues, summary: e.target.value })}
+                  style={{ minHeight: '35px' }}
                   required
                 />
                 <Description

@@ -16,8 +16,9 @@ export const IssuePriorities = {
 export const IssueColors = {
   PURPLE: {
     name: 'Purple',
+    font: 'rgb(23,43,77)',
     bg: '#ddd6ff',
-    border: 'rgb(133 109 251)',
+    border: 'rgb(133, 109, 251)',
     light: '#c0b4ff',
   },
   YELLOW: {

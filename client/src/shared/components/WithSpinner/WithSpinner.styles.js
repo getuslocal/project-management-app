@@ -5,7 +5,7 @@ export const SpinnerOverlay = styled.div`
   width: 100vw;
   left: 0;
   top: 0;
-  position: absolute;
+  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;

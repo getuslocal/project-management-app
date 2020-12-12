@@ -5,6 +5,7 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { selectUser } from '../../../../../redux/auth/auth.selectors';
 import Icon from '../../../../../shared/components/Icon/Icon';
+import { IssueTypes } from '../../../../../shared/constants/issues';
 import {
   Container,
   Table,
@@ -32,8 +33,15 @@ export const AssignedList = ({ projectId, tickets, currentUser, projectKey, ...p
           {
             assignedTickets.length > 0 ? (
               assignedTickets.map(ticket => {
+                const isEpic = (ticket.issueType === IssueTypes.EPIC);
                 return (
-                  <BodyTableRow key={ticket._id} onClick={() => props.history.push(`/app/projects/${projectId}/?selectedIssue=${ticket.key}`)}>
+                  <BodyTableRow key={ticket._id} onClick={() => {
+                    if (isEpic) {
+                      props.history.push(`/app/projects/${projectId}/roadmap?selectedIssue=${ticket.key}`)
+                    } else {
+                      props.history.push(`/app/projects/${projectId}/?selectedIssue=${ticket.key}`)
+                    }
+                  }}>
                     <TableData width="30"><Icon type={ticket.issueType.toLowerCase()} size={13} top={-2} /></TableData>
                     <TableData width="120" style={{ color: '#5e6c84', fontWeight: 500 }}>{projectKey}-{ticket.key}</TableData>
                     <TableData width="">{ticket.summary}</TableData>

@@ -16,7 +16,7 @@ function IssueCreateTypeField({ issuePriority, handleSelectMenu }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <SectionContainer>
-      <SectionTitle>Priority</SectionTitle>
+      <SectionTitle>Priority*</SectionTitle>
       <SectionContent onClick={() => setIsMenuOpen(true)}>
         <SelectItem>
           <Icon type={`priority-${issuePriority.toLowerCase()}`} isSolid={true} size={13} />
