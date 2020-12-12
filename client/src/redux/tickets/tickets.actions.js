@@ -92,7 +92,7 @@ export const createNewEpicTicket = (formData, childIssues) => async dispatch => 
     // Link child issues with the epic.
     const epicId = res.data._id;
     childIssues.forEach(childIssueId => {
-      dispatch(updateTicket(childIssueId, { linkedEpic: epicId }))
+      dispatch(updateTicket(childIssueId, { field: 'linkedEpic', value: epicId }))
     })
     // Update history of project.
     const newEpic = res.data;
