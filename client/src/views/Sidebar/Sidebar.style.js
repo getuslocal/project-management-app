@@ -20,6 +20,13 @@ const smallView = css`
   }
   
   .side-bar-logout {
+    transition: all .3s;
+    margin-left: 0;
+    margin-right: 0;
+    min-width: auto;
+    width: 100%;
+    border-radius: 0;
+
     & > i {
       margin-right: 0
     }
@@ -42,7 +49,6 @@ export const Container = styled.div`
   z-index: ${zIndexValues.navLeft};
   overflow: hidden;
   background-color: #0f35a9;
-  transition: all .3s;
   height: 100%;
   width: 220px;
   transition: all .3s;
@@ -60,6 +66,15 @@ export const Container = styled.div`
     }
   }
 `;
+
+export const Wrapper = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: auto;
+  overflow-x: hidden;
+`
 
 export const Blanket = styled.div`
   background-color: rgba(23, 43, 77, .5);
@@ -180,14 +195,12 @@ export const UserProfileOverview = styled.div`
 `
 
 export const LogoutButton = styled(Button)`
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
+  transition: all .3s;
+  margin: 30px;
   border-radius: 20px;
-  padding: 10px 24px;
   color: ${color.textDarkest};
-  min-width: 120px;
+  min-width: 160px;
+  width: 160px;
 
   & > i {
     margin-right: 8px;

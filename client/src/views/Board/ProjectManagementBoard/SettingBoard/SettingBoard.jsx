@@ -30,7 +30,7 @@ const ProjectSettingBoard = ({ projectList, memberList, setAlert }) => {
             variant="primary"
             onClick={() => {
               if (Object.keys(projectList).length >= 5) {
-                setAlert('You cannot create more than 5 projects in your plan.', 'error');
+                setAlert('You cannot create more than 5 projects with your plan.', 'error');
                 return;
               }
               setIsModalOpen(true);
