@@ -39,6 +39,7 @@ import {
 import { setAlert } from '../../../../../redux/alert/alert.actions';
 import Modal from '../../../../../shared/components/Modal/Modal';
 import Button from '../../../../../shared/components/Button/Button';
+import ConfirmationModal from '../../../../../shared/components/Modal/ConfirmationModal/ConfirmationModal';
 
 const getColumnIdOfTicket = (columns, ticketId) => {
   const foundColumn = Object.values(columns).find(column => column.taskIds.includes(ticketId));
@@ -92,10 +93,11 @@ const IssueDetail = ({
 
   const isEpic = (ticket.issueType === IssueTypes.EPIC);
   const [childIssues, setChildIssues] = useState(linkedIssues);
+  const [confirmationModal, setConfirmationModal] = useState(false);
 
   const updateTicketField = (updatedValue) => {
     // Update ticket.
-    console.log(updatedValue)
+    // console.log(updatedValue)
     updateTicket(ticket._id, updatedValue);
   }
 
@@ -130,108 +132,117 @@ const IssueDetail = ({
   }
 
   return (
-    <ModalContainer>
-      <Blanket onClick={closeModal} />
-      <Container>
-        <Wrapper>
-          <Header
-            linkedEpic={linkedEpic}
-            ticketKey={key}
-            projectKey={projectInfo.key}
-            issueType={issueType}
-            handleDeleteTicket={handleDeleteTicket}
-            closeModal={closeModal}
-          />
-          <Content>
-            <Left>
-              <Fieldset>
-                <Title
-                  currentValue={summary}
-                  updateTicketField={updateTicketField}
-                  updateTicketHistory={updateTicketHistory}
-                />
-                <Description
-                  currentValue={description}
-                  updateTicketField={updateTicketField}
-                  updateTicketHistory={updateTicketHistory}
-                />
-                {isEpic && (
-                  <ChildIssue
-                    epicId={ticketId}
-                    childIssues={childIssues}
-                    setChildIssues={setChildIssues}
-                    updateTicket={updateTicket}
-                  />)}
-                <Comments
-                  comments={comments}
-                  ticketId={ticketId}
-                  updateTicketHistory={updateTicketHistory}
-                />
-              </Fieldset>
-            </Left>
-            <Right>
-              <Fieldset>
-                {!isEpic ? (
-                  <Status
-                    columns={projectInfo.columns}
-                    columnOrder={projectInfo.columnOrder}
-                    projectId={projectInfo._id}
-                    ticket={ticket}
-                    updateTicketHistory={updateTicketHistory}
-                  />) : (
-                    <Fragment>
-                      <DatePicker
-                        dateRange={ticket.dateRange}
-                        updateTicketField={updateTicketField}
-                        isStartDate={true}
-                        updateTicketHistory={updateTicketHistory}
-                      />
-                      <DatePicker
-                        dateRange={ticket.dateRange}
-                        updateTicketField={updateTicketField}
-                        isEndDate={true}
-                        updateTicketHistory={updateTicketHistory}
-                      />
-                    </Fragment>
-                  )}
-                {dueDate && (
-                  <SingleDatePicker
-                    momentedDate={moment(dueDate)}
-                    onDateChange={(date) => updateTicketField({ field: 'dueDate', value: date })}
-                    disableBefore={moment().subtract(12, 'months')}
-                    disableAfter={moment().add(12, 'months')}
-                    label="Due date"
-                  />
-                )}
-                <Assignee
-                  value={assigneeId}
-                  updateTicketField={updateTicketField}
-                  updateTicketHistory={updateTicketHistory}
-                />
-                <Priority
-                  value={issuePriority}
-                  updateTicketField={updateTicketField}
-                  updateTicketHistory={updateTicketHistory}
-                />
-                <Reporter
-                  value={reporterId}
-                  projectId={projectInfo._id}
-                  updateTicketField={updateTicketField}
-                  updateTicketHistory={updateTicketHistory}
-                />
-                {isEpic && (
-                  <Colors
-                    value={ticket.issueColor}
+    <Fragment>
+      <ModalContainer>
+        <Blanket onClick={closeModal} />
+        <Container>
+          <Wrapper>
+            <Header
+              linkedEpic={linkedEpic}
+              ticketKey={key}
+              projectKey={projectInfo.key}
+              issueType={issueType}
+              closeModal={closeModal}
+              setConfirmationModal={setConfirmationModal}
+            />
+            <Content>
+              <Left>
+                <Fieldset>
+                  <Title
+                    currentValue={summary}
                     updateTicketField={updateTicketField}
-                  />)}
-                <Diviser />
-                <Dates createAt={createdAt} updatedAt={updatedAt} completedAt={completedAt} />
-              </Fieldset>
-            </Right>
-          </Content>
-        </Wrapper>
-      </Container>
-    </ModalContainer>
+                    updateTicketHistory={updateTicketHistory}
+                  />
+                  <Description
+                    currentValue={description}
+                    updateTicketField={updateTicketField}
+                    updateTicketHistory={updateTicketHistory}
+                  />
+                  {isEpic && (
+                    <ChildIssue
+                      epicId={ticketId}
+                      childIssues={childIssues}
+                      setChildIssues={setChildIssues}
+                      updateTicket={updateTicket}
+                    />)}
+                  <Comments
+                    comments={comments}
+                    ticketId={ticketId}
+                    updateTicketHistory={updateTicketHistory}
+                  />
+                </Fieldset>
+              </Left>
+              <Right>
+                <Fieldset>
+                  {!isEpic ? (
+                    <Status
+                      columns={projectInfo.columns}
+                      columnOrder={projectInfo.columnOrder}
+                      projectId={projectInfo._id}
+                      ticket={ticket}
+                      updateTicketHistory={updateTicketHistory}
+                    />) : (
+                      <Fragment>
+                        <DatePicker
+                          dateRange={ticket.dateRange}
+                          updateTicketField={updateTicketField}
+                          isStartDate={true}
+                          updateTicketHistory={updateTicketHistory}
+                        />
+                        <DatePicker
+                          dateRange={ticket.dateRange}
+                          updateTicketField={updateTicketField}
+                          isEndDate={true}
+                          updateTicketHistory={updateTicketHistory}
+                        />
+                      </Fragment>
+                    )}
+                  {dueDate && (
+                    <SingleDatePicker
+                      momentedDate={moment(dueDate)}
+                      onDateChange={(date) => updateTicketField({ field: 'dueDate', value: date })}
+                      disableBefore={moment().subtract(12, 'months')}
+                      disableAfter={moment().add(12, 'months')}
+                      label="Due date"
+                    />
+                  )}
+                  <Assignee
+                    value={assigneeId}
+                    updateTicketField={updateTicketField}
+                    updateTicketHistory={updateTicketHistory}
+                  />
+                  <Priority
+                    value={issuePriority}
+                    updateTicketField={updateTicketField}
+                    updateTicketHistory={updateTicketHistory}
+                  />
+                  <Reporter
+                    value={reporterId}
+                    projectId={projectInfo._id}
+                    updateTicketField={updateTicketField}
+                    updateTicketHistory={updateTicketHistory}
+                  />
+                  {isEpic && (
+                    <Colors
+                      value={ticket.issueColor}
+                      updateTicketField={updateTicketField}
+                    />)}
+                  <Diviser />
+                  <Dates createAt={createdAt} updatedAt={updatedAt} completedAt={completedAt} />
+                </Fieldset>
+              </Right>
+            </Content>
+          </Wrapper>
+        </Container>
+      </ModalContainer>
+      {confirmationModal && (
+        <ConfirmationModal
+          title={`Are you sure you want to delete this ${isEpic ? 'epic' : 'issue'} ?`}
+          onClick={handleDeleteTicket}
+          closeModal={() => setConfirmationModal(false)}
+        />
+      )}
+    </Fragment>
   )
 }
 

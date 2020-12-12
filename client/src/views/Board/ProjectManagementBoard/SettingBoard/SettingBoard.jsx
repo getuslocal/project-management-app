@@ -40,7 +40,11 @@ const ProjectSettingBoard = ({ projectList, memberList, setAlert }) => {
         <Margin bottom={20} >
           <SearchBox placeholder="Filter projects" width={220} onChange={e => setSearchFilter(e.target.value)} />
         </Margin>
-        <ProjectTable searchFilter={searchFilter} projectList={projectList} memberList={memberList} />
+        <ProjectTable 
+          searchFilter={searchFilter} 
+          projectList={projectList} 
+          memberList={memberList}
+          />
       </Container>
       {isModalOpen && <NewProjectModal projectList={projectList} setIsModalOpen={setIsModalOpen} />}
     </Fragment>

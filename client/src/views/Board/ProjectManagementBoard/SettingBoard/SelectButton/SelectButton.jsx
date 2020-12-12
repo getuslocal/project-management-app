@@ -11,7 +11,7 @@ import {
   SelectItem
 } from './SelectButton.style';
 
-const SelectButton = ({ projectId, ...props }) => {
+const SelectButton = ({ projectId, setIsConfirmationModalOpen, setDeleteProjectId, ...props }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const options = [
     { key: 'project', value: 'Edit project', queryString: true },
@@ -25,7 +25,10 @@ const SelectButton = ({ projectId, ...props }) => {
       const stringified = queryString.stringify({ type: option.key, projectId: projectId })
       props.history.push(`${props.match.url}?${stringified}`)
     } else if (option.key === 'delete') {
-      store.dispatch(deleteProject(projectId))
+      // Set project id to be deleted.
+      setDeleteProjectId(projectId);
+      // Trigger confirmation model open.
+      setIsConfirmationModalOpen(true);
     }
   }
 
