@@ -26,12 +26,10 @@ const RoadMapBoard = ({ project, epics, clearAllFilters }) => {
   const todayCellRef = useRef(null);
   const scrollContainerRef = useRef(null);
   const containerRef = useRef(null);
-  const [boardHeight, setBoardHeight] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     scrollToToday()
-    setBoardHeight(containerRef.current.offsetHeight)
     // Clean up filters before unmounting.
     return () => { clearAllFilters() };
   }, [])
@@ -56,13 +54,15 @@ const RoadMapBoard = ({ project, epics, clearAllFilters }) => {
         <Left>
           <TopLeftContent>
             <ViewButton>
-              <Option isActive={true}>Weeks</Option>
-              <Option>Months</Option>
+              {/* @TODO: temporary element. Uncomment the options once monthly view is created. */}
+              <p>Epics</p>
+              {/* <Option isActive={true}>Weeks</Option> */}
+              {/* <Option>Months</Option> */}
             </ViewButton>
             <TodayButton onClick={scrollToToday}>Today</TodayButton>
           </TopLeftContent>
         </Left>
-        <Right ref={scrollContainerRef} style={{ minHeight: `calc(${boardHeight}px - 4px)` }}>
+        <Right ref={scrollContainerRef}>
           <HorizontalCalendar todayCellRef={todayCellRef} />
           <div>
             {

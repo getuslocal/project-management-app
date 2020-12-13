@@ -222,7 +222,7 @@ const EpicList = ({
                 const assignee = members.find(member => member._id === issue.assigneeId)
                 return (
                   <ChildIssue key={issue._id} onClick={() => openIssueDetailModal(issue.key)} style={{ backgroundColor: epicColorProperty.bg }}>
-                    <Icon type="user-icon" imageUrl={assignee && assignee.pictureUrl} size={27} top={2} />
+                    <Icon type="user-icon" className={assignee ? "" : "unassigned-icon"} imageUrl={assignee && assignee.pictureUrl} size={27} top={2} />
                     <ChildIssueSummary>
                       {issue.summary}
                       <Due>Due Tomorrow</Due>

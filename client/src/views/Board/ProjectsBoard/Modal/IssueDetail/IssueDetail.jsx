@@ -164,6 +164,7 @@ const IssueDetail = ({
                       childIssues={childIssues}
                       setChildIssues={setChildIssues}
                       updateTicket={updateTicket}
+                      projectKey={projectInfo.key}
                     />)}
                   <Comments
                     comments={comments}

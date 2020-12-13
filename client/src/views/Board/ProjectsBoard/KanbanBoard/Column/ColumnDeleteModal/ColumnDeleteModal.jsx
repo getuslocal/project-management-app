@@ -40,6 +40,7 @@ const ColumnDeleteModal = ({
   const deleteColumn = () => {
     // Remove target column property from columns immutably.
     const { [targetColumnId]: removedColumn, ...restColumns } = columns;
+    const inheritColumnData = restColumns[inheritColumn];
     // Add issues of the deleted column onto the inherit column.
     const formValue = {
       columns: {
@@ -52,14 +53,18 @@ const ColumnDeleteModal = ({
       columnOrder: columnOrder.filter(columnId => columnId !== targetColumnId)
     };
 
+    // Update columns
     updateProject(projectId, formValue);
 
-    // If inherit column is DONE, update tickets with completed date.
-    if (columns[inheritColumn].isDoneColumn) {
-      tickets.forEach(ticket => {
+    tickets.forEach(ticket => {
+      // Update ticket with a new column id.
+      updateTicket(ticket._id, { field: 'columnId', value: inheritColumnData.id });
+
+      if (inheritColumnData.isDoneColumn) {
+        // If inherit column is DONE, update tickets with completed date.
         updateTicket(ticket._id, { field: 'completedAt', value: new Date() });
-      });
-    }
+      }
+    });
 
     setAlert(`"${removedColumn.title}" column is deleted !`, 'success');
   }

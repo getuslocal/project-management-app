@@ -90,6 +90,13 @@ export const ChildIssue = styled.div`
   & > i {
     margin-right: 5px;
     vertical-align: middle;
+
+    &.unassigned-icon {
+
+      &::before {
+        border: 1px solid ${color.textVeryLight};
+      }
+    }
   }
 `
 

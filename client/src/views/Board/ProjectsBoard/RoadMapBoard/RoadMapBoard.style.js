@@ -2,13 +2,15 @@ import styled, { css } from 'styled-components'
 import { color } from '../../../../shared/utils/styles'
 
 export const Container = styled.div`
-  height: 100%;
-  max-height: 100%;
+  /* height: 100%; */
+  /* max-height: 100%; */
+  /* min-height: calc(100vh - 204px); */
   width: 100%;
   display: flex;
   position: relative;
   border: 2px solid ${color.borderLight};
   border-radius: 5px;
+  flex: none;
 
   &:before{
     content: "";
@@ -32,7 +34,7 @@ export const Right = styled.div`
   height: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
-  /* padding-bottom: 30px; */
+  min-height: calc(100vh - 208px);
 `
 
 export const TopLeftContent = styled.div`
@@ -45,9 +47,14 @@ export const TopLeftContent = styled.div`
 `
 
 export const ViewButton = styled.div`
-  background-color: ${color.backgroundMedium};
-  border-radius: 5px;
+  /* background-color: ${color.backgroundMedium}; */
+  /* border-radius: 5px; */
   padding: 2px;
+
+  & > p {
+    font-weight: 500;
+    color: ${color.textMedium};
+  }
 `
 
 export const Option = styled.p`
@@ -72,8 +79,10 @@ export const Option = styled.p`
 `
 export const TodayButton = styled.button`
   border-radius: 5px;
-  height: 35px;
-  width: 80px;
+  /* height: 35px; */
+  height: 37px;
+  /* width: 80px; */
+  width: 100px;
   font-weight: 500;
   font-size: 13.5px;
   color: ${color.textMedium};
