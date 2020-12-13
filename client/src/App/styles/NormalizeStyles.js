@@ -70,7 +70,7 @@ export default createGlobalStyle`
   textarea {
     font-family: inherit;
     font-size: 100%;
-    line-height: 1.15;
+    /* line-height: normal; */
     margin: 0;
   }
   button,

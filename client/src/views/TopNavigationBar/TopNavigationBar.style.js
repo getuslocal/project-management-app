@@ -22,13 +22,13 @@ export const SearchBox = styled.div`
     color: ${color.textDark};
     position: absolute;
     left: 14px;
-    top: 12px;
+    top: 13px;
   }
 
   input {
     border: none;
     border: 1px solid rgba(0, 0, 0, .15);
-    padding: 10px 10px 10px 36px;
+    padding: 9px 9px 9px 36px;
     border-radius: 20px;
     color: ${color.textDarkest};
     font-size: 14px;

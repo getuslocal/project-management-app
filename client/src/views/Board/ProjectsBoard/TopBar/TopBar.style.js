@@ -1,4 +1,4 @@
-import styled, {css} from 'styled-components'
+import styled from 'styled-components'
 import Icon from '../../../../shared/components/Icon/Icon';
 
 export const Container = styled.div`
@@ -13,36 +13,6 @@ color: rgb(107, 119, 140);
 font-size: 14px;
 font-weight: 500;
 margin-right: 1.5em;
-`
-
-export const InputContainer = styled.div`
-  position: relative;
-  margin-right: 1.5em;
-
-  &:after{
-    color: rgb(94, 108, 132);
-    font-size: 13px;
-    position: absolute;
-    right: 10px;
-    top: 10px;
-  }
-`
-export const Input = styled.input`
-  background-color: rgb(250, 251, 252);
-  padding: 7px;
-  font-size: 14px;  
-  padding-right: 25px;
-  border: none;
-  background-color: rgb(250, 251, 252);
-  border-radius: 3px;
-  border: 2px solid rgb(223, 225, 230);
-  &:hover {
-    background-color: rgba(9, 30, 66, 0.08);
-  }
-  &:focus {
-    background-color: #fff;
-    border-color: rgb(76,154,255);
-  }
 `
 
 export const Left = styled.div`
@@ -64,7 +34,7 @@ export const ModalButton = styled.button`
     cursor: pointer;
   }
 
-  background-color: ${({isEpicModal}) => isEpicModal  ? '#6554c0' : 'rgb(0, 82, 204)'} ;
+  background-color: ${({ isEpicModal }) => isEpicModal ? '#6554c0' : 'rgb(0, 82, 204)'} ;
 `
 export const Right = styled.div`
   display: flex;

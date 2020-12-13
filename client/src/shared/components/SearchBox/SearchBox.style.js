@@ -4,11 +4,13 @@ import {color} from '../../utils/styles'
 export const Container = styled.div`
   position: relative;
   width: ${props => props.width ? `${props.width}px` : 'auto'};
+  display: flex;
+  align-items:center;
 
   & > i {
     position: absolute;
     right: 6px;
-    top: 11px;
+    top: auto;
   }
 `
 

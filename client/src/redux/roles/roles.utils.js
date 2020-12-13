@@ -14,7 +14,8 @@ const roles = {
         linkUrl: ''
       },
     ],
-    dropDownMenu: []
+    dropDownMenu: [],
+    weight: 1,
   },
   projects: {
     id: 'projects',
@@ -37,7 +38,8 @@ const roles = {
         linkUrl: '/calendar'
       },
     ],
-    dropDownMenu: []
+    dropDownMenu: [],
+    weight: 2,
   },
   projectManagement: {
     id: 'project-management',
@@ -52,7 +54,8 @@ const roles = {
         linkUrl: ''
       },
     ],
-    dropDownMenu: []
+    dropDownMenu: [],
+    weight: 3,
   },
   adminSetting: {
     id: 'admin-settings',
@@ -67,7 +70,8 @@ const roles = {
         linkUrl: ''
       },
     ],
-    dropDownMenu: []
+    dropDownMenu: [],
+    weight: 4,
   },
 };
 

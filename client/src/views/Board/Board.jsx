@@ -9,13 +9,15 @@ import {
   Container
 } from './Board.style';
 import * as Components from './components';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { selectRoles } from '../../redux/roles/roles.selectors';
 
 const Board = ({
   user,
   roles,
 }) => {
   const [secondaryView, setSecondaryView] = useState(false);
-
   return (
     <LayoutContainer>
       <Sidebar user={user} roles={roles} secondaryView={secondaryView} setSecondaryView={() => setSecondaryView(!secondaryView)} />
@@ -42,7 +44,10 @@ const Board = ({
 Board.propTypes = {
   user: PropTypes.object.isRequired,
   roles: PropTypes.object.isRequired,
-  organization: PropTypes.object,
 };
 
-export default Board
+const mapStateToProps = createStructuredSelector({
+  roles: selectRoles
+});
+
+export default connect(mapStateToProps)(Board);

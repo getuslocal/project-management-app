@@ -7,11 +7,8 @@ import { getMembersOfOrganization } from '../../redux/members/members.actions';
 import Board from './Board';
 import PropTypes from 'prop-types';
 import Spinner from '../../shared/components/WithSpinner/Spinner';
-import { createStructuredSelector } from 'reselect';
 
 const BoardContainer = ({
-  organization,
-  roles,
   user,
   getRoles,
   getOrganization,
@@ -44,8 +41,6 @@ const BoardContainer = ({
     ) : (
         <Board
           user={user}
-          roles={roles}
-          organization={organization}
           {...props}
         />
       )
@@ -53,19 +48,12 @@ const BoardContainer = ({
 }
 
 BoardContainer.propTypes = {
-  organization: PropTypes.object,
-  roles: PropTypes.object,
   user: PropTypes.object.isRequired,
   getRoles: PropTypes.func.isRequired,
   getProjects: PropTypes.func.isRequired,
   getOrganization: PropTypes.func.isRequired,
   getMembersOfOrganization: PropTypes.func.isRequired,
 };
-
-const mapStateToProps = createStructuredSelector({
-  organization: state => state.organization,
-  roles: state => state.roles,
-});
 
 const mapDispatchToProps = dispatch => ({
   getRoles: (userRole) => dispatch(getRoles(userRole)),
@@ -74,4 +62,4 @@ const mapDispatchToProps = dispatch => ({
   getMembersOfOrganization: (orgId) => dispatch(getMembersOfOrganization(orgId)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(BoardContainer);
+export default connect(null, mapDispatchToProps)(BoardContainer);

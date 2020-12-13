@@ -8,7 +8,7 @@ import {
 } from './roles.types';
 
 export const getRoles = (role) => dispatch => {
-  const roles = getRolesOfUser(role)
+  const roles = getRolesOfUser(role);
   dispatch({
     type: GET_ROLES,
     payload: roles

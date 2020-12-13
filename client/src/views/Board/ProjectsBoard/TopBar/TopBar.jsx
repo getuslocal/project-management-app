@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { selectUserFilter, selectSearchFilter, selectFilters } from '../../../../redux/tickets/tickets.selectors';
 import { selectUser } from '../../../../redux/auth/auth.selectors';
-import { selectMembers, selectMembersOfProject } from '../../../../redux/members/members.selectors';
+import { selectMembersOfProject } from '../../../../redux/members/members.selectors';
 import { createStructuredSelector } from 'reselect';
 import { filterTicketsByUser, removeUserFilter, filterTicketsBySearch, clearAllFilters } from '../../../../redux/tickets/tickets.actions';
 import IssueCreate from '../Modal/IssueCreate/IssueCreate';
+import SearchBox from '../../../../shared/components/SearchBox/SearchBox';
+import { Margin } from '../../../../shared/utils/global';
 import {
   Container,
   Breadcrumbs,
-  InputContainer,
-  Input,
   ModalButton,
   Left,
   Right,
@@ -46,11 +46,16 @@ const TopBar = ({
           >Create {isEpicModal ? 'Epic' : 'Issue'}</ModalButton>
         </Left>
         <Right>
-          {
+        {
             !isEpicModal && (
-              <InputContainer className="icon-search">
-                <Input placeholder="Filter issues..." value={searchFilter} onChange={(e) => filterTicketsBySearch(e.target.value)} />
-              </InputContainer>
+              <Margin right={24}>
+                <SearchBox
+                  placeholder="Filter issues..."
+                  value={searchFilter}
+                  onChange={(e) => filterTicketsBySearch(e.target.value)}
+                  width={200}
+                />
+              </Margin>
             )
           }
           <Members>
@@ -72,6 +77,7 @@ const TopBar = ({
                         imageUrl={member.pictureUrl}
                         size={37}
                         isActive={isActive}
+                        top={3}
                       />
                     </IconList>
                   )

@@ -83,7 +83,7 @@ const defaultProps = {
 };
 
 const Icon = ({ type, ...props }) => (
-  <StyledIcon code={fontIconCodes[type]} type={type} {...props} />
+  <StyledIcon code={fontIconCodes[type]} iconType={type} {...props} />
 );
 
 Icon.propTypes = propTypes;
