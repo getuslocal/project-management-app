@@ -1,30 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FormInput from '../../../shared/components/Form/IconInput/IconInput';
-import CheckBox from '../../../shared/components/Form/CheckBox/CheckBox';
 import { Margin } from '../../../shared/utils/global';
-import {
-  FormTitle,
-  GrayText,
-  LoginContainer,
-  FormSmallText,
-  LinkText,
-} from './Signup.style';
 import { register } from '../../../redux/auth/auth.actions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ErrorMessage from '../../../shared/components/ErrorMessage/ErrorMessage';
-import { Redirect } from 'react-router-dom';
 import { SubmitButton } from '../Landing.style'
-import WelcomePage from '../../Welcome/Welcome';
+import {
+  FormTitle,
+  GrayText,
+  LoginContainer,
+} from './Signup.style';
 
-const SignupForm = ({ register, isAuthenticated, checkUserCredentials, errorMessage, ...props }) => {
+const SignupForm = ({ register, errorMessage, ...props }) => {
   const [userCredentials, setUserCredentials] = useState({
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
-    // role: 'Admin'
   });
+  const [passwordsUnMatch, setPasswordsUnMatch] = useState(false);
 
   const { name, email, password, confirmPassword } = userCredentials;
 
@@ -32,9 +27,12 @@ const SignupForm = ({ register, isAuthenticated, checkUserCredentials, errorMess
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert('Passwords do not match');
+      setPasswordsUnMatch(true)
       return
+    } else if (passwordsUnMatch) {
+      setPasswordsUnMatch(false)
     }
+
     register({ name, email, password });
   }
 
@@ -43,18 +41,14 @@ const SignupForm = ({ register, isAuthenticated, checkUserCredentials, errorMess
     setUserCredentials({ ...userCredentials, [name]: value });
   };
 
-  if (isAuthenticated && checkUserCredentials) {
-    return <WelcomePage />;
-  }
-
   return (
     <LoginContainer>
       <FormTitle>
         Sign up <GrayText>for your account</GrayText>
       </FormTitle>
-      {errorMessage &&
+      {(errorMessage || passwordsUnMatch) &&
         <Margin bottom={40} >
-          <ErrorMessage errorMessage={errorMessage} />
+          <ErrorMessage errorMessage={passwordsUnMatch ? 'Passwords do not match' : errorMessage} />
         </Margin>
       }
       <form onSubmit={handleSubmit}>
@@ -105,7 +99,6 @@ const SignupForm = ({ register, isAuthenticated, checkUserCredentials, errorMess
         <Margin bottom={30} >
           <SubmitButton name='button' type='submit' value='Sign up now' />
         </Margin>
-        {/* <FormSmallText>Try right now ? <LinkText to="/">Use guest login</LinkText></FormSmallText> */}
       </form>
     </LoginContainer>
   );
@@ -113,13 +106,10 @@ const SignupForm = ({ register, isAuthenticated, checkUserCredentials, errorMess
 
 SignupForm.propTypes = {
   register: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool,
   errorMessage: PropTypes.string
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  checkUserCredentials: state.auth.checkUserCredentials,
   errorMessage: state.auth.errorMessage
 });
 

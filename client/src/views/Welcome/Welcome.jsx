@@ -54,11 +54,11 @@ const WelcomePage = ({
     setIsloading(false);
   }
 
-  if (userCredentials.orgId && userCredentials.position && userCredentials.role) {
+  if (userCredentials.orgId && userCredentials.role) {
     return (
       isLoading ? (
         <Spinner loadingText="Generating your demo data, please wait..." filled={true} />
-        ) : (
+      ) : (
           <Redirect to="/app/dashboard" />
         )
     )

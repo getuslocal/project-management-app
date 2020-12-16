@@ -5,6 +5,7 @@ import SignupForm from './Signup/Signup';
 import store from '../../redux/store';
 import { refreshErrorMessage } from '../../redux/auth/auth.actions'
 import Icon from '../../shared/components/Icon/Icon'
+import CustomLinkButton from '../../shared/components/Button/CustomLinkButton/CustomLinkButton';
 import {
   Container,
   Left,
@@ -18,10 +19,15 @@ import {
   Image,
   Bottom
 } from './Landing.style';
-import CustomLinkButton from '../../shared/components/Button/CustomLinkButton/CustomLinkButton';
+import WelcomePage from '../Welcome/Welcome';
 
-const Landing = ({ errorMessage }) => {
+const Landing = ({ errorMessage, isAuthenticated, checkUserCredentials }) => {
   const [isActive, setisActive] = useState('login')
+
+  if (isAuthenticated && checkUserCredentials) {
+    return <WelcomePage />;
+  }
+
   return (
     <Container>
       <Left>
@@ -74,6 +80,8 @@ const Landing = ({ errorMessage }) => {
 };
 
 const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  checkUserCredentials: state.auth.checkUserCredentials,
   errorMessage: state.auth.errorMessage,
 });
 
