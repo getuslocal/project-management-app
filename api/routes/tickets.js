@@ -86,8 +86,6 @@ router.post('/comment/:id', verify, async (req, res) => {
     const newComment = {
       user: user._id,
       text: req.body.text,
-      name: user.name,
-      pictureUrl: user.pictureUrl,
     };
 
     ticket.comments.unshift(newComment);
@@ -100,12 +98,12 @@ router.post('/comment/:id', verify, async (req, res) => {
   }
 });
 
-// @route  DELETE tickets/comment/:id/:comment_id
+// @route  DELETE tickets/comment/:ticket_id/:comment_id
 // @desc   Delete comment
 // @access Private
-router.delete('/comment/:id/:comment_id', verify, async (req, res) => {
+router.delete('/comment/:ticket_id/:comment_id', verify, async (req, res) => {
   try {
-    const ticket = await Ticket.findById(req.params.id);
+    const ticket = await Ticket.findById(req.params.ticket_id);
 
     // Pull out comment
     const comment = ticket.comments.find(

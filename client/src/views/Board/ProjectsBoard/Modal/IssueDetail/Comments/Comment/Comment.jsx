@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment'
 import Icon from '../../../../../../../shared/components/Icon/Icon';
+import { defaultUserIcon } from '../../../../../../../shared/constants/projects'
 import {
   Container,
   Content,
@@ -14,14 +15,18 @@ import {
   IconCont
 } from '../../IssueDetail.style';
 
-const Comments = ({ comment, userId, deleteComment }) => (
+const Comments = ({ comment, userId, userData, deleteComment }) => (
   <Container >
     <IconCont>
-      <Icon type="user-icon" imageUrl={comment.pictureUrl} size={32} />
+      <Icon
+        type="user-icon"
+        imageUrl={userData ? userData.pictureUrl : defaultUserIcon}
+        size={32}
+      />
     </IconCont>
     <Content>
       <Name>
-        {comment.name}
+        {userData ? userData.name : 'Unknown user'}
         <Time>{moment(comment.date).fromNow()}</Time>
       </Name>
       <TextArea

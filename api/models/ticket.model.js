@@ -42,17 +42,12 @@ const ticketSchema = new Schema({
   comments: [
     {
       user: {
-        type: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId,
+        required: true
       },
       text: {
         type: String,
         required: true
-      },
-      name: {
-        type: String
-      },
-      pictureUrl: {
-        type: String
       },
       date: {
         type: Date,

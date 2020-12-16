@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Icon from '../../../../../../shared/components/Icon/Icon';
 import { selectUser } from '../../../../../../redux/auth/auth.selectors';
+import { selectMembers } from '../../../../../../redux/members/members.selectors';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -13,7 +14,6 @@ import {
   Title,
   Top,
   Textarea,
-  CommentsList,
   TextAreaWrapper,
   ButtonsContainer,
 } from './Comments.style';
@@ -21,10 +21,19 @@ import {
   IconCont
 } from '../IssueDetail.style';
 
-const Comments = ({ currentUser, comments, ticketId, addComment, deleteComment, updateTicketHistory }) => {
+const Comments = ({
+  currentUser,
+  memberList,
+  comments,
+  ticketId,
+  addComment,
+  deleteComment,
+  updateTicketHistory
+}) => {
   const [text, setText] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const { _id: userId, pictureUrl } = currentUser;
+
   return (
     <Container>
       <Title>Comments</Title>
@@ -74,6 +83,7 @@ const Comments = ({ currentUser, comments, ticketId, addComment, deleteComment, 
           <Comment
             key={comment._id}
             comment={comment}
+            userData={memberList.find(member => member._id === comment.user)}
             userId={userId}
             deleteComment={() => deleteComment(ticketId, comment._id)}
           />
@@ -85,12 +95,14 @@ const Comments = ({ currentUser, comments, ticketId, addComment, deleteComment, 
 
 Comments.propTypes = {
   currentUser: PropTypes.object.isRequired,
+  memberList: PropTypes.array.isRequired,
   addComment: PropTypes.func.isRequired,
   deleteComment: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectUser
+  currentUser: selectUser,
+  memberList: selectMembers
 });
 
 export default connect(mapStateToProps, { addComment, deleteComment })(Comments);

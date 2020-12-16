@@ -21,3 +21,5 @@ export const getRandomProjectIcon = () => {
 
   return randomIcon;
 }
+
+export const defaultUserIcon = "https://i.ibb.co/k6c1RR5/default-profile.png";
