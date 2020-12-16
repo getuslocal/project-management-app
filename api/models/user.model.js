@@ -2,28 +2,17 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  role: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 5
-  },
-  position: {
-    type: String,
-    required: true,
-    trim: true,
-  },
   name: {
     type: String,
     required: true,
-    unique: true,
+    // unique: true, // Uncomment this for demo purpose.
     trim: true,
     minlength: 3
   },
   email: {
     type: String,
     required: true,
-    unique: true,
+    // unique: true,
     trim: true,
     minlength: 5
   },
@@ -38,10 +27,16 @@ const userSchema = new Schema({
     required: true,
     trim: true,
   },
+  role: {
+    type: String,
+    trim: true,
+  },
+  position: {
+    type: String,
+    trim: true,
+  },
   orgId: {
     type: Schema.Types.ObjectId,
-    required: true,
-    trim: true,
   },
 }, {
   timestamps: true

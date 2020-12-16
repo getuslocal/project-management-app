@@ -80,6 +80,17 @@ export const updateUser = (userId, formData) => async dispatch => {
     const res = await api.post(`/users/update/${userId}`, formData);
 
     dispatch({ type: USER_UPDATED, payload: res.data });
+  } catch (err) {
+    dispatch(setAlert(err.response.data, 'error'));
+  }
+};
+
+// Update User Profile
+export const updateUserProfile = (userId, formData) => async dispatch => {
+  try {
+    const res = await api.post(`/users/update/profile/${userId}`, formData);
+
+    dispatch({ type: USER_UPDATED, payload: res.data });
 
     // Update the user in member state.
     dispatch(updateMember(userId, res.data));

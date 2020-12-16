@@ -11,9 +11,9 @@ import { connect } from 'react-redux';
 import { selectUser } from '../../../redux/auth/auth.selectors';
 import Input from '../../../shared/components/Form/Input/Input';
 import ImageFileUpload from '../../../shared/components/Form/ImageFileUpload/ImageFileUpload';
-import { updateUser } from '../../../redux/auth/auth.actions';
+import { updateUserProfile } from '../../../redux/auth/auth.actions';
 
-const EditProfileModal = ({ closeModal, currentUser, updateUser }) => {
+const EditProfileModal = ({ closeModal, currentUser, updateUserProfile }) => {
 
   const [formValues, setFormValues] = useState({
     name: currentUser.name,
@@ -32,7 +32,7 @@ const EditProfileModal = ({ closeModal, currentUser, updateUser }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Update user profile.
-    updateUser(currentUser._id, formValues);
+    updateUserProfile(currentUser._id, formValues);
     closeModal();
   }
 
@@ -99,4 +99,4 @@ const mapStateToProps = createStructuredSelector({
   currentUser: selectUser
 })
 
-export default connect(mapStateToProps, { updateUser })(EditProfileModal)
+export default connect(mapStateToProps, { updateUserProfile })(EditProfileModal)

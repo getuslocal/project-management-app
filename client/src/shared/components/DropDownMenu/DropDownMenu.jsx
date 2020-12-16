@@ -8,15 +8,24 @@ import {
   Content,
   CurrentItem,
   AngleDownIcon,
+  Description
 } from './DropDownMenu.style';
 
-function DropDownMemu({ title, currentItem, onChange, options, renderValue }) {
+function DropDownMemu({
+  title,
+  currentItem,
+  onChange,
+  options,
+  renderValue,
+  description,
+  ...props
+}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <Container>
+    <Container {...props}>
       <Title>{title}</Title>
-      <Content onClick={() => setIsMenuOpen(true)}>
+      <Content className="drop-down-menu-content" onClick={() => setIsMenuOpen(true)}>
         <CurrentItem>
           {currentItem}
         </CurrentItem>
@@ -31,6 +40,7 @@ function DropDownMemu({ title, currentItem, onChange, options, renderValue }) {
         options={options}
         renderValue={renderValue}
       />
+      {description && <Description>{description}</Description>}
     </Container>
   )
 }

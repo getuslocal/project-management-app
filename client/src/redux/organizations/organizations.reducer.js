@@ -1,5 +1,6 @@
 import {
   GET_ORGANIZATION,
+  CREATE_ORGANIZATION
 } from './organizations.types';
 
 const organizationReducer = (state = null, action) => {
@@ -7,7 +8,10 @@ const organizationReducer = (state = null, action) => {
   switch (type) {
     case GET_ORGANIZATION:
       return {
-        ...state,
+        ...payload
+      }
+    case CREATE_ORGANIZATION:
+      return {
         ...payload
       }
     default:

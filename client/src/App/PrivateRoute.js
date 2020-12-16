@@ -14,7 +14,7 @@ const PrivateRoute = ({
     render={props =>
       !checkUserCredentials ? (
         <Spinner />
-      ) : isAuthenticated ? (
+      ) : (isAuthenticated && user.orgId ) ? (
         <Component {...props} user={user} />
       ) : (
         <Redirect to="/" /> 

@@ -21,6 +21,7 @@ export const Content = styled.div`
   border-radius: 3px;
   background-color: ${color.backgroundLightest2};
   min-height: 40px;
+  transition: background-color .3s;
 
   &:hover {
     background-color: ${color.hoverGray};
@@ -46,4 +47,10 @@ export const CurrentItem = styled.div`
 
 export const AngleDownIcon = styled.span`
   margin-left: auto;
+`
+
+export const Description = styled.div`
+  font-size: 12px;
+  line-height: 1.6;
+  color: ${color.textMedium};
 `

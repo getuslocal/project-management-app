@@ -24,6 +24,7 @@ const BoardContainer = ({
       // Get roles of the user based on user role.
       await getRoles(user.role);
       // Get organization data of the user.
+      // @TODO: not perform if already stored.
       await getOrganization(user.orgId);
       // Get all the projects of the organization.
       await getProjects(user.orgId);

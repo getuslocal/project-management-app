@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { color } from '../../utils/styles';
 
 export const SpinnerOverlay = styled.div`
   height: 100vh;
@@ -9,6 +10,13 @@ export const SpinnerOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: ${props => props.filled ? color.white : 'unset'};
+
+  & > p {
+    position: absolute;
+    top: 40vh;
+    margin: 0;
+  }
 `;
 
 export const SpinnerContainer = styled.div`

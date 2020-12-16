@@ -15,17 +15,17 @@ router.get('/:id', verify, (req, res) => {
 // @desc   Create a new organization.
 // @access Private
 router.post('/create', verify, async (req, res) => {
-  const { name } = req.body;
-
-  //Create a new organization
-  const newOrganization = new Organization({
-    name: name,
-    projects: [],
-  });
-
   try {
-    await newOrganization.save();
-    res.json('Created a new organization !')
+    const { name } = req.body;
+
+    //Create a new organization
+    const newOrganization = new Organization({
+      name: name,
+      projects: [],
+    });
+
+    const savedOrg = await newOrganization.save();
+    res.json(savedOrg);
   } catch (err) {
     res.status(400).send(err);
   }

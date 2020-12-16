@@ -34,7 +34,7 @@ export const Right = styled.div`
   height: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
-  min-height: calc(100vh - 208px);
+  min-height: calc(100vh - 215px);
 `
 
 export const TopLeftContent = styled.div`

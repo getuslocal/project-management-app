@@ -15,8 +15,9 @@ import {
   LinkText,
 } from './Login.style';
 import { SubmitButton } from '../Landing.style'
+import WelcomePage from '../../Welcome/Welcome';
 
-const LoginForm = ({ login, isAuthenticated, errorMessage }) => {
+const LoginForm = ({ login, isAuthenticated, errorMessage, checkUserCredentials }) => {
   const [userCredentials, setCredentials] = useState({
     email: '',
     password: '',
@@ -35,8 +36,9 @@ const LoginForm = ({ login, isAuthenticated, errorMessage }) => {
     login({ email, password });
   }
 
-  if (isAuthenticated) {
-    return <Redirect to="/app/dashboard" />;
+  if (isAuthenticated && checkUserCredentials) {
+    // return <Redirect to="/app/dashboard" />;
+    return <WelcomePage  />;
   }
 
   return (
@@ -88,6 +90,7 @@ LoginForm.propTypes = {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
+  checkUserCredentials: state.auth.checkUserCredentials,
   errorMessage: state.auth.errorMessage
 });
 

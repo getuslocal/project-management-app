@@ -15,36 +15,36 @@ import { connect } from 'react-redux';
 import ErrorMessage from '../../../shared/components/ErrorMessage/ErrorMessage';
 import { Redirect } from 'react-router-dom';
 import { SubmitButton } from '../Landing.style'
+import WelcomePage from '../../Welcome/Welcome';
 
-const SignupForm = ({ register, isAuthenticated, errorMessage }) => {
+const SignupForm = ({ register, isAuthenticated, checkUserCredentials, errorMessage, ...props }) => {
   const [userCredentials, setUserCredentials] = useState({
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
-    role: 'Admin'
+    // role: 'Admin'
   });
 
-  const { name, email, password, confirmPassword, role } = userCredentials;
+  const { name, email, password, confirmPassword } = userCredentials;
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
       alert('Passwords do not match');
-    } else {
-      register({ name, email, password, role });
+      return
     }
+    register({ name, email, password });
   }
 
   const handleChange = event => {
     const { name, value } = event.target;
-
     setUserCredentials({ ...userCredentials, [name]: value });
   };
 
-  if (isAuthenticated) {
-    return <Redirect to="/app/dashboard" />;
+  if (isAuthenticated && checkUserCredentials) {
+    return <WelcomePage />;
   }
 
   return (
@@ -52,10 +52,11 @@ const SignupForm = ({ register, isAuthenticated, errorMessage }) => {
       <FormTitle>
         Sign up <GrayText>for your account</GrayText>
       </FormTitle>
-      {errorMessage ?
+      {errorMessage &&
         <Margin bottom={40} >
           <ErrorMessage errorMessage={errorMessage} />
-        </Margin> : ''}
+        </Margin>
+      }
       <form onSubmit={handleSubmit}>
         <Margin bottom={40} >
           <FormInput
@@ -118,6 +119,7 @@ SignupForm.propTypes = {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
+  checkUserCredentials: state.auth.checkUserCredentials,
   errorMessage: state.auth.errorMessage
 });
 

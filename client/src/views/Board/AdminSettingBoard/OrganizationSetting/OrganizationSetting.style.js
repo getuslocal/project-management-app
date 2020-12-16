@@ -8,6 +8,7 @@ export const FlexContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+  align-items: center;
 `;
 
 export const Title = styled.h2`

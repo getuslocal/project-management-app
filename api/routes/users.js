@@ -14,7 +14,6 @@ router.get('/authenticate', verify, (req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 })
 
-
 // @route  GET users/:userId
 // @desc   Get user by id.
 // @access Private 
@@ -32,6 +31,26 @@ router.post('/update/:id', verify, async (req, res) => {
     const userId = req.params.id;
     const formData = req.body;
 
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId },
+      { $set: formData },
+      { new: true, runValidator: true }
+    ).select('-password');
+
+    res.json(updatedUser);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+// @route  POST users/update/profile/:userId
+// @desc   Update user profile.
+// @access Private 
+router.post('/update/profile/:id', verify, async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const formData = req.body;
+
     const updatedValues = {
       name: formData.name,
       email: formData.email,
@@ -44,14 +63,12 @@ router.post('/update/:id', verify, async (req, res) => {
 
     if (error) return res.status(400).send(error.details[0].message);
 
-    // Return response without password.
-    const returnFields = "_id role position name email pictureUrl orgId createdAt updatedAt";
-
     const updatedUser = await User.findOneAndUpdate(
       { _id: userId },
       { $set: updatedValues },
-      { new: true, runValidator: true, fields: returnFields }
-    );
+      { new: true, runValidator: true }
+    ).select('-password');;
+
     res.json(updatedUser)
   } catch (err) {
     res.status(400).send(err);
@@ -99,7 +116,7 @@ router.post('/register', async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   // @TODO: Remove this line later. Just temp code.
-  const role = "Admin"
+  // const role = "Admin"
   const { name, email, password } = req.body;
 
   //Check if the user already exists
@@ -112,11 +129,13 @@ router.post('/register', async (req, res) => {
 
   //Create a new user
   const newUser = new User({
-    role: role,
+    // role: role,
     name: name,
     email: email,
     password: hashedPassword,
-    pictureUrl: "https://i.ibb.co/k6c1RR5/default-profile.png" // default user pic.
+    pictureUrl: "https://i.ibb.co/k6c1RR5/default-profile.png", // Default user pic.
+    // orgId: '', // For demo purpose.
+    // position: '', // For demo purpose.
   });
 
   try {
