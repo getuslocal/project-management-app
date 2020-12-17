@@ -45,7 +45,6 @@ export const DemoContent = styled.div`
   background-color: #eef5f9;
   border: 1px solid #b3daf0;
   padding: 7px;
-  border: 1px solid #ddd;
   border-radius: 3px;
 
   & > h3 {

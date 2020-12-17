@@ -10,10 +10,10 @@ import {
   Options,
 } from './Modal.style';
 
-const Modal = ({ title, modalWidth, children, renderOptions }) => {
+const Modal = ({ title, modalWidth, children, renderOptions, closeOnBlanket }) => {
   return (
     <ModalContainer>
-      <Blanket />
+      <Blanket onClick={() => { if (closeOnBlanket) closeOnBlanket(); }} />
       <Container>
         <Wrapper>
           <Content modalWidth={modalWidth} >
@@ -32,8 +32,9 @@ const Modal = ({ title, modalWidth, children, renderOptions }) => {
 Modal.defaultProps = {
   title: undefined,
   modalWidth: 500,
-  renderOptions: () => {},
+  renderOptions: () => { },
   children: [],
+  closeOnBlanket: undefined,
 }
 
 Modal.propTypes = {

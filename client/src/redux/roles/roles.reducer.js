@@ -4,7 +4,7 @@ import {
   UPDATE_WITH_UPDATED_PROJECT_INFO,
   UPDATE_WITH_REMOVED_PROJECT,
   GET_ROLES,
-  UPDATE_ROLES
+  UPDATE_ROLES,
 } from './roles.types';
 import { getProjectLabelAndLinkMap } from './roles.utils';
 
@@ -13,18 +13,18 @@ const rolesReducer = (state = null, action) => {
   switch (type) {
     case GET_ROLES:
       return {
-        ...state,
+        // ...state,
         ...payload
       }
     case UPDATE_ROLES: {
       if (payload === roleNames.PROJECTMANAGER) {
         const { adminSetting: removed, ...restRoles } = state;
         return restRoles;
-      } 
+      }
       else if (payload === roleNames.MEMBER) {
         const { dashboard, projects } = state;
         return { dashboard, projects };
-      } 
+      }
       else {
         return state;
       }

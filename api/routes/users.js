@@ -115,8 +115,6 @@ router.post('/register', async (req, res) => {
   const { error } = registerValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  // @TODO: Remove this line later. Just temp code.
-  // const role = "Admin"
   const { name, email, password } = req.body;
 
   //Check if the user already exists
@@ -129,13 +127,10 @@ router.post('/register', async (req, res) => {
 
   //Create a new user
   const newUser = new User({
-    // role: role,
     name: name,
     email: email,
     password: hashedPassword,
     pictureUrl: "https://i.ibb.co/k6c1RR5/default-profile.png", // Default user pic.
-    // orgId: '', // For demo purpose.
-    // position: '', // For demo purpose.
   });
 
   try {
@@ -172,7 +167,25 @@ router.post('/login', async (req, res) => {
   } catch (err) {
     res.status(500).send('Server error');
   }
+});
 
+
+// @route  POST users/login
+// @desc   Login for demo without validating password.
+// @access Public 
+router.post('/demo_login', async (req, res) => {
+  try {
+    const { email } = req.body;
+    //Check if the user already exists
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).send('Email or password is wrong');
+
+    const userId = { _id: user._id }
+    const token = generateAccessToken(userId);
+    res.json({ token: token });
+  } catch (err) {
+    res.status(500).send('Server error');
+  }
 });
 
 function generateAccessToken(userId) {

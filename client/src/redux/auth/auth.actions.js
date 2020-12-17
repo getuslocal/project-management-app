@@ -140,3 +140,20 @@ export const updateCurrentUserRole = (userId, newRole) => async dispatch => {
     dispatch(setAlert(err.response.data, 'error'));
   }
 };
+
+// Login for demo without validating password.
+export const demoLogin = formData => async dispatch => {
+  try {
+    const res = await api.post('/users/demo_login', formData);
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data
+    });
+    dispatch(loadUser());
+  } catch (err) {
+    dispatch({
+      type: LOGIN_FAIL,
+      payload: err.response.data
+    });
+  }
+};

@@ -63,6 +63,7 @@ const fontIconCodes = {
   [`error`]: '\f057',
   [`success`]: '\f058',
   [`upload`]: '\f093',
+  [`demo`]: '\f108',
 };
 
 const propTypes = {

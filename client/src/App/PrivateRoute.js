@@ -3,6 +3,8 @@ import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../shared/components/WithSpinner/Spinner';
+import { selectAuthInfo } from '../redux/auth/auth.selectors';
+import { createStructuredSelector } from 'reselect';
 
 const PrivateRoute = ({
   component: Component,
@@ -17,8 +19,8 @@ const PrivateRoute = ({
       ) : (isAuthenticated && user.orgId && user.role) ? (
         <Component {...props} user={user} />
       ) : (
-        <Redirect to="/" /> 
-      )
+            <Redirect to="/" />
+          )
     }
   />
 );
@@ -27,8 +29,8 @@ PrivateRoute.propTypes = {
   auth: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => ({
-  auth: state.auth
+const mapStateToProps = createStructuredSelector({
+  auth: selectAuthInfo
 });
 
 export default connect(mapStateToProps)(PrivateRoute);

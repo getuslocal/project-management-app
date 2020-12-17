@@ -4,7 +4,7 @@ import {
   UPDATE_ROLES,
   UPDATE_WITH_PROJECT_INFO,
   UPDATE_WITH_UPDATED_PROJECT_INFO,
-  UPDATE_WITH_REMOVED_PROJECT
+  UPDATE_WITH_REMOVED_PROJECT,
 } from './roles.types';
 
 export const getRoles = (role) => dispatch => {

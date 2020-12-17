@@ -15,11 +15,13 @@ const smallView = css`
 
   .side-bar-main,
   .side-bar-logo,
-  .side-bar-logout>span{
+  .side-bar-logout>span,
+  .side-bar-demo-button>span {
     display: none;
   }
   
-  .side-bar-logout {
+  .side-bar-logout,
+  .side-bar-demo-button {
     transition: all .3s;
     margin-left: 0;
     margin-right: 0;
@@ -211,3 +213,23 @@ export const LogoutButton = styled(Button)`
     background-color: ${color.lightBlue};
   }
 `;
+
+export const DemoSettingButton = styled(Button)`
+  transition: all .3s;
+  margin: 0 30px;
+  border-radius: 20px;
+  color: ${color.textDarkest};
+  min-width: 160px;
+  width: 160px;
+  color: #fff;
+  background-color: #00b1ff;
+  font-weight: 600;
+
+  & > i {
+    margin-right: 8px;
+  }
+
+  &:hover {
+    background-color: rgb(89 204 255);
+  }
+`

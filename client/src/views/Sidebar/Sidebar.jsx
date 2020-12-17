@@ -1,4 +1,11 @@
 import React, { useState } from 'react';
+import store from '../../redux/store';
+import { logout } from '../../redux/auth/auth.actions';
+import LinkList from './LinkList/LinkList';
+import Icon from '../../shared/components/Icon/Icon';
+import { Fragment } from 'react';
+import EditProfileModal from './EditProfileModal/EditProfileModal';
+import DemoModal from './DemoModal/DemoModal';
 import {
   Logo,
   ResizeButton,
@@ -12,13 +19,8 @@ import {
   UserProfile,
   UserProfileOverview,
   Blanket,
+  DemoSettingButton
 } from './Sidebar.style';
-import store from '../../redux/store';
-import { logout } from '../../redux/auth/auth.actions';
-import LinkList from './LinkList/LinkList';
-import Icon from '../../shared/components/Icon/Icon';
-import { Fragment } from 'react';
-import EditProfileModal from './EditProfileModal/EditProfileModal';
 
 const Sidebar = ({
   user: { name, role, pictureUrl },
@@ -27,6 +29,7 @@ const Sidebar = ({
   setSecondaryView
 }) => {
   const [profileModal, setProfileModal] = useState(false);
+  const [demoModal, setDemoModal] = useState(false);
   return (
     <Fragment>
       <Blanket onClick={setSecondaryView} className="side-bar-blanket" isActive={secondaryView} ></Blanket>
@@ -74,16 +77,23 @@ const Sidebar = ({
               </nav>
             </MainContent>
           </div>
-          <LogoutButton
-            className="side-bar-logout"
-            onClick={() => store.dispatch(logout())}
-          >
-            <i className="fas fa-sign-out-alt"></i>
-            <span>Logout</span>
-          </LogoutButton>
+          <div>
+            <DemoSettingButton className="side-bar-demo-button" onClick={() => setDemoModal(true)}>
+              <Icon type="demo" size={13} isSolid={true} />
+              <span>Demo Options</span>
+            </DemoSettingButton>
+            <LogoutButton
+              className="side-bar-logout"
+              onClick={() => store.dispatch(logout())}
+            >
+              <i className="fas fa-sign-out-alt"></i>
+              <span>Logout</span>
+            </LogoutButton>
+          </div>
         </Wrapper>
       </Container>
       {profileModal && <EditProfileModal closeModal={() => setProfileModal(false)} />}
+      {demoModal && <DemoModal closeModal={() => setDemoModal(false)} />}
     </Fragment>
   )
 }
