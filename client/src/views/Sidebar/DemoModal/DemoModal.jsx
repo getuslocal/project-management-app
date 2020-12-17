@@ -46,7 +46,7 @@ const DemoModal = ({
   }
 
   const handleUserChange = async () => {
-    if (user === currentUser.role) return;
+    if (user === currentUser._id) return;
     const newUser = memberList.find(member => member._id === user);
     // Logout.
     await logout();
@@ -80,7 +80,13 @@ const DemoModal = ({
         }}
       />
       <Action>
-        <Button text="Update role" variant="primary" type="submit" onClick={handleRoleUpdate} />
+        <Button
+          text="Update role"
+          variant="primary"
+          type="submit"
+          onClick={handleRoleUpdate}
+          inactive={(role === currentUser.role)}
+        />
       </Action>
       <DropDownMemu
         title="Choose a user"
@@ -102,7 +108,12 @@ const DemoModal = ({
         }}
       />
       <Action>
-        <Button text="Login as this user" variant="primary" onClick={handleUserChange} />
+        <Button
+          text="Login as this user"
+          variant="primary"
+          onClick={handleUserChange}
+          inactive={(user === currentUser._id)}
+        />
       </Action>
     </Modal>
   )

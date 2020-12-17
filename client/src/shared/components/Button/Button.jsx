@@ -12,6 +12,7 @@ const defaultProps = {
   text: undefined,
   variant: 'secondary',
   handleClick: () => {},
+  inactive: false,
 };
 
 const Button = ({
@@ -19,12 +20,14 @@ const Button = ({
   handleClick,
   variant,
   children,
+  inactive,
   ...otherProps
 }) => {
   return (
     <StyledButton
       onClick={handleClick}
       variant={variant}
+      inactive={inactive}
       {...otherProps}
     >
       {text && text}

@@ -1,16 +1,5 @@
 import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
-import { color, fontSize, padding } from '../../utils/styles';
-
-const mediumButtonStyle = css`
-  font-size: 16px;
-  padding: 9px 14px;
-`
-
-const largeButtonStyle = css`
-  font-size: 18px;
-  padding: 10px 16px;
-`
+import { color } from '../../utils/styles';
 
 const smallButtonStyle = css`
   font-size: 12px;
@@ -23,7 +12,15 @@ export const StyledButton = styled.button`
   font-size: 14px;
   border-radius: 3px;
   padding: 10px 12px;
-  ${props => buttonVariants[props.variant]}
+  ${props => buttonVariants[props.variant]};
+
+  ${props => props.inactive && css`
+    background-color: ${color.backgroundLightest};
+    color: ${color.textVeryLight};
+    &:hover{
+      cursor: default;
+    }
+  `};
 `
 
 const colored = css`
@@ -56,56 +53,5 @@ const buttonVariants = {
   text: css`
     ${textButtonStyle}
   `,
-  small: smallButtonStyle,
-};
-
-// @todo : Organize the followings for LP.
-
-const buttonStyles = css`
-  display: inline-block;
-  color: ${color.textLight};
-  line-height: 1;
-`;
-
-export const LinkButtonContainer = styled.p`
-display: inline-block;
-
-&.active{
-    a{
-        border-color: ${color.primary};
-        color: ${color.primary};
-    }
-}
-`;
-
-export const CustomLink = styled(Link)`
-    display: inline-block;
-    color: ${color.textLight};
-    line-height: 1;
-    padding: ${padding.double} ${padding.double};
-    border: 0;
-    text-align: center;
-    cursor: pointer;
-    font-weight: 400;
-    width: 100%;
-    height: 100%;
-    border-bottom: 4px solid transparent;
-
-    &:before{
-        padding-right: .85em;
-        font-size: ${fontSize.small2};
-    }
-
-    &:hover{
-        color: ${color.primary};
-    }
-
-    ${getButtonStyles}
-`
-const getButtonStyles = props => {
-  if (props.isGoogleSignIn) {
-    return googleSignInStyles;
-  }
-
-  return props.inverted ? invertedButtonStyles : buttonStyles;
+  small: smallButtonStyle
 };

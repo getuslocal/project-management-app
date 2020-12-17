@@ -48,7 +48,7 @@ const Landing = ({ errorMessage, isAuthenticated, checkUserCredentials }) => {
             iconType="user"
             to="/"
             text="Log in"
-            className={`w-50 ${isActive === 'login' ? 'active' : ''}`}
+            className={isActive === 'login' ? 'active' : ''}
             onClick={() => {
               setisActive('login');
               if (errorMessage) store.dispatch(refreshErrorMessage());
@@ -58,7 +58,7 @@ const Landing = ({ errorMessage, isAuthenticated, checkUserCredentials }) => {
             iconType="unlock"
             to="/"
             text="Sign up"
-            className={`w-50 ${isActive === 'signup' ? 'active' : ''}`}
+            className={isActive === 'signup' ? 'active' : ''}
             onClick={() => {
               setisActive('signup');
               if (errorMessage) store.dispatch(refreshErrorMessage());

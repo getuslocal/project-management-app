@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-  LinkButtonContainer,
+  Container,
   CustomLink,
-} from '../Button.style';
+} from './CustomLinkButton.style';
 
 const CustomLinkButton = ({ iconType, text, to, ...props }) => (
-  <LinkButtonContainer {...props}>
+  <Container {...props}>
       <CustomLink className={`icon-${iconType}`} to={to}>{text}</CustomLink>
-  </LinkButtonContainer>
+  </Container>
 );
 
 export default CustomLinkButton;

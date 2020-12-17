@@ -2,7 +2,6 @@ import React, { Fragment, useEffect } from 'react'
 import { hot } from 'react-hot-loader/root'
 import Routes from './Routes'
 import NormalizeStyles from './styles/NormalizeStyles'
-import GlobalClasses from './styles/GlobalClasses'
 import BaseStyles from './styles/BaseStyles'
 import IconStyles from './styles/IconStyles'
 import store from '../redux/store'
@@ -20,7 +19,6 @@ const App = () => {
     <Fragment>
       <NormalizeStyles />
       <BaseStyles />
-      <GlobalClasses />
       <IconStyles />
       <Routes />
     </Fragment>
