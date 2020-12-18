@@ -27,7 +27,7 @@ function DropDownMemu({
       <Title>{title}</Title>
       <Content className="drop-down-menu-content" onClick={() => setIsMenuOpen(true)}>
         <CurrentItem>
-          {currentItem}
+          {currentItem()}
         </CurrentItem>
         <AngleDownIcon>
           <Icon type="angle-down" isSolid={true} size={14} />

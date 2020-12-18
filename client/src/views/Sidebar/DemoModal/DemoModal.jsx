@@ -36,6 +36,9 @@ const DemoModal = ({
 
   const { role, user } = formValues;
 
+  const newUser = memberList.find(member => member._id === user);
+  const newRole = Object.values(descriptiveRoleNames).find(descRole => descRole.id === role);
+
   const handleRoleUpdate = async () => {
     if (role === currentUser.role) return
 
@@ -47,7 +50,6 @@ const DemoModal = ({
 
   const handleUserChange = async () => {
     if (user === currentUser._id) return;
-    const newUser = memberList.find(member => member._id === user);
     // Logout.
     await logout();
     // Login for demo without validating password.
@@ -57,7 +59,7 @@ const DemoModal = ({
   return (
     <Modal
       title="Demo Options"
-      modalWidth={600}
+      modalWidth={650}
       closeOnBlanket={closeModal}
     >
       <CloseButton onClick={closeModal}>
@@ -65,13 +67,15 @@ const DemoModal = ({
       </CloseButton>
       <DropDownMemu
         title="Choose a role"
-        currentItem={formValues.role}
+        currentItem={() => (
+          <MenuOption>{newRole.id} <span>(Have access to : <em>{newRole.description}</em>)</span></MenuOption>
+        )}
         onChange={option => setFormValues({ ...formValues, role: option.key })}
-        options={Object.values(descriptiveRoleNames).filter(role => role.id !== formValues.role).map(role => ({
+        options={Object.values(descriptiveRoleNames).filter(descRole => descRole.id !== role).map(role => ({
           key: role.id,
           value: role.description
         }))}
-        renderValue={(option) => (
+        renderValue={option => (
           <MenuOption>{option.key} <span>(Have access to : <em>{option.value}</em>)</span></MenuOption>
         )}
         description="Please choose a role you want to demo."
@@ -90,7 +94,12 @@ const DemoModal = ({
       </Action>
       <DropDownMemu
         title="Choose a user"
-        currentItem={memberList.find(member => member._id === formValues.user).name}
+        currentItem={() => (
+          <MemberOption>
+            <Icon type="user-icon" imageUrl={newUser.pictureUrl} size={25} top={2} />
+            {newUser.name}<span>({newUser.role})</span>
+          </MemberOption>
+        )}
         onChange={option => setFormValues({ ...formValues, user: option.key })}
         options={memberList.filter(member => member._id !== formValues.user).map(member => ({
           key: member._id,

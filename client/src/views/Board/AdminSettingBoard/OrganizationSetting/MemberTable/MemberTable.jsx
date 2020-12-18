@@ -56,11 +56,11 @@ const MemberTable = ({ memberList }) => {
                         setModalMemberData(member);
                       }}
                       text="Edit role"
-                      variant="secondary"
+                      variant="success"
                     />
                   </td>
                   <td>
-                    <Button text="Revoke site access" variant="secondary" />
+                    <Button className="not-implemented-action" text="Revoke site access" variant="secondary" />
                   </td>
                 </tr>
               )

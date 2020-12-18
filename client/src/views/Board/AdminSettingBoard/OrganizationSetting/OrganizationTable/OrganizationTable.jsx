@@ -29,7 +29,7 @@ const OrganizationTable = ({ organization, memberCount, projectCount }) => {
           <td>{memberCount}</td>
           <td>{projectCount} / 5</td>
           <td>
-            <Button text="Delete organization" variant="danger"/>
+            <Button text="Delete organization" variant="danger" className="not-implemented-action" />
           </td>
         </tr>
       </Table.Body>

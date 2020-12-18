@@ -58,7 +58,7 @@ const EditRoleModal = ({
       </Description>
       <DropDownMemu
         title="Choose role of this member"
-        currentItem={role}
+        currentItem={() => role}
         onChange={({ value: roleName }) => setRole(roleName)}
         options={getOptions(role)}
         renderValue={({ value: roleName }) => roleName}

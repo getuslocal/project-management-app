@@ -55,7 +55,7 @@ const EditProjectModal = ({
 
     const isValid = validateKey(key, projectList);
 
-    if (!isValid) {
+    if (!isValid && key != project.key) {
       // Set an error alerm.
       setAlert('The key already exists. Please enter different key.', 'error');
       return;

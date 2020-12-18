@@ -92,7 +92,7 @@ const WelcomePage = ({
             <h3>Demo Setting</h3>
             <DropDownMemu
               title="Choose a role you want to play with (can change anytime later)"
-              currentItem={formValues.role}
+              currentItem={() => formValues.role}
               onChange={option => setFormValues({ ...formValues, role: option.key })}
               options={Object.values(descriptiveRoleNames).filter(role => role.id !== formValues.role).map(role => ({
                 key: role.id,

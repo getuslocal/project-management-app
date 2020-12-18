@@ -37,7 +37,7 @@ const OrganizationSetting = ({
       </Margin>
       <FlexContainer>
         <Title>Organization Members</Title>
-        <Button text="Invite user" variant="primary" />
+        <Button text="Invite user" variant="primary" className="not-implemented-action" />
       </FlexContainer>
       <MemberTable memberList={memberList} />
     </Container>
