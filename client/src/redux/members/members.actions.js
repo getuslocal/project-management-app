@@ -1,31 +1,24 @@
 import api from '../../shared/utils/api';
 import {
-  GET_MEMBERS,
+  GET_ORG_MEMBERS,
   UPDATE_MEMBER,
+  GET_PROJECT_MEMBERS
 } from './members.types';
 
-export const getMembersOfProject = (members) => async dispatch => {
-  let membersList = [];
-  try {
-    for (const memberId of members) {
-      const res = await api.get(`/users/${memberId}`);
-      const memberData = res.data;
-      membersList = [...membersList, memberData]
-    };
-    dispatch({
-      type: GET_MEMBERS,
-      payload: membersList
-    });
-  } catch (err) {
-    console.log(err)
-  }
+// Get project members.
+export const getProjectMembers = (projectMembersList) => dispatch => {
+  dispatch({
+    type: GET_PROJECT_MEMBERS,
+    payload: projectMembersList
+  });
 };
 
-export const getMembersOfOrganization = (orgId) => async dispatch => {
+// Get all the members of the organization.
+export const getOrganizationMembers = (orgId) => async dispatch => {
   try {
     const res = await api.get(`/users/org/${orgId}`);
     dispatch({
-      type: GET_MEMBERS,
+      type: GET_ORG_MEMBERS,
       payload: res.data
     });
   } catch (err) {

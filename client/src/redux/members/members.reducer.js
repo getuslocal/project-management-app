@@ -1,5 +1,6 @@
 import {
-  GET_MEMBERS,
+  GET_ORG_MEMBERS,
+  GET_PROJECT_MEMBERS,
   UPDATE_MEMBER,
 } from './members.types';
 
@@ -11,10 +12,16 @@ const INITIAL_STATE = {
 const membersReducer = (state = INITIAL_STATE, action) => {
   const { type, payload } = action;
   switch (type) {
-    case GET_MEMBERS:
+    case GET_ORG_MEMBERS:
       return {
         ...state,
         members: payload,
+        loading: false
+      }
+    case GET_PROJECT_MEMBERS:
+      return {
+        ...state,
+        members: state.members.filter(member => payload.includes(member._id)),
         loading: false
       }
     case UPDATE_MEMBER:

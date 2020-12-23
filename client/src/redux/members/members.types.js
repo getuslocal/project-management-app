@@ -1,2 +1,3 @@
-export const GET_MEMBERS = 'GET_MEMBERS';
+export const GET_ORG_MEMBERS = 'GET_MEMBERS';
+export const GET_PROJECT_MEMBERS = 'GET_PROJECT_MEMBERS';
 export const UPDATE_MEMBER = 'UPDATE_MEMBER';
