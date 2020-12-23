@@ -136,7 +136,7 @@ const Column = ({
                           <CreateTicketButton
                             isFirstColumn={(index === 0)}
                             onClick={() => setIsQuickTicketActive(true)}
-                          >+ Create ticket</CreateTicketButton>
+                          >+ Create issue</CreateTicketButton>
                       )
                     }
                     {provided.placeholder}

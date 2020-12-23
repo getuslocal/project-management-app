@@ -70,6 +70,7 @@ const QuickIssueCreate = ({
     issueFormValues.projectId = project._id;
     issueFormValues.dueDate = momentDate;
     issueFormValues.columnId = columnId;
+    issueFormValues.linkedEpic = null;
     // Add an issue to the first column of the board.
     createNewTicket(issueFormValues, columnId);
     // Close the content.

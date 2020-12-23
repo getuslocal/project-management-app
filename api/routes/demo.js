@@ -4,6 +4,7 @@ const Project = require('../models/project.model');
 const User = require('../models/user.model');
 const Ticket = require('../models/ticket.model');
 const verify = require('../middleware/auth');
+const { json } = require('express');
 
 // @route  GET organizations/:id
 // @desc   Generate demo all the demo data.
@@ -81,52 +82,74 @@ router.post('/generate', verify, async (req, res) => {
       // Save a new project.
       const savedProject = await newProject.save();
 
-      const projectColumns = savedProject.columns;
-      const projectHistories = savedProject.history;
+      // Create demo tickets.
+      const demoTickets = await Ticket.find({ projectId: projectId });
       let prevAndNewTicketIdsMap = [];
+      for (const ticket of demoTickets) {
+        const { _id: removedId, ...restTicketData } = ticket._doc;
+        const comments = restTicketData.comments;
 
-      for (const columnKey of Object.keys(projectColumns)) {
-        let index = 0;
-        for (const ticketId of projectColumns[columnKey].taskIds) {
-          const ticket = await Ticket.findById(ticketId);
-          const { _id: removedId, ...restTicketData } = ticket._doc;
-          const comments = restTicketData.comments;
+        // Update comments with new ticket ids.
+        comments.forEach((comment, index) => {
+          const newMember = prevAndNewMemberIdsMap.find(data => data.prevId == comment.user);
+          comments[index].user = newMember.newId;
+        })
 
-          // Update comments with new ticket ids.
-          comments.forEach((comment, index) => {
-            const newMember = prevAndNewMemberIdsMap.find(data => data.prevId == comment.user);
-            comments[index].user = newMember.newId;
-          })
+        const prevReporter = prevAndNewMemberIdsMap.find(data => data.prevId === restTicketData.reporterId);
+        const newReporter = prevReporter ? prevReporter.newId : undefined;
+        const prevAssignee = prevAndNewMemberIdsMap.find(data => data.prevId === restTicketData.assigneeId);
+        const newAssignee = prevAssignee ? prevAssignee.newId : undefined;
 
-          const newReporter = prevAndNewMemberIdsMap.find(data => data.prevId === restTicketData.reporterId).newId
-          const newAssignee = prevAndNewMemberIdsMap.find(data => data.prevId === restTicketData.assigneeId).newId
+        // Create a new ticket with the same data.
+        const newTicket = new Ticket({
+          ...restTicketData,
+          reporterId: restTicketData.reporterId == systemAdminId ? userId : newReporter,
+          assigneeId: restTicketData.assigneeId == systemAdminId ? userId : newAssignee,
+          comments: comments,
+          projectId: savedProject._id,
+        });
 
-          // Create a new ticket with the same data.
-          const newTicket = new Ticket({
-            ...restTicketData,
-            reporterId: restTicketData.reporterId == systemAdminId ? userId : newReporter,
-            assigneeId: restTicketData.assigneeId == systemAdminId ? userId : newAssignee,
-            comments: comments,
-            projectId: savedProject._id,
-          });
+        const savedTicket = await newTicket.save();
 
-          const savedTicket = await newTicket.save();
-          // Update taskIds with a new ticket id.
-          projectColumns[columnKey].taskIds[index] = savedTicket._id;
-          // Increment a counter.
-          index++;
+        prevAndNewTicketIdsMap = [
+          {
+            prevId: removedId,
+            newId: savedTicket._id,
+          },
+          ...prevAndNewTicketIdsMap
+        ];
+      }
 
-          prevAndNewTicketIdsMap = [
-            {
-              prevId: removedId,
-              newId: savedTicket._id,
-            },
-            ...prevAndNewTicketIdsMap
-          ]
+      // Update child issues of epic.
+      const newTickets = await Ticket.find({ projectId: savedProject._id });
+      for (const newTicket of newTickets) {
+        const ticketData = newTicket._doc;
+        if (ticketData.linkedEpic && ticketData.issueType !== 'Epic') {
+          const newLinkedEpic = prevAndNewTicketIdsMap.find(data => data.prevId == String(ticketData.linkedEpic));
+          if (newLinkedEpic) {
+            await Ticket.findOneAndUpdate(
+              { _id: ticketData._id },
+              { $set: { linkedEpic: newLinkedEpic.newId } },
+              { runValidator: true }
+            );
+          }
         }
       }
 
+      // Update columns taskids.
+      const projectColumns = savedProject.columns;
+      for (const columnKey of Object.keys(projectColumns)) {
+        let newTaskids = [];
+        for (const ticketId of projectColumns[columnKey].taskIds) {
+          const newTicket = prevAndNewTicketIdsMap.find(data => data.prevId == ticketId);
+          // Update taskIds with a new ticket id.
+          newTaskids.push(newTicket.newId)
+        }
+        projectColumns[columnKey].taskIds = newTaskids;
+      }
+
       // Update histories.
+      const projectHistories = savedProject.history;
       projectHistories.forEach((history, index) => {
         const newTicket = prevAndNewTicketIdsMap.find(data => data.prevId == history.ticket.id);
 

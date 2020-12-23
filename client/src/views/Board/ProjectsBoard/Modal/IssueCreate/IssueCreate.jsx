@@ -68,9 +68,7 @@ const IssueCreate = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(issueFormValues)
     if (isEpic) {
-      issueFormValues.linkedEpic = null;
       // Add epic specific states.
       createNewEpicTicket({ ...issueFormValues, issueColor, dateRange }, childIssues);
       setAlert('A new epic is created !', 'success');

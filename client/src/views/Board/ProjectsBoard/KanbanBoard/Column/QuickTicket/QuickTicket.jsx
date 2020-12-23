@@ -28,7 +28,7 @@ const QuickTicket = ({ setIsQuickTicketActive, projectId, user, createNewTicket,
     description: '',
     reporterId: user._id,
     assigneeId: '',
-    issuePriority: IssuePriorities.MEDIUM
+    issuePriority: IssuePriorities.MEDIUM,
   });
   const { issueType, summary } = issueFormValues;
 
@@ -36,6 +36,8 @@ const QuickTicket = ({ setIsQuickTicketActive, projectId, user, createNewTicket,
     e.preventDefault();
     issueFormValues.projectId = projectId;
     issueFormValues.columnId = columnId;
+    issueFormValues.linkedEpic = null;
+    issueFormValues.dueDate = null;
     createNewTicket(issueFormValues, columnId);
     setIsQuickTicketActive(false);
   }
