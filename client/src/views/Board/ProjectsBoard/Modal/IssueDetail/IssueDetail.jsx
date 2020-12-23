@@ -135,7 +135,7 @@ const IssueDetail = ({
     <Fragment>
       <ModalContainer>
         <Blanket onClick={closeModal} />
-        <Container>
+        <Container style={{ backgroundColor: 'unset' }}>
           <Wrapper>
             <Header
               linkedEpic={linkedEpic}

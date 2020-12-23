@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { getMembersOfOrganization } from '../../../../redux/members/members.actions';
+import { getOrganizationMembers } from '../../../../redux/members/members.actions';
 import { selectMembers } from '../../../../redux/members/members.selectors';
 import { selectProjects } from '../../../../redux/projects/projects.selectors';
 import { Margin } from '../../../../shared/utils/global';
@@ -18,13 +18,13 @@ import Button from '../../../../shared/components/Button/Button';
 
 const OrganizationSetting = ({
   organization,
-  getMembersOfOrganization,
+  getOrganizationMembers,
   memberList,
   projectList
 }) => {
 
   useEffect(() => {
-    getMembersOfOrganization(organization._id);
+    getOrganizationMembers(organization._id);
   }, [])
 
   return (
@@ -54,4 +54,4 @@ const mapStateToProps = createStructuredSelector({
   projectList: selectProjects
 });
 
-export default connect(mapStateToProps, { getMembersOfOrganization })(OrganizationSetting);
+export default connect(mapStateToProps, { getOrganizationMembers })(OrganizationSetting);

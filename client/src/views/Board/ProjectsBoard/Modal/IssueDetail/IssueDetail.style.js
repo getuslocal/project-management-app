@@ -8,6 +8,7 @@ export const Blanket = styled.div`
   right: 0;
   left: 0;
   z-index: 50;
+  background-color: rgba(23,43,77,.5);
 `
 
 export const Title = styled.p`

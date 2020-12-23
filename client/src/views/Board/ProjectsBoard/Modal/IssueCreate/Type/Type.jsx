@@ -46,7 +46,7 @@ function IssueCreateTypeField({ issueType, handleSelectMenu, isEpic }) {
         isActive={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
         onChange={(option) => handleSelectMenu('issueType', option.value)}
-        options={Object.values(IssueTypes).filter(type => (type !== issueType || type != IssueTypes.EPIC)).map(option => ({
+        options={Object.values(IssueTypes).filter(type => (type !== issueType && type != IssueTypes.EPIC)).map(option => ({
           key: option,
           value: option,
         }))}

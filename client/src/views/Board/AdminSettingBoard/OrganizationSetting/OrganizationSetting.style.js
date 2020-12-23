@@ -9,7 +9,8 @@ export const Container = styled.div`
     &:hover {
     cursor: not-allowed;
       &::before {
-        content: 'NOT IMPLEMENTED';
+        content: 'NOT AVAILABLE IN DEMO';
+        font-size: 12px;
         border-radius: 3px;
         position: absolute;
         top: 0;

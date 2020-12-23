@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getOrganization } from '../../redux/organizations/organizations.actions';
 import { getRoles } from '../../redux/roles/roles.actions';
 import { getProjects } from '../../redux/projects/projects.actions';
-import { getMembersOfOrganization } from '../../redux/members/members.actions';
+import { getOrganizationMembers } from '../../redux/members/members.actions';
 import Board from './Board';
 import PropTypes from 'prop-types';
 import Spinner from '../../shared/components/WithSpinner/Spinner';
@@ -13,7 +13,7 @@ const BoardContainer = ({
   getRoles,
   getOrganization,
   getProjects,
-  getMembersOfOrganization,
+  getOrganizationMembers,
   ...props
 }) => {
   const [isLoading, setIsLoading] = useState(true)
@@ -29,7 +29,7 @@ const BoardContainer = ({
       // Get all the projects of the organization.
       await getProjects(user.orgId);
       // Get all the members of the organization.
-      await getMembersOfOrganization(user.orgId);
+      await getOrganizationMembers(user.orgId);
 
       setIsLoading(false);
     };
@@ -53,14 +53,14 @@ BoardContainer.propTypes = {
   getRoles: PropTypes.func.isRequired,
   getProjects: PropTypes.func.isRequired,
   getOrganization: PropTypes.func.isRequired,
-  getMembersOfOrganization: PropTypes.func.isRequired,
+  getOrganizationMembers: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
   getRoles: (userRole) => dispatch(getRoles(userRole)),
   getOrganization: (userId) => dispatch(getOrganization(userId)),
   getProjects: (orgId) => dispatch(getProjects(orgId)),
-  getMembersOfOrganization: (orgId) => dispatch(getMembersOfOrganization(orgId)),
+  getOrganizationMembers: (orgId) => dispatch(getOrganizationMembers(orgId)),
 });
 
 export default connect(null, mapDispatchToProps)(BoardContainer);

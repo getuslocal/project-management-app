@@ -9,11 +9,13 @@ import Spinner from '../../../shared/components/WithSpinner/Spinner';
 import { selectUser } from '../../../redux/auth/auth.selectors';
 import AccessDenied from './AccessDenied/AccessDenied';
 import NotFound from '../../NotFound/NotFound';
+import { getProjectMembers } from '../../../redux/members/members.actions';
 
 const ProjectsBoardContainer = ({
   project,
   getTicketsByProjectId,
   setCurrentProjectId,
+  getProjectMembers,
   currentUser: { _id: currentUserId },
   ...props
 }) => {
@@ -23,10 +25,11 @@ const ProjectsBoardContainer = ({
   const isProjectLoaded = (project !== null);
 
   useEffect(() => {
-    if(!isProjectLoaded) return;
+    if (!isProjectLoaded) return;
 
     const fetchTickets = async () => {
       await getTicketsByProjectId(project._id);
+      await getProjectMembers(project.members);
       await setCurrentProjectId(project._id);
       setIsLoading(false)
     }
@@ -57,4 +60,7 @@ const mapStateToProps = (state, ownProps) => createStructuredSelector({
   currentUser: selectUser
 });
 
-export default connect(mapStateToProps, { getTicketsByProjectId, setCurrentProjectId })(ProjectsBoardContainer);
+export default connect(
+  mapStateToProps,
+  { getTicketsByProjectId, setCurrentProjectId, getProjectMembers }
+)(ProjectsBoardContainer);

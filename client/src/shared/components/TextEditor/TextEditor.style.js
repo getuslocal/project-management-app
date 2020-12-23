@@ -17,6 +17,7 @@ export const QuillContainer = styled.div`
 }
 .ql-editor {
   min-height: ${({minHeight}) => minHeight ? `${minHeight}px` : '110px'};
+  line-height: 1.8;
 }
 `
 

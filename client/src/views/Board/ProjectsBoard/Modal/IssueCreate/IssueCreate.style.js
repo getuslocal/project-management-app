@@ -8,6 +8,7 @@ export const Title = styled.p`
   line-height: 1.5;
   font-weight: 500;
 `
+
 export const InnerWrapper = styled.div`
   padding: 0 30px;
   height: 700px;

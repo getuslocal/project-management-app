@@ -12,7 +12,8 @@ export const Container = styled.div`
 export const Content = styled.div`
   padding: 0 !important;
   font-size: 14px;
-  ${font.regular}
+  ${font.regular};
+  line-height: 1.8;
 `;
 
 export const Placeholder = styled.p`
