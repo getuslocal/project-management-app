@@ -63,19 +63,30 @@ const EpicList = ({
   useEffect(() => {
     const momentedStartDate = moment(dateRange.startDate);
     const momentedEndDate = moment(dateRange.endDate);
+    const epicWidth = momentedEndDate.diff(momentedStartDate, 'days') * 50;
+
     // Set epic bar width.
-    const defaultEpicWidth = momentedEndDate.diff(momentedStartDate, 'days') * 50;
-    setEpicWidth(defaultEpicWidth);
-    // Calculate position of the epic bar.
-    const startDate = moment().set({
-      'year': momentedStartDate.year(),
-      'month': momentedStartDate.month(),
-      'date': momentedStartDate.date()
-    });
-    const firstDayOfCalendar = moment().subtract(1, 'years');
-    // Get difference of days between start date and the beginning date of calendar.
-    const firstXPostion = startDate.diff(firstDayOfCalendar, 'days') * 50;
-    setDragProperties({ ...dragProperties, lastPosition: firstXPostion, currentPostion: firstXPostion })
+    setEpicWidth(epicWidth);
+
+    // Moment diff() does not always return the correct value, 
+    // so use js Date() object instead.
+    const formattedStartDate = moment(momentedStartDate).toDate();
+    const calendarFirstDate = moment().subtract(1, 'years').toDate();
+
+    // Calculate the time difference of two dates.
+    const timeDiff = formattedStartDate.setHours(0, 0, 0, 0) - calendarFirstDate.setHours(0, 0, 0, 0);
+    
+    // Calculate the no. of days between two dates.
+    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+    // Calculate transform x value.
+    const firstXPostion = daysDiff * 50;
+
+    setDragProperties({
+      ...dragProperties,
+      lastPosition: firstXPostion,
+      currentPostion: firstXPostion
+    })
   }, [dateRange])
 
   const handleDateChange = (difference) => {
@@ -225,7 +236,7 @@ const EpicList = ({
                     <Icon type="user-icon" className={assignee ? "" : "unassigned-icon"} imageUrl={assignee && assignee.pictureUrl} size={27} top={2} />
                     <ChildIssueSummary>
                       {issue.summary}
-                      <Due>Due Tomorrow</Due>
+                      {/* <Due>Due Tomorrow</Due> */}
                     </ChildIssueSummary>
                     {
                       issue.status && <Status isFirstColumn={issue.isFirstColumn} isDone={issue.isDone}>{issue.status}</Status>

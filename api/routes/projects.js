@@ -212,7 +212,7 @@ router.post('/delete/taskids/:project_id', verify, async (req, res) => {
       ...project.columns,
       [columnId]: {
         ...project.columns[columnId],
-        taskIds: project.columns[columnId].taskIds.filter(taskId => taskId !== ticketId)
+        taskIds: project.columns[columnId].taskIds.filter(taskId => taskId != ticketId)
       }
     }
     await project.save()

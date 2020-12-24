@@ -61,7 +61,10 @@ const Ticket = ({ ticket, index, linkedEpic, members, projectKey, ...props }) =>
                 <CustomIcon
                   type="user-icon"
                   imageUrl={assignee.pictureUrl}
-                  size={27} />)}
+                  size={27}
+                  style={{ height: '27px' }}
+                />
+              )}
             </Bottom>
           </Container>
         )}

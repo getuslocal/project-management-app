@@ -14,7 +14,8 @@ router.post('/generate', verify, async (req, res) => {
     const { userId, orgId } = req.body;
     // Demo project ids.
     const demoProjects = [
-      '5fcea8aa10c96363ea4a89db',
+      '5fcea8aa10c96363ea4a89db', // Demo project
+      '5fe2e4b67f3e5b274e20417f', // Simplanner Software
     ];
 
     const takayaHoldingsId = '5f795460d484e84a716e6dda';

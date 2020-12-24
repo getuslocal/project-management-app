@@ -55,7 +55,16 @@ const doughnutChartOption = {
   }
 };
 
-const colors = ['#0f35a9', '#8CD7F8', 'rgba(101,186,67, .6)', 'rgba(101, 84, 192)', '#CAF0F8', 'rgba(228, 77, 66, .8)', 'rgba(253, 180, 77,.8)', 'rgb(89, 140, 255)'];
+const colors = [
+  '#0f35a9',
+  '#8CD7F8',
+  'rgba(101,186,67, .6)',
+  'rgba(101, 84, 192)',
+  '#CAF0F8',
+  'rgba(228, 77, 66, .8)',
+  'rgba(253, 180, 77,.8)',
+  'rgb(89, 140, 255)',
+];
 
 const DoughnutChart = ({ project: { columns }, tickets }) => {
   const canvasRef = useRef(null);

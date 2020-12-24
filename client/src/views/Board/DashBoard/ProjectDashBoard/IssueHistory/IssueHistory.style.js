@@ -4,7 +4,7 @@ import { color } from '../../../../../shared/utils/styles'
 export const Container = styled.div`
   height: 100%;
   max-height : 100%;
-  overflow-y : scroll;
+  overflow-y : auto;
 `;
 
 export const ListContainer = styled.ul`

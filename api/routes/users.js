@@ -130,7 +130,7 @@ router.post('/register', async (req, res) => {
     name: name,
     email: email,
     password: hashedPassword,
-    pictureUrl: "https://i.ibb.co/k6c1RR5/default-profile.png", // Default user pic.
+    pictureUrl: "https://i.ibb.co/NtkC9pG/default-profile.png", // Default user pic.
   });
 
   try {

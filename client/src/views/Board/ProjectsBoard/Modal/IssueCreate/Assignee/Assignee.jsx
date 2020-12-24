@@ -21,7 +21,6 @@ const UnassignedText = styled.p`
 
 const IssueCreateAssigneeField = ({ assigneeId, handleSelectMenu, membersList }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  console.log(membersList)
   const currentMember = membersList.find(member => member._id === assigneeId);
   return (
     <SectionContainer>
