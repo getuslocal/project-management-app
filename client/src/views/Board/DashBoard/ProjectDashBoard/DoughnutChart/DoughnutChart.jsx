@@ -66,7 +66,7 @@ const colors = [
   'rgb(89, 140, 255)',
 ];
 
-const DoughnutChart = ({ project: { columns }, tickets }) => {
+const DoughnutChart = ({ project: { columns, columnOrder }, tickets }) => {
   const canvasRef = useRef(null);
   const [completePercent, setCompletePercent] = useState(0);
 
@@ -76,15 +76,15 @@ const DoughnutChart = ({ project: { columns }, tickets }) => {
       type: 'doughnut',
       plugins: [ChartDataLabels],
       data: {
-        labels: Object.values(columns).map(column => {
-          if (column.title.length > 24) {
-            return column.title.substring(0, 24) + '...';
+        labels: columnOrder.map(columnId => {
+          if (columns[columnId].title.length > 24) {
+            return columns[columnId].title.substring(0, 24) + '...';
           }
-          return column.title
+          return columns[columnId].title
         }),
         datasets: [{
-          data: Object.values(columns).map(column => column.taskIds.length),
-          backgroundColor: Object.values(columns).map((column, index) => colors[index]),
+          data: columnOrder.map(columnId => columns[columnId].taskIds.length),
+          backgroundColor: columnOrder.map((columnId, index) => colors[index]),
         }],
       },
       options: doughnutChartOption
@@ -116,11 +116,11 @@ const DoughnutChart = ({ project: { columns }, tickets }) => {
       </Left>
       <Right>
         {
-          Object.values(columns).map((column, index) => (
-            <Detail key={column.id}>
+          columnOrder.map((columnId, index) => (
+            <Detail key={columnId}>
               <DetailTop>
                 <ColorBox style={{ backgroundColor: colors[index] }}></ColorBox>
-                {column.title}
+                {columns[columnId].title}
               </DetailTop>
             </Detail>
           ))
