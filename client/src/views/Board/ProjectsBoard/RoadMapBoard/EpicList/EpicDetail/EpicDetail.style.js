@@ -109,8 +109,16 @@ export const ChildIssueDetail = styled.div`
   font-size: 12px;
   font-weight: 500;
   padding: 0 10px;
+
   .user-icon{
     margin-left: auto;
+  }
+
+  .unassigned-icon{
+    margin-left: auto;
+    &::before {
+      border: 1px solid ${color.textVeryLight};
+    }
   }
 `
 

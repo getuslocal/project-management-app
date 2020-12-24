@@ -11,6 +11,7 @@ export const Block = styled.div`
 export const Row = styled.div`
   display: flex;
   width: 100%;
+  height: calc(50% - 10px);
 
   &:first-child{
     margin-bottom: 20px;

@@ -2,7 +2,7 @@ import React, { useState, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import SelectMenu from '../../../../../../shared/components/SelectMenu/SelectMenu';
 import Icon from '../../../../../../shared/components/Icon/Icon';
-import { selectMembers } from '../../../../../../redux/members/members.selectors';
+import { selectProjectMembers } from '../../../../../../redux/members/members.selectors';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
@@ -61,8 +61,8 @@ Reporter.propTypes = {
   members: PropTypes.array,
 }
 
-const mapStateToProps = createStructuredSelector({
-  members: selectMembers,
+const mapStateToProps = (state, ownProps) => createStructuredSelector({
+  members: selectProjectMembers(ownProps.projectMembersList),
 });
 
 export default connect(mapStateToProps, null)(Reporter)

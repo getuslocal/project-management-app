@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import SelectMenu from '../../../../../../shared/components/SelectMenu/SelectMenu';
 import Icon from '../../../../../../shared/components/Icon/Icon';
-import { selectMembers } from '../../../../../../redux/members/members.selectors';
+import { selectProjectMembers } from '../../../../../../redux/members/members.selectors';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
@@ -44,7 +44,7 @@ function Assignee({ value, updateTicketField, members, updateTicketHistory }) {
         setIsMenuOpen={setIsMenuOpen}
         onChange={({ value: member }) => {
           updateTicketField({ field: 'assigneeId', value: member._id });
-          const prevMember =  currentMember ? currentMember.name : 'Unassigned';
+          const prevMember = currentMember ? currentMember.name : 'Unassigned';
           updateTicketHistory('Assignee', prevMember, member.name);
         }}
         options={members.filter(member => member._id !== value).map(member => ({
@@ -75,8 +75,8 @@ Assignee.propTypes = {
   members: PropTypes.array
 }
 
-const mapStateToProps = createStructuredSelector({
-  members: selectMembers,
+const mapStateToProps = (state, ownProps) => createStructuredSelector({
+  members: selectProjectMembers(ownProps.projectMembersList),
 });
 
 export default connect(mapStateToProps, null)(Assignee)

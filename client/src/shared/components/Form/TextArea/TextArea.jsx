@@ -13,7 +13,7 @@ const FormTextArea = ({ label, description, onChange, maxLength, ...props }) => 
     <FormContainer>
       <FormContent>
         <Label >{label}</Label>
-        <TextArea {...props} onChange={onChange} />
+        <TextArea {...props} onChange={onChange} maxLength={maxLength}/>
         <Description>{description}</Description>
         {maxLength && <Warning><span>&#42;</span> Value must be less than or equal to {maxLength}.</Warning>}
       </FormContent>

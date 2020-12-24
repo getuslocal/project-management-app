@@ -93,12 +93,12 @@ const EditProjectModal = ({
                   />
                 </ProjectIcon>
                 <TextArea
-                  label="Description"
+                  label="Description*"
                   placeholder="Enter project description"
                   type="text"
                   name="description"
                   rows={5}
-                  maxLength={250}
+                  maxLength={400}
                   onChange={onChange}
                   value={description}
                   required

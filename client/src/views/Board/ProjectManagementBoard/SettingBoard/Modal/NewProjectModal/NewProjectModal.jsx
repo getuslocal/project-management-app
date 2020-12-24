@@ -103,7 +103,7 @@ const NewProjectModal = ({
                   type="text"
                   name="key"
                   rows={5}
-                  maxLength={250}
+                  maxLength={400}
                   onChange={(e) => setProjectFormValues({ ...projectFormValues, description: e.target.value })}
                   value={description}
                   required

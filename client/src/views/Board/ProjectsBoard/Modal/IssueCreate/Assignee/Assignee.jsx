@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectMembers } from '../../../../../../redux/members/members.selectors';
+import { selectProjectMembers } from '../../../../../../redux/members/members.selectors';
 import SelectMenu from '../../../../../../shared/components/SelectMenu/SelectMenu';
 import Icon from '../../../../../../shared/components/Icon/Icon';
 import {
@@ -71,8 +71,8 @@ IssueCreateAssigneeField.propTypes = {
   handleSelectMenu: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = createStructuredSelector({
-  membersList: selectMembers,
+const mapStateToProps = (state, ownProps) => createStructuredSelector({
+  membersList: selectProjectMembers(ownProps.projectMembersList),
 });
 
 export default connect(mapStateToProps, null)(IssueCreateAssigneeField);

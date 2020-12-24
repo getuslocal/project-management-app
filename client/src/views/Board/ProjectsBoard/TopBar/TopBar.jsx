@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { selectUserFilter, selectSearchFilter, selectFilters } from '../../../../redux/tickets/tickets.selectors';
 import { selectUser } from '../../../../redux/auth/auth.selectors';
-import { selectMembers } from '../../../../redux/members/members.selectors';
+import { selectProjectMembers } from '../../../../redux/members/members.selectors';
 import { createStructuredSelector } from 'reselect';
 import { filterTicketsByUser, removeUserFilter, filterTicketsBySearch, clearAllFilters } from '../../../../redux/tickets/tickets.actions';
 import IssueCreate from '../Modal/IssueCreate/IssueCreate';
@@ -46,7 +46,7 @@ const TopBar = ({
           >Create {isEpicModal ? 'Epic' : 'Issue'}</ModalButton>
         </Left>
         <Right>
-        {
+          {
             !isEpicModal && (
               <Margin right={24}>
                 <SearchBox
@@ -117,7 +117,7 @@ const mapStateToProps = (state, ownProps) => createStructuredSelector({
   userFilter: selectUserFilter,
   searchFilter: selectSearchFilter,
   userProfile: selectUser,
-  members: selectMembers,
+  members: selectProjectMembers(ownProps.project.members),
   filters: selectFilters,
 });
 

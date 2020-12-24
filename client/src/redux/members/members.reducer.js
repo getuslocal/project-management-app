@@ -1,6 +1,5 @@
 import {
   GET_ORG_MEMBERS,
-  GET_PROJECT_MEMBERS,
   UPDATE_MEMBER,
 } from './members.types';
 
@@ -16,12 +15,6 @@ const membersReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         members: payload,
-        loading: false
-      }
-    case GET_PROJECT_MEMBERS:
-      return {
-        ...state,
-        members: state.members.filter(member => payload.includes(member._id)),
         loading: false
       }
     case UPDATE_MEMBER:

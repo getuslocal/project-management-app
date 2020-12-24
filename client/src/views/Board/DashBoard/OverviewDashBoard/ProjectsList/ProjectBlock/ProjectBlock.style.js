@@ -10,6 +10,8 @@ export const Container = styled.div`
   width: 24%;
   margin-right: calc(4% / 3);
   margin-top: 15px;
+  display: flex;
+  flex-direction: column;
 
   &:nth-child(4n) {
     margin-right: 0;
@@ -72,19 +74,24 @@ export const ProgressBarInner = styled.div`
 
 export const Center = styled.div`
   padding-bottom: 20px;
-  margin-bottom: 10px;
   min-height: 120px;
-  border-bottom: 1px solid rgba(211, 212, 213, .36);
+  max-height: 180px;
 `;
 
 export const DescriptionText = styled.div`
+  height: 100%;
   font-size: 12.5px;
   font-weight: 500;
   color: ${color.textLight};
   line-height: 1.8;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `;
 
 export const Bottom = styled.div`
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(211, 212, 213, .36);
   display: flex;
   align-items: center;
 `;

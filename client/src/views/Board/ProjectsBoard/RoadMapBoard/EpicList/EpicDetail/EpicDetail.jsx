@@ -66,7 +66,11 @@ const EpicDetail = ({
                       isDone={issue.isDone}
                     />
                     <ChildIssueTitle onClick={() => openIssueDetailModal(issue.key)}>{issue.summary}</ChildIssueTitle>
-                    <Icon className="user-icon" type="user-icon" imageUrl={assignee && assignee.pictureUrl} size={24} top={2} />
+                    <Icon
+                      className={assignee ? "user-icon" : "unassigned-icon"}
+                      type="user-icon"
+                      imageUrl={assignee && assignee.pictureUrl} size={24} top={2}
+                    />
                   </ChildIssueDetail>
                 )
               })

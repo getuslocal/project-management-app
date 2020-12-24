@@ -3,7 +3,7 @@ import { IssueTypes, IssuePriorities, IssueColors } from '../../../../../shared/
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { selectCurrentProjectId, selectProjects } from '../../../../../redux/projects/projects.selectors';
+import { selectCurrentProject } from '../../../../../redux/projects/projects.selectors';
 import { selectUser } from '../../../../../redux/auth/auth.selectors';
 import { createStructuredSelector } from 'reselect';
 import Input from '../../../../../shared/components/Form/Input/Input';
@@ -35,8 +35,7 @@ import { setAlert } from '../../../../../redux/alert/alert.actions';
 
 const IssueCreate = ({
   setIsModalOpen,
-  projects,
-  currentProjectId,
+  project,
   userProfile,
   createNewTicket,
   createNewEpicTicket,
@@ -46,7 +45,7 @@ const IssueCreate = ({
 }) => {
   const [isSelectMenuOpen, setIsSelectMenuOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
-    projectId: currentProjectId,
+    projectId: project._id,
     issueType: (!isEpic ? IssueTypes.TASK : IssueTypes.EPIC),
     summary: '',
     description: '',
@@ -78,7 +77,7 @@ const IssueCreate = ({
       // Add dueDate property.
       issueFormValues.dueDate = dueDate;
       // Get first column where a new ticket is added onto.
-      const columnId = projects[currentProjectId].columnOrder[0];
+      const columnId = project.columnOrder[0];
       issueFormValues.columnId = columnId;
       // Create a new ticket with the form values.
       createNewTicket(issueFormValues, columnId);
@@ -97,7 +96,7 @@ const IssueCreate = ({
       <Container onClick={() => { if (isSelectMenuOpen) setIsSelectMenuOpen(false); }}>
         <Content>
           <form onSubmit={handleSubmit}>
-            <Title>Create {isEpic ? 'epic' : 'issue'} for <em>{projects[currentProjectId].name}</em></Title>
+            <Title>Create {isEpic ? 'epic' : 'issue'} for <em>{project.name}</em></Title>
             <InnerWrapper>
               <Fieldset>
                 <Type
@@ -141,10 +140,12 @@ const IssueCreate = ({
                 )}
                 <Assignee
                   assigneeId={assigneeId}
+                  projectMembersList={project.members}
                   handleSelectMenu={handleSelectMenu}
                 />
                 <Reporter
                   reporterId={reporterId}
+                  projectMembersList={project.members}
                   handleSelectMenu={handleSelectMenu}
                 />
               </Fieldset>
@@ -162,16 +163,14 @@ const IssueCreate = ({
 
 IssueCreate.propTypes = {
   userProfile: PropTypes.object.isRequired,
-  projects: PropTypes.object.isRequired,
-  currentProjectId: PropTypes.string.isRequired,
+  project: PropTypes.object.isRequired,
   createNewTicket: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   userProfile: selectUser,
-  projects: selectProjects,
-  currentProjectId: selectCurrentProjectId
+  project: selectCurrentProject,
 });
 
 export default connect(mapStateToProps, { createNewTicket, createNewEpicTicket, setAlert })(IssueCreate);

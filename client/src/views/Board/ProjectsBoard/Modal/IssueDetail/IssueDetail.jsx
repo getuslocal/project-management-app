@@ -49,7 +49,7 @@ const getColumnIdOfTicket = (columns, ticketId) => {
 
 const IssueDetail = ({
   ticket,
-  projectInfo,
+  project,
   deleteTicket,
   deleteEpicTicket,
   updateTicket,
@@ -114,7 +114,7 @@ const IssueDetail = ({
       before: beforeValue,
       after: afterValue,
     }
-    updateHistory(projectInfo._id, logData)
+    updateHistory(project._id, logData)
   }
 
   // Delete Ticket
@@ -122,13 +122,13 @@ const IssueDetail = ({
     if (isEpic) {
       deleteEpicTicket(ticketId, childIssues);
     } else {
-      const columnId = getColumnIdOfTicket(projectInfo.columns, ticketId);
+      const columnId = getColumnIdOfTicket(project.columns, ticketId);
       deleteTicket(ticketId, columnId);
     }
     // Close Modal.
     closeModal();
     // Attach a success alert.
-    setAlert(`${projectInfo.key}-${ticket.key} is deleted successfully.`, 'success');
+    setAlert(`${project.key}-${ticket.key} is deleted successfully.`, 'success');
   }
 
   return (
@@ -140,7 +140,7 @@ const IssueDetail = ({
             <Header
               linkedEpic={linkedEpic}
               ticketKey={key}
-              projectKey={projectInfo.key}
+              projectKey={project.key}
               issueType={issueType}
               closeModal={closeModal}
               setConfirmationModal={setConfirmationModal}
@@ -164,7 +164,7 @@ const IssueDetail = ({
                       childIssues={childIssues}
                       setChildIssues={setChildIssues}
                       updateTicket={updateTicket}
-                      projectKey={projectInfo.key}
+                      projectKey={project.key}
                     />)}
                   <Comments
                     comments={comments}
@@ -177,9 +177,9 @@ const IssueDetail = ({
                 <Fieldset>
                   {!isEpic ? (
                     <Status
-                      columns={projectInfo.columns}
-                      columnOrder={projectInfo.columnOrder}
-                      projectId={projectInfo._id}
+                      columns={project.columns}
+                      columnOrder={project.columnOrder}
+                      projectId={project._id}
                       ticket={ticket}
                       updateTicketHistory={updateTicketHistory}
                     />) : (
@@ -209,6 +209,7 @@ const IssueDetail = ({
                   )}
                   <Assignee
                     value={assigneeId}
+                    projectMembersList={project.members}
                     updateTicketField={updateTicketField}
                     updateTicketHistory={updateTicketHistory}
                   />
@@ -219,7 +220,8 @@ const IssueDetail = ({
                   />
                   <Reporter
                     value={reporterId}
-                    projectId={projectInfo._id}
+                    projectMembersList={project.members}
+                    projectId={project._id}
                     updateTicketField={updateTicketField}
                     updateTicketHistory={updateTicketHistory}
                   />
@@ -249,7 +251,7 @@ const IssueDetail = ({
 
 IssueDetail.propTypes = {
   ticket: PropTypes.object,
-  projectInfo: PropTypes.object.isRequired,
+  project: PropTypes.object.isRequired,
   linkedIssues: PropTypes.array.isRequired,
   updateTicket: PropTypes.func.isRequired,
   deleteTicket: PropTypes.func.isRequired,
@@ -259,7 +261,7 @@ IssueDetail.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => createStructuredSelector({
-  projectInfo: selectProjectById(ownProps.currentProjectId),
+  project: selectProjectById(ownProps.currentProjectId),
   ticket: selectTicketByKey(ownProps.location.search),
   linkedIssues: selectTicketsLinkedWithEpic(ownProps.location.search),
 });

@@ -96,14 +96,14 @@ router.post('/generate', verify, async (req, res) => {
         })
 
         const prevReporter = prevAndNewMemberIdsMap.find(data => data.prevId === restTicketData.reporterId);
-        const newReporter = prevReporter ? prevReporter.newId : undefined;
+        const newReporter = prevReporter ? prevReporter.newId : "";
         const prevAssignee = prevAndNewMemberIdsMap.find(data => data.prevId === restTicketData.assigneeId);
-        const newAssignee = prevAssignee ? prevAssignee.newId : undefined;
+        const newAssignee = prevAssignee ? prevAssignee.newId : "";
 
         // Create a new ticket with the same data.
         const newTicket = new Ticket({
           ...restTicketData,
-          reporterId: restTicketData.reporterId == systemAdminId ? userId : newReporter,
+          reporterId: newReporter,
           assigneeId: restTicketData.assigneeId == systemAdminId ? userId : newAssignee,
           comments: comments,
           projectId: savedProject._id,

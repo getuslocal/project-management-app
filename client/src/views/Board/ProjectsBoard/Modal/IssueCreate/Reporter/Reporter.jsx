@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectMembers } from '../../../../../../redux/members/members.selectors';
+import { selectProjectMembers } from '../../../../../../redux/members/members.selectors';
 import SelectMenu from '../../../../../../shared/components/SelectMenu/SelectMenu';
 import Icon from '../../../../../../shared/components/Icon/Icon';
 import {
@@ -30,7 +30,7 @@ function IssueCreateReporterField({ reporterId, handleSelectMenu, membersList })
           {
             currentMember !== undefined ? (
               <Fragment>
-                <Icon type="user-icon" imageUrl={currentMember.pictureUrl} size={20} top={1}/>
+                <Icon type="user-icon" imageUrl={currentMember.pictureUrl} size={20} top={1} />
                 {currentMember.name}
               </Fragment>) : (
                 <UnassignedText>Unassigned</UnassignedText>
@@ -58,7 +58,7 @@ function IssueCreateReporterField({ reporterId, handleSelectMenu, membersList })
 const renderOption = (member) => {
   return (
     <SelectItem>
-      <Icon type="user-icon" imageUrl={member.pictureUrl} size={20} top={1}/>
+      <Icon type="user-icon" imageUrl={member.pictureUrl} size={20} top={1} />
       {member.name}
     </SelectItem>
   )
@@ -70,8 +70,8 @@ IssueCreateReporterField.propTypes = {
   handleSelectMenu: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = createStructuredSelector({
-  membersList: selectMembers,
+const mapStateToProps = (state, ownProps) => createStructuredSelector({
+  membersList: selectProjectMembers(ownProps.projectMembersList),
 });
 
 export default connect(mapStateToProps, null)(IssueCreateReporterField);
