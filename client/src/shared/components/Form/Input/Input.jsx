@@ -5,7 +5,7 @@ import {
   FormContent,
   Input,
   Description,
-  Warning
+  Warning,
 } from '../Form.style';
 
 const FormInput = ({ label, description, onChange, maxLength, ...props }) => {
@@ -15,10 +15,14 @@ const FormInput = ({ label, description, onChange, maxLength, ...props }) => {
         <Label>{label}</Label>
         <Input {...props} maxLength={maxLength} onChange={onChange} />
         <Description>{description}</Description>
-        {maxLength && <Warning className="warning-message"><span>&#42;</span> Value must be less than or equal to {maxLength}.</Warning>}
+        {maxLength && (
+          <Warning className="warning-message">
+            <span>&#42;</span> Value must be less than or equal to {maxLength}.
+          </Warning>
+        )}
       </FormContent>
     </FormContainer>
-  )
-}
+  );
+};
 
 export default FormInput;

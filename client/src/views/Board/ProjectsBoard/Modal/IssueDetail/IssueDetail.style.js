@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const Blanket = styled.div`
   height: 100%;
@@ -8,30 +8,30 @@ export const Blanket = styled.div`
   right: 0;
   left: 0;
   z-index: 50;
-  background-color: rgba(23,43,77,.5);
-`
+  background-color: rgba(23, 43, 77, 0.5);
+`;
 
 export const Title = styled.p`
   font-size: 19px;
   line-height: 1.5;
   font-weight: 500;
   margin-bottom: 1.5em;
-`
+`;
 
 export const Content = styled.div`
   padding: 0 30px 30px;
   min-height: 500px;
   display: flex;
-`
+`;
 
 export const Left = styled.div`
   width: 68%;
   padding-right: 50px;
-`
+`;
 
 export const Right = styled.div`
   width: 32%;
-`
+`;
 
 export const Wrapper = styled.div`
   vertical-align: middle;
@@ -43,19 +43,18 @@ export const Wrapper = styled.div`
   width: 100%;
   max-width: 1040px;
   border-radius: 3px;
-`
+`;
 
 export const ButtonsContainer = styled.div`
   text-align: right;
   padding: 20px 30px;
-`
-
+`;
 
 // Each section specific.
 export const SectionContainer = styled.div`
   margin: 20px 0;
   position: relative;
-`
+`;
 
 export const SectionTitle = styled.p`
   display: block;
@@ -63,7 +62,7 @@ export const SectionTitle = styled.p`
   font-size: 12px;
   font-weight: 700;
   margin-bottom: 4px;
-`
+`;
 
 export const SectionContent = styled.div`
   font-size: 14px;
@@ -79,13 +78,13 @@ export const SectionContent = styled.div`
     cursor: pointer;
   }
 
-  &.icon-angle-down{
-    &:after{
+  &.icon-angle-down {
+    &:after {
       position: absolute;
       right: 10px;
     }
   }
-`
+`;
 export const IconCont = styled.span`
   margin-right: 10px;
-`
+`;

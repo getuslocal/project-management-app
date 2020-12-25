@@ -4,13 +4,13 @@ import {
   Container,
   Label,
   Description,
-  Spinner
+  Spinner,
 } from './ImageFileUpload.style';
 
 const ImageFileUpload = ({ id, text, onChange, description, ...props }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const uploadImage = async e => {
+  const uploadImage = async (e) => {
     try {
       const files = e.target.files;
       const data = new FormData();
@@ -23,9 +23,9 @@ const ImageFileUpload = ({ id, text, onChange, description, ...props }) => {
         'https://api.cloudinary.com/v1_1/dh1mwdsag/image/upload',
         {
           method: 'POST',
-          body: data
+          body: data,
         }
-      )
+      );
       const file = await res.json();
       const fileUrl = file.secure_url;
 
@@ -35,35 +35,26 @@ const ImageFileUpload = ({ id, text, onChange, description, ...props }) => {
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   return (
     <Container>
       <div className="inner-container">
         <Label htmlFor={id} isLoading={isLoading}>
-          {
-            !isLoading && (
-              <input
-                type="file"
-                id={id}
-                {...props}
-                onChange={uploadImage}
-              />
-            )
-          }
+          {!isLoading && (
+            <input type="file" id={id} {...props} onChange={uploadImage} />
+          )}
           {text}
         </Label>
-        {
-          isLoading && (
-            <Spinner>
-              <img src={LoaderIcon} alt="Loading" />
-            </Spinner>
-          )
-        }
+        {isLoading && (
+          <Spinner>
+            <img src={LoaderIcon} alt="Loading" />
+          </Spinner>
+        )}
       </div>
       <Description>{description}</Description>
     </Container>
-  )
-}
+  );
+};
 
 export default ImageFileUpload;

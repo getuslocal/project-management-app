@@ -1,16 +1,9 @@
-import React from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import {
-  QuillContainer,
-} from './TextEditor.style';
+import React from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import { QuillContainer } from './TextEditor.style';
 
-export const TextEditor = ({
-  value,
-  onChange,
-  placeholder,
-  minHeight
-}) => {
+export const TextEditor = ({ value, onChange, placeholder, minHeight }) => {
   const quillConfig = {
     theme: 'snow',
     modules: {
@@ -26,7 +19,7 @@ export const TextEditor = ({
   };
 
   return (
-    <QuillContainer minHeight={minHeight} >
+    <QuillContainer minHeight={minHeight}>
       <ReactQuill
         value={value}
         onChange={onChange}

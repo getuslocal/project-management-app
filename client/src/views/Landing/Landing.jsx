@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import LoginForm from './Login/Login';
 import SignupForm from './Signup/Signup';
 import store from '../../redux/store';
-import { refreshErrorMessage } from '../../redux/auth/auth.actions'
-import Icon from '../../shared/components/Icon/Icon'
+import { refreshErrorMessage } from '../../redux/auth/auth.actions';
+import Icon from '../../shared/components/Icon/Icon';
 import CustomLinkButton from '../../shared/components/Button/CustomLinkButton/CustomLinkButton';
 import {
   Container,
@@ -17,12 +17,12 @@ import {
   SubHeading,
   Options,
   Image,
-  Bottom
+  Bottom,
 } from './Landing.style';
 import WelcomePage from '../Welcome/Welcome';
 
 const Landing = ({ errorMessage, isAuthenticated, checkUserCredentials }) => {
-  const [isActive, setisActive] = useState('login')
+  const [isActive, setisActive] = useState('login');
 
   if (isAuthenticated && checkUserCredentials) {
     return <WelcomePage />;
@@ -36,12 +36,7 @@ const Landing = ({ errorMessage, isAuthenticated, checkUserCredentials }) => {
             <Icon type="cube" size={50} isSolid={true} />
             <span>Simplanner</span>
           </Logo>
-          {
-            isActive !== 'signup' ?
-              <LoginForm />
-              :
-              <SignupForm />
-          }
+          {isActive !== 'signup' ? <LoginForm /> : <SignupForm />}
         </FormContainer>
         <Options>
           <CustomLinkButton
@@ -70,8 +65,16 @@ const Landing = ({ errorMessage, isAuthenticated, checkUserCredentials }) => {
         <Image />
         <Bottom>
           <Headings>
-            <MainHeading>Powerful and Easy to Use<br />Project Management Tool</MainHeading>
-            <SubHeading> See how you can simplify your project management. Takes just two minutes to sign in.</SubHeading>
+            <MainHeading>
+              Powerful and Easy to Use
+              <br />
+              Project Management Tool
+            </MainHeading>
+            <SubHeading>
+              {' '}
+              See how you can simplify your project management. Takes just two
+              minutes to sign in.
+            </SubHeading>
           </Headings>
         </Bottom>
       </Right>
@@ -79,7 +82,7 @@ const Landing = ({ errorMessage, isAuthenticated, checkUserCredentials }) => {
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
   checkUserCredentials: state.auth.checkUserCredentials,
   errorMessage: state.auth.errorMessage,

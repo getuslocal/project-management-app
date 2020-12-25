@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { createNewProject } from '../../../../../../redux/projects/projects.actions';
 import TextArea from '../../../../../../shared/components/Form/TextArea/TextArea';
-import { getRandomProjectIcon, projectCategories } from '../../../../../../shared/constants/projects';
+import {
+  getRandomProjectIcon,
+  projectCategories,
+} from '../../../../../../shared/constants/projects';
 import Category from '../Category/Category';
 import Input from '../../../../../../shared/components/Form/Input/Input';
 import {
@@ -34,13 +37,15 @@ const NewProjectModal = ({
     category: projectCategories.BUSINESS,
   });
 
-  const { key, name, description, category, } = projectFormValues;
+  const { key, name, description, category } = projectFormValues;
 
   // Check if the key is duplicated.
   const validateKey = (key, projects) => {
-    const duplicatedKey = Object.values(projects).find(project => project.key === key);
+    const duplicatedKey = Object.values(projects).find(
+      (project) => project.key === key
+    );
     return duplicatedKey ? false : true;
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -56,16 +61,16 @@ const NewProjectModal = ({
     const formData = {
       ...projectFormValues,
       orgId: orgId,
-      projectIconUrl: getRandomProjectIcon()  // default project icon.
-    }
+      projectIconUrl: getRandomProjectIcon(), // default project icon.
+    };
     // console.log(formData)
-    createNewProject(formData)
-    setIsModalOpen(false)
-  }
+    createNewProject(formData);
+    setIsModalOpen(false);
+  };
 
   return (
     <ModalContainer>
-      <Container >
+      <Container>
         <Content>
           <Title>Create Project</Title>
           <form onSubmit={handleSubmit}>
@@ -80,7 +85,12 @@ const NewProjectModal = ({
                   height={36}
                   maxLength={35}
                   value={name}
-                  onChange={(e) => setProjectFormValues({ ...projectFormValues, name: e.target.value })}
+                  onChange={(e) =>
+                    setProjectFormValues({
+                      ...projectFormValues,
+                      name: e.target.value,
+                    })
+                  }
                   required
                 />
                 <Input
@@ -93,7 +103,12 @@ const NewProjectModal = ({
                   height={36}
                   value={key}
                   maxLength={10}
-                  onChange={(e) => setProjectFormValues({ ...projectFormValues, key: e.target.value.toUpperCase() })}
+                  onChange={(e) =>
+                    setProjectFormValues({
+                      ...projectFormValues,
+                      key: e.target.value.toUpperCase(),
+                    })
+                  }
                   description="The project key is used as the prefix of your project's issue keys (e.g. 'TEST-100'). Choose one that is descriptive and easy to type."
                   required
                 />
@@ -104,26 +119,38 @@ const NewProjectModal = ({
                   name="key"
                   rows={5}
                   maxLength={400}
-                  onChange={(e) => setProjectFormValues({ ...projectFormValues, description: e.target.value })}
+                  onChange={(e) =>
+                    setProjectFormValues({
+                      ...projectFormValues,
+                      description: e.target.value,
+                    })
+                  }
                   value={description}
                   required
                 />
                 <Category
                   currentCategory={category}
-                  onChange={(value) => setProjectFormValues({ ...projectFormValues, category: value })}
+                  onChange={(value) =>
+                    setProjectFormValues({
+                      ...projectFormValues,
+                      category: value,
+                    })
+                  }
                 />
               </Fieldset>
             </InnerWrapper>
             <ButtonsContainer>
               <SubmitButton value="Create" type="submit" />
-              <TextButton onClick={() => setIsModalOpen(false)}>Cancel</TextButton>
+              <TextButton onClick={() => setIsModalOpen(false)}>
+                Cancel
+              </TextButton>
             </ButtonsContainer>
           </form>
         </Content>
       </Container>
     </ModalContainer>
-  )
-}
+  );
+};
 
 NewProjectModal.propTypes = {
   organization: PropTypes.object.isRequired,
@@ -133,7 +160,9 @@ NewProjectModal.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  organization: state => state.organization,
+  organization: (state) => state.organization,
 });
 
-export default connect(mapStateToProps, { createNewProject, setAlert })(NewProjectModal);
+export default connect(mapStateToProps, { createNewProject, setAlert })(
+  NewProjectModal
+);

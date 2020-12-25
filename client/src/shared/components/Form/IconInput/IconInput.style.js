@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 import { color, fontSize, padding } from '../../../utils/styles';
 
-
 const shrinkLabelStyles = css`
   top: -1.1em;
 `;
@@ -53,9 +52,9 @@ export const FormInputLabel = styled.label`
   top: ${padding.small};
   transition: 300ms ease all;
 
-  &:before{
-    padding-right:${padding.small};
-    font-size:${fontSize.med};
+  &:before {
+    padding-right: ${padding.small};
+    font-size: ${fontSize.med};
   }
 
   &.shrink {

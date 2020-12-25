@@ -4,7 +4,7 @@ import { string } from 'prop-types';
 import CircleProgressBarBase from './CircleProgressBar';
 
 const CircleProgressBar = styled(CircleProgressBarBase)`
-  max-width: ${props => props.maxSize};
+  max-width: ${(props) => props.maxSize};
   margin: 0 auto;
   vertical-align: middle;
   position: relative;
@@ -12,7 +12,7 @@ const CircleProgressBar = styled(CircleProgressBarBase)`
   transform: translateY(-50%);
 
   .chart-text {
-    fill: ${props => props.textColor};
+    fill: ${(props) => props.textColor};
     transform: translateY(0.25em);
   }
   .chart-number {
@@ -56,7 +56,7 @@ const CircleProgressBar = styled(CircleProgressBarBase)`
     width: 21px;
     height: 21px;
     border-radius: 50%;
-    background-color: ${props => props.strokeColor};
+    background-color: ${(props) => props.strokeColor};
     text-transform: capitalize;
   }
 `;
@@ -64,13 +64,13 @@ const CircleProgressBar = styled(CircleProgressBarBase)`
 CircleProgressBar.propTypes = {
   textColor: string,
   strokeColor: string,
-  maxSize: string
+  maxSize: string,
 };
 
 CircleProgressBar.defaultProps = {
   textColor: 'black',
   strokeColor: 'blueviolet',
-  maxSize: '100vh'
+  maxSize: '100vh',
 };
 
 export default CircleProgressBar;

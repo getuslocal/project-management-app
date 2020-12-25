@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const Label = styled.label`
   display: block;
@@ -6,4 +6,4 @@ export const Label = styled.label`
   font-size: 12px;
   font-weight: 700;
   margin-bottom: 2px;
-`
+`;

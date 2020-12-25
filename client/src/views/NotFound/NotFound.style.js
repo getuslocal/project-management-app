@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 import { color } from '../../shared/utils/styles';
 
 export const Container = styled.div`
@@ -9,7 +9,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`
+`;
 
 export const InnerContainer = styled.div`
   width: 700px;

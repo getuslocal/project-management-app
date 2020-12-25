@@ -1,12 +1,13 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import moment from 'moment'
+import React from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
 import Draggable from 'react-draggable';
-import {
-  ResizeBar,
-} from '../EpicList.style'
+import { ResizeBar } from '../EpicList.style';
 import Icon from '../../../../../../shared/components/Icon/Icon';
-import { IssueHistoryTypes, IssueTypes } from '../../../../../../shared/constants/issues';
+import {
+  IssueHistoryTypes,
+  IssueTypes,
+} from '../../../../../../shared/constants/issues';
 
 const LeftResizableBar = ({
   epic: { _id: epicId, key: epicKey, summary },
@@ -20,16 +21,15 @@ const LeftResizableBar = ({
   updateTicket,
   updateHistory,
   epicColorProperty,
-  draggableWrapperRef
+  draggableWrapperRef,
 }) => {
-
   const onResizeDrag = (e, ui) => {
     // When epic length is minimum length, skip.
     if (epicWidth <= 50 && ui.deltaX > 0) return;
     // Change width of the epic bar based on how much scrolled.
-    setEpicWidth(lastEpicWidth => lastEpicWidth - ui.deltaX);
+    setEpicWidth((lastEpicWidth) => lastEpicWidth - ui.deltaX);
     // Adjust the positoin of the epic bar.
-    setDragProperties(prevState => ({
+    setDragProperties((prevState) => ({
       ...prevState,
       lastPosition: prevState.currentPostion + ui.deltaX,
       currentPostion: prevState.currentPostion + ui.deltaX,
@@ -46,21 +46,26 @@ const LeftResizableBar = ({
 
     // Check if there's no difference.
     if (difference === 0) {
-      return
+      return;
     }
-    // Check if it's resized beyond the end date and current start date is 
+    // Check if it's resized beyond the end date and current start date is
     // the prev day of end date.
-    else if (!isBeforeEndDate && moment(startDate).isSame(prevDayOfEndDate, 'days')) {
+    else if (
+      !isBeforeEndDate &&
+      moment(startDate).isSame(prevDayOfEndDate, 'days')
+    ) {
       // Update resize properties with the new position.
-      setResizeProperties({ ...resizeProperties, lastLeftResizeX: newPosition });
-      return
-    }
-    else {
+      setResizeProperties({
+        ...resizeProperties,
+        lastLeftResizeX: newPosition,
+      });
+      return;
+    } else {
       // Prepare values for epic update.
       const updateData = {
         field: 'dateRange',
-        value: { ...dateRange, startDate: newStartDate }
-      }
+        value: { ...dateRange, startDate: newStartDate },
+      };
 
       // Prepare values for history update.
       const logData = {
@@ -76,7 +81,10 @@ const LeftResizableBar = ({
       };
 
       // Update resize properties with the new position.
-      setResizeProperties({ ...resizeProperties, lastLeftResizeX: newPosition });
+      setResizeProperties({
+        ...resizeProperties,
+        lastLeftResizeX: newPosition,
+      });
 
       // If new start date is not before the end date, set the previous day of the end date.
       if (!isBeforeEndDate) {
@@ -107,11 +115,9 @@ const LeftResizableBar = ({
         <Icon type="grip-lines-vertical" size={10} isSolid={true} top={-1} />
       </ResizeBar>
     </Draggable>
-  )
-}
+  );
+};
 
-LeftResizableBar.propTypes = {
+LeftResizableBar.propTypes = {};
 
-}
-
-export default LeftResizableBar
+export default LeftResizableBar;

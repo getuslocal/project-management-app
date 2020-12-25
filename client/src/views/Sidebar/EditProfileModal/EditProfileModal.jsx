@@ -1,9 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import FormModal from '../../../shared/components/Modal/FormModal/FormModal';
-import {
-  UserIcon,
-} from './EditProfileModal.style';
+import { UserIcon } from './EditProfileModal.style';
 import Icon from '../../../shared/components/Icon/Icon';
 import Button from '../../../shared/components/Button/Button';
 import { createStructuredSelector } from 'reselect';
@@ -14,7 +12,6 @@ import ImageFileUpload from '../../../shared/components/Form/ImageFileUpload/Ima
 import { updateUserProfile } from '../../../redux/auth/auth.actions';
 
 const EditProfileModal = ({ closeModal, currentUser, updateUserProfile }) => {
-
   const [formValues, setFormValues] = useState({
     name: currentUser.name,
     email: currentUser.email,
@@ -22,9 +19,9 @@ const EditProfileModal = ({ closeModal, currentUser, updateUserProfile }) => {
     pictureUrl: currentUser.pictureUrl,
   });
 
-  const { name, email, position, pictureUrl } = formValues
+  const { name, email, position, pictureUrl } = formValues;
 
-  const onChange = event => {
+  const onChange = (event) => {
     const { value, name } = event.target;
     setFormValues({ ...formValues, [name]: value });
   };
@@ -34,7 +31,7 @@ const EditProfileModal = ({ closeModal, currentUser, updateUserProfile }) => {
     // Update user profile.
     updateUserProfile(currentUser._id, formValues);
     closeModal();
-  }
+  };
 
   return (
     <FormModal
@@ -51,7 +48,9 @@ const EditProfileModal = ({ closeModal, currentUser, updateUserProfile }) => {
           accept="image/png,image/jpeg"
           name="profile_image"
           description="* File format: png or jpeg."
-          onChange={fileUrl => setFormValues({ ...formValues, pictureUrl: fileUrl })}
+          onChange={(fileUrl) =>
+            setFormValues({ ...formValues, pictureUrl: fileUrl })
+          }
         />
       </UserIcon>
       <Input
@@ -85,18 +84,25 @@ const EditProfileModal = ({ closeModal, currentUser, updateUserProfile }) => {
         required
       />
     </FormModal>
-  )
-}
+  );
+};
 
 const renderOptions = (closeModal) => (
   <Fragment>
     <Button text="Save changes" variant="primary" type="submit" />
-    <Button text="Cancel" variant="secondary" type="button" onClick={closeModal} />
+    <Button
+      text="Cancel"
+      variant="secondary"
+      type="button"
+      onClick={closeModal}
+    />
   </Fragment>
 );
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectUser
-})
+  currentUser: selectUser,
+});
 
-export default connect(mapStateToProps, { updateUserProfile })(EditProfileModal)
+export default connect(mapStateToProps, { updateUserProfile })(
+  EditProfileModal
+);

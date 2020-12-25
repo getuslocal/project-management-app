@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components'
-import { color } from '../../../../shared/utils/styles'
+import styled, { css } from 'styled-components';
+import { color } from '../../../../shared/utils/styles';
 
 export const Container = styled.div`
   /* height: 100%; */
@@ -12,22 +12,22 @@ export const Container = styled.div`
   border-radius: 5px;
   flex: none;
 
-  &:before{
-    content: "";
+  &:before {
+    content: '';
     width: 2px;
     height: 100%;
-    background-color:${color.borderLight};
+    background-color: ${color.borderLight};
     position: absolute;
     left: 298px;
     display: inline-block;
   }
-`
+`;
 
 export const Left = styled.div`
   width: 300px;
   min-width: 300px;
   height: 100%;
-`
+`;
 
 export const Right = styled.div`
   width: 100%;
@@ -35,7 +35,7 @@ export const Right = styled.div`
   overflow-x: scroll;
   overflow-y: hidden;
   min-height: calc(100vh - 215px);
-`
+`;
 
 export const TopLeftContent = styled.div`
   height: 50px;
@@ -44,7 +44,7 @@ export const TopLeftContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
+`;
 
 export const ViewButton = styled.div`
   /* background-color: ${color.backgroundMedium}; */
@@ -55,7 +55,7 @@ export const ViewButton = styled.div`
     font-weight: 500;
     color: ${color.textMedium};
   }
-`
+`;
 
 export const Option = styled.p`
   padding: 7px 22px;
@@ -66,17 +66,20 @@ export const Option = styled.p`
   color: ${color.textLight};
   font-weight: 600;
 
-  &:hover{
+  &:hover {
     cursor: pointer;
-    opacity: ${props => props.isActive ? '1': '.8'};
+    opacity: ${(props) => (props.isActive ? '1' : '.8')};
   }
 
-  ${props => props.isActive && css`
-    color: ${color.textMedium};
-    background-color: ${color.white};
-    box-shadow: rgba(23,43,77,0.2) 0px 1px 1px, rgba(23,43,77,0.2) 0px 0px 1px;
-  `};
-`
+  ${(props) =>
+    props.isActive &&
+    css`
+      color: ${color.textMedium};
+      background-color: ${color.white};
+      box-shadow: rgba(23, 43, 77, 0.2) 0px 1px 1px,
+        rgba(23, 43, 77, 0.2) 0px 0px 1px;
+    `};
+`;
 export const TodayButton = styled.button`
   border-radius: 5px;
   /* height: 35px; */
@@ -88,15 +91,15 @@ export const TodayButton = styled.button`
   color: ${color.textMedium};
   background-color: ${color.backgroundMedium};
 
-  &:hover{
+  &:hover {
     color: ${color.textLight};
   }
-`
+`;
 
 export const ButtonWrapper = styled.div`
   height: 45px;
   margin-bottom: 8px;
-`
+`;
 
 export const NewEpicButton = styled.button`
   border-radius: 5px;
@@ -116,7 +119,7 @@ export const NewEpicButton = styled.button`
     margin-right: 7px;
   }
 
-  &:hover{
-    color:${color.textLight};
+  &:hover {
+    color: ${color.textLight};
   }
-`
+`;

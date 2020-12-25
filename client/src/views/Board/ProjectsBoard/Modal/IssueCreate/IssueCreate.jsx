@@ -1,5 +1,9 @@
 import React, { Fragment, useState } from 'react';
-import { IssueTypes, IssuePriorities, IssueColors } from '../../../../../shared/constants/issues';
+import {
+  IssueTypes,
+  IssuePriorities,
+  IssueColors,
+} from '../../../../../shared/constants/issues';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
@@ -7,7 +11,10 @@ import { selectCurrentProject } from '../../../../../redux/projects/projects.sel
 import { selectUser } from '../../../../../redux/auth/auth.selectors';
 import { createStructuredSelector } from 'reselect';
 import Input from '../../../../../shared/components/Form/Input/Input';
-import { createNewTicket, createNewEpicTicket } from '../../../../../redux/tickets/tickets.actions';
+import {
+  createNewTicket,
+  createNewEpicTicket,
+} from '../../../../../redux/tickets/tickets.actions';
 import Description from './Description/Description';
 import ChildIssue from './ChildIssue/ChildIssue';
 import RangedDatePicker from './RangedDatePicker/RangedDatePicker';
@@ -22,14 +29,14 @@ import {
   TextButton,
   InnerWrapper,
   ButtonsContainer,
-  CustomSingleDatePicker
+  CustomSingleDatePicker,
 } from './IssueCreate.style';
 import {
   Container,
   Content,
   Fieldset,
   Diviser,
-  ModalContainer
+  ModalContainer,
 } from '../Modal.style';
 import { setAlert } from '../../../../../redux/alert/alert.actions';
 
@@ -41,12 +48,12 @@ const IssueCreate = ({
   createNewEpicTicket,
   isEpic,
   defaultStartDate,
-  setAlert
+  setAlert,
 }) => {
   const [isSelectMenuOpen, setIsSelectMenuOpen] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     projectId: project._id,
-    issueType: (!isEpic ? IssueTypes.TASK : IssueTypes.EPIC),
+    issueType: !isEpic ? IssueTypes.TASK : IssueTypes.EPIC,
     summary: '',
     description: '',
     reporterId: userProfile._id,
@@ -59,17 +66,27 @@ const IssueCreate = ({
   const [childIssues, setChildIssues] = useState([]);
   const [issueColor, setIssueColor] = useState(IssueColors.PURPLE.name);
   const [dateRange, setDateRange] = useState({
-    startDate: (defaultStartDate ? defaultStartDate : null),
-    endDate: null
+    startDate: defaultStartDate ? defaultStartDate : null,
+    endDate: null,
   });
 
-  const { issueType, summary, description, reporterId, assigneeId, issuePriority } = issueFormValues;
+  const {
+    issueType,
+    summary,
+    description,
+    reporterId,
+    assigneeId,
+    issuePriority,
+  } = issueFormValues;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isEpic) {
       // Add epic specific states.
-      createNewEpicTicket({ ...issueFormValues, issueColor, dateRange }, childIssues);
+      createNewEpicTicket(
+        { ...issueFormValues, issueColor, dateRange },
+        childIssues
+      );
       setAlert('A new epic is created !', 'success');
     } else {
       // Set a linked epic null.
@@ -85,7 +102,7 @@ const IssueCreate = ({
     }
     // Close this modal.
     setIsModalOpen(false);
-  }
+  };
 
   const handleSelectMenu = (name, value) => {
     setIssueFormValues({ ...issueFormValues, [name]: value });
@@ -93,10 +110,16 @@ const IssueCreate = ({
 
   return (
     <ModalContainer>
-      <Container onClick={() => { if (isSelectMenuOpen) setIsSelectMenuOpen(false); }}>
+      <Container
+        onClick={() => {
+          if (isSelectMenuOpen) setIsSelectMenuOpen(false);
+        }}
+      >
         <Content>
           <form onSubmit={handleSubmit}>
-            <Title>Create {isEpic ? 'epic' : 'issue'} for <em>{project.name}</em></Title>
+            <Title>
+              Create {isEpic ? 'epic' : 'issue'} for <em>{project.name}</em>
+            </Title>
             <InnerWrapper>
               <Fieldset>
                 <Type
@@ -111,7 +134,7 @@ const IssueCreate = ({
                 {!isEpic && (
                   <CustomSingleDatePicker
                     momentedDate={dueDate}
-                    onDateChange={date => setDueDate(date)}
+                    onDateChange={(date) => setDueDate(date)}
                     disableBefore={moment().subtract(12, 'months')}
                     disableAfter={moment().add(12, 'months')}
                     label="Due date"
@@ -123,19 +146,38 @@ const IssueCreate = ({
                   type="text"
                   name="summary"
                   value={summary}
-                  onChange={(e) => setIssueFormValues({ ...issueFormValues, summary: e.target.value })}
+                  onChange={(e) =>
+                    setIssueFormValues({
+                      ...issueFormValues,
+                      summary: e.target.value,
+                    })
+                  }
                   style={{ minHeight: '35px' }}
                   required
                 />
                 <Description
                   value={description}
-                  onChange={(text) => setIssueFormValues({ ...issueFormValues, description: text })}
+                  onChange={(text) =>
+                    setIssueFormValues({
+                      ...issueFormValues,
+                      description: text,
+                    })
+                  }
                 />
                 {isEpic && (
                   <Fragment>
-                    <RangedDatePicker dateRange={dateRange} setDateRange={setDateRange} />
-                    <ChildIssue childIssues={childIssues} setChildIssues={setChildIssues} />
-                    <Colors issueColor={issueColor} setIssueColor={setIssueColor} />
+                    <RangedDatePicker
+                      dateRange={dateRange}
+                      setDateRange={setDateRange}
+                    />
+                    <ChildIssue
+                      childIssues={childIssues}
+                      setChildIssues={setChildIssues}
+                    />
+                    <Colors
+                      issueColor={issueColor}
+                      setIssueColor={setIssueColor}
+                    />
                   </Fragment>
                 )}
                 <Assignee
@@ -152,14 +194,16 @@ const IssueCreate = ({
             </InnerWrapper>
             <ButtonsContainer isEpicModal={false}>
               <SubmitButton value="Create" type="submit" />
-              <TextButton onClick={() => setIsModalOpen(false)}>Cancel</TextButton>
+              <TextButton onClick={() => setIsModalOpen(false)}>
+                Cancel
+              </TextButton>
             </ButtonsContainer>
           </form>
         </Content>
       </Container>
     </ModalContainer>
-  )
-}
+  );
+};
 
 IssueCreate.propTypes = {
   userProfile: PropTypes.object.isRequired,
@@ -173,4 +217,8 @@ const mapStateToProps = createStructuredSelector({
   project: selectCurrentProject,
 });
 
-export default connect(mapStateToProps, { createNewTicket, createNewEpicTicket, setAlert })(IssueCreate);
+export default connect(mapStateToProps, {
+  createNewTicket,
+  createNewEpicTicket,
+  setAlert,
+})(IssueCreate);

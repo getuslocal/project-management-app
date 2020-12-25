@@ -6,21 +6,21 @@ import { logout, removeToken } from '../../redux/auth/auth.actions';
 const api = axios.create({
   baseURL: 'http://localhost:3000',
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   },
 });
 
 // Add a request interceptor
 api.interceptors.request.use(
-  config => {
-    // Logout user if token does not exist on localstorage 
+  (config) => {
+    // Logout user if token does not exist on localstorage
     // before request is sent.
     if (!localStorage.token) {
       store.dispatch(logout());
     }
     return config;
   },
-  error => Promise.reject(error)
+  (error) => Promise.reject(error)
 );
 
 /**
@@ -30,8 +30,8 @@ api.interceptors.request.use(
  logout the user if the token has expired
 **/
 api.interceptors.response.use(
-  res => res,
-  err => {
+  (res) => res,
+  (err) => {
     // console.log(err.response.data)
     if (err.response.data === 'Invalid Token' && err.response.status === 403) {
       store.dispatch(logout());

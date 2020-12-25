@@ -15,14 +15,14 @@ const smallView = css`
 
   .side-bar-main,
   .side-bar-logo,
-  .side-bar-logout>span,
-  .side-bar-demo-button>span {
+  .side-bar-logout > span,
+  .side-bar-demo-button > span {
     display: none;
   }
-  
+
   .side-bar-logout,
   .side-bar-demo-button {
-    transition: all .3s;
+    transition: all 0.3s;
     margin-left: 0;
     margin-right: 0;
     min-width: auto;
@@ -30,18 +30,18 @@ const smallView = css`
     border-radius: 0;
 
     & > i {
-      margin-right: 0
+      margin-right: 0;
     }
   }
 
-  .resize-button{
+  .resize-button {
     & > i {
-      &::before{
+      &::before {
         content: '\f138';
       }
     }
   }
-`
+`;
 
 export const Container = styled.div`
   height: 100%;
@@ -53,7 +53,7 @@ export const Container = styled.div`
   background-color: #0f35a9;
   height: 100%;
   width: 220px;
-  transition: all .3s;
+  transition: all 0.3s;
   color: #fff;
 
   ${media.large`
@@ -63,7 +63,7 @@ export const Container = styled.div`
   `};
 
   @media (min-width: 1251px) {
-    &.secondary-side-bar{
+    &.secondary-side-bar {
       ${smallView};
     }
   }
@@ -76,10 +76,10 @@ export const Wrapper = styled.div`
   justify-content: space-between;
   overflow-y: auto;
   overflow-x: hidden;
-`
+`;
 
 export const Blanket = styled.div`
-  background-color: rgba(23, 43, 77, .5);
+  background-color: rgba(23, 43, 77, 0.5);
   height: 100%;
   width: 100vw;
   position: fixed;
@@ -89,9 +89,9 @@ export const Blanket = styled.div`
   display: none;
 
   ${media.large`
-    display: ${props => props.isActive ? 'block' : 'none'};
+    display: ${(props) => (props.isActive ? 'block' : 'none')};
   `};
-`
+`;
 
 export const Top = styled.div`
   text-align: right;
@@ -122,15 +122,15 @@ export const ResizeButton = styled.button`
   color: ${color.white};
 
   & > i {
-    &:hover{
+    &:hover {
       color: ${color.lightBlue};
     }
   }
-`
+`;
 
 export const MainContent = styled.div`
-    display: block;
-    min-width: 220px;
+  display: block;
+  min-width: 220px;
 `;
 
 export const UserProfile = styled.div`
@@ -138,7 +138,7 @@ export const UserProfile = styled.div`
   padding: 14px 12px;
   position: relative;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-`
+`;
 
 export const EditButton = styled.button`
   position: absolute;
@@ -155,12 +155,12 @@ export const EditButton = styled.button`
     background-color: ${color.white};
     color: ${color.primary};
     border-radius: 50%;
-    
-    &:hover{
+
+    &:hover {
       background-color: ${color.lightBlue};
     }
   }
-`
+`;
 
 export const UserIcon = styled.div`
   text-align: center;
@@ -168,12 +168,12 @@ export const UserIcon = styled.div`
 
   & > i {
     cursor: pointer;
-    
-    &:before{
+
+    &:before {
       border: 2px solid rgba(255, 255, 255, 0.9);
     }
   }
-`
+`;
 
 export const UserProfileOverview = styled.div`
   text-align: center;
@@ -194,10 +194,10 @@ export const UserProfileOverview = styled.div`
     padding: 3px 6px;
     font-weight: 600;
   }
-`
+`;
 
 export const LogoutButton = styled(Button)`
-  transition: all .3s;
+  transition: all 0.3s;
   margin: 30px;
   border-radius: 20px;
   color: ${color.textDarkest};
@@ -215,7 +215,7 @@ export const LogoutButton = styled(Button)`
 `;
 
 export const DemoSettingButton = styled(Button)`
-  transition: all .3s;
+  transition: all 0.3s;
   margin: 0 30px;
   border-radius: 20px;
   color: ${color.textDarkest};
@@ -232,4 +232,4 @@ export const DemoSettingButton = styled(Button)`
   &:hover {
     background-color: rgb(89 204 255);
   }
-`
+`;

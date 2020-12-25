@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled, { css } from 'styled-components';
 import { color } from '../../../../../shared/utils/styles';
 
 export const Container = styled.div`
@@ -19,7 +19,7 @@ export const Top = styled.div`
 `;
 
 export const Content = styled.div`
-  height: calc( 100% - 42px );
+  height: calc(100% - 42px);
   padding: 20px;
   max-width: 280px;
   margin: 0 auto;
@@ -35,7 +35,7 @@ export const Percentage = styled.p`
   font-weight: 500;
   text-align: center;
 
-  .percent-mark{
+  .percent-mark {
     font-size: 30px;
   }
 `;

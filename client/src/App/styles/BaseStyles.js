@@ -1,6 +1,6 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components';
 
-import { color, font } from '../../shared/utils/styles'
+import { color, font } from '../../shared/utils/styles';
 
 export default createGlobalStyle`
   html, body, #root {
@@ -89,4 +89,4 @@ export default createGlobalStyle`
       cursor: pointer;
     }
   }
-`
+`;

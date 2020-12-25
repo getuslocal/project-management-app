@@ -1,21 +1,21 @@
-import styled from 'styled-components'
-import { color } from '../../../../../shared/utils/styles'
+import styled from 'styled-components';
+import { color } from '../../../../../shared/utils/styles';
 
 export const Container = styled.div`
   height: 100%;
-  max-height : 100%;
-  overflow-y : auto;
+  max-height: 100%;
+  overflow-y: auto;
 `;
 
 export const ListContainer = styled.ul`
   position: relative;
 
-  &:before{
+  &:before {
     left: 135px;
     height: 100%;
-    content: "";
+    content: '';
     position: absolute;
-    border-left: 2px solid ${color.primary};    
+    border-left: 2px solid ${color.primary};
   }
 `;
 
@@ -55,7 +55,7 @@ export const CircleMark = styled.span`
 
 export const Right = styled.div`
   display: flex;
-  align-items: center; 
+  align-items: center;
 `;
 
 export const IconCont = styled.p`

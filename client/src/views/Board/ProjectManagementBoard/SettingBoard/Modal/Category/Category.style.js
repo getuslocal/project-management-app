@@ -1,10 +1,10 @@
-import styled from 'styled-components'
-import { color } from '../../../../../../shared/utils/styles'
+import styled from 'styled-components';
+import { color } from '../../../../../../shared/utils/styles';
 
 export const SectionContainer = styled.div`
   margin: 20px 0;
   position: relative;
-`
+`;
 
 export const SectionTitle = styled.p`
   display: block;
@@ -12,7 +12,7 @@ export const SectionTitle = styled.p`
   font-size: 12px;
   font-weight: 700;
   margin-bottom: 4px;
-`
+`;
 
 export const SectionContent = styled.div`
   display: flex;
@@ -26,7 +26,7 @@ export const SectionContent = styled.div`
   &:hover {
     background-color: #091e420d;
   }
-`
+`;
 
 export const SelectItem = styled.div`
   font-size: 14px;
@@ -36,20 +36,20 @@ export const SelectItem = styled.div`
   display: flex;
   align-items: center;
 
-  & > i{
+  & > i {
     margin-right: 7px;
   }
 
   .placeholder {
     color: ${color.textLight};
   }
-`
+`;
 
 export const AngleDownIcon = styled.span`
   margin-left: auto;
-`
+`;
 
 export const UnassignText = styled.p`
   color: rgb(137, 147, 164);
   font-size: 14px;
-`
+`;

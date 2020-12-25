@@ -6,7 +6,7 @@ const circleConfig = {
   viewBox: '0 0 38 38',
   x: '19',
   y: '19',
-  radio: '15.91549430918954'
+  radio: '15.91549430918954',
 };
 
 const CircleProgressBarBase = ({
@@ -19,9 +19,8 @@ const CircleProgressBarBase = ({
   trailStrokeWidth,
   trailStrokeColor,
   trailSpaced,
-  speed
+  speed,
 }) => {
-
   return (
     <figure className={className}>
       <svg viewBox={circleConfig.viewBox}>
@@ -51,7 +50,8 @@ const CircleProgressBarBase = ({
 
         <g className="chart-text">
           <text x="50%" y="50%" className="chart-number">
-            {percentage}<tspan>%</tspan>
+            {percentage}
+            <tspan>%</tspan>
           </text>
           <text x="50%" y="50%" className="chart-label">
             {innerText}
@@ -67,7 +67,9 @@ const CircleProgressBarBase = ({
           >
             <li>
               <span className="shape-circle" />
-              <span>{10} / {122} resolved</span>
+              <span>
+                {10} / {122} resolved
+              </span>
             </li>
           </ul>
         </figcaption>
@@ -86,7 +88,7 @@ CircleProgressBarBase.propTypes = {
   trailStrokeWidth: number,
   trailStrokeColor: string,
   trailSpaced: bool,
-  speed: number
+  speed: number,
 };
 
 CircleProgressBarBase.defaultProps = {
@@ -98,7 +100,7 @@ CircleProgressBarBase.defaultProps = {
   trailStrokeWidth: 1,
   trailStrokeColor: '#d2d3d4',
   trailSpaced: false,
-  speed: 1
+  speed: 1,
 };
 
 export default CircleProgressBarBase;

@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Redirect, withRouter } from 'react-router-dom';
 import Input from '../../shared/components/Form/Input/Input';
 import {
   Container,
   FormContainer,
   DemoContent,
-  MenuOption
+  MenuOption,
 } from './Welcome.style';
 import Button from '../../shared/components/Button/Button';
 import { createStructuredSelector } from 'reselect';
@@ -30,7 +30,7 @@ const WelcomePage = ({
   const [formValues, setFormValues] = useState({
     organization: '',
     position: '',
-    role: roleNames.ADMIN
+    role: roleNames.ADMIN,
   });
 
   const handleSubmit = async (e) => {
@@ -44,7 +44,7 @@ const WelcomePage = ({
       orgId: newOrgId,
       position: formValues.position,
       role: formValues.role,
-    }
+    };
 
     // Update users with new fields.
     await updateUser(userCredentials._id, userUpdateData);
@@ -52,16 +52,17 @@ const WelcomePage = ({
     // Generate demo data.
     await generateDemoData(userCredentials._id, newOrgId);
     setIsloading(false);
-  }
+  };
 
   if (userCredentials.orgId && userCredentials.role) {
-    return (
-      isLoading ? (
-        <Spinner loadingText="Generating your demo data, please wait..." filled={true} />
-      ) : (
-          <Redirect to="/app/dashboard" />
-        )
-    )
+    return isLoading ? (
+      <Spinner
+        loadingText="Generating your demo data, please wait..."
+        filled={true}
+      />
+    ) : (
+      <Redirect to="/app/dashboard" />
+    );
   }
 
   return (
@@ -73,7 +74,9 @@ const WelcomePage = ({
           <Input
             label="Organization *"
             value={formValues.organization}
-            onChange={e => setFormValues({ ...formValues, organization: e.target.value })}
+            onChange={(e) =>
+              setFormValues({ ...formValues, organization: e.target.value })
+            }
             placeholder="Enter your organization name"
             description="Please enter your organization name."
             style={{ height: '40px' }}
@@ -82,7 +85,9 @@ const WelcomePage = ({
           <Input
             label="Position *"
             value={formValues.position}
-            onChange={e => setFormValues({ ...formValues, position: e.target.value })}
+            onChange={(e) =>
+              setFormValues({ ...formValues, position: e.target.value })
+            }
             placeholder="Enter your position"
             description="Please enter your position name to be displayed on your account."
             style={{ height: '40px' }}
@@ -93,13 +98,22 @@ const WelcomePage = ({
             <DropDownMemu
               title="Choose a role you want to play with (can change anytime later)"
               currentItem={() => formValues.role}
-              onChange={option => setFormValues({ ...formValues, role: option.key })}
-              options={Object.values(descriptiveRoleNames).filter(role => role.id !== formValues.role).map(role => ({
-                key: role.id,
-                value: role.description
-              }))}
+              onChange={(option) =>
+                setFormValues({ ...formValues, role: option.key })
+              }
+              options={Object.values(descriptiveRoleNames)
+                .filter((role) => role.id !== formValues.role)
+                .map((role) => ({
+                  key: role.id,
+                  value: role.description,
+                }))}
               renderValue={(option) => (
-                <MenuOption>{option.key} <span>(Have access to : <em>{option.value}</em>)</span></MenuOption>
+                <MenuOption>
+                  {option.key}{' '}
+                  <span>
+                    (Have access to : <em>{option.value}</em>)
+                  </span>
+                </MenuOption>
               )}
               description="* Recommended to start with Admin as it has access to all the functionarities."
             />
@@ -108,15 +122,13 @@ const WelcomePage = ({
         </form>
       </FormContainer>
     </Container>
-  )
-}
+  );
+};
 
-WelcomePage.propTypes = {
-
-}
+WelcomePage.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
-  userCredentials: selectUser
+  userCredentials: selectUser,
 });
 
 export default compose(

@@ -10,8 +10,8 @@ export const SidebarList = styled.li`
   &:last-of-type {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
-  
-  & > a, 
+
+  & > a,
   & > span {
     font-size: 13.5px;
     font-weight: 600;
@@ -26,17 +26,17 @@ export const SidebarList = styled.li`
       margin-right: 10px;
       /* color: rgba(255, 255, 255, 0.6); */
 
-      &.sort-down{
+      &.sort-down {
         float: right;
         margin-left: auto;
         color: ${color.white};
       }
     }
-    
+
     &:hover,
     &.active {
       color: ${color.lightBlue};
-      & > i  {
+      & > i {
         color: ${color.lightBlue};
       }
     }
@@ -46,15 +46,17 @@ export const SidebarList = styled.li`
     }
   }
 
-  ${props => props.isOpen && css`
-    .sort-down {
-      transform: rotate(180deg);
-      &::before{
-        position: relative;
-        top: -3px;
+  ${(props) =>
+    props.isOpen &&
+    css`
+      .sort-down {
+        transform: rotate(180deg);
+        &::before {
+          position: relative;
+          top: -3px;
+        }
       }
-    }
-  `};
+    `};
 `;
 
 export const SidebarSubList = styled.ul`
@@ -62,10 +64,10 @@ export const SidebarSubList = styled.ul`
   border: none;
   max-height: 0;
   opacity: 0;
-  transition: all .3s;
+  transition: all 0.3s;
   overflow: hidden;
 
-  &.is-open{
+  &.is-open {
     max-height: 1000px;
     opacity: 1;
   }
@@ -75,7 +77,7 @@ export const SidebarSubList = styled.ul`
     font-size: 12px;
     font-weight: 500;
     color: #fff;
-    
+
     a {
       padding: 20px 16px;
       display: flex;
@@ -85,15 +87,15 @@ export const SidebarSubList = styled.ul`
         margin-right: 10px;
 
         &.project-icon {
-          &:before{
+          &:before {
             border: 1px solid ${color.white};
           }
         }
       }
     }
 
-    &:hover{
-      color: #8CD7F8;
+    &:hover {
+      color: #8cd7f8;
     }
   }
-`
+`;

@@ -1,17 +1,17 @@
-import styled from 'styled-components'
-import { color } from '../../utils/styles'
+import styled from 'styled-components';
+import { color } from '../../utils/styles';
 
 export const Container = styled.div`
   margin: 20px 0;
   position: relative;
-`
+`;
 
 export const Title = styled.p`
   color: ${color.textMedium};
   font-size: 12px;
   font-weight: 700;
   margin-bottom: 4px;
-`
+`;
 
 export const Content = styled.div`
   display: flex;
@@ -21,12 +21,12 @@ export const Content = styled.div`
   border-radius: 3px;
   background-color: ${color.backgroundLightest2};
   min-height: 40px;
-  transition: background-color .3s;
+  transition: background-color 0.3s;
 
   &:hover {
     background-color: ${color.hoverGray};
   }
-`
+`;
 
 export const CurrentItem = styled.div`
   font-size: 14px;
@@ -43,14 +43,14 @@ export const CurrentItem = styled.div`
   .placeholder {
     color: ${color.textLight};
   }
-`
+`;
 
 export const AngleDownIcon = styled.span`
   margin-left: auto;
-`
+`;
 
 export const Description = styled.div`
   font-size: 12px;
   line-height: 1.6;
   color: ${color.textMedium};
-`
+`;

@@ -5,7 +5,7 @@ export const Top = styled.div`
   display: flex;
   padding-bottom: 7px;
   border-bottom: 2px solid ${color.borderLightest};
-`
+`;
 
 export const DayName = styled.div`
   width: calc(100% / 7);
@@ -15,7 +15,7 @@ export const DayName = styled.div`
   color: #99a1a7;
   font-weight: 500;
   font-size: 14px;
-`
+`;
 
 export const Bottom = styled.div`
   height: 100%;
@@ -23,9 +23,9 @@ export const Bottom = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;
-`
+`;
 
 export const Week = styled.div`
   display: flex;
   flex-wrap: nowrap;
-`
+`;

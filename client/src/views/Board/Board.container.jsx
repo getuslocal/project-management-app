@@ -16,7 +16,7 @@ const BoardContainer = ({
   getOrganizationMembers,
   ...props
 }) => {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   // Handles featching all the necessary data before rendering Board component.
   useEffect(() => {
@@ -36,17 +36,8 @@ const BoardContainer = ({
     fetchInitialData();
   }, []);
 
-  return (
-    isLoading ? (
-      <Spinner />
-    ) : (
-        <Board
-          user={user}
-          {...props}
-        />
-      )
-  )
-}
+  return isLoading ? <Spinner /> : <Board user={user} {...props} />;
+};
 
 BoardContainer.propTypes = {
   user: PropTypes.object.isRequired,
@@ -56,7 +47,7 @@ BoardContainer.propTypes = {
   getOrganizationMembers: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   getRoles: (userRole) => dispatch(getRoles(userRole)),
   getOrganization: (userId) => dispatch(getOrganization(userId)),
   getProjects: (orgId) => dispatch(getProjects(orgId)),

@@ -5,8 +5,11 @@ import { selectMembers } from '../../../../../../redux/members/members.selectors
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { addComment, deleteComment } from '../../../../../../redux/tickets/tickets.actions';
-import Button from '../../../../../../shared/components/Button/Button'
+import {
+  addComment,
+  deleteComment,
+} from '../../../../../../redux/tickets/tickets.actions';
+import Button from '../../../../../../shared/components/Button/Button';
 import Comment from './Comment/Comment';
 import { IssueHistoryTypes } from '../../../../../../shared/constants/issues';
 import {
@@ -17,9 +20,7 @@ import {
   TextAreaWrapper,
   ButtonsContainer,
 } from './Comments.style';
-import {
-  IconCont
-} from '../IssueDetail.style';
+import { IconCont } from '../IssueDetail.style';
 
 const Comments = ({
   currentUser,
@@ -28,7 +29,7 @@ const Comments = ({
   ticketId,
   addComment,
   deleteComment,
-  updateTicketHistory
+  updateTicketHistory,
 }) => {
   const [text, setText] = useState('');
   const [isOpen, setIsOpen] = useState(false);
@@ -51,17 +52,21 @@ const Comments = ({
             onChange={(e) => setText(e.target.value)}
             onClick={() => setIsOpen(true)}
           />
-          {
-            isOpen &&
+          {isOpen && (
             <ButtonsContainer>
               <Button
                 text="Save"
                 variant="primary"
                 onClick={() => {
-                  addComment(ticketId, { text })
-                  setText('')
-                  setIsOpen(false)
-                  updateTicketHistory(null, null, null, IssueHistoryTypes.COMMENT)
+                  addComment(ticketId, { text });
+                  setText('');
+                  setIsOpen(false);
+                  updateTicketHistory(
+                    null,
+                    null,
+                    null,
+                    IssueHistoryTypes.COMMENT
+                  );
                 }}
                 type="button"
               />
@@ -69,29 +74,27 @@ const Comments = ({
                 text="Cancel"
                 variant="text"
                 onClick={() => {
-                  setIsOpen(false)
-                  setText('')
+                  setIsOpen(false);
+                  setText('');
                 }}
                 type="button"
               />
             </ButtonsContainer>
-          }
+          )}
         </TextAreaWrapper>
       </Top>
-      {
-        comments.map(comment =>
-          <Comment
-            key={comment._id}
-            comment={comment}
-            userData={memberList.find(member => member._id === comment.user)}
-            userId={userId}
-            deleteComment={() => deleteComment(ticketId, comment._id)}
-          />
-        )
-      }
+      {comments.map((comment) => (
+        <Comment
+          key={comment._id}
+          comment={comment}
+          userData={memberList.find((member) => member._id === comment.user)}
+          userId={userId}
+          deleteComment={() => deleteComment(ticketId, comment._id)}
+        />
+      ))}
     </Container>
-  )
-}
+  );
+};
 
 Comments.propTypes = {
   currentUser: PropTypes.object.isRequired,
@@ -102,7 +105,9 @@ Comments.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectUser,
-  memberList: selectMembers
+  memberList: selectMembers,
 });
 
-export default connect(mapStateToProps, { addComment, deleteComment })(Comments);
+export default connect(mapStateToProps, { addComment, deleteComment })(
+  Comments
+);

@@ -7,15 +7,15 @@ export const TopContent = styled.div`
   margin: 12px 0;
   min-height: 40px;
   height: 40px;
-`
+`;
 
 export const Left = styled.div`
   font-size: 24px;
-`
+`;
 
 export const Month = styled.span`
-  margin-right: .5em;
-`
+  margin-right: 0.5em;
+`;
 
 export const Right = styled.div`
   & > .angle-button {
@@ -35,4 +35,4 @@ export const Right = styled.div`
     font-size: 14px;
     line-height: 36px;
   }
-`
+`;

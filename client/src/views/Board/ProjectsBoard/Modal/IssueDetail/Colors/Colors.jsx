@@ -1,5 +1,5 @@
-import React, { useState, Fragment } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import SelectMenu from '../../../../../../shared/components/SelectMenu/SelectMenu';
 import Icon from '../../../../../../shared/components/Icon/Icon';
 import { IssueColors } from '../../../../../../shared/constants/issues';
@@ -7,7 +7,7 @@ import {
   SectionContainer,
   SectionTitle,
   SectionContent,
-  IconCont
+  IconCont,
 } from '../IssueDetail.style';
 
 function Colors({ value, updateTicketField }) {
@@ -15,7 +15,10 @@ function Colors({ value, updateTicketField }) {
   return (
     <SectionContainer>
       <SectionTitle>Issue color</SectionTitle>
-      <SectionContent className="icon-angle-down" onClick={() => setIsMenuOpen(true)}>
+      <SectionContent
+        className="icon-angle-down"
+        onClick={() => setIsMenuOpen(true)}
+      >
         <IconCont>
           <Icon type={`issue-${value.toLowerCase()}`} size={14} top={2} />
         </IconCont>
@@ -25,15 +28,19 @@ function Colors({ value, updateTicketField }) {
         value={value}
         isActive={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
-        onChange={(option) => updateTicketField({ field: 'issueColor', value: option.value })}
-        options={Object.values(IssueColors).filter(color => color.name !== value).map(option => ({
-          key: option.name,
-          value: option.name,
-        }))}
+        onChange={(option) =>
+          updateTicketField({ field: 'issueColor', value: option.value })
+        }
+        options={Object.values(IssueColors)
+          .filter((color) => color.name !== value)
+          .map((option) => ({
+            key: option.name,
+            value: option.name,
+          }))}
         renderValue={({ value: color }) => renderList(color)}
       />
     </SectionContainer>
-  )
+  );
 }
 
 const renderList = (color) => {
@@ -44,14 +51,12 @@ const renderList = (color) => {
       </IconCont>
       {color}
     </Fragment>
-  )
-}
+  );
+};
 
 Colors.propTypes = {
   value: PropTypes.string,
   updateTicketField: PropTypes.func.isRequired,
-}
-
+};
 
 export default Colors;
-

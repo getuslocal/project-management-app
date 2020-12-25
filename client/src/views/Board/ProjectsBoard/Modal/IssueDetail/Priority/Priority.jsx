@@ -1,5 +1,5 @@
-import React, { useState, Fragment } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { IssuePriorities } from '../../../../../../shared/constants/issues';
 import SelectMenu from '../../../../../../shared/components/SelectMenu/SelectMenu';
 import Icon from '../../../../../../shared/components/Icon/Icon';
@@ -7,17 +7,28 @@ import {
   SectionContainer,
   SectionTitle,
   SectionContent,
-  IconCont
+  IconCont,
 } from '../IssueDetail.style';
 
-function Priority({ value: currentPriority, updateTicketField, updateTicketHistory }) {
+function Priority({
+  value: currentPriority,
+  updateTicketField,
+  updateTicketHistory,
+}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <SectionContainer>
       <SectionTitle>Priority</SectionTitle>
-      <SectionContent className="icon-angle-down" onClick={() => setIsMenuOpen(true)}>
+      <SectionContent
+        className="icon-angle-down"
+        onClick={() => setIsMenuOpen(true)}
+      >
         <IconCont>
-          <Icon type={`priority-${currentPriority.toLowerCase()}`} isSolid={true} size={12} />
+          <Icon
+            type={`priority-${currentPriority.toLowerCase()}`}
+            isSolid={true}
+            size={12}
+          />
         </IconCont>
         {currentPriority}
       </SectionContent>
@@ -27,29 +38,32 @@ function Priority({ value: currentPriority, updateTicketField, updateTicketHisto
         isActive={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
         onChange={({ value: updatedPriority }) => {
-          updateTicketField({ field: "issuePriority", value: updatedPriority })
-          updateTicketHistory('Priority', currentPriority, updatedPriority)
+          updateTicketField({ field: 'issuePriority', value: updatedPriority });
+          updateTicketHistory('Priority', currentPriority, updatedPriority);
         }}
-        options={Object.values(IssuePriorities).filter(option => option !== currentPriority).map(option => ({
-          key: option,
-          value: option,
-        }))}
+        options={Object.values(IssuePriorities)
+          .filter((option) => option !== currentPriority)
+          .map((option) => ({
+            key: option,
+            value: option,
+          }))}
         renderValue={({ value: priority }) => (
           <Fragment>
             <IconCont>
-              <Icon type={`priority-${priority.toLowerCase()}`} isSolid={true} size={12} />
+              <Icon
+                type={`priority-${priority.toLowerCase()}`}
+                isSolid={true}
+                size={12}
+              />
             </IconCont>
             {priority}
           </Fragment>
         )}
       />
     </SectionContainer>
-  )
+  );
 }
 
-Priority.propTypes = {
+Priority.propTypes = {};
 
-}
-
-export default Priority
-
+export default Priority;

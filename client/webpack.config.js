@@ -18,23 +18,23 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         resolve: {
-          extensions: [".js", ".jsx"]
+          extensions: ['.js', '.jsx'],
         },
         use: {
-          loader: 'babel-loader'
-        }
+          loader: 'babel-loader',
+        },
       },
       {
         test: /\.html$/,
         use: [
           {
-            loader: 'html-loader'
-          }
-        ]
+            loader: 'html-loader',
+          },
+        ],
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
@@ -53,7 +53,7 @@ module.exports = {
       //     test: /\.svg$/,
       //     use: ['@svgr/webpack'],
       // },
-    ]
+    ],
   },
   resolve: {
     alias: {
@@ -71,6 +71,6 @@ module.exports = {
     new HtmlWebPackPlugin({
       template: path.join(__dirname, 'src/index.html'),
       favicon: path.join(__dirname, 'src/favicon.png'),
-    })
-  ]
+    }),
+  ],
 };

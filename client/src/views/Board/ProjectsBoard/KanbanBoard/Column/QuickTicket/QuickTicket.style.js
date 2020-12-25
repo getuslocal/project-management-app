@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const Container = styled.div`
   background-color: rgb(255, 255, 255);
@@ -8,7 +8,7 @@ export const Container = styled.div`
   border-radius: 3px;
   background-color: #fff;
   box-shadow: rgb(76, 154, 255) 0px 0px 0px 2px inset;
-`
+`;
 
 export const TextArea = styled.textarea`
   margin-bottom: 8px;
@@ -16,56 +16,54 @@ export const TextArea = styled.textarea`
   border: none;
   width: 100%;
   min-height: 4em;
-`
+`;
 export const DropDownMenu = styled.div`
   display: inline-block;
   position: relative;
-`
+`;
 export const Content = styled.div`
-display: flex;
-align-items: center;
-  &:hover{
+  display: flex;
+  align-items: center;
+  &:hover {
     cursor: pointer;
   }
-`
-export const DropDownContent = styled.div`
-`
+`;
+export const DropDownContent = styled.div``;
 
 export const ButtonContainer = styled.div`
-float: right;
-
-`
+  float: right;
+`;
 export const Button = styled.input`
   border: none;
   background-color: transparent;
   font-size: 12px;
-  padding: .4em;
+  padding: 0.4em;
   font-weight: 500;
   border-radius: 3px;
-  color: rgb(0,82,204);
-  margin-right: .75em;
+  color: rgb(0, 82, 204);
+  margin-right: 0.75em;
 
   &:hover {
-          opacity: .9;
-          background-color: rgba(9, 30, 66, 0.08);
-          cursor: pointer;
-        }
-`
+    opacity: 0.9;
+    background-color: rgba(9, 30, 66, 0.08);
+    cursor: pointer;
+  }
+`;
 export const CloseButton = styled.span`
   font-size: 12px;
-  padding: .25em .4em;
+  padding: 0.25em 0.4em;
   font-weight: 500;
   border-radius: 3px;
-  color: rgb(94,108,132);
+  color: rgb(94, 108, 132);
 
-  &:hover{
+  &:hover {
     cursor: pointer;
     background-color: rgba(9, 30, 66, 0.08);
   }
-`
+`;
 export const AngleDownIcon = styled.span`
   margin-left: 10px;
-`
+`;
 export const IconCont = styled.span`
   margin-right: 10px;
-`
+`;

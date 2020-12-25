@@ -10,15 +10,15 @@ const FormCheckBox = ({ name, ...props }) => {
 
   return (
     <FormCheckBoxContainer>
-      <FormCheckBoxInput 
-        {...props} 
+      <FormCheckBoxInput
+        {...props}
         onChange={() => setChecked(!checked)}
         className={checked ? 'checked' : ''}
-        id='formCheckBox'
+        id="formCheckBox"
       />
-      <FormCheckBoxLabel htmlFor='formCheckBox'>Remember me</FormCheckBoxLabel>
+      <FormCheckBoxLabel htmlFor="formCheckBox">Remember me</FormCheckBoxLabel>
     </FormCheckBoxContainer>
-  )
+  );
 };
 
 export default FormCheckBox;

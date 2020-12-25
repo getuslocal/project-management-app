@@ -1,12 +1,9 @@
-import {
-  GET_ORG_MEMBERS,
-  UPDATE_MEMBER,
-} from './members.types';
+import { GET_ORG_MEMBERS, UPDATE_MEMBER } from './members.types';
 
 const INITIAL_STATE = {
   members: [],
-  loading: true
-}
+  loading: true,
+};
 
 const membersReducer = (state = INITIAL_STATE, action) => {
   const { type, payload } = action;
@@ -15,20 +12,20 @@ const membersReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         members: payload,
-        loading: false
-      }
+        loading: false,
+      };
     case UPDATE_MEMBER:
       return {
         ...state,
-        members: state.members.map(member => {
+        members: state.members.map((member) => {
           if (member._id === payload.memberId) {
-            return ({
-              ...payload.updatedData
-            })
+            return {
+              ...payload.updatedData,
+            };
           }
-          return member
+          return member;
         }),
-      }
+      };
     default:
       return state;
   }

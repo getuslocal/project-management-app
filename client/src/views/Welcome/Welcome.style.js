@@ -17,7 +17,7 @@ export const Container = styled.div`
 export const FormContainer = styled.div`
   min-height: 500px;
   width: 620px;
-  padding: 0  10px;
+  padding: 0 10px;
   text-align: left;
 
   h1 {

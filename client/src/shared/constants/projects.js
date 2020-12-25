@@ -17,9 +17,9 @@ export const getRandomProjectIcon = () => {
   const rand = Math.floor(Math.random() * 5);
   const randomIcon = Object.values(defaultProjectIcons)[rand];
 
-  if(!randomIcon) return Object.values(defaultProjectIcons)[0];
+  if (!randomIcon) return Object.values(defaultProjectIcons)[0];
 
   return randomIcon;
-}
+};
 
-export const defaultUserIcon = "https://i.ibb.co/k6c1RR5/default-profile.png";
+export const defaultUserIcon = 'https://i.ibb.co/k6c1RR5/default-profile.png';

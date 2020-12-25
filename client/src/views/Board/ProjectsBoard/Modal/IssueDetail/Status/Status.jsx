@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Container,
-  Button,
-  StyledText
-} from './Status.style';
+import { Container, Button, StyledText } from './Status.style';
 import { updateTicketStatus } from '../../../../../../redux/projects/projects.actions';
 import SelectMenu from '../../../../../../shared/components/SelectMenu/SelectMenu';
 import { updateTicket } from '../../../../../../redux/tickets/tickets.actions';
@@ -16,7 +12,7 @@ const IssueStatusMenu = ({
   ticket,
   updateTicketHistory,
   updateTicketStatus,
-  updateTicket
+  updateTicket,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -27,8 +23,8 @@ const IssueStatusMenu = ({
   const handleStatusChange = (newColumnId) => {
     const columnMove = {
       beforeColumn: currentColumnId,
-      afterColumn: newColumnId
-    }
+      afterColumn: newColumnId,
+    };
 
     updateTicketStatus(columnMove, ticketId, projectId);
 
@@ -48,8 +44,8 @@ const IssueStatusMenu = ({
   return (
     <Container>
       <Button
-        isFirstColumn={(currentColumnId === columnOrder[0])}
-        isDoneColumn={(currentColumnData.isDoneColumn)}
+        isFirstColumn={currentColumnId === columnOrder[0]}
+        isDoneColumn={currentColumnData.isDoneColumn}
         type="button"
         className="icon-angle-down"
         onClick={() => setIsMenuOpen(true)}
@@ -63,25 +59,36 @@ const IssueStatusMenu = ({
         onChange={(updatedColumn) => {
           handleStatusChange(updatedColumn.id);
           // Update project history.
-          updateTicketHistory('Status', currentColumnData.title, updatedColumn.value);
+          updateTicketHistory(
+            'Status',
+            currentColumnData.title,
+            updatedColumn.value
+          );
         }}
-        options={Object.values(columns).filter(column => column.id !== currentColumnId).map(column => ({
-          value: column.title,
-          id: column.id,
-          key: column.id,
-        }))}
+        options={Object.values(columns)
+          .filter((column) => column.id !== currentColumnId)
+          .map((column) => ({
+            value: column.title,
+            id: column.id,
+            key: column.id,
+          }))}
         renderValue={({ value, id }) => {
-          const isFirstColumn = (id === columnOrder[0]);
-          const isDoneColumn = ((columns[id].isDoneColumn));
+          const isFirstColumn = id === columnOrder[0];
+          const isDoneColumn = columns[id].isDoneColumn;
           return (
-            <StyledText isFirstColumn={isFirstColumn} isDoneColumn={isDoneColumn} >
+            <StyledText
+              isFirstColumn={isFirstColumn}
+              isDoneColumn={isDoneColumn}
+            >
               {value}
             </StyledText>
-          )
+          );
         }}
       />
     </Container>
-  )
-}
+  );
+};
 
-export default connect(null, { updateTicketStatus, updateTicket })(IssueStatusMenu);
+export default connect(null, { updateTicketStatus, updateTicket })(
+  IssueStatusMenu
+);

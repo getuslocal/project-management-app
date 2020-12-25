@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components'
-import { color } from '../../../../../shared/utils/styles'
+import styled, { css } from 'styled-components';
+import { color } from '../../../../../shared/utils/styles';
 
 export const NameCell = styled.td`
   & > i {
@@ -14,7 +14,7 @@ export const NameCell = styled.td`
   & > a {
     color: ${color.blue};
 
-    &:hover{
+    &:hover {
       text-decoration: underline;
     }
   }
@@ -29,4 +29,4 @@ export const NoProjectsContent = styled.div`
     font-weight: 500;
     color: ${color.textMedium};
   }
-`
+`;

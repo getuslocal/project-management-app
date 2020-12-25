@@ -11,25 +11,32 @@ import {
   CustomIcon,
   EpicWrapper,
   Epic,
-} from './Ticket.style'
+} from './Ticket.style';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { selectMembers } from '../../../../../../redux/members/members.selectors';
 import { selectEpicById } from '../../../../../../redux/tickets/tickets.selectors';
 import { createStructuredSelector } from 'reselect';
-import { IssueColors } from '../../.././../../../shared/constants/issues'
+import { IssueColors } from '../../.././../../../shared/constants/issues';
 
-const Ticket = ({ ticket, index, linkedEpic, members, projectKey, ...props }) => {
+const Ticket = ({
+  ticket,
+  index,
+  linkedEpic,
+  members,
+  projectKey,
+  ...props
+}) => {
   const { issueType, _id: ticketId, key, assigneeId } = ticket;
 
   // Open this ticket detail modal when clicked.
   const openIssueDetailModal = () => {
     const stringified = queryString.stringify({ selectedIssue: key });
-    props.history.push(`${props.match.url}?${stringified}`)
-  }
+    props.history.push(`${props.match.url}?${stringified}`);
+  };
 
   // Get assignee object of this ticket.
-  const assignee = members.find(member => member._id === assigneeId)
+  const assignee = members.find((member) => member._id === assigneeId);
 
   return (
     <Fragment>
@@ -42,17 +49,16 @@ const Ticket = ({ ticket, index, linkedEpic, members, projectKey, ...props }) =>
             isDragging={snapshot.isDragging}
             onClick={openIssueDetailModal}
           >
-            <TicketSummary>
-              {ticket.summary}
-            </TicketSummary>
-            {
-              linkedEpic &&
+            <TicketSummary>{ticket.summary}</TicketSummary>
+            {linkedEpic && (
               <EpicWrapper>
-                <Epic issueColor={IssueColors[linkedEpic.issueColor.toUpperCase()]}>
+                <Epic
+                  issueColor={IssueColors[linkedEpic.issueColor.toUpperCase()]}
+                >
                   {linkedEpic.summary}
                 </Epic>
               </EpicWrapper>
-            }
+            )}
             <Bottom>
               <TicketStatus className={`icon-issue-${issueType.toLowerCase()}`}>
                 {projectKey}-{key}
@@ -70,8 +76,8 @@ const Ticket = ({ ticket, index, linkedEpic, members, projectKey, ...props }) =>
         )}
       </Draggable>
     </Fragment>
-  )
-}
+  );
+};
 
 Ticket.propTypes = {
   linkedEpic: PropTypes.object,
@@ -80,12 +86,10 @@ Ticket.propTypes = {
   index: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => createStructuredSelector({
-  members: selectMembers,
-  linkedEpic: selectEpicById(ownProps.ticket.linkedEpic)
-});
+const mapStateToProps = (state, ownProps) =>
+  createStructuredSelector({
+    members: selectMembers,
+    linkedEpic: selectEpicById(ownProps.ticket.linkedEpic),
+  });
 
-export default compose(
-  withRouter,
-  connect(mapStateToProps, null)
-)(Ticket)
+export default compose(withRouter, connect(mapStateToProps, null))(Ticket);

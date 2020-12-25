@@ -6,8 +6,8 @@ export const Container = styled.p`
   display: inline-block;
   width: 50%;
 
-  &.active{
-    a{
+  &.active {
+    a {
       border-color: ${color.primary};
       color: ${color.primary};
     }
@@ -27,12 +27,12 @@ export const CustomLink = styled(Link)`
   height: 100%;
   border-bottom: 4px solid transparent;
 
-  &:before{
-    padding-right: .85em;
+  &:before {
+    padding-right: 0.85em;
     font-size: ${fontSize.small2};
   }
 
-  &:hover{
+  &:hover {
     color: ${color.primary};
   }
-`
+`;

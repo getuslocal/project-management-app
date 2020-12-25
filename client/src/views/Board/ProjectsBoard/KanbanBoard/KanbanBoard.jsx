@@ -1,10 +1,18 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { updateOneColumnTicketsOrder, updateTwoColumnsTicketsOrder, updateColumnOrder, updateHistory } from '../../../../redux/projects/projects.actions';
+import {
+  updateOneColumnTicketsOrder,
+  updateTwoColumnsTicketsOrder,
+  updateColumnOrder,
+  updateHistory,
+} from '../../../../redux/projects/projects.actions';
 import { selectFilteredTickets } from '../../../../redux/tickets/tickets.selectors';
-import { clearAllFilters, updateTicket } from '../../../../redux/tickets/tickets.actions';
+import {
+  clearAllFilters,
+  updateTicket,
+} from '../../../../redux/tickets/tickets.actions';
 import Column from './Column/Column';
-import ColumnCreate from './Column/ColumnCreate'
+import ColumnCreate from './Column/ColumnCreate';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
@@ -13,7 +21,7 @@ import {
   Container,
   BoardContainer,
   NewColumnButton,
-  NewColumnWrapper
+  NewColumnWrapper,
 } from './KanbanBoard.style';
 import TopBar from '../TopBar/TopBar';
 import Icon from '../../../../shared/components/Icon/Icon';
@@ -21,20 +29,26 @@ import { setAlert } from '../../../../redux/alert/alert.actions';
 
 const getTickets = (ticketMap, taskIds) => {
   let selectedTickets = [];
-  taskIds.forEach(taskId => {
-    ticketMap.forEach(ticket => {
+  taskIds.forEach((taskId) => {
+    ticketMap.forEach((ticket) => {
       if (ticket._id === taskId) {
-        selectedTickets.push(ticket)
+        selectedTickets.push(ticket);
       }
-    })
-  })
-  return selectedTickets
-}
+    });
+  });
+  return selectedTickets;
+};
 
-const InnerList = React.memo(props => {
+const InnerList = React.memo((props) => {
   const { column, ticketMap, ...restProps } = props;
-  return <Column column={column} tickets={getTickets(ticketMap, column.taskIds)} {...restProps} />
-})
+  return (
+    <Column
+      column={column}
+      tickets={getTickets(ticketMap, column.taskIds)}
+      {...restProps}
+    />
+  );
+});
 
 const KanbanBoard = ({
   project,
@@ -45,7 +59,7 @@ const KanbanBoard = ({
   updateTwoColumnsTicketsOrder,
   updateTicket,
   updateHistory,
-  setAlert
+  setAlert,
 }) => {
   const { columnOrder, columns, _id: projectId } = project;
   // console.log('KanbanBoard render')
@@ -53,12 +67,14 @@ const KanbanBoard = ({
 
   useEffect(() => {
     // Clean up filters before unmounting.
-    return () => { clearAllFilters() };
-  }, [])
+    return () => {
+      clearAllFilters();
+    };
+  }, []);
 
   // Update history of the project.
   const updateHistoryOfProject = (ticketId, beforeColumnId, afterColumnId) => {
-    const ticketData = tickets.find(ticket => ticket._id === ticketId);
+    const ticketData = tickets.find((ticket) => ticket._id === ticketId);
     const logData = {
       ticket: {
         id: ticketId,
@@ -69,11 +85,11 @@ const KanbanBoard = ({
       field: 'Status',
       before: columns[beforeColumnId].title,
       after: columns[afterColumnId].title,
-    }
-    updateHistory(projectId, logData)
-  }
+    };
+    updateHistory(projectId, logData);
+  };
 
-  const onDragEnd = result => {
+  const onDragEnd = (result) => {
     const { destination, source, draggableId, type } = result;
 
     if (!destination) {
@@ -130,7 +146,10 @@ const KanbanBoard = ({
       taskIds: finishTicketsId,
     };
     // Update columnId field of the ticket.
-    updateTicket(draggableId, { field: 'columnId', value: destination.droppableId });
+    updateTicket(draggableId, {
+      field: 'columnId',
+      value: destination.droppableId,
+    });
     // Update the two columns taskIds fields.
     updateTwoColumnsTicketsOrder(projectId, { newStart, newFinish });
 
@@ -138,63 +157,78 @@ const KanbanBoard = ({
     if (columns[destination.droppableId].isDoneColumn) {
       updateTicket(draggableId, { field: 'completedAt', value: new Date() });
     }
-    // If move from the DONE column to another, unset the completed time. 
+    // If move from the DONE column to another, unset the completed time.
     // @TODO: Fixes update ticket api to allow multiple fields update.
     else if (columns[source.droppableId].isDoneColumn) {
       updateTicket(draggableId, { field: 'completedAt', value: null });
-    };
+    }
 
-    updateHistoryOfProject(draggableId, source.droppableId, destination.droppableId);
-  }
+    updateHistoryOfProject(
+      draggableId,
+      source.droppableId,
+      destination.droppableId
+    );
+  };
 
   return (
     <Fragment>
       <TopBar project={project} isEpicModal={false} />
       <Container>
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="all-columns" direction="horizontal" type="column">
-            {provided => (
-              <BoardContainer ref={provided.innerRef} {...provided.droppableProps} >
-                {
-                  columnOrder.map((columnId, index) => {
-                    const thisColumn = columns[columnId];
-                    return (
-                      <InnerList
-                        key={thisColumn.id}
-                        project={project}
-                        column={thisColumn}
-                        ticketMap={tickets}
-                        index={index}
-                      />
-                    )
-                  })
-                }
+          <Droppable
+            droppableId="all-columns"
+            direction="horizontal"
+            type="column"
+          >
+            {(provided) => (
+              <BoardContainer
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {columnOrder.map((columnId, index) => {
+                  const thisColumn = columns[columnId];
+                  return (
+                    <InnerList
+                      key={thisColumn.id}
+                      project={project}
+                      column={thisColumn}
+                      ticketMap={tickets}
+                      index={index}
+                    />
+                  );
+                })}
                 {provided.placeholder}
-                {
-                  addColumnActive ? (
-                    <ColumnCreate closeColumn={() => setAddColumnActive(false)} project={project} />
-                  ) : (
-                      <NewColumnWrapper>
-                        <NewColumnButton onClick={() => {
-                          if (Object.keys(columns).length >= 8) {
-                            setAlert('You cannot create more than 8 columns.', 'error')
-                          } else {
-                            setAddColumnActive(true)
-                          }
-                        }}>
-                          <Icon type="plus" size={16} isSolid={true} />
-                        </NewColumnButton>
-                      </NewColumnWrapper>
-                    )
-                }
+                {addColumnActive ? (
+                  <ColumnCreate
+                    closeColumn={() => setAddColumnActive(false)}
+                    project={project}
+                  />
+                ) : (
+                  <NewColumnWrapper>
+                    <NewColumnButton
+                      onClick={() => {
+                        if (Object.keys(columns).length >= 8) {
+                          setAlert(
+                            'You cannot create more than 8 columns.',
+                            'error'
+                          );
+                        } else {
+                          setAddColumnActive(true);
+                        }
+                      }}
+                    >
+                      <Icon type="plus" size={16} isSolid={true} />
+                    </NewColumnButton>
+                  </NewColumnWrapper>
+                )}
               </BoardContainer>
             )}
           </Droppable>
         </DragDropContext>
       </Container>
     </Fragment>
-  )
-}
+  );
+};
 
 KanbanBoard.propTypes = {
   tickets: PropTypes.array.isRequired,
@@ -212,13 +246,18 @@ const mapStateToProps = createStructuredSelector({
   tickets: selectFilteredTickets,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   clearAllFilters: () => dispatch(clearAllFilters()),
-  updateColumnOrder: (projectId, newColumnOrder) => dispatch(updateColumnOrder(projectId, newColumnOrder)),
-  updateOneColumnTicketsOrder: (projectId, newColumn) => dispatch(updateOneColumnTicketsOrder(projectId, newColumn)),
-  updateTwoColumnsTicketsOrder: (projectId, newColumn) => dispatch(updateTwoColumnsTicketsOrder(projectId, newColumn)),
-  updateTicket: (ticketId, newColumn) => dispatch(updateTicket(ticketId, newColumn)),
-  updateHistory: (projectId, logData) => dispatch(updateHistory(projectId, logData)),
+  updateColumnOrder: (projectId, newColumnOrder) =>
+    dispatch(updateColumnOrder(projectId, newColumnOrder)),
+  updateOneColumnTicketsOrder: (projectId, newColumn) =>
+    dispatch(updateOneColumnTicketsOrder(projectId, newColumn)),
+  updateTwoColumnsTicketsOrder: (projectId, newColumn) =>
+    dispatch(updateTwoColumnsTicketsOrder(projectId, newColumn)),
+  updateTicket: (ticketId, newColumn) =>
+    dispatch(updateTicket(ticketId, newColumn)),
+  updateHistory: (projectId, logData) =>
+    dispatch(updateHistory(projectId, logData)),
   setAlert: (msg, type) => dispatch(setAlert(msg, type)),
 });
 

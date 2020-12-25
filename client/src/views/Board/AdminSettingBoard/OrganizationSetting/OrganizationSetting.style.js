@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled, { css } from 'styled-components';
 import { color } from '../../../../shared/utils/styles';
 
 export const Container = styled.div`
@@ -7,7 +7,7 @@ export const Container = styled.div`
   .not-implemented-action {
     position: relative;
     &:hover {
-    cursor: not-allowed;
+      cursor: not-allowed;
       &::before {
         content: 'NOT AVAILABLE IN DEMO';
         font-size: 12px;

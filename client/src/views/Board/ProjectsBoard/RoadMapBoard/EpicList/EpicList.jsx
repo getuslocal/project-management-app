@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react';
 import Draggable from 'react-draggable'; // The default
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -10,9 +10,13 @@ import { selectCurrentProject } from '../../../../../redux/projects/projects.sel
 import { selectMembers } from '../../../../../redux/members/members.selectors';
 import { updateHistory } from '../../../../../redux/projects/projects.actions';
 import { updateTicket } from '../../../../../redux/tickets/tickets.actions';
-import { IssueColors, IssueHistoryTypes, IssueTypes } from '../../../../../shared/constants/issues'
-import Icon from '../../../../../shared/components/Icon/Icon'
-import moment from 'moment'
+import {
+  IssueColors,
+  IssueHistoryTypes,
+  IssueTypes,
+} from '../../../../../shared/constants/issues';
+import Icon from '../../../../../shared/components/Icon/Icon';
+import moment from 'moment';
 import queryString from 'query-string';
 import EpicDetail from './EpicDetail/EpicDetail';
 import RightResizableBar from './RightResizableBar/RightResizableBar';
@@ -29,7 +33,7 @@ import {
   Due,
   Status,
   ResizeBar,
-} from './EpicList.style'
+} from './EpicList.style';
 
 const EpicList = ({
   epic,
@@ -68,14 +72,16 @@ const EpicList = ({
     // Set epic bar width.
     setEpicWidth(epicWidth);
 
-    // Moment diff() does not always return the correct value, 
+    // Moment diff() does not always return the correct value,
     // so use js Date() object instead.
     const formattedStartDate = moment(momentedStartDate).toDate();
     const calendarFirstDate = moment().subtract(1, 'years').toDate();
 
     // Calculate the time difference of two dates.
-    const timeDiff = formattedStartDate.setHours(0, 0, 0, 0) - calendarFirstDate.setHours(0, 0, 0, 0);
-    
+    const timeDiff =
+      formattedStartDate.setHours(0, 0, 0, 0) -
+      calendarFirstDate.setHours(0, 0, 0, 0);
+
     // Calculate the no. of days between two dates.
     const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
@@ -85,18 +91,18 @@ const EpicList = ({
     setDragProperties({
       ...dragProperties,
       lastPosition: firstXPostion,
-      currentPostion: firstXPostion
-    })
-  }, [dateRange])
+      currentPostion: firstXPostion,
+    });
+  }, [dateRange]);
 
   const handleDateChange = (difference) => {
     const newStartDate = moment(dateRange.startDate).add(difference, 'days');
     const newEndDate = moment(dateRange.endDate).add(difference, 'days');
     const updateData = {
       field: 'dateRange',
-      value: { endDate: newEndDate, startDate: newStartDate }
-    }
-    updateTicket(epicId, updateData)
+      value: { endDate: newEndDate, startDate: newStartDate },
+    };
+    updateTicket(epicId, updateData);
     // Handles history updates.
     const logData = {
       ticket: {
@@ -108,15 +114,15 @@ const EpicList = ({
       field: 'Due date',
       before: moment(dateRange.endDate).format('LL'),
       after: newEndDate.format('LL'),
-    }
+    };
     updateHistory(projectId, logData);
-  }
+  };
 
   const onStop = (e, ui) => {
     const newPosition = ui.lastX;
     // Check if it is not dragged. If true, open issue detail modal.
     if (dragProperties.lastPosition === newPosition && ui.deltaX === 0) {
-      openIssueDetailModal(epicKey)
+      openIssueDetailModal(epicKey);
       return;
     }
     // Get difference between new position and last position.
@@ -133,34 +139,38 @@ const EpicList = ({
 
   const openIssueDetailModal = (key) => {
     const stringified = queryString.stringify({ selectedIssue: key });
-    props.history.push(`${props.match.url}?${stringified}`)
-  }
+    props.history.push(`${props.match.url}?${stringified}`);
+  };
 
   const calculateTaskDetailHeight = () => {
     if (!isChildIssuesVisible) return 75;
     const baseHeight = 75;
-    const childIssueHeight = (childIssues.length > 0 ? childIssues.length * 50 : 50);
+    const childIssueHeight =
+      childIssues.length > 0 ? childIssues.length * 50 : 50;
     return childIssueHeight + baseHeight;
-  }
+  };
 
   const updateChildIssuesWithStatus = (columns, childIssues) => {
-    return childIssues.map(issue => {
+    return childIssues.map((issue) => {
       const columnData = columns[issue.columnId];
-      const isFirstColumn = (columnData && (columnData.id === columnOrder[0]));
-      const isDone = (columnData && (columnData.isDoneColumn));
+      const isFirstColumn = columnData && columnData.id === columnOrder[0];
+      const isDone = columnData && columnData.isDoneColumn;
       return {
         ...issue,
         isFirstColumn: isFirstColumn,
         isDone: isDone,
-        status: columnData.title
-      }
-    })
-  }
+        status: columnData.title,
+      };
+    });
+  };
 
   return (
     <Row
       key={epic._id}
-      style={{ height: `${calculateTaskDetailHeight()}px`, width: `${boardWidth}px` }}
+      style={{
+        height: `${calculateTaskDetailHeight()}px`,
+        width: `${boardWidth}px`,
+      }}
     >
       {/* Left Part of the row */}
       <EpicDetail
@@ -182,7 +192,7 @@ const EpicList = ({
           position={{ x: dragProperties.currentPostion, y: 0 }}
           onStop={onStop}
         >
-          <EpicContainer epicWidth={epicWidth} >
+          <EpicContainer epicWidth={epicWidth}>
             <LeftResizableBar
               epic={epic}
               projectId={projectId}
@@ -222,35 +232,51 @@ const EpicList = ({
             />
           </EpicContainer>
         </Draggable>
-        {
-          isChildIssuesVisible && (
-            <ChildIssueContainer
-              style={{
-                left: `calc(${dragProperties.currentPostion}px + 2px)`,
-                width: `calc(${epicWidth}px - 2px)`
-              }}>
-              {updateChildIssuesWithStatus(columns, childIssues).map(issue => {
-                const assignee = members.find(member => member._id === issue.assigneeId)
-                return (
-                  <ChildIssue key={issue._id} onClick={() => openIssueDetailModal(issue.key)} style={{ backgroundColor: epicColorProperty.bg }}>
-                    <Icon type="user-icon" className={assignee ? "" : "unassigned-icon"} imageUrl={assignee && assignee.pictureUrl} size={27} top={2} />
-                    <ChildIssueSummary>
-                      {issue.summary}
-                      {/* <Due>Due Tomorrow</Due> */}
-                    </ChildIssueSummary>
-                    {
-                      issue.status && <Status isFirstColumn={issue.isFirstColumn} isDone={issue.isDone}>{issue.status}</Status>
-                    }
-                  </ChildIssue>
-                )
-              })}
-            </ChildIssueContainer>
-          )
-        }
+        {isChildIssuesVisible && (
+          <ChildIssueContainer
+            style={{
+              left: `calc(${dragProperties.currentPostion}px + 2px)`,
+              width: `calc(${epicWidth}px - 2px)`,
+            }}
+          >
+            {updateChildIssuesWithStatus(columns, childIssues).map((issue) => {
+              const assignee = members.find(
+                (member) => member._id === issue.assigneeId
+              );
+              return (
+                <ChildIssue
+                  key={issue._id}
+                  onClick={() => openIssueDetailModal(issue.key)}
+                  style={{ backgroundColor: epicColorProperty.bg }}
+                >
+                  <Icon
+                    type="user-icon"
+                    className={assignee ? '' : 'unassigned-icon'}
+                    imageUrl={assignee && assignee.pictureUrl}
+                    size={27}
+                    top={2}
+                  />
+                  <ChildIssueSummary>
+                    {issue.summary}
+                    {/* <Due>Due Tomorrow</Due> */}
+                  </ChildIssueSummary>
+                  {issue.status && (
+                    <Status
+                      isFirstColumn={issue.isFirstColumn}
+                      isDone={issue.isDone}
+                    >
+                      {issue.status}
+                    </Status>
+                  )}
+                </ChildIssue>
+              );
+            })}
+          </ChildIssueContainer>
+        )}
       </DraggableWrapper>
-    </Row >
-  )
-}
+    </Row>
+  );
+};
 
 EpicList.propTypes = {
   epic: PropTypes.object.isRequired,
@@ -258,13 +284,14 @@ EpicList.propTypes = {
   members: PropTypes.array.isRequired,
   updateTicket: PropTypes.func.isRequired,
   project: PropTypes.object,
-}
+};
 
-const mapStateToProps = (state, ownProps) => createStructuredSelector({
-  childIssues: selectChildIssues(ownProps.epic._id),
-  members: selectMembers,
-  project: selectCurrentProject
-})
+const mapStateToProps = (state, ownProps) =>
+  createStructuredSelector({
+    childIssues: selectChildIssues(ownProps.epic._id),
+    members: selectMembers,
+    project: selectCurrentProject,
+  });
 
 export default compose(
   withRouter,

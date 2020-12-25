@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components'
-import { color, zIndexValues } from '../../shared/utils/styles'
+import styled, { css } from 'styled-components';
+import { color, zIndexValues } from '../../shared/utils/styles';
 
 export const Container = styled.div`
   padding: 16px 12px;
@@ -23,7 +23,7 @@ export const Container = styled.div`
     color: #fff;
     background: ${color.danger};
     & > i {
-    margin-right: 8px;
+      margin-right: 8px;
     }
   }
 
@@ -31,7 +31,7 @@ export const Container = styled.div`
     background: ${color.success};
     color: #fff;
     & > i {
-    margin-right: 8px;
+      margin-right: 8px;
     }
   }
-`
+`;

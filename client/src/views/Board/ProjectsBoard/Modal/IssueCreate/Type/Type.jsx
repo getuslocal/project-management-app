@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import SelectMenu from '../../../../../../shared/components/SelectMenu/SelectMenu';
 import Icon from '../../../../../../shared/components/Icon/Icon';
 import { IssueTypes } from '../../../../../../shared/constants/issues';
@@ -9,7 +9,7 @@ import {
   SectionContent,
   SelectItem,
   AngleDownIcon,
-  Description
+  Description,
 } from '../IssueCreate.style';
 
 function IssueCreateTypeField({ issueType, handleSelectMenu, isEpic }) {
@@ -25,9 +25,12 @@ function IssueCreateTypeField({ issueType, handleSelectMenu, isEpic }) {
             {issueType}
           </SelectItem>
         </SectionContent>
-        <Description>Some issue types are unavailable due to incompatible field configuration and/or workflow associations.</Description>
+        <Description>
+          Some issue types are unavailable due to incompatible field
+          configuration and/or workflow associations.
+        </Description>
       </SectionContainer>
-    )
+    );
   }
 
   return (
@@ -46,15 +49,20 @@ function IssueCreateTypeField({ issueType, handleSelectMenu, isEpic }) {
         isActive={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
         onChange={(option) => handleSelectMenu('issueType', option.value)}
-        options={Object.values(IssueTypes).filter(type => (type !== issueType && type != IssueTypes.EPIC)).map(option => ({
-          key: option,
-          value: option,
-        }))}
+        options={Object.values(IssueTypes)
+          .filter((type) => type !== issueType && type != IssueTypes.EPIC)
+          .map((option) => ({
+            key: option,
+            value: option,
+          }))}
         renderValue={({ value: issueType }) => renderOption(issueType)}
       />
-      <Description>Some issue types are unavailable due to incompatible field configuration and/or workflow associations.</Description>
+      <Description>
+        Some issue types are unavailable due to incompatible field configuration
+        and/or workflow associations.
+      </Description>
     </SectionContainer>
-  )
+  );
 }
 
 const renderOption = (issueType) => {
@@ -63,14 +71,12 @@ const renderOption = (issueType) => {
       <Icon type={issueType.toLowerCase()} size={13} />
       {issueType}
     </SelectItem>
-  )
-}
+  );
+};
 
 IssueCreateTypeField.propTypes = {
   issueType: PropTypes.string.isRequired,
   handleSelectMenu: PropTypes.func.isRequired,
-}
-
+};
 
 export default IssueCreateTypeField;
-

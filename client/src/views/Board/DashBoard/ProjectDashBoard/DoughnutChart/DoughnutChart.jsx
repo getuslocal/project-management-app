@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import PropTypes from 'prop-types'
-import { createStructuredSelector } from 'reselect'
-import { connect } from 'react-redux'
+import PropTypes from 'prop-types';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
 import { selectProjectById } from '../../../../../redux/projects/projects.selectors';
 import {
   Container,
@@ -14,7 +14,7 @@ import {
   Detail,
   DetailTop,
   ColorBox,
-  CompletionText
+  CompletionText,
 } from './DoughnutChart.style';
 import { color } from '../../../../../shared/utils/styles';
 
@@ -25,7 +25,7 @@ const doughnutChartOption = {
   maintainAspectRatio: false,
   // responsive: false,
   animation: {
-    duration: 1000
+    duration: 1000,
   },
   cutoutPercentage: 50,
   legend: {
@@ -36,7 +36,7 @@ const doughnutChartOption = {
       fontColor: color.textDark,
       padding: 14,
       fontFamily: "Poppins, 'sans-serif'",
-      boxWidth: 14
+      boxWidth: 14,
     },
     display: false,
   },
@@ -46,13 +46,13 @@ const doughnutChartOption = {
       color: '#fff',
       font: {
         size: '16',
-        weight: '600'
+        weight: '600',
       },
       display: function (context) {
         return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
-      }
+      },
     },
-  }
+  },
 };
 
 const colors = [
@@ -71,36 +71,44 @@ const DoughnutChart = ({ project: { columns, columnOrder }, tickets }) => {
   const [completePercent, setCompletePercent] = useState(0);
 
   useEffect(() => {
-    const myChartRef = canvasRef.current.getContext("2d");
+    const myChartRef = canvasRef.current.getContext('2d');
     new Chart(myChartRef, {
       type: 'doughnut',
       plugins: [ChartDataLabels],
       data: {
-        labels: columnOrder.map(columnId => {
+        labels: columnOrder.map((columnId) => {
           if (columns[columnId].title.length > 24) {
             return columns[columnId].title.substring(0, 24) + '...';
           }
-          return columns[columnId].title
+          return columns[columnId].title;
         }),
-        datasets: [{
-          data: columnOrder.map(columnId => columns[columnId].taskIds.length),
-          backgroundColor: columnOrder.map((columnId, index) => colors[index]),
-        }],
+        datasets: [
+          {
+            data: columnOrder.map(
+              (columnId) => columns[columnId].taskIds.length
+            ),
+            backgroundColor: columnOrder.map(
+              (columnId, index) => colors[index]
+            ),
+          },
+        ],
       },
-      options: doughnutChartOption
+      options: doughnutChartOption,
     });
     // Set percentage of completed issues.
     setCompletePercent(getCompletedPercentage(columns, tickets));
   }, []);
 
   const getCompletedPercentage = (columns, tickets) => {
-    const doneColumn = Object.values(columns).find(column => column.isDoneColumn);
+    const doneColumn = Object.values(columns).find(
+      (column) => column.isDoneColumn
+    );
     const doneIssues = doneColumn.taskIds.length;
 
     if (doneIssues === 0) return 0;
 
     return Math.floor((doneIssues / tickets.length) * 100);
-  }
+  };
 
   return (
     <Container>
@@ -111,31 +119,32 @@ const DoughnutChart = ({ project: { columns, columnOrder }, tickets }) => {
           issues
         </InnerText>
         <CompletionText>
-          <span>Completed {completePercent}% of {tickets.length} issues.</span>
+          <span>
+            Completed {completePercent}% of {tickets.length} issues.
+          </span>
         </CompletionText>
       </Left>
       <Right>
-        {
-          columnOrder.map((columnId, index) => (
-            <Detail key={columnId}>
-              <DetailTop>
-                <ColorBox style={{ backgroundColor: colors[index] }}></ColorBox>
-                {columns[columnId].title}
-              </DetailTop>
-            </Detail>
-          ))
-        }
+        {columnOrder.map((columnId, index) => (
+          <Detail key={columnId}>
+            <DetailTop>
+              <ColorBox style={{ backgroundColor: colors[index] }}></ColorBox>
+              {columns[columnId].title}
+            </DetailTop>
+          </Detail>
+        ))}
       </Right>
     </Container>
-  )
-}
+  );
+};
 
 DoughnutChart.propTypes = {
   project: PropTypes.object.isRequired,
-}
+};
 
-const mapStateToProps = (state, ownProps) => createStructuredSelector({
-  project: selectProjectById(ownProps.projectId),
-})
+const mapStateToProps = (state, ownProps) =>
+  createStructuredSelector({
+    project: selectProjectById(ownProps.projectId),
+  });
 
-export default connect(mapStateToProps, null)(DoughnutChart)
+export default connect(mapStateToProps, null)(DoughnutChart);

@@ -1,12 +1,12 @@
-import styled from 'styled-components'
-import { color } from '../../../../../../../shared/utils/styles'
+import styled from 'styled-components';
+import { color } from '../../../../../../../shared/utils/styles';
 
 export const Title = styled.p`
   font-size: 16px;
   font-weight: 500;
   color: ${color.textDarkest};
   margin-bottom: 10px;
-`
+`;
 
 export const OrderedLists = styled.ol`
   list-style-position: inside;
@@ -16,7 +16,7 @@ export const OrderedLists = styled.ol`
     margin-bottom: 10px;
     font-size: 14px;
   }
-`
+`;
 
 export const NestedLists = styled.ul`
   padding: 5px 10px;
@@ -33,4 +33,4 @@ export const NestedLists = styled.ul`
       color: ${color.textDark};
     }
   }
-`
+`;

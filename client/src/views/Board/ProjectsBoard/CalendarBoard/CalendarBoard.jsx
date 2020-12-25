@@ -3,17 +3,17 @@ import { useState } from 'react';
 import moment from 'moment';
 import CalendarHeader from './CalendarHeader/CalendarHeader';
 import CalendarContent from './CalendarContent/CalendarContent';
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
 
 const CalendarBoard = () => {
-  const [currentMonth, setCurrentMonth] = useState(moment())
+  const [currentMonth, setCurrentMonth] = useState(moment());
   const [loading, setLoading] = useState(true);
   const weekCellRef = useRef([]);
 
   useEffect(() => {
     // Check if loading (rendering calendar content) is done.
     if (!loading) {
-      scrollToToday()
+      scrollToToday();
     }
   }, [loading]);
 
@@ -22,21 +22,27 @@ const CalendarBoard = () => {
     if (currentMonthRef) {
       currentMonthRef.scrollIntoView();
     }
-  }
+  };
 
   const scrollToPrevMonth = () => {
-    const prevMonthRef = weekCellRef.current[moment(currentMonth).subtract(1, 'months').format('YYYY-MM')];
+    const prevMonthRef =
+      weekCellRef.current[
+        moment(currentMonth).subtract(1, 'months').format('YYYY-MM')
+      ];
     if (prevMonthRef) {
-      prevMonthRef.scrollIntoView()
+      prevMonthRef.scrollIntoView();
     }
-  }
+  };
 
   const scrollToNextMonth = () => {
-    const nextMonthRef = weekCellRef.current[moment(currentMonth).add(1, 'months').format('YYYY-MM')];
+    const nextMonthRef =
+      weekCellRef.current[
+        moment(currentMonth).add(1, 'months').format('YYYY-MM')
+      ];
     if (nextMonthRef) {
-      nextMonthRef.scrollIntoView()
+      nextMonthRef.scrollIntoView();
     }
-  }
+  };
 
   return (
     <Fragment>
@@ -53,7 +59,7 @@ const CalendarBoard = () => {
         setCurrentMonth={setCurrentMonth}
       />
     </Fragment>
-  )
-}
+  );
+};
 
 export default withRouter(CalendarBoard);

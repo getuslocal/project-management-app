@@ -28,26 +28,26 @@ const authReducer = (state = INITIAL_STATE, action) => {
         ...state,
         isAuthenticated: true,
         checkUserCredentials: true,
-        user: payload
+        user: payload,
       };
     case USER_UPDATED:
       return {
         ...state,
-        user: payload
+        user: payload,
       };
     case REGISTER_SUCCESS:
       return {
         ...state,
         ...payload,
         isAuthenticated: true,
-        checkUserCredentials: false
+        checkUserCredentials: false,
       };
     case LOGIN_SUCCESS:
       return {
         ...state,
         ...payload,
         isAuthenticated: true,
-        checkUserCredentials: false
+        checkUserCredentials: false,
       };
     case AUTH_ERROR:
       return {
@@ -57,31 +57,31 @@ const authReducer = (state = INITIAL_STATE, action) => {
     case REGISTER_FAIL:
       return {
         ...state,
-        errorMessage: payload
-      }
+        errorMessage: payload,
+      };
     case LOGIN_FAIL:
       return {
         ...state,
-        errorMessage: payload
-      }
+        errorMessage: payload,
+      };
     case LOGOUT:
       return {
         ...state,
         token: null,
         isAuthenticated: false,
-        user: null
+        user: null,
       };
     case REFRESH_ERROR_MESSAGE:
       return {
         ...state,
-        errorMessage: undefined
-      }
+        errorMessage: undefined,
+      };
     // @todo: Remove this if not used.
     case REMOVE_TOKEN:
       return {
         ...state,
-        token: null
-      }
+        token: null,
+      };
     default:
       return state;
   }

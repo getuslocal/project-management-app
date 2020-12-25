@@ -1,22 +1,22 @@
-import styled, { css } from 'styled-components'
-import { color } from '../../../../../../shared/utils/styles'
-import Icon from '../../../../../../shared/components/Icon/Icon'
+import styled, { css } from 'styled-components';
+import { color } from '../../../../../../shared/utils/styles';
+import Icon from '../../../../../../shared/components/Icon/Icon';
 
 export const Container = styled.div`
   min-height: 75px;
   width: 278px;
-  user-select:none;
+  user-select: none;
   padding: 0 16px;
-  position: absolute; 
-  left: 10px; 
+  position: absolute;
+  left: 10px;
   top: auto;
   border-radius: 7px;
-  background-color: ${props => props.backgroundColor};
+  background-color: ${(props) => props.backgroundColor};
 
-  &:before{
+  &:before {
     padding-top: 100%;
   }
-`
+`;
 
 export const Top = styled.div`
   display: flex;
@@ -29,15 +29,14 @@ export const Top = styled.div`
       display: block;
     }
   } */
-`
+`;
 
-export const Bottom = styled.div`
-`
+export const Bottom = styled.div``;
 
 export const OpenIcon = styled.p`
   margin-right: 10px;
   cursor: pointer;
-  background-color: ${props => props.backgroundColor};
+  background-color: ${(props) => props.backgroundColor};
   color: #fff;
   height: 17px;
   line-height: 17px;
@@ -45,18 +44,20 @@ export const OpenIcon = styled.p`
   width: 17px;
   text-align: center;
   border-radius: 3px;
-  
-  ${props => props.isOpen && css`
-    & > i {
-      transition: all .3s;
-      transform:rotateX(180deg);
-      &:before{
-        position: relative;
-        top: 1px;
+
+  ${(props) =>
+    props.isOpen &&
+    css`
+      & > i {
+        transition: all 0.3s;
+        transform: rotateX(180deg);
+        &:before {
+          position: relative;
+          top: 1px;
+        }
       }
-    }
-  `}
-`
+    `}
+`;
 
 export const Title = styled.p`
   cursor: pointer;
@@ -67,10 +68,10 @@ export const Title = styled.p`
   overflow: hidden;
   width: 200px;
   margin-bottom: 8px;
-  &:hover{
-    color: ${color.textDark}
+  &:hover {
+    color: ${color.textDark};
   }
-`
+`;
 
 export const Progress = styled.p`
   font-size: 11.5px;
@@ -80,7 +81,7 @@ export const Progress = styled.p`
   & > span {
     color: ${color.textDark};
   }
-`
+`;
 
 export const NewChildIssueButton = styled.div`
   margin-left: auto;
@@ -96,56 +97,56 @@ export const NewChildIssueButton = styled.div`
       display: inline-block;
       border-radius: 5px;
       color: ${color.textDark};
-      box-shadow: 0 1px 4px 1px rgba(0,0,0,.1);
+      box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.1);
     }
   }
-`
+`;
 
 export const ChildIssueDetail = styled.div`
   height: 50px;
   display: flex;
   align-items: center;
-  border-top: 1px solid rgba(0,0,0, .1);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
   font-size: 12px;
   font-weight: 500;
   padding: 0 10px;
 
-  .user-icon{
+  .user-icon {
     margin-left: auto;
   }
 
-  .unassigned-icon{
+  .unassigned-icon {
     margin-left: auto;
     &::before {
       border: 1px solid ${color.textVeryLight};
     }
   }
-`
+`;
 
 export const CheckIcon = styled(Icon)`
   margin-right: 10px;
-  color: ${props => props.isDone ? color.success : 'rgba(0,0,0, .35)'};
-`
+  color: ${(props) => (props.isDone ? color.success : 'rgba(0,0,0, .35)')};
+`;
 
 export const ChildIssueTitle = styled.p`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   width: 170px;
-  &:hover{
+  &:hover {
     color: ${color.textDark};
     cursor: pointer;
   }
-`
+`;
 
 export const NoIssuesMessage = styled.p`
   min-height: 50px;
   height: 50px;
   max-height: 50px;
   line-height: 50px;
-  border-top: 1px solid rgba(0,0,0, .1);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
   font-size: 12px;
   font-weight: 500;
   text-align: center;
   color: ${color.textDark};
-`
+`;

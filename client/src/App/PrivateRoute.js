@@ -13,24 +13,24 @@ const PrivateRoute = ({
 }) => (
   <Route
     {...rest}
-    render={props =>
+    render={(props) =>
       !checkUserCredentials ? (
         <Spinner />
-      ) : (isAuthenticated && user.orgId && user.role) ? (
+      ) : isAuthenticated && user.orgId && user.role ? (
         <Component {...props} user={user} />
       ) : (
-            <Redirect to="/" />
-          )
+        <Redirect to="/" />
+      )
     }
   />
 );
 
 PrivateRoute.propTypes = {
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  auth: selectAuthInfo
+  auth: selectAuthInfo,
 });
 
 export default connect(mapStateToProps)(PrivateRoute);

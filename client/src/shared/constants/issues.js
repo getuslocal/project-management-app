@@ -52,5 +52,5 @@ export const IssueHistoryTypes = {
   CREATE: 'Create',
   DELETE: 'Delete',
   UPDATE: 'Update',
-  COMMENT: 'Comment'
+  COMMENT: 'Comment',
 };

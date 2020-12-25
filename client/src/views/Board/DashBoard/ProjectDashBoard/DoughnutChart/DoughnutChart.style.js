@@ -1,11 +1,11 @@
-import styled from 'styled-components'
-import { color } from '../../../../../shared/utils/styles'
+import styled from 'styled-components';
+import { color } from '../../../../../shared/utils/styles';
 
 export const Container = styled.div`
-  height: calc( 100% - 52px );
+  height: calc(100% - 52px);
   display: flex;
   align-items: center;
-  justify-content:space-between;
+  justify-content: space-between;
   padding: 0 10px 10px;
 `;
 
@@ -42,7 +42,7 @@ export const IssueCount = styled.div`
 `;
 
 export const Detail = styled.div`
-  &:not(:last-child){
+  &:not(:last-child) {
     margin-bottom: 24px;
   }
 `;
@@ -69,4 +69,4 @@ export const CompletionText = styled.p`
   text-align: center;
   margin-top: 14px;
   color: ${color.textMedium};
-`
+`;

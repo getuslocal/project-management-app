@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled, { css } from 'styled-components';
 import { color } from '../../../../../shared/utils/styles';
 
 export const Container = styled.div`
@@ -8,7 +8,7 @@ export const Container = styled.div`
 
 export const ListContainer = styled.div`
   display: flex;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
   width: 100%;
 `;
 

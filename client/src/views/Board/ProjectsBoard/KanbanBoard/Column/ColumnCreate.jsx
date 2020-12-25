@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import short from 'short-uuid';
 import {
   Container,
@@ -10,7 +10,7 @@ import {
   TitleInput,
   Options,
   Option,
-} from './Column.style'
+} from './Column.style';
 import useOutsideClick from '../../../../../shared/hooks/useOutsideClick';
 import Icon from '../../../../../shared/components/Icon/Icon';
 import { updateProject } from '../../../../../redux/projects/projects.actions';
@@ -26,12 +26,12 @@ const ColumnCreate = ({
 
   useOutsideClick(containerRef, () => {
     // Close create column field.
-    closeColumn()
+    closeColumn();
   });
 
   useEffect(() => {
     containerRef.current.scrollIntoView();
-  }, [])
+  }, []);
 
   const createNewColumn = () => {
     const trimmedTitle = title.trim();
@@ -49,14 +49,14 @@ const ColumnCreate = ({
           id: newColumnId,
           title: trimmedTitle,
           isDoneColumn: false,
-          taskIds: []
-        }
+          taskIds: [],
+        },
       },
-      columnOrder: [...columnOrder, newColumnId]
+      columnOrder: [...columnOrder, newColumnId],
     };
     store.dispatch(updateProject(projectId, formValue));
     store.dispatch(setAlert('A new column is created !', 'success'));
-  }
+  };
 
   return (
     <OuterContainer>
@@ -69,29 +69,32 @@ const ColumnCreate = ({
               maxLength="30"
               placeholder="Column name"
               value={title}
-              onChange={e => setTitle(e.target.value)}
+              onChange={(e) => setTitle(e.target.value)}
             />
             <Options>
-              <Option onClick={createNewColumn}><Icon type="check" size={12} isSolid={true} /></Option>
-              <Option onClick={closeColumn}><Icon type="close" size={12} isSolid={true} /></Option>
+              <Option onClick={createNewColumn}>
+                <Icon type="check" size={12} isSolid={true} />
+              </Option>
+              <Option onClick={closeColumn}>
+                <Icon type="close" size={12} isSolid={true} />
+              </Option>
             </Options>
           </TopContent>
         </Top>
-        <Content>
-        </Content>
+        <Content></Content>
       </Container>
     </OuterContainer>
-  )
-}
+  );
+};
 
 const OuterContainer = styled.div`
   display: flex;
   padding-right: 5px;
-`
+`;
 
 ColumnCreate.propTypes = {
   project: PropTypes.object.isRequired,
   closeColumn: PropTypes.func.isRequired,
-}
+};
 
-export default ColumnCreate
+export default ColumnCreate;

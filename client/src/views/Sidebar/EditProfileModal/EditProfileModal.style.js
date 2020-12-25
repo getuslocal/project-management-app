@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components'
-import { color } from '../../../shared/utils/styles'
+import styled, { css } from 'styled-components';
+import { color } from '../../../shared/utils/styles';
 
 export const UserIcon = styled.div`
   display: flex;
@@ -9,7 +9,7 @@ export const UserIcon = styled.div`
   padding-bottom: 4px;
 
   & > i {
-    &::before{
+    &::before {
       border: 2px solid ${color.borderLight};
     }
   }
@@ -21,4 +21,4 @@ export const UserIcon = styled.div`
       background-color: rgb(240 240 245);
     }
   }
-`
+`;

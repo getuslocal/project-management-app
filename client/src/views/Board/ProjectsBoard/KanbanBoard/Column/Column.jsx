@@ -1,6 +1,6 @@
 import React, { Fragment, useRef, useState } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import Ticket from './Ticket/Ticket';
 import QuickTicket from './QuickTicket/QuickTicket';
 import {
@@ -15,7 +15,7 @@ import {
   Counter,
   Options,
   Option,
-} from './Column.style'
+} from './Column.style';
 import useOutsideClick from '../../../../../shared/hooks/useOutsideClick';
 import Icon from '../../../../../shared/components/Icon/Icon';
 import { updateProject } from '../../../../../redux/projects/projects.actions';
@@ -23,16 +23,20 @@ import store from '../../../../../redux/store';
 import ColumnDeleteModal from './ColumnDeleteModal/ColumnDeleteModal';
 import { setAlert } from '../../../../../redux/alert/alert.actions';
 
-const InnerList = React.memo(props => {
-  return (
-    props.tickets.map((ticket, index) =>
-      <Ticket key={ticket._id} ticket={ticket} index={index} projectKey={props.projectKey}/>)
-  )
+const InnerList = React.memo((props) => {
+  return props.tickets.map((ticket, index) => (
+    <Ticket
+      key={ticket._id}
+      ticket={ticket}
+      index={index}
+      projectKey={props.projectKey}
+    />
+  ));
 });
 
 const Column = ({
   column,
-  project: { _id: projectId, columns, columnOrder, key: projectKey},
+  project: { _id: projectId, columns, columnOrder, key: projectKey },
   tickets,
   index,
 }) => {
@@ -58,12 +62,12 @@ const Column = ({
         ...columns,
         [targetColumnId]: {
           ...columns[targetColumnId],
-          title: trimmedTitle
-        }
-      }
-    }
+          title: trimmedTitle,
+        },
+      },
+    };
     store.dispatch(updateProject(projectId, formValue));
-  }
+  };
 
   return (
     <Fragment>
@@ -76,69 +80,84 @@ const Column = ({
           >
             <Top {...provided.dragHandleProps}>
               <TopContent>
-                {
-                  !editTitleActive ? (
-                    <Fragment>
-                      <TitleText onClick={() => setEditTitleActive(true)}>{column.title}</TitleText>
-                      {
-                        column.isDoneColumn ? (
-                          <Icon className="check-icon" type="check" size={11} isSolid={true} />
-                        ) : (
-                            <Counter>{ticketsCounter}</Counter>
-                          )
-                      }
+                {!editTitleActive ? (
+                  <Fragment>
+                    <TitleText onClick={() => setEditTitleActive(true)}>
+                      {column.title}
+                    </TitleText>
+                    {column.isDoneColumn ? (
                       <Icon
-                        onClick={() => {
-                          if (Object.keys(columns).length <= 2) {
-                            store.dispatch(setAlert('A project must have at least 2 columns.', 'error'));
-                          } else {
-                            setWarningModalActive(true)
-                          }
-                        }}
-                        className="delete-column-btn"
-                        type="trash"
-                        size={15}
+                        className="check-icon"
+                        type="check"
+                        size={11}
+                        isSolid={true}
                       />
-                    </Fragment>
-                  ) : (
-                      <Fragment>
-                        <TitleInput
-                          type="text"
-                          maxLength="30"
-                          ref={titleInputRef}
-                          autoFocus
-                          placeholder="Column name"
-                          value={title}
-                          onChange={e => setTitle(e.target.value)}
-                        />
-                        <Options>
-                          <Option onClick={() => updateTitle(column.id)}><Icon type="check" size={12} isSolid={true} /></Option>
-                          <Option onClick={() => setTitle(column.title)}><Icon type="close" size={12} isSolid={true} /></Option>
-                        </Options>
-                      </Fragment>
-                    )
-                }
+                    ) : (
+                      <Counter>{ticketsCounter}</Counter>
+                    )}
+                    <Icon
+                      onClick={() => {
+                        if (Object.keys(columns).length <= 2) {
+                          store.dispatch(
+                            setAlert(
+                              'A project must have at least 2 columns.',
+                              'error'
+                            )
+                          );
+                        } else {
+                          setWarningModalActive(true);
+                        }
+                      }}
+                      className="delete-column-btn"
+                      type="trash"
+                      size={15}
+                    />
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    <TitleInput
+                      type="text"
+                      maxLength="30"
+                      ref={titleInputRef}
+                      autoFocus
+                      placeholder="Column name"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                    />
+                    <Options>
+                      <Option onClick={() => updateTitle(column.id)}>
+                        <Icon type="check" size={12} isSolid={true} />
+                      </Option>
+                      <Option onClick={() => setTitle(column.title)}>
+                        <Icon type="close" size={12} isSolid={true} />
+                      </Option>
+                    </Options>
+                  </Fragment>
+                )}
               </TopContent>
             </Top>
             <Content>
               <Droppable droppableId={column.id} type="task">
-                {provided => (
-                  <TicketsList ref={provided.innerRef} {...provided.droppableProps}>
+                {(provided) => (
+                  <TicketsList
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
                     <InnerList tickets={tickets} projectKey={projectKey} />
-                    {
-                      !column.isDoneColumn && (
-                        isQuickTicketActive ?
-                          <QuickTicket
-                            setIsQuickTicketActive={setIsQuickTicketActive}
-                            columnId={column.id}
-                          />
-                          :
-                          <CreateTicketButton
-                            isFirstColumn={(index === 0)}
-                            onClick={() => setIsQuickTicketActive(true)}
-                          >+ Create issue</CreateTicketButton>
-                      )
-                    }
+                    {!column.isDoneColumn &&
+                      (isQuickTicketActive ? (
+                        <QuickTicket
+                          setIsQuickTicketActive={setIsQuickTicketActive}
+                          columnId={column.id}
+                        />
+                      ) : (
+                        <CreateTicketButton
+                          isFirstColumn={index === 0}
+                          onClick={() => setIsQuickTicketActive(true)}
+                        >
+                          + Create issue
+                        </CreateTicketButton>
+                      ))}
                     {provided.placeholder}
                   </TicketsList>
                 )}
@@ -158,7 +177,7 @@ const Column = ({
         />
       )}
     </Fragment>
-  )
+  );
 };
 
 Column.propTypes = {
@@ -166,6 +185,6 @@ Column.propTypes = {
   column: PropTypes.object.isRequired,
   tickets: PropTypes.array.isRequired,
   index: PropTypes.number.isRequired,
-}
+};
 
 export default Column;

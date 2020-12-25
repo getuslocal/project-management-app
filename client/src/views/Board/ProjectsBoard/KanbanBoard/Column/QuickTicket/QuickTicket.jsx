@@ -8,9 +8,12 @@ import {
   ButtonContainer,
   CloseButton,
   IconCont,
-  AngleDownIcon
-} from './QuickTicket.style'
-import { IssueTypes, IssuePriorities } from '../../../../../../shared/constants/issues';
+  AngleDownIcon,
+} from './QuickTicket.style';
+import {
+  IssueTypes,
+  IssuePriorities,
+} from '../../../../../../shared/constants/issues';
 import Icon from '../../../../../../shared/components/Icon/Icon';
 import SelectMenu from '../../../../../../shared/components/SelectMenu/SelectMenu';
 import { selectUser } from '../../../../../../redux/auth/auth.selectors';
@@ -20,7 +23,13 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { createNewTicket } from '../../../../../../redux/tickets/tickets.actions';
 
-const QuickTicket = ({ setIsQuickTicketActive, projectId, user, createNewTicket, columnId }) => {
+const QuickTicket = ({
+  setIsQuickTicketActive,
+  projectId,
+  user,
+  createNewTicket,
+  columnId,
+}) => {
   const [isActive, setIsActive] = useState(false);
   const [issueFormValues, setIssueFormValues] = useState({
     issueType: IssueTypes.TASK,
@@ -40,15 +49,19 @@ const QuickTicket = ({ setIsQuickTicketActive, projectId, user, createNewTicket,
     issueFormValues.dueDate = null;
     createNewTicket(issueFormValues, columnId);
     setIsQuickTicketActive(false);
-  }
+  };
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     const { name, value } = event.target;
     setIssueFormValues({ ...issueFormValues, [name]: value });
   };
 
   return (
-    <Container onClick={() => { if (isActive) setIsActive(false) }}>
+    <Container
+      onClick={() => {
+        if (isActive) setIsActive(false);
+      }}
+    >
       <form onSubmit={handleSubmit}>
         <TextArea
           placeholder="What needs to be done?"
@@ -70,26 +83,34 @@ const QuickTicket = ({ setIsQuickTicketActive, projectId, user, createNewTicket,
             width={150}
             left={-10}
             setIsMenuOpen={setIsActive}
-            onChange={(option) => setIssueFormValues({ ...issueFormValues, issueType: option.value })}
+            onChange={(option) =>
+              setIssueFormValues({
+                ...issueFormValues,
+                issueType: option.value,
+              })
+            }
             options={renderType(IssueTypes, issueType)}
             renderValue={({ value: issueType }) => renderOption(issueType)}
           />
         </DropDownMenu>
         <ButtonContainer>
           <Button type="submit" value="Create" />
-          <CloseButton onClick={() => setIsQuickTicketActive(false)}>Cancel</CloseButton>
+          <CloseButton onClick={() => setIsQuickTicketActive(false)}>
+            Cancel
+          </CloseButton>
         </ButtonContainer>
       </form>
     </Container>
-  )
-}
+  );
+};
 
-const renderType = (IssueTypes, currentType) => (
-  Object.values(IssueTypes).filter(type => type !== currentType && type !== IssueTypes.EPIC).map(option => ({
-    key: option,
-    value: option,
-  }))
-)
+const renderType = (IssueTypes, currentType) =>
+  Object.values(IssueTypes)
+    .filter((type) => type !== currentType && type !== IssueTypes.EPIC)
+    .map((option) => ({
+      key: option,
+      value: option,
+    }));
 
 const renderOption = (issueType) => (
   <Fragment>

@@ -5,7 +5,14 @@ import { StyledButton } from './Button.style';
 const propTypes = {
   text: PropTypes.string,
   handleClick: PropTypes.func,
-  variant: PropTypes.oneOf(['primary', 'success', 'danger', 'secondary', 'text', 'small']),
+  variant: PropTypes.oneOf([
+    'primary',
+    'success',
+    'danger',
+    'secondary',
+    'text',
+    'small',
+  ]),
 };
 
 const defaultProps = {
@@ -34,8 +41,7 @@ const Button = ({
       {children && children}
     </StyledButton>
   );
-}
-
+};
 
 Button.propTypes = propTypes;
 Button.defaultProps = defaultProps;

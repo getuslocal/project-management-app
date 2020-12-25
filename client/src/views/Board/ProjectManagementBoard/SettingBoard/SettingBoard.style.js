@@ -1,8 +1,8 @@
-import styled, { css } from 'styled-components'
-import { color } from '../../../../shared/utils/styles'
+import styled, { css } from 'styled-components';
+import { color } from '../../../../shared/utils/styles';
 
 export const Container = styled.div`
-  position:relative;
+  position: relative;
   height: 100%;
   padding: 0 5px;
 `;
@@ -18,15 +18,13 @@ export const Title = styled.h2`
   font-size: 22px;
 `;
 
-
 export const TableData = styled.td`
   padding: 16px 24px;
-  font-weight:500;
+  font-weight: 500;
   font-size: 13.5px;
   color: ${color.textDark};
-  
-  & > i {
 
+  & > i {
     &.project-icon {
       margin-right: 10px;
       &:before {
@@ -36,7 +34,7 @@ export const TableData = styled.td`
     &.user-icon {
       margin-right: 10px;
     }
-    &.trash-icon{
+    &.trash-icon {
       cursor: pointer;
     }
   }

@@ -1,8 +1,8 @@
-import styled from 'styled-components'
-import { color } from '../../../../../shared/utils/styles'
+import styled from 'styled-components';
+import { color } from '../../../../../shared/utils/styles';
 
 export const Container = styled.div`
-  position:relative;
+  position: relative;
   padding: 0 10px 10px;
 `;
 
@@ -14,21 +14,20 @@ export const Table = styled.table`
 
 export const Head = styled.thead`
   color: #6c798f;
-  display:table;
-  table-layout:fixed;
+  display: table;
+  table-layout: fixed;
   width: 100%;
 `;
 
-export const Body = styled.tbody`
-`;
+export const Body = styled.tbody``;
 
 export const BodyTableRow = styled.tr`
   &:not(:last-child) {
-    border-bottom: 1px solid rgba(211, 212, 213, .36);
+    border-bottom: 1px solid rgba(211, 212, 213, 0.36);
   }
   width: 100%;
-  display:table;
-  table-layout:fixed;
+  display: table;
+  table-layout: fixed;
 `;
 
 export const TableHeader = styled.th`
@@ -40,16 +39,16 @@ export const TableHeader = styled.th`
   padding-bottom: 4px;
   text-align: left;
   padding-left: 7px;
-  width: ${(props) => props.width ? `${props.width}px` : 'auto'};
+  width: ${(props) => (props.width ? `${props.width}px` : 'auto')};
 `;
 
 export const TableData = styled.td`
   padding: 10px 7px;
-  width: ${(props) => props.width ? `${props.width}px` : 'auto'};
+  width: ${(props) => (props.width ? `${props.width}px` : 'auto')};
   font-size: 14px;
   font-weight: 500;
   color: ${color.textDark};
-  
+
   & > i {
     color: ${color.textVeryLight2};
     margin-right: 10px;

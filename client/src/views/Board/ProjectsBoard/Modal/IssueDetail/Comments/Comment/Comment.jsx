@@ -1,7 +1,7 @@
 import React from 'react';
-import moment from 'moment'
+import moment from 'moment';
 import Icon from '../../../../../../../shared/components/Icon/Icon';
-import { defaultUserIcon } from '../../../../../../../shared/constants/projects'
+import { defaultUserIcon } from '../../../../../../../shared/constants/projects';
 import {
   Container,
   Content,
@@ -11,12 +11,10 @@ import {
   Delete,
   Time,
 } from './Comment.style';
-import {
-  IconCont
-} from '../../IssueDetail.style';
+import { IconCont } from '../../IssueDetail.style';
 
 const Comments = ({ comment, userId, userData, deleteComment }) => (
-  <Container >
+  <Container>
     <IconCont>
       <Icon
         type="user-icon"
@@ -29,10 +27,7 @@ const Comments = ({ comment, userId, userData, deleteComment }) => (
         {userData ? userData.name : 'Unknown user'}
         <Time>{moment(comment.date).fromNow()}</Time>
       </Name>
-      <TextArea
-        value={comment.text}
-        readOnly
-      />
+      <TextArea value={comment.text} readOnly />
       <Option>
         {userId === comment.user && (
           <Delete onClick={deleteComment}>Delete</Delete>
@@ -40,6 +35,6 @@ const Comments = ({ comment, userId, userData, deleteComment }) => (
       </Option>
     </Content>
   </Container>
-)
+);
 
 export default Comments;

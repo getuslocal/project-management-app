@@ -1,4 +1,4 @@
-import {roleNames} from '../../shared/constants/roles';
+import { roleNames } from '../../shared/constants/roles';
 
 const roles = {
   dashboard: {
@@ -11,7 +11,7 @@ const roles = {
     tabs: [
       {
         label: 'Overview',
-        linkUrl: ''
+        linkUrl: '',
       },
     ],
     dropDownMenu: [],
@@ -27,15 +27,15 @@ const roles = {
     tabs: [
       {
         label: 'Board',
-        linkUrl: ''
+        linkUrl: '',
       },
       {
         label: 'Roadmap',
-        linkUrl: '/roadmap'
+        linkUrl: '/roadmap',
       },
       {
         label: 'Calendar',
-        linkUrl: '/calendar'
+        linkUrl: '/calendar',
       },
     ],
     dropDownMenu: [],
@@ -51,7 +51,7 @@ const roles = {
     tabs: [
       {
         label: 'Settings',
-        linkUrl: ''
+        linkUrl: '',
       },
     ],
     dropDownMenu: [],
@@ -67,7 +67,7 @@ const roles = {
     tabs: [
       {
         label: 'Organization',
-        linkUrl: ''
+        linkUrl: '',
       },
     ],
     dropDownMenu: [],
@@ -98,12 +98,12 @@ export const getRolesOfUser = (role) => {
     default:
       break;
   }
-}
+};
 
 export const getProjectLabelAndLinkMap = (projects) => {
-  return projects.map(project => ({
+  return projects.map((project) => ({
     label: project.name,
     linkUrl: `/${project._id}`,
-    projectId: project._id
-  }))
-}
+    projectId: project._id,
+  }));
+};

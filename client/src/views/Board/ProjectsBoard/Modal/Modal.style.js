@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled, { css } from 'styled-components';
 
 export const ModalContainer = styled.div`
   height: 100%;
@@ -9,10 +9,10 @@ export const ModalContainer = styled.div`
   left: 0;
   z-index: 100;
   overflow: hidden auto;
-`
+`;
 
 export const Container = styled.div`
-  background-color: rgba(23, 43, 77, .5);
+  background-color: rgba(23, 43, 77, 0.5);
   min-height: 100%;
   display: flex;
   -webkit-box-pack: center;
@@ -20,7 +20,7 @@ export const Container = styled.div`
   -webkit-box-align: center;
   align-items: center;
   padding: 50px;
-`
+`;
 
 export const Content = styled.div`
   vertical-align: middle;
@@ -32,13 +32,13 @@ export const Content = styled.div`
   width: 100%;
   max-width: 800px;
   border-radius: 3px;
-`
+`;
 
 export const Fieldset = styled.fieldset`
   border: none;
   padding: 0;
-`
+`;
 
 export const Diviser = styled.div`
-border-bottom: 1px solid #ddd;
-`
+  border-bottom: 1px solid #ddd;
+`;

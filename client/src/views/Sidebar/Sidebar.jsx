@@ -19,21 +19,27 @@ import {
   UserProfile,
   UserProfileOverview,
   Blanket,
-  DemoSettingButton
+  DemoSettingButton,
 } from './Sidebar.style';
 
 const Sidebar = ({
   user: { name, role, pictureUrl },
   roles,
   secondaryView,
-  setSecondaryView
+  setSecondaryView,
 }) => {
   const [profileModal, setProfileModal] = useState(false);
   const [demoModal, setDemoModal] = useState(false);
   return (
     <Fragment>
-      <Blanket onClick={setSecondaryView} className="side-bar-blanket" isActive={secondaryView} ></Blanket>
-      <Container className={secondaryView ? 'secondary-side-bar' : 'default-side-bar'}>
+      <Blanket
+        onClick={setSecondaryView}
+        className="side-bar-blanket"
+        isActive={secondaryView}
+      ></Blanket>
+      <Container
+        className={secondaryView ? 'secondary-side-bar' : 'default-side-bar'}
+      >
         <Wrapper>
           <div>
             <Top className="side-bar-top">
@@ -42,7 +48,12 @@ const Sidebar = ({
                 <span>Simplanner</span>
               </Logo>
               <ResizeButton className="resize-button">
-                <Icon onClick={setSecondaryView} type="circle-left" size={22} isSolid={true} />
+                <Icon
+                  onClick={setSecondaryView}
+                  type="circle-left"
+                  size={22}
+                  isSolid={true}
+                />
               </ResizeButton>
             </Top>
             <MainContent className="side-bar-main">
@@ -51,7 +62,12 @@ const Sidebar = ({
                   <Icon type="pen" size={11} isSolid={true} />
                 </EditButton>
                 <UserIcon>
-                  <Icon onClick={() => setProfileModal(true)} type="user-icon" imageUrl={pictureUrl} size={47} />
+                  <Icon
+                    onClick={() => setProfileModal(true)}
+                    type="user-icon"
+                    imageUrl={pictureUrl}
+                    size={47}
+                  />
                 </UserIcon>
                 <UserProfileOverview>
                   <p className="profile-name">{name}</p>
@@ -60,25 +76,26 @@ const Sidebar = ({
               </UserProfile>
               <nav>
                 <ul>
-                  {
-                    Object.values(roles).map(component => (
-                      <LinkList
-                        key={component.id}
-                        {...component}
-                        closeModal={() => {
-                          if (secondaryView) {
-                            setSecondaryView()
-                          }
-                        }}
-                      />
-                    ))
-                  }
+                  {Object.values(roles).map((component) => (
+                    <LinkList
+                      key={component.id}
+                      {...component}
+                      closeModal={() => {
+                        if (secondaryView) {
+                          setSecondaryView();
+                        }
+                      }}
+                    />
+                  ))}
                 </ul>
               </nav>
             </MainContent>
           </div>
           <div>
-            <DemoSettingButton className="side-bar-demo-button" onClick={() => setDemoModal(true)}>
+            <DemoSettingButton
+              className="side-bar-demo-button"
+              onClick={() => setDemoModal(true)}
+            >
               <Icon type="demo" size={13} isSolid={true} />
               <span>Demo Options</span>
             </DemoSettingButton>
@@ -92,11 +109,12 @@ const Sidebar = ({
           </div>
         </Wrapper>
       </Container>
-      {profileModal && <EditProfileModal closeModal={() => setProfileModal(false)} />}
+      {profileModal && (
+        <EditProfileModal closeModal={() => setProfileModal(false)} />
+      )}
       {demoModal && <DemoModal closeModal={() => setDemoModal(false)} />}
     </Fragment>
-  )
-}
-
+  );
+};
 
 export default Sidebar;

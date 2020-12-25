@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import SelectMenu from '../../../../../../shared/components/SelectMenu/SelectMenu';
 import Icon from '../../../../../../shared/components/Icon/Icon';
 import { projectCategories } from '../../../../../../shared/constants/projects';
@@ -18,7 +18,11 @@ function IssueCreateTypeField({ currentCategory, onChange }) {
       <SectionTitle>Category</SectionTitle>
       <SectionContent onClick={() => setIsMenuOpen(true)}>
         <SelectItem>
-          {currentCategory ? currentCategory : <span className="placeholder">Choose a category</span>}
+          {currentCategory ? (
+            currentCategory
+          ) : (
+            <span className="placeholder">Choose a category</span>
+          )}
         </SelectItem>
         <AngleDownIcon>
           <Icon type="angle-down" isSolid={true} size={14} />
@@ -28,29 +32,25 @@ function IssueCreateTypeField({ currentCategory, onChange }) {
         isActive={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
         onChange={(option) => onChange(option.value)}
-        options={Object.values(projectCategories).filter(category => category !== currentCategory).map(option => ({
-          key: option,
-          value: option,
-        }))}
+        options={Object.values(projectCategories)
+          .filter((category) => category !== currentCategory)
+          .map((option) => ({
+            key: option,
+            value: option,
+          }))}
         renderValue={({ value: priority }) => renderOption(priority)}
       />
     </SectionContainer>
-  )
+  );
 }
 
 const renderOption = (priority) => {
-  return (
-    <SelectItem>
-      {priority}
-    </SelectItem>
-  )
-}
+  return <SelectItem>{priority}</SelectItem>;
+};
 
 IssueCreateTypeField.propTypes = {
   currentCategory: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-}
-
+};
 
 export default IssueCreateTypeField;
-

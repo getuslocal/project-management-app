@@ -1,5 +1,8 @@
 import React, { useState, Fragment, useRef, useEffect } from 'react';
-import { IssueTypes, IssuePriorities } from '../../../../../../../shared/constants/issues';
+import {
+  IssueTypes,
+  IssuePriorities,
+} from '../../../../../../../shared/constants/issues';
 import Icon from '../../../../../../../shared/components/Icon/Icon';
 import SelectMenu from '../../../../../../../shared/components/SelectMenu/SelectMenu';
 import { selectUser } from '../../../../../../../redux/auth/auth.selectors';
@@ -9,7 +12,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { createNewTicket } from '../../../../../../../redux/tickets/tickets.actions';
-import useOutsideClick from "../../../../../../../shared/hooks/useOutsideClick";
+import useOutsideClick from '../../../../../../../shared/hooks/useOutsideClick';
 import {
   Container,
   TextArea,
@@ -19,8 +22,8 @@ import {
   Button,
   IconCont,
   AngleDownIcon,
-  Bottom
-} from './QuickIssueCreate.style'
+  Bottom,
+} from './QuickIssueCreate.style';
 import { setAlert } from '../../../../../../../redux/alert/alert.actions';
 
 const QuickIssueCreate = ({
@@ -39,12 +42,12 @@ const QuickIssueCreate = ({
     description: '',
     reporterId: user._id,
     assigneeId: '',
-    issuePriority: IssuePriorities.MEDIUM
+    issuePriority: IssuePriorities.MEDIUM,
   });
   const { issueType, summary } = issueFormValues;
 
   useOutsideClick(contentRef, () => {
-    setIsContentActive(false)
+    setIsContentActive(false);
   });
 
   useEffect(() => {
@@ -56,8 +59,8 @@ const QuickIssueCreate = ({
     const targetTop = 230;
     if (target.getBoundingClientRect().top < targetTop) {
       target.scrollIntoView();
-    }  
-    
+    }
+
     if (target.getBoundingClientRect().bottom > window.innerHeight) {
       target.scrollIntoView(false);
     }
@@ -76,20 +79,27 @@ const QuickIssueCreate = ({
     // Close the content.
     setIsContentActive(false);
     setAlert('A new issue is created !', 'success');
-  }
+  };
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     const { name, value } = event.target;
     setIssueFormValues({ ...issueFormValues, [name]: value });
   };
 
   const checkIsFirstWeekOfCalendar = (momentDate) => {
-    const dateStart = moment().subtract(12, 'months').startOf('month').day("Sunday");
+    const dateStart = moment()
+      .subtract(12, 'months')
+      .startOf('month')
+      .day('Sunday');
     return moment(momentDate).isSame(dateStart, 'week');
-  }
+  };
 
   return (
-    <Container ref={contentRef} isLeftPosition={(momentDate.day() >= 4)} isFirstWeekOfCalendar={checkIsFirstWeekOfCalendar(momentDate)}>
+    <Container
+      ref={contentRef}
+      isLeftPosition={momentDate.day() >= 4}
+      isFirstWeekOfCalendar={checkIsFirstWeekOfCalendar(momentDate)}
+    >
       <form onSubmit={handleSubmit}>
         <TextArea
           placeholder="What needs to be done?"
@@ -99,7 +109,7 @@ const QuickIssueCreate = ({
           required
         />
         <DueDate>
-          <span>Due date :</span> {momentDate.format("MMM DD, YYYY")}
+          <span>Due date :</span> {momentDate.format('MMM DD, YYYY')}
         </DueDate>
         <Bottom>
           <DropDownMenu>
@@ -113,7 +123,12 @@ const QuickIssueCreate = ({
               isActive={isActive}
               width={150}
               setIsMenuOpen={setIsActive}
-              onChange={(option) => setIssueFormValues({ ...issueFormValues, issueType: option.value })}
+              onChange={(option) =>
+                setIssueFormValues({
+                  ...issueFormValues,
+                  issueType: option.value,
+                })
+              }
               options={renderType(IssueTypes, issueType)}
               renderValue={({ value: issueType }) => renderOption(issueType)}
             />
@@ -122,15 +137,16 @@ const QuickIssueCreate = ({
         </Bottom>
       </form>
     </Container>
-  )
-}
+  );
+};
 
-const renderType = (IssueTypes, currentType) => (
-  Object.values(IssueTypes).filter(type => type !== currentType && type !== IssueTypes.EPIC).map(option => ({
-    key: option,
-    value: option,
-  }))
-)
+const renderType = (IssueTypes, currentType) =>
+  Object.values(IssueTypes)
+    .filter((type) => type !== currentType && type !== IssueTypes.EPIC)
+    .map((option) => ({
+      key: option,
+      value: option,
+    }));
 
 const renderOption = (issueType) => (
   <Fragment>
@@ -152,4 +168,6 @@ const mapStateToProps = createStructuredSelector({
   project: selectCurrentProject,
 });
 
-export default connect(mapStateToProps, { createNewTicket, setAlert })(QuickIssueCreate);
+export default connect(mapStateToProps, { createNewTicket, setAlert })(
+  QuickIssueCreate
+);

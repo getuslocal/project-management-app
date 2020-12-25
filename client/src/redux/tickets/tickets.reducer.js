@@ -18,9 +18,9 @@ const INITIAL_STATE = {
     user: [],
     epic: '',
     type: '',
-    search: ''
+    search: '',
   },
-}
+};
 
 const ticketsReducer = (state = INITIAL_STATE, action) => {
   const { type, payload } = action;
@@ -29,86 +29,88 @@ const ticketsReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         tickets: payload,
-        loading: false
-      }
+        loading: false,
+      };
     case CREATE_NEW_TICKET:
       return {
         ...state,
-        tickets: [...state.tickets, payload.data]
-      }
+        tickets: [...state.tickets, payload.data],
+      };
     case DELETE_TICKET:
       return {
         ...state,
-        tickets: state.tickets.filter(ticket => ticket._id !== payload.ticketId)
-      }
+        tickets: state.tickets.filter(
+          (ticket) => ticket._id !== payload.ticketId
+        ),
+      };
     case UPDATE_TICKET:
       return {
         ...state,
-        tickets: state.tickets.map(ticket => {
+        tickets: state.tickets.map((ticket) => {
           if (ticket._id === payload.ticketId) {
             return {
               ...ticket,
-              ...payload.data
-            }
+              ...payload.data,
+            };
           }
-          return ticket
-        })
-      }
+          return ticket;
+        }),
+      };
     case ADD_COMMENT:
       return {
         ...state,
-        tickets: state.tickets.map(ticket => {
+        tickets: state.tickets.map((ticket) => {
           if (ticket._id === payload.ticketId) {
             return {
               ...ticket,
-              comments: payload.comment
-            }
+              comments: payload.comment,
+            };
           }
-          return ticket
-        })
-      }
+          return ticket;
+        }),
+      };
     case DELETE_COMMENT:
       return {
         ...state,
-        tickets: state.tickets.map(ticket => {
+        tickets: state.tickets.map((ticket) => {
           if (ticket._id === payload.ticketId) {
             return {
               ...ticket,
-              comments: payload.comment
-            }
+              comments: payload.comment,
+            };
           }
-          return ticket
-        })
-      }
+          return ticket;
+        }),
+      };
     case FILTER_TICKETS_BY_USERID:
       return {
         ...state,
         filter: {
           ...state.filter,
-          user: [...state.filter.user, payload]
-        }
-      }
+          user: [...state.filter.user, payload],
+        },
+      };
     case FILTER_TICKETS_BY_SEARCH:
       return {
         ...state,
         filter: {
           ...state.filter,
-          search: payload
-        }
-      }
+          search: payload,
+        },
+      };
     case REMOVE_USER_FILTER:
       return {
         ...state,
         filter: {
           ...state.filter,
-          user: state.filter.user.filter(userId => userId !== payload)
-        }
-      }
+          user: state.filter.user.filter((userId) => userId !== payload),
+        },
+      };
     case CLEAR_ALL_FILTERS:
       return {
         ...state,
-        filter: INITIAL_STATE.filter
-      }
+        filter: INITIAL_STATE.filter,
+      };
     default:
       return state;
   }

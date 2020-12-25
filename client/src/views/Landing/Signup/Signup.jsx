@@ -5,12 +5,8 @@ import { register } from '../../../redux/auth/auth.actions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ErrorMessage from '../../../shared/components/ErrorMessage/ErrorMessage';
-import { SubmitButton } from '../Landing.style'
-import {
-  FormTitle,
-  GrayText,
-  LoginContainer,
-} from './Signup.style';
+import { SubmitButton } from '../Landing.style';
+import { FormTitle, GrayText, LoginContainer } from './Signup.style';
 
 const SignupForm = ({ register, errorMessage, ...props }) => {
   const [userCredentials, setUserCredentials] = useState({
@@ -27,16 +23,16 @@ const SignupForm = ({ register, errorMessage, ...props }) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      setPasswordsUnMatch(true)
-      return
+      setPasswordsUnMatch(true);
+      return;
     } else if (passwordsUnMatch) {
-      setPasswordsUnMatch(false)
+      setPasswordsUnMatch(false);
     }
 
     register({ name, email, password });
-  }
+  };
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     const { name, value } = event.target;
     setUserCredentials({ ...userCredentials, [name]: value });
   };
@@ -46,58 +42,62 @@ const SignupForm = ({ register, errorMessage, ...props }) => {
       <FormTitle>
         Sign up <GrayText>for your account</GrayText>
       </FormTitle>
-      {(errorMessage || passwordsUnMatch) &&
-        <Margin bottom={40} >
-          <ErrorMessage errorMessage={passwordsUnMatch ? 'Passwords do not match' : errorMessage} />
+      {(errorMessage || passwordsUnMatch) && (
+        <Margin bottom={40}>
+          <ErrorMessage
+            errorMessage={
+              passwordsUnMatch ? 'Passwords do not match' : errorMessage
+            }
+          />
         </Margin>
-      }
+      )}
       <form onSubmit={handleSubmit}>
-        <Margin bottom={40} >
+        <Margin bottom={40}>
           <FormInput
-            type='text'
-            name='name'
-            label='Name'
+            type="text"
+            name="name"
+            label="Name"
             iconType="user"
             value={name}
             handleChange={handleChange}
             required
           />
         </Margin>
-        <Margin bottom={40} >
+        <Margin bottom={40}>
           <FormInput
-            type='email'
-            name='email'
-            label='Email'
+            type="email"
+            name="email"
+            label="Email"
             iconType="envelope-open"
             value={email}
             handleChange={handleChange}
             required
           />
         </Margin>
-        <Margin bottom={40} >
+        <Margin bottom={40}>
           <FormInput
-            type='password'
-            name='password'
-            label='Password'
+            type="password"
+            name="password"
+            label="Password"
             iconType="lock"
             value={password}
             handleChange={handleChange}
             required
           />
         </Margin>
-        <Margin bottom={40} >
+        <Margin bottom={40}>
           <FormInput
-            type='password'
-            name='confirmPassword'
-            label='Confirm password'
+            type="password"
+            name="confirmPassword"
+            label="Confirm password"
             iconType="lock"
             value={confirmPassword}
             handleChange={handleChange}
             required
           />
         </Margin>
-        <Margin bottom={30} >
-          <SubmitButton name='button' type='submit' value='Sign up now' />
+        <Margin bottom={30}>
+          <SubmitButton name="button" type="submit" value="Sign up now" />
         </Margin>
       </form>
     </LoginContainer>
@@ -106,11 +106,11 @@ const SignupForm = ({ register, errorMessage, ...props }) => {
 
 SignupForm.propTypes = {
   register: PropTypes.func.isRequired,
-  errorMessage: PropTypes.string
+  errorMessage: PropTypes.string,
 };
 
-const mapStateToProps = state => ({
-  errorMessage: state.auth.errorMessage
+const mapStateToProps = (state) => ({
+  errorMessage: state.auth.errorMessage,
 });
 
 export default connect(mapStateToProps, { register })(SignupForm);

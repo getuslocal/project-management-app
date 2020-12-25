@@ -14,18 +14,16 @@ const rolesReducer = (state = null, action) => {
     case GET_ROLES:
       return {
         // ...state,
-        ...payload
-      }
+        ...payload,
+      };
     case UPDATE_ROLES: {
       if (payload === roleNames.PROJECTMANAGER) {
         const { adminSetting: removed, ...restRoles } = state;
         return restRoles;
-      }
-      else if (payload === roleNames.MEMBER) {
+      } else if (payload === roleNames.MEMBER) {
         const { dashboard, projects } = state;
         return { dashboard, projects };
-      }
-      else {
+      } else {
         return state;
       }
     }
@@ -36,55 +34,56 @@ const rolesReducer = (state = null, action) => {
           ...state.dashboard,
           tabs: [
             ...state.dashboard.tabs,
-            ...getProjectLabelAndLinkMap(payload)
-          ]
+            ...getProjectLabelAndLinkMap(payload),
+          ],
         },
         projects: {
           ...state.projects,
           dropDownMenu: [
             ...state.projects.dropDownMenu,
-            ...getProjectLabelAndLinkMap(payload)
-          ]
-        }
-      }
+            ...getProjectLabelAndLinkMap(payload),
+          ],
+        },
+      };
     case UPDATE_WITH_UPDATED_PROJECT_INFO:
       return {
         ...state,
         dashboard: {
           ...state.dashboard,
-          tabs: state.dashboard.tabs.map(tab => {
+          tabs: state.dashboard.tabs.map((tab) => {
             if (tab.projectId === payload.projectId) {
-              return getProjectLabelAndLinkMap(payload.updatedProject)[0]
+              return getProjectLabelAndLinkMap(payload.updatedProject)[0];
             }
-            return tab
-          })
+            return tab;
+          }),
         },
         projects: {
           ...state.projects,
-          dropDownMenu: state.projects.dropDownMenu.map(menu => {
+          dropDownMenu: state.projects.dropDownMenu.map((menu) => {
             if (menu.projectId === payload.projectId) {
-              return getProjectLabelAndLinkMap(payload.updatedProject)[0]
+              return getProjectLabelAndLinkMap(payload.updatedProject)[0];
             }
-            return menu
-          })
-        }
-      }
+            return menu;
+          }),
+        },
+      };
     case UPDATE_WITH_REMOVED_PROJECT:
       return {
         ...state,
         dashboard: {
           ...state.dashboard,
-          tabs: state.dashboard.tabs.filter(tab => tab.projectId !== payload)
+          tabs: state.dashboard.tabs.filter((tab) => tab.projectId !== payload),
         },
         projects: {
           ...state.projects,
-          dropDownMenu: state.projects.dropDownMenu.filter(menu => menu.projectId !== payload)
-        }
-      }
+          dropDownMenu: state.projects.dropDownMenu.filter(
+            (menu) => menu.projectId !== payload
+          ),
+        },
+      };
     default:
       return state;
   }
 };
-
 
 export default rolesReducer;

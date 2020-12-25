@@ -1,9 +1,11 @@
-node_modules
+# dependencies
+**/node_modules
 
-_variables.scss
-
+# IDE config
 .vscode
 
-client/back_up
+# environment config
+**/.env
 
-User_role
+# backup
+client/back_up

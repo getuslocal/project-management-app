@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components'
-import { color } from '../../../../../shared/utils/styles'
+import styled, { css } from 'styled-components';
+import { color } from '../../../../../shared/utils/styles';
 
 export const CreateTicketButton = styled.div`
   padding: 12px;
@@ -8,17 +8,19 @@ export const CreateTicketButton = styled.div`
   font-weight: 500;
   color: transparent;
 
-  &:hover{
+  &:hover {
     background-color: rgba(9, 30, 66, 0.08);
     cursor: pointer;
   }
 
   /* If it is a first column, display the button by default. */
-  ${({ isFirstColumn }) => isFirstColumn && css`
-    display: block;
-    color: ${color.textDark};
-  `}
-`
+  ${({ isFirstColumn }) =>
+    isFirstColumn &&
+    css`
+      display: block;
+      color: ${color.textDark};
+    `}
+`;
 
 export const Container = styled.div`
   display: flex;
@@ -26,16 +28,17 @@ export const Container = styled.div`
   margin: 0px 5px;
   min-width: 282px;
   max-width: 282px;
-  box-shadow: ${props => (props.isDragging ? 'rgba(0, 0, 0, 0.2) 0 3px 3px 0' : 'none')};
+  box-shadow: ${(props) =>
+    props.isDragging ? 'rgba(0, 0, 0, 0.2) 0 3px 3px 0' : 'none'};
   position: relative;
-  
-  &:hover{
+
+  &:hover {
     ${CreateTicketButton} {
       display: block;
       color: ${color.textDark};
     }
   }
-`
+`;
 
 export const Content = styled.div`
   display: flex;
@@ -45,7 +48,7 @@ export const Content = styled.div`
   height: 100%;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
-`
+`;
 
 export const Top = styled.div`
   width: 100%;
@@ -53,7 +56,7 @@ export const Top = styled.div`
   position: sticky;
   top: 0px;
   /* border-bottom: 1px solid ${color.borderLight}; */
-`
+`;
 
 export const TopContent = styled.div`
   padding: 6px;
@@ -94,7 +97,7 @@ export const TopContent = styled.div`
   .check-icon {
     color: ${color.success};
   }
-`
+`;
 
 export const TitleText = styled.p`
   padding: 6px 4px;
@@ -116,13 +119,13 @@ export const TitleText = styled.p`
     background-color: ${color.hoverGray};
     cursor: pointer;
   }
-`
+`;
 
 export const Counter = styled.p`
   font-size: 12px;
   margin-left: 5px;
   margin-right: 2px;
-`
+`;
 
 export const TitleInput = styled.input`
   padding: 6px 4px;
@@ -135,25 +138,25 @@ export const TitleInput = styled.input`
   border: 1px solid ${color.borderInputFocus};
   font-weight: 500;
   width: 100%;
-  transition: all .2s;
+  transition: all 0.2s;
   background-color: ${color.white};
   outline: none;
   box-shadow: ${color.borderInputFocus} 0px 0px 0px 1px;
   color: ${color.textDark};
   background-color: ${color.white};
-`
+`;
 
 export const TicketsList = styled.div`
   flex-grow: 1;
   min-height: 300px;
-`
+`;
 
 export const Options = styled.div`
   margin-left: auto;
   position: absolute;
   top: 100%;
   right: 0;
-`
+`;
 
 export const Option = styled.button`
   height: 30px;
@@ -162,11 +165,12 @@ export const Option = styled.button`
   background-color: ${color.backgroundLightest2};
   margin-right: 6px;
   border-radius: 3px;
-  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.31) 0px 0px 1px;
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+    rgba(9, 30, 66, 0.31) 0px 0px 1px;
   color: ${color.textMedium};
   border: 1px solid ${color.borderLight};
 
   &:hover {
     background-color: ${color.backgroundLightest};
   }
-`
+`;

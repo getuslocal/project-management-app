@@ -1,8 +1,8 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import Table from '../../../../../shared/components/Table/Table'
+import React from 'react';
+import PropTypes from 'prop-types';
+import Table from '../../../../../shared/components/Table/Table';
 import Button from '../../../../../shared/components/Button/Button';
-import moment from 'moment'
+import moment from 'moment';
 
 const OrganizationTable = ({ organization, memberCount, projectCount }) => {
   return (
@@ -18,27 +18,25 @@ const OrganizationTable = ({ organization, memberCount, projectCount }) => {
         </tr>
       </Table.Head>
       <Table.Body>
-        <tr >
-          <td>
-            {organization.name}
-          </td>
-          <td>
-            {moment(organization.createdAt).format('MMMM Do, YYYY')}
-          </td>
+        <tr>
+          <td>{organization.name}</td>
+          <td>{moment(organization.createdAt).format('MMMM Do, YYYY')}</td>
           <td>Free</td>
           <td>{memberCount}</td>
           <td>{projectCount} / 5</td>
           <td>
-            <Button text="Delete organization" variant="danger" className="not-implemented-action" />
+            <Button
+              text="Delete organization"
+              variant="danger"
+              className="not-implemented-action"
+            />
           </td>
         </tr>
       </Table.Body>
     </Table>
-  )
-}
+  );
+};
 
-OrganizationTable.propTypes = {
+OrganizationTable.propTypes = {};
 
-}
-
-export default OrganizationTable
+export default OrganizationTable;

@@ -10,7 +10,7 @@ export const SpinnerOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${props => props.filled ? color.white : 'unset'};
+  background-color: ${(props) => (props.filled ? color.white : 'unset')};
 
   & > p {
     position: absolute;
@@ -25,7 +25,7 @@ export const SpinnerContainer = styled.div`
   height: 50px;
   border: 3px solid #0f35a9;
   border-radius: 50%;
-  border-top-color: #8CD7F8;
+  border-top-color: #8cd7f8;
   animation: spin 1s ease-in-out infinite;
   -webkit-animation: spin 1s ease-in-out infinite;
 

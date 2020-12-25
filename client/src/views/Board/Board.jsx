@@ -4,42 +4,47 @@ import PropTypes from 'prop-types';
 import Sidebar from '../Sidebar/Sidebar';
 import NotFound from '../NotFound/NotFound';
 import Alert from '../Alert/Alert';
-import {
-  LayoutContainer,
-  Container
-} from './Board.style';
+import { LayoutContainer, Container } from './Board.style';
 import * as Components from './components';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { selectRoles } from '../../redux/roles/roles.selectors';
 
-const Board = ({
-  user,
-  roles,
-}) => {
+const Board = ({ user, roles }) => {
   const [secondaryView, setSecondaryView] = useState(false);
   return (
     <LayoutContainer>
-      <Sidebar user={user} roles={roles} secondaryView={secondaryView} setSecondaryView={() => setSecondaryView(!secondaryView)} />
+      <Sidebar
+        user={user}
+        roles={roles}
+        secondaryView={secondaryView}
+        setSecondaryView={() => setSecondaryView(!secondaryView)}
+      />
       <Container secondaryView={secondaryView}>
         <Alert />
         <Switch>
-          {Object.values(roles).map(role => {
+          {Object.values(roles).map((role) => {
             const Component = Components[role.component];
             return (
               <Route
                 key={role.id}
                 path={`/app/${role.linkUrl}/${role.linkVariable}`}
-                render={(props) => <Component component={role} baseUrl={`/app/${role.linkUrl}`} {...props} />}
+                render={(props) => (
+                  <Component
+                    component={role}
+                    baseUrl={`/app/${role.linkUrl}`}
+                    {...props}
+                  />
+                )}
               />
-            )
+            );
           })}
           <Route component={NotFound} />
         </Switch>
       </Container>
     </LayoutContainer>
   );
-}
+};
 
 Board.propTypes = {
   user: PropTypes.object.isRequired,
@@ -47,7 +52,7 @@ Board.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  roles: selectRoles
+  roles: selectRoles,
 });
 
 export default connect(mapStateToProps)(Board);

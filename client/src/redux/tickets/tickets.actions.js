@@ -11,50 +11,54 @@ import {
   FILTER_TICKETS_BY_SEARCH,
   CLEAR_ALL_FILTERS,
 } from './tickets.types';
-import { updateColumnWithNewTicket, updateColumnWithDeletedTicket, updateHistory } from '../projects/projects.actions';
+import {
+  updateColumnWithNewTicket,
+  updateColumnWithDeletedTicket,
+  updateHistory,
+} from '../projects/projects.actions';
 import { IssueHistoryTypes } from '../../shared/constants/issues';
 
 // Get tickets of the project.
-export const getTicketsByProjectId = (projectId) => async dispatch => {
+export const getTicketsByProjectId = (projectId) => async (dispatch) => {
   try {
     const res = await api.get(`/tickets/${projectId}`);
     dispatch({
       type: GET_TICKETS,
-      payload: res.data
+      payload: res.data,
     });
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 };
 
 // Get all tickets of the organization.
-export const getTicketsOfOrganization = (projectIds) => async dispatch => {
+export const getTicketsOfOrganization = (projectIds) => async (dispatch) => {
   let ticketsList = [];
   try {
     for (const projectId of projectIds) {
       const res = await api.get(`/tickets/${projectId}`);
       const ticketData = res.data;
-      ticketsList = [...ticketsList, ...ticketData]
-    };
+      ticketsList = [...ticketsList, ...ticketData];
+    }
     dispatch({
       type: GET_TICKETS,
-      payload: ticketsList
+      payload: ticketsList,
     });
     // console.log('dispatch')
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 };
 
 // Create a new ticket.
-export const createNewTicket = (formData, columnId) => async dispatch => {
+export const createNewTicket = (formData, columnId) => async (dispatch) => {
   try {
-    const res = await api.post("/tickets/create", formData);
+    const res = await api.post('/tickets/create', formData);
     dispatch({
       type: CREATE_NEW_TICKET,
       payload: {
         data: res.data,
-      }
+      },
     });
     // Update a certain column with a new ticket created.
     const newTicket = res.data;
@@ -72,28 +76,32 @@ export const createNewTicket = (formData, columnId) => async dispatch => {
       field: null,
       before: null,
       after: null,
-    }
+    };
     dispatch(updateHistory(projectId, logData));
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 };
 
 // Create a new epic ticket.
-export const createNewEpicTicket = (formData, childIssues) => async dispatch => {
+export const createNewEpicTicket = (formData, childIssues) => async (
+  dispatch
+) => {
   try {
-    const res = await api.post("/tickets/create", formData);
+    const res = await api.post('/tickets/create', formData);
     dispatch({
       type: CREATE_NEW_TICKET,
       payload: {
         data: res.data,
-      }
+      },
     });
     // Link child issues with the epic.
     const epicId = res.data._id;
-    childIssues.forEach(childIssueId => {
-      dispatch(updateTicket(childIssueId, { field: 'linkedEpic', value: epicId }))
-    })
+    childIssues.forEach((childIssueId) => {
+      dispatch(
+        updateTicket(childIssueId, { field: 'linkedEpic', value: epicId })
+      );
+    });
     // Update history of project.
     const newEpic = res.data;
     const logData = {
@@ -106,15 +114,15 @@ export const createNewEpicTicket = (formData, childIssues) => async dispatch => 
       field: null,
       before: null,
       after: null,
-    }
+    };
     dispatch(updateHistory(newEpic.projectId, logData));
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 };
 
 // Update a ticket by id.
-export const updateTicket = (ticketId, updatedValue) => async dispatch => {
+export const updateTicket = (ticketId, updatedValue) => async (dispatch) => {
   try {
     const res = await api.post(`/tickets/update/${ticketId}`, updatedValue);
     dispatch({
@@ -122,22 +130,22 @@ export const updateTicket = (ticketId, updatedValue) => async dispatch => {
       payload: {
         data: res.data,
         ticketId,
-      }
+      },
     });
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 };
 
 // Delete a ticket by id.
-export const deleteTicket = (ticketId, columnId) => async dispatch => {
+export const deleteTicket = (ticketId, columnId) => async (dispatch) => {
   try {
     const res = await api.delete(`/tickets/${ticketId}`);
     dispatch({
       type: DELETE_TICKET,
       payload: {
         ticketId,
-      }
+      },
     });
     // Update column of the ticket after it's deleted.
     const deletedTicket = res.data;
@@ -154,27 +162,27 @@ export const deleteTicket = (ticketId, columnId) => async dispatch => {
       field: null,
       before: null,
       after: null,
-    }
+    };
     dispatch(updateHistory(projectId, logData));
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 };
 
 // Delete a ticket by id.
-export const deleteEpicTicket = (ticketId, childIssues) => async dispatch => {
+export const deleteEpicTicket = (ticketId, childIssues) => async (dispatch) => {
   try {
     const res = await api.delete(`/tickets/${ticketId}`);
     dispatch({
       type: DELETE_TICKET,
       payload: {
         ticketId,
-      }
+      },
     });
     // Initiate linked epic field of child issues of the epic.
-    childIssues.forEach(childIssueId => {
-      dispatch(updateTicket(childIssueId, { linkedEpic: null }))
-    })
+    childIssues.forEach((childIssueId) => {
+      dispatch(updateTicket(childIssueId, { linkedEpic: null }));
+    });
     // Update history logs of the project.
     const deletedEpic = res.data;
     const projectId = deletedEpic.projectId;
@@ -188,72 +196,72 @@ export const deleteEpicTicket = (ticketId, childIssues) => async dispatch => {
       field: null,
       before: null,
       after: null,
-    }
+    };
     dispatch(updateHistory(projectId, logData));
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 };
 
 // Comment on a ticket.
-export const addComment = (ticketId, formData) => async dispatch => {
+export const addComment = (ticketId, formData) => async (dispatch) => {
   try {
     const res = await api.post(`/tickets/comment/${ticketId}`, formData);
     dispatch({
       type: ADD_COMMENT,
       payload: {
         comment: res.data,
-        ticketId: ticketId
-      }
+        ticketId: ticketId,
+      },
     });
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 };
 
 // Delete comment
-export const deleteComment = (ticketId, commentId) => async dispatch => {
+export const deleteComment = (ticketId, commentId) => async (dispatch) => {
   try {
     const res = await api.delete(`/tickets/comment/${ticketId}/${commentId}`);
     dispatch({
       type: DELETE_COMMENT,
       payload: {
         comment: res.data,
-        ticketId: ticketId
-      }
+        ticketId: ticketId,
+      },
     });
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 };
 
 // Filter Tickets by user.
-export const filterTicketsByUser = (userId) => async dispatch => {
+export const filterTicketsByUser = (userId) => async (dispatch) => {
   dispatch({
     type: FILTER_TICKETS_BY_USERID,
-    payload: userId
-  })
+    payload: userId,
+  });
 };
 
 // Filter Tickets by search input.
-export const filterTicketsBySearch = (value) => async dispatch => {
+export const filterTicketsBySearch = (value) => async (dispatch) => {
   dispatch({
     type: FILTER_TICKETS_BY_SEARCH,
-    payload: value
-  })
+    payload: value,
+  });
 };
 
 // Remove a user id from the user filter array.
-export const removeUserFilter = (userId) => async dispatch => {
+export const removeUserFilter = (userId) => async (dispatch) => {
   dispatch({
     type: REMOVE_USER_FILTER,
-    payload: userId
-  })
+    payload: userId,
+  });
 };
 
 // Clear all filters.
-export const clearAllFilters = () => async dispatch => {
+export const clearAllFilters = () => async (dispatch) => {
   dispatch({
     type: CLEAR_ALL_FILTERS,
-  })
+  });
 };

@@ -33,4 +33,4 @@ export const MemberOption = styled.div`
 
 export const Action = styled.div`
   text-align: right;
-`
+`;

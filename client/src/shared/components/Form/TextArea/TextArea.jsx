@@ -5,20 +5,30 @@ import {
   FormContent,
   TextArea,
   Description,
-  Warning
+  Warning,
 } from '../Form.style';
 
-const FormTextArea = ({ label, description, onChange, maxLength, ...props }) => {
+const FormTextArea = ({
+  label,
+  description,
+  onChange,
+  maxLength,
+  ...props
+}) => {
   return (
     <FormContainer>
       <FormContent>
-        <Label >{label}</Label>
-        <TextArea {...props} onChange={onChange} maxLength={maxLength}/>
+        <Label>{label}</Label>
+        <TextArea {...props} onChange={onChange} maxLength={maxLength} />
         <Description>{description}</Description>
-        {maxLength && <Warning><span>&#42;</span> Value must be less than or equal to {maxLength}.</Warning>}
+        {maxLength && (
+          <Warning>
+            <span>&#42;</span> Value must be less than or equal to {maxLength}.
+          </Warning>
+        )}
       </FormContent>
     </FormContainer>
-  )
-}
+  );
+};
 
 export default FormTextArea;

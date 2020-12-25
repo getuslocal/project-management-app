@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ProjectsBoard from './ProjectsBoard';
-import { createStructuredSelector } from 'reselect'
+import { createStructuredSelector } from 'reselect';
 import { getTicketsByProjectId } from '../../../redux/tickets/tickets.actions';
 import { setCurrentProjectId } from '../../../redux/projects/projects.actions';
 import { connect } from 'react-redux';
@@ -20,7 +20,7 @@ const ProjectsBoardContainer = ({
   const [isLoading, setIsLoading] = useState(true);
 
   // Check if the project is loaded. Returns false if it's been deleted by someone.
-  const isProjectLoaded = (project !== null);
+  const isProjectLoaded = project !== null;
 
   useEffect(() => {
     if (!isProjectLoaded) return;
@@ -28,36 +28,36 @@ const ProjectsBoardContainer = ({
     const fetchTickets = async () => {
       await getTicketsByProjectId(project._id);
       await setCurrentProjectId(project._id);
-      setIsLoading(false)
-    }
+      setIsLoading(false);
+    };
     fetchTickets();
   }, []);
 
   if (!isProjectLoaded) {
-    return <NotFound />
+    return <NotFound />;
   }
 
   // Check if the current user is a member of the project.
   const isMember = project.members.includes(currentUserId);
 
   if (!isMember) {
-    return <AccessDenied {...props} />
+    return <AccessDenied {...props} />;
   }
 
-  return (
-    isLoading ?
-      <Spinner />
-      :
-      <ProjectsBoard key={props.match.params.tab} project={project} {...props} />
-  )
-}
+  return isLoading ? (
+    <Spinner />
+  ) : (
+    <ProjectsBoard key={props.match.params.tab} project={project} {...props} />
+  );
+};
 
-const mapStateToProps = (state, ownProps) => createStructuredSelector({
-  project: selectProjectById(ownProps.match.params.project),
-  currentUser: selectUser
-});
+const mapStateToProps = (state, ownProps) =>
+  createStructuredSelector({
+    project: selectProjectById(ownProps.match.params.project),
+    currentUser: selectUser,
+  });
 
-export default connect(
-  mapStateToProps,
-  { getTicketsByProjectId, setCurrentProjectId }
-)(ProjectsBoardContainer);
+export default connect(mapStateToProps, {
+  getTicketsByProjectId,
+  setCurrentProjectId,
+})(ProjectsBoardContainer);

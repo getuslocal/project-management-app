@@ -1,26 +1,26 @@
-import styled, { css } from 'styled-components'
-import { color } from '../../../utils/styles'
+import styled, { css } from 'styled-components';
+import { color } from '../../../utils/styles';
 
 export const Container = styled.div`
-
-  input[type="file"] {
+  input[type='file'] {
     display: none;
   }
 
   .inner-container {
     position: relative;
   }
-`
+`;
 
 export const Label = styled.label`
-  color: ${props => props.isLoading ? color.textVeryLight: color.textMedium };
+  color: ${(props) =>
+    props.isLoading ? color.textVeryLight : color.textMedium};
   cursor: pointer;
   display: inline-block;
   font-weight: 500;
   font-size: 14px;
   border-radius: 3px;
   padding: 10px 12px;
-  background: #F4F5F7;
+  background: #f4f5f7;
 
   & > i {
     margin-right: 4px;
@@ -29,14 +29,14 @@ export const Label = styled.label`
   &:hover {
     background-color: rgb(240 240 245);
   }
-`
+`;
 
 export const Description = styled.p`
   font-weight: 500;
   line-height: 20px;
   font-size: 12px;
   color: ${color.textLight};
-`
+`;
 
 export const Spinner = styled.div`
   display: inline-block;
@@ -48,4 +48,4 @@ export const Spinner = styled.div`
   & > img {
     vertical-align: middle;
   }
-`
+`;

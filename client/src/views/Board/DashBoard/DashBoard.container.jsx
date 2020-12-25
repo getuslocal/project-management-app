@@ -14,7 +14,7 @@ const DashBoardContainer = ({
   getTicketsOfOrganization,
   ...props
 }) => {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   // Handles featching necessary data before rendering DashBoard component.
   useEffect(() => {
@@ -26,14 +26,16 @@ const DashBoardContainer = ({
     fetchAllTickets();
   }, []);
 
-  return (
-    isLoading ? (
-      <Spinner />
-    ) : (
-        <DashBoard key={props.match.params.dashboard} tickets={tickets} {...props} />
-      )
-  )
-}
+  return isLoading ? (
+    <Spinner />
+  ) : (
+    <DashBoard
+      key={props.match.params.dashboard}
+      tickets={tickets}
+      {...props}
+    />
+  );
+};
 
 DashBoardContainer.propTypes = {
   projectIds: PropTypes.array.isRequired,
@@ -45,4 +47,6 @@ const mapStateToProps = createStructuredSelector({
   tickets: selectTickets,
 });
 
-export default connect(mapStateToProps, { getTicketsOfOrganization })(DashBoardContainer);
+export default connect(mapStateToProps, { getTicketsOfOrganization })(
+  DashBoardContainer
+);

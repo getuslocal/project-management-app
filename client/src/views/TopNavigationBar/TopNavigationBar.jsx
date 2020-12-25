@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from '../../shared/components/Icon/Icon';
 import SearchResults from './SearchResults/SearchResults';
-import useOutsideClick from "../../shared/hooks/useOutsideClick";
+import useOutsideClick from '../../shared/hooks/useOutsideClick';
 import {
   Container,
   Content,
@@ -10,7 +10,7 @@ import {
   SearchBox,
   Tabs,
   Tab,
-} from './TopNavigationBar.style'
+} from './TopNavigationBar.style';
 
 const TopNavigationBar = ({ title, tabs, baseUrl, currentTab }) => {
   const [search, setSearch] = useState('');
@@ -30,21 +30,33 @@ const TopNavigationBar = ({ title, tabs, baseUrl, currentTab }) => {
         <BoardTitle>{title}</BoardTitle>
         <SearchBox ref={searchBoxRef} onClick={() => setIsSearchActive(true)}>
           <Icon type="search" size={14} isSolid={true} />
-          <input type="text" placeholder="Search issues" value={search} onChange={e => setSearch(e.target.value)} />
-          <SearchResults search={search} isSearchActive={isSearchActive} setIsSearchActive={setIsSearchActive} />
+          <input
+            type="text"
+            placeholder="Search issues"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <SearchResults
+            search={search}
+            isSearchActive={isSearchActive}
+            setIsSearchActive={setIsSearchActive}
+          />
         </SearchBox>
       </Content>
       <Tabs>
-        {
-          tabs.map((tab, index) => (
-            <Tab key={index} className={currentTab === tab.linkUrl.replace('/', '') ? 'active' : ''} >
-              <Link to={`${baseUrl}${tab.linkUrl}`}>{tab.label}</Link>
-            </Tab>
-          ))
-        }
+        {tabs.map((tab, index) => (
+          <Tab
+            key={index}
+            className={
+              currentTab === tab.linkUrl.replace('/', '') ? 'active' : ''
+            }
+          >
+            <Link to={`${baseUrl}${tab.linkUrl}`}>{tab.label}</Link>
+          </Tab>
+        ))}
       </Tabs>
     </Container>
   );
-}
+};
 
 export default TopNavigationBar;

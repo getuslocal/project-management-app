@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  StyledIcon
-} from './Icon.style';
+import { StyledIcon } from './Icon.style';
 
 const fontIconCodes = {
   [`user`]: '\f007',
@@ -72,7 +70,7 @@ const propTypes = {
   size: PropTypes.number,
   left: PropTypes.number,
   top: PropTypes.number,
-  isSolid: PropTypes.bool
+  isSolid: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -80,7 +78,7 @@ const defaultProps = {
   size: 16,
   left: 0,
   top: 0,
-  isSolid: false
+  isSolid: false,
 };
 
 const Icon = ({ type, ...props }) => (
@@ -91,4 +89,3 @@ Icon.propTypes = propTypes;
 Icon.defaultProps = defaultProps;
 
 export default Icon;
-

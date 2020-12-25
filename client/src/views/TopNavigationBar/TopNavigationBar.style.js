@@ -1,18 +1,17 @@
-import styled from 'styled-components'
-import { color } from '../../shared/utils/styles'
+import styled from 'styled-components';
+import { color } from '../../shared/utils/styles';
 
 export const Container = styled.div`
   padding-top: 30px;
-`
+`;
 
 export const Content = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 32px;
-`
+`;
 
-export const BoardTitle = styled.h1`
-`
+export const BoardTitle = styled.h1``;
 
 export const SearchBox = styled.div`
   margin-left: auto;
@@ -27,14 +26,14 @@ export const SearchBox = styled.div`
 
   input {
     border: none;
-    border: 1px solid rgba(0, 0, 0, .15);
+    border: 1px solid rgba(0, 0, 0, 0.15);
     padding: 9px 9px 9px 36px;
     border-radius: 20px;
     color: ${color.textDarkest};
     font-size: 14px;
     width: 350px;
     background-color: transparent;
-    transition: all .2s;
+    transition: all 0.2s;
 
     &::-webkit-input-placeholder {
       /* Edge */
@@ -50,14 +49,14 @@ export const SearchBox = styled.div`
       color: ${color.textMedium};
     }
 
-    &:focus{
+    &:focus {
       outline: none;
       border-color: ${color.borderInputFocus};
       box-shadow: ${color.borderInputFocus} 0px 0px 0px 1px;
       width: 450px;
     }
   }
-`
+`;
 
 export const Tabs = styled.ul`
   &:after {
@@ -68,7 +67,7 @@ export const Tabs = styled.ul`
     position: relative;
     top: -1px;
   }
-`
+`;
 
 export const Tab = styled.li`
   border-bottom: 3px solid transparent;
@@ -84,11 +83,10 @@ export const Tab = styled.li`
     cursor: pointer;
   }
 
-  a{
+  a {
     padding-bottom: 1em;
     min-width: 50px;
     text-align: center;
     display: inline-block;
   }
-`
-
+`;

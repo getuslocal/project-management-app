@@ -1,7 +1,7 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import Icon from '../../../../../../shared/components/Icon/Icon'
-import HorizontalProgressBar from '../../../../../../shared/components/HorizontalProgressBar/HorizontalProgressBar'
+import React from 'react';
+import PropTypes from 'prop-types';
+import Icon from '../../../../../../shared/components/Icon/Icon';
+import HorizontalProgressBar from '../../../../../../shared/components/HorizontalProgressBar/HorizontalProgressBar';
 import {
   Container,
   OpenIcon,
@@ -13,7 +13,7 @@ import {
   CheckIcon,
   ChildIssueTitle,
   NoIssuesMessage,
-} from './EpicDetail.style'
+} from './EpicDetail.style';
 
 const EpicDetail = ({
   epicColorProperty,
@@ -24,7 +24,8 @@ const EpicDetail = ({
   childIssues,
   members,
 }) => {
-  const numberOfCompletedIssues = childIssues.filter(issue => issue.isDone).length;
+  const numberOfCompletedIssues = childIssues.filter((issue) => issue.isDone)
+    .length;
   return (
     <Container backgroundColor={epicColorProperty.bg}>
       <Top>
@@ -36,7 +37,9 @@ const EpicDetail = ({
           <Icon type="angle-down" size={14} isSolid={true} />
         </OpenIcon>
         <div>
-          <Title onClick={() => openIssueDetailModal(epic.key)}>{epic.summary}</Title>
+          <Title onClick={() => openIssueDetailModal(epic.key)}>
+            {epic.summary}
+          </Title>
           <HorizontalProgressBar
             value={numberOfCompletedIssues}
             total={childIssues.length}
@@ -52,37 +55,42 @@ const EpicDetail = ({
         */}
       </Top>
       <Bottom>
-        {
-          isChildIssuesVisible && (
-            childIssues.length > 0 ? (
-              childIssues.map(issue => {
-                const assignee = members.find(member => member._id === issue.assigneeId);
-                return (
-                  <ChildIssueDetail key={issue._id} >
-                    <CheckIcon
-                      className="square"
-                      type={issue.isDone ? 'check-square' : 'square'}
-                      size={16}
-                      isDone={issue.isDone}
-                    />
-                    <ChildIssueTitle onClick={() => openIssueDetailModal(issue.key)}>{issue.summary}</ChildIssueTitle>
-                    <Icon
-                      className={assignee ? "user-icon" : "unassigned-icon"}
-                      type="user-icon"
-                      imageUrl={assignee && assignee.pictureUrl} size={24} top={2}
-                    />
-                  </ChildIssueDetail>
-                )
-              })
-            ) : (
-                <NoIssuesMessage>No child issues added.</NoIssuesMessage>
-              )
-          )
-        }
+        {isChildIssuesVisible &&
+          (childIssues.length > 0 ? (
+            childIssues.map((issue) => {
+              const assignee = members.find(
+                (member) => member._id === issue.assigneeId
+              );
+              return (
+                <ChildIssueDetail key={issue._id}>
+                  <CheckIcon
+                    className="square"
+                    type={issue.isDone ? 'check-square' : 'square'}
+                    size={16}
+                    isDone={issue.isDone}
+                  />
+                  <ChildIssueTitle
+                    onClick={() => openIssueDetailModal(issue.key)}
+                  >
+                    {issue.summary}
+                  </ChildIssueTitle>
+                  <Icon
+                    className={assignee ? 'user-icon' : 'unassigned-icon'}
+                    type="user-icon"
+                    imageUrl={assignee && assignee.pictureUrl}
+                    size={24}
+                    top={2}
+                  />
+                </ChildIssueDetail>
+              );
+            })
+          ) : (
+            <NoIssuesMessage>No child issues added.</NoIssuesMessage>
+          ))}
       </Bottom>
-    </Container >
-  )
-}
+    </Container>
+  );
+};
 
 EpicDetail.propTypes = {
   epicColorProperty: PropTypes.object.isRequired,
@@ -92,6 +100,6 @@ EpicDetail.propTypes = {
   epic: PropTypes.object.isRequired,
   childIssues: PropTypes.array.isRequired,
   members: PropTypes.array.isRequired,
-}
+};
 
-export default EpicDetail
+export default EpicDetail;

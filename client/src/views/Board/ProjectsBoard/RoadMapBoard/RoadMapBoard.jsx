@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment, useRef } from 'react';
 import TopBar from '../TopBar/TopBar';
-import HorizontalCalendar from './HorizontalCalendar/HorizontalCalendar'
-import EpicList from './EpicList/EpicList'
+import HorizontalCalendar from './HorizontalCalendar/HorizontalCalendar';
+import EpicList from './EpicList/EpicList';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectFilteredEpics } from '../../../../redux/tickets/tickets.selectors';
@@ -19,8 +19,8 @@ import {
   Option,
   TodayButton,
   ButtonWrapper,
-  NewEpicButton
-} from './RoadMapBoard.style'
+  NewEpicButton,
+} from './RoadMapBoard.style';
 
 const RoadMapBoard = ({ project, epics, clearAllFilters }) => {
   const todayCellRef = useRef(null);
@@ -29,23 +29,25 @@ const RoadMapBoard = ({ project, epics, clearAllFilters }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    scrollToToday()
+    scrollToToday();
     // Clean up filters before unmounting.
-    return () => { clearAllFilters() };
-  }, [])
+    return () => {
+      clearAllFilters();
+    };
+  }, []);
 
   const scrollToToday = () => {
     const todayCellPosX = todayCellRef.current.offsetLeft;
     const offset = 50;
     scrollContainerRef.current.scrollTo(todayCellPosX - offset, 0);
-  }
+  };
 
   const calculateBoardWidth = () => {
     const dateStart = moment().subtract(1, 'years');
     const dateEnd = moment().add(1, 'years');
     const diff = dateEnd.diff(dateStart, 'days');
     return diff * 50;
-  }
+  };
 
   return (
     <Fragment>
@@ -65,27 +67,31 @@ const RoadMapBoard = ({ project, epics, clearAllFilters }) => {
         <Right ref={scrollContainerRef}>
           <HorizontalCalendar todayCellRef={todayCellRef} />
           <div>
-            {
-              epics.map(epic => <EpicList key={epic._id} epic={epic} boardWidth={calculateBoardWidth()} />)
-            }
+            {epics.map((epic) => (
+              <EpicList
+                key={epic._id}
+                epic={epic}
+                boardWidth={calculateBoardWidth()}
+              />
+            ))}
             <ButtonWrapper
               style={{ width: `${calculateBoardWidth()}px` }}
               onClick={() => setIsModalOpen(true)}
             >
-              <NewEpicButton><Icon type="plus" size={12} isSolid={true} />New Epic</NewEpicButton>
+              <NewEpicButton>
+                <Icon type="plus" size={12} isSolid={true} />
+                New Epic
+              </NewEpicButton>
             </ButtonWrapper>
           </div>
         </Right>
       </Container>
       {isModalOpen && (
-        <IssueCreate
-          setIsModalOpen={setIsModalOpen}
-          isEpic={true}
-        />
+        <IssueCreate setIsModalOpen={setIsModalOpen} isEpic={true} />
       )}
     </Fragment>
-  )
-}
+  );
+};
 
 RoadMapBoard.propTypes = {
   project: PropTypes.object.isRequired,
@@ -95,6 +101,6 @@ RoadMapBoard.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   epics: selectFilteredEpics,
-})
+});
 
-export default connect(mapStateToProps, { clearAllFilters })(RoadMapBoard)
+export default connect(mapStateToProps, { clearAllFilters })(RoadMapBoard);

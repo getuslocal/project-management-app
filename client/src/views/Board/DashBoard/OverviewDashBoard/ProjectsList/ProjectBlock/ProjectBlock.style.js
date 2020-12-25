@@ -1,9 +1,9 @@
-import styled, { css } from 'styled-components'
+import styled, { css } from 'styled-components';
 import { media } from '../../../../../../shared/utils/global';
-import { color } from '../../../../../../shared/utils/styles'
+import { color } from '../../../../../../shared/utils/styles';
 
 export const Container = styled.div`
-  box-shadow: 0 1px 4px 2px rgba(15, 53, 169, .1);
+  box-shadow: 0 1px 4px 2px rgba(15, 53, 169, 0.1);
   border-radius: 5px;
   padding: 20px 20px 10px;
   min-width: 24%;
@@ -44,7 +44,7 @@ export const NameText = styled.p`
 
   & > a {
     &:hover {
-      text-decoration:underline;
+      text-decoration: underline;
       cursor: pointer;
     }
   }
@@ -54,7 +54,7 @@ export const CategoryText = styled.p`
   font-size: 14px;
   font-weight: 500;
   color: ${color.textMedium};
-  `;
+`;
 
 export const ImageWithProgressBar = styled.div`
   width: 45px;
@@ -62,7 +62,7 @@ export const ImageWithProgressBar = styled.div`
 `;
 
 export const ProgressBarInner = styled.div`
-  background-image: url(${props => props.imageUrl});
+  background-image: url(${(props) => props.imageUrl});
   background-size: cover;
   background-position: center;
   border-radius: 50%;
@@ -91,7 +91,7 @@ export const DescriptionText = styled.div`
 export const Bottom = styled.div`
   margin-top: auto;
   padding-top: 10px;
-  border-top: 1px solid rgba(211, 212, 213, .36);
+  border-top: 1px solid rgba(211, 212, 213, 0.36);
   display: flex;
   align-items: center;
 `;
