@@ -1,26 +1,34 @@
-const router = require('express').Router();
-const Ticket = require('../models/ticket.model');
-const User = require('../models/user.model');
-const Project = require('../models/project.model');
-const verify = require('../middleware/auth');
+import { NextFunction, Request, Response } from 'express';
+import Ticket from '../models/ticket';
+import Project from '../models/project';
 
-// @route  GET tickets/:projectId
-// @desc   Get tickets overview collection of the project.
-// @access Private 
-router.get('/:projectId', verify, (req, res) => {
-  Ticket.find({ projectId: req.params.projectId })
-    .then(tickets => res.json(tickets))
-    .catch(err => res.status(400).json('Error: ' + err));
-});
+// Get tickets overview collection of the project.
+const getTicketsByProjectId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const tickets = await Ticket.find({ projectId: req.params.project_id });
+    res.json(tickets);
+  } catch (err) {
+    res.status(400).json('Error: ' + err);
+  }
+};
 
-// @route  POST tickets/create
-// @desc   Create a new ticket of the project.
-// @access Private
-router.post('/create', verify, async (req, res) => {
+//Create a new ticket of the project.
+const createTicket = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const formData = req.body;
     const { projectId } = formData;
     const project = await Project.findById(projectId);
+
+    if (!project) return res.status(400).send('Project not found.');
+
     const updatedSeq = ++project.seq;
     // Update a sequence value of the project.
     project.seq = updatedSeq;
@@ -28,7 +36,7 @@ router.post('/create', verify, async (req, res) => {
     formData.key = updatedSeq;
     //Create a new ticket.
     const newTicket = new Ticket(formData);
-    
+
     // Save on db.
     const savedNewTicket = await newTicket.save();
     await project.save();
@@ -37,56 +45,65 @@ router.post('/create', verify, async (req, res) => {
   } catch (err) {
     res.status(400).send(err);
   }
-});
+};
 
-// @route  DELETE tickets/:ticketId/
-// @desc   Delete a ticket of the id
-// @access Public
-router.delete('/:ticketId', verify, async (req, res) => {
+// Delete a ticket of the id.
+const deleteTicket = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const ticket = await Ticket.findByIdAndDelete(req.params.ticketId);
     res.json(ticket);
   } catch (err) {
     res.status(400).send(err);
   }
-});
+};
 
-// @route  POST tickets/update
-// @desc   Update an existing ticket of the project.
-// @access Private
-router.post('/update/:id', verify, async (req, res) => {
+// Update an existing ticket of the project.
+const updateTicket = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const ticketId = req.params.id;
   const { field, value } = req.body;
 
   // Check the requested body's format is valid.
   if (!field) {
-    res.status(400).send("Invalid submission");
+    res.status(400).send('Invalid submission');
   }
 
   try {
     const updatedTicket = await Ticket.findOneAndUpdate(
       { _id: ticketId },
       { $set: { [field]: value } },
-      { new: true, runValidator: true }
+      { new: true, runValidators: true }
     );
-    res.json(updatedTicket)
+    res.json(updatedTicket);
   } catch (err) {
     res.status(400).send(err);
   }
-});
+};
 
-// @route  POST tickets/comment/:id
-// @desc   Comment on a ticket.
-// @access Private
-router.post('/comment/:id', verify, async (req, res) => {
+//Comment on a ticket.
+const addTicketComment = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    const user = await User.findById(req.user._id);
+    // Get current user id.
+    const { _id: uid } = res.locals.user;
     const ticket = await Ticket.findById(req.params.id);
 
     const newComment = {
-      user: user._id,
+      user: uid,
       text: req.body.text,
     };
+
+    if (!ticket) return res.status(400).send('Ticket not found.');
 
     ticket.comments.unshift(newComment);
 
@@ -96,18 +113,23 @@ router.post('/comment/:id', verify, async (req, res) => {
   } catch (err) {
     res.status(400).send(err);
   }
-});
+};
 
-// @route  DELETE tickets/comment/:ticket_id/:comment_id
-// @desc   Delete comment
-// @access Private
-router.delete('/comment/:ticket_id/:comment_id', verify, async (req, res) => {
+// Delete comment.
+const deleteTicketComment = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const ticket = await Ticket.findById(req.params.ticket_id);
+    const { _id: uid } = res.locals.user;
+
+    if (!ticket) return res.status(400).send('Ticket not found.');
 
     // Pull out comment
     const comment = ticket.comments.find(
-      comment => comment.id === req.params.comment_id
+      (comment) => comment.id === req.params.comment_id
     );
 
     // Make sure comment exists
@@ -116,7 +138,7 @@ router.delete('/comment/:ticket_id/:comment_id', verify, async (req, res) => {
     }
 
     // Check user
-    if (comment.user.toString() !== req.user._id) {
+    if (comment.user.toString() !== uid) {
       return res.status(401).json({ msg: 'User not authorized' });
     }
 
@@ -126,12 +148,17 @@ router.delete('/comment/:ticket_id/:comment_id', verify, async (req, res) => {
 
     await ticket.save();
 
-    res.json(ticket.comments)
+    res.json(ticket.comments);
   } catch (err) {
     res.status(400).send(err);
   }
-});
+};
 
-
-
-module.exports = router;
+export default {
+  getTicketsByProjectId,
+  createTicket,
+  deleteTicket,
+  updateTicket,
+  addTicketComment,
+  deleteTicketComment,
+};

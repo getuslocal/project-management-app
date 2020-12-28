@@ -63,7 +63,6 @@ const NewProjectModal = ({
       orgId: orgId,
       projectIconUrl: getRandomProjectIcon(), // default project icon.
     };
-    // console.log(formData)
     createNewProject(formData);
     setIsModalOpen(false);
   };

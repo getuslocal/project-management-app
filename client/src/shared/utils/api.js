@@ -4,7 +4,7 @@ import { logout, removeToken } from '../../redux/auth/auth.actions';
 
 // Set config defaults when creating the instance.
 const api = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: 'http://localhost:3000/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -32,7 +32,6 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    // console.log(err.response.data)
     if (err.response.data === 'Invalid Token' && err.response.status === 403) {
       store.dispatch(logout());
     }

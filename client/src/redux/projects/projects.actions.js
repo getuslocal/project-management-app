@@ -41,7 +41,6 @@ export const getProjects = (orgId) => async (dispatch) => {
 export const createNewProject = (formData) => async (dispatch) => {
   try {
     const res = await api.post('/projects/create', formData);
-    console.log(res);
     dispatch({
       type: CREATE_PROJECT,
       payload: res.data,
@@ -214,7 +213,6 @@ export const updateColumnWithNewTicket = (
   columnId
 ) => async (dispatch) => {
   // Add the new ticket id to a proper project state location.
-  console.log(columnId);
   await api.post(`/projects/update/taskids/${projectId}`, {
     ticketId,
     columnId,

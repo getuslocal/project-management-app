@@ -62,7 +62,6 @@ const KanbanBoard = ({
   setAlert,
 }) => {
   const { columnOrder, columns, _id: projectId } = project;
-  // console.log('KanbanBoard render')
   const [addColumnActive, setAddColumnActive] = useState(false);
 
   useEffect(() => {

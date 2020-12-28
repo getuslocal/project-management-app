@@ -99,7 +99,6 @@ const IssueDetail = ({
 
   const updateTicketField = (updatedValue) => {
     // Update ticket.
-    // console.log(updatedValue)
     updateTicket(ticket._id, updatedValue);
   };
 
