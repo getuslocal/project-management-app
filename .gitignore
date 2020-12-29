@@ -12,3 +12,4 @@ client/back_up
 
 # api outDir
 api/dist
+client/build

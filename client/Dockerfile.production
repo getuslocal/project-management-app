@@ -1,0 +1,28 @@
+### first stage
+### First Stage
+FROM node:14.15.3 AS builder
+
+WORKDIR /usr/src/pma
+
+COPY ./package.json ./
+
+RUN npm install
+
+COPY . .
+
+ARG BASE_URL
+ENV REACT_APP_BASE_URL=${BASE_URL}
+
+RUN npm build
+
+### second stage
+FROM caddy:2.1.1-alpine
+
+ARG CADDYFILE
+COPY ${CADDYFILE} /etc/caddy/Caddyfile
+
+COPY --from=builder /usr/src/pma/build/ /srv
+
+EXPOSE 80
+
+EXPOSE 443
