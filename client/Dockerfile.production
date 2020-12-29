@@ -1,5 +1,4 @@
 ### first stage
-### First Stage
 FROM node:14.15.3 AS builder
 
 WORKDIR /usr/src/pma
