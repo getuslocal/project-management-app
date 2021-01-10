@@ -7,6 +7,9 @@ build-dev:
 run-dev:
 	docker-compose -f docker-compose-dev.yml up
 
+stop-dev:
+	ENV=local docker-compose -f docker-compose-dev.yml down
+
 ### LOCAL
 
 build-local:
@@ -16,6 +19,9 @@ build-local:
 run-local:
 	ENV=local docker-compose -f docker-compose-production.yml up
 
+stop-local:
+	ENV=local docker-compose -f docker-compose-production.yml down
+
 ### PROD
 
 build-production:
@@ -23,10 +29,10 @@ build-production:
 	cd api && $(MAKE) build	
 
 run-production:
-	ENV=production docker-compose -f docker-compose-production.yml up
+	ENV=production docker-compose -f docker-compose-production.yml up --detach
 
-stop:
-	docker-compose down
+stop-production:
+	ENV=production docker-compose -f docker-compose-production.yml down
 
 ### REMOTE
 

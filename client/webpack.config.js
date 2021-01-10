@@ -72,5 +72,8 @@ module.exports = {
       template: path.join(__dirname, 'src/index.html'),
       favicon: path.join(__dirname, 'src/favicon.png'),
     }),
+    new webpack.DefinePlugin({
+      'process.env.REACT_APP_BASE_URL': JSON.stringify(process.env.REACT_APP_BASE_URL),
+    }),
   ],
 };
