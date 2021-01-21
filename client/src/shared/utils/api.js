@@ -1,13 +1,10 @@
 import axios from 'axios';
 import store from '../../redux/store';
-import { logout, removeToken } from '../../redux/auth/auth.actions';
-
-console.log(process.env.REACT_APP_BASE_URL);
+import { logout } from '../../redux/auth/auth.actions';
 
 // Set config defaults when creating the instance.
 const api = axios.create({
-  // baseURL: 'http://localhost:3000/api',
-  baseURL: process.env.REACT_APP_BASE_URL || 'https://simplanner.site/api',
+  baseURL: process.env.REACT_APP_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },

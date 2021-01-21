@@ -36,7 +36,7 @@ stop-production:
 
 ### REMOTE
 
-SSH_STRING:=root@192.81.214.155
+SSH_STRING:=root@138.197.6.223
 
 ssh:
 	ssh $(SSH_STRING)
