@@ -4,7 +4,8 @@ import { logout } from '../../redux/auth/auth.actions';
 
 // Set config defaults when creating the instance.
 const api = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
+  // baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL: 'https://simplanner.herokuapp.com/api/',
   headers: {
     'Content-Type': 'application/json',
   },
