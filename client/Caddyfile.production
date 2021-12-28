@@ -1,4 +1,4 @@
-simplanner.site:443 {
+simplanner.live:443 {
   tls takayahirose0601@gmail.com
   root * /srv
   route {
