@@ -93,7 +93,7 @@ const DemoModal = ({
             </span>
           </MenuOption>
         )}
-        description="Please choose a role you want to demo."
+        description="Please choose a role you want to play."
         style={{
           marginBottom: '5px',
         }}

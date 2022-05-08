@@ -96,7 +96,7 @@ const WelcomePage = ({
           <DemoContent>
             <h3>Demo Setting</h3>
             <DropDownMemu
-              title="Choose a role you want to play with (can change anytime later)"
+              title="Choose a role you want to play (this can be changed anytime later)"
               currentItem={() => formValues.role}
               onChange={(option) =>
                 setFormValues({ ...formValues, role: option.key })
