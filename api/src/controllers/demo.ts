@@ -202,4 +202,74 @@ const generateDemoData = async (
   }
 };
 
-export default { generateDemoData };
+const updateDemoDataDates = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    for (const projectId of demoProjects) {
+      // Get the demo tickets data
+      const demoTickets = await Ticket.find({ projectId: projectId }).lean();
+
+      const today = new Date();
+      const currentYear = today.getFullYear();
+      const currentMonth = today.getMonth();
+      let monthIndex = currentMonth;
+
+      // Loop through the tickets and update the dates on them
+      for (const ticket of demoTickets) {
+        const {
+          createdAt,
+          updatedAt,
+          completedAt,
+          comments,
+          ...restTicketData
+        } = ticket;
+
+        const provCreatedAt = new Date(createdAt);
+        const provUpdatedAt = new Date(updatedAt);
+
+        provCreatedAt.setFullYear(currentYear);
+        provUpdatedAt.setFullYear(currentYear);
+
+        if (monthIndex < currentMonth - 5) {
+          monthIndex = currentMonth;
+        }
+
+        provCreatedAt.setMonth(monthIndex);
+        provUpdatedAt.setMonth(monthIndex);
+
+        
+        let provCompletedAt = undefined;
+        
+        if (completedAt) {
+          provCompletedAt = new Date(completedAt);
+          provCompletedAt.setFullYear(currentYear);
+          provCompletedAt.setMonth(monthIndex);
+        }
+
+        const updateDataSet = {
+          createdAt: provCreatedAt,
+          updatedAt: provUpdatedAt,
+        };
+
+        // Update with the new dates
+        await Ticket.findOneAndUpdate(
+          { _id: restTicketData._id },
+          { $set: { ...updateDataSet, completedAt: provCompletedAt } },
+          { runValidators: true, timestamps: false }
+        );
+
+        monthIndex--;
+      }
+    }
+
+    res.json('Demo data has been updated.');
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+};
+
+export default { generateDemoData, updateDemoDataDates };
